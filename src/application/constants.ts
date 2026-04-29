@@ -1,0 +1,15 @@
+export const AUTH_SERVICE         = 'AUTH_SERVICE';
+export const USER_SERVICE         = 'USER_SERVICE';
+export const ORGANIZATION_REPO    = 'ORGANIZATION_REPO';
+export const ROLE_REPO            = 'ROLE_REPO';
+export const USER_REPO            = 'USER_REPO';
+export const USER_ROLE_REPO       = 'USER_ROLE_REPO';
+export const STORE_REPO           = 'STORE_REPO';
+export const CATEGORY_REPO        = 'CATEGORY_REPO';
+export const PRODUCT_REPO         = 'PRODUCT_REPO';
+export const SUPPLIER_REPO        = 'SUPPLIER_REPO';
+export const INVENTORY_REPO       = 'INVENTORY_REPO';
+export const STOCK_MOVEMENT_REPO  = 'STOCK_MOVEMENT_REPO';
+export const PURCHASE_ORDER_REPO  = 'PURCHASE_ORDER_REPO';
+export const PURCHASE_ITEM_REPO   = 'PURCHASE_ITEM_REPO';
+export const ACTIVITY_LOG_REPO    = 'ACTIVITY_LOG_REPO';

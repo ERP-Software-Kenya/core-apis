@@ -1,0 +1,90 @@
+import { Mapper } from '@automapper/core';
+import { InjectMapper } from '@automapper/nestjs';
+import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Post, Put, Query } from '@nestjs/common';
+import { ApiBearerAuth, ApiCreatedResponse, ApiOkResponse, ApiOperation, ApiParam, ApiTags } from '@nestjs/swagger';
+import { InjectPinoLogger, PinoLogger } from 'nestjs-pino';
+import { CqrsMediator } from '../../../common';
+import { IPageable } from '../../../common';
+import { CreateCategoryCommand, DeleteCategoryCommand, UpdateCategoryCommand } from './commands';
+import { Category } from './domain';
+import { CreateCategoryRequest, SearchCategoriesRequest, ListCategoriesRequest, CategoryResponse, CategorysPagedResponse, UpdateCategoryRequest } from './models';
+import { GetCategoryQuery, ListCategoriesQuery, SearchCategoriesQuery } from './queries';
+
+@ApiBearerAuth()
+@ApiTags('Categories')
+@Controller({ path: 'categories', version: '1' })
+export class CategoriesController {
+  constructor(
+    protected readonly mediator: CqrsMediator,
+    @InjectMapper() protected readonly mapper: Mapper,
+    @InjectPinoLogger(CategoriesController.name) protected readonly logger: PinoLogger,
+  ) {}
+
+  @ApiOperation({ summary: 'Search categories (paginated)' })
+  @ApiOkResponse({ type: CategorysPagedResponse })
+  @HttpCode(HttpStatus.OK)
+  @Get()
+  public async search(@Query() filter?: SearchCategoriesRequest): Promise<CategorysPagedResponse> {
+    const query = this.mapper.map(filter, SearchCategoriesRequest, SearchCategoriesQuery);
+    const result = await this.mediator.execute<SearchCategoriesQuery, IPageable<Category>>(query);
+    return {
+      ...result,
+      items: this.mapper.mapArray(result.items, Category, CategoryResponse),
+    };
+  }
+
+  @ApiOperation({ summary: 'List all categories' })
+  @ApiOkResponse({ type: [CategoryResponse] })
+  @HttpCode(HttpStatus.OK)
+  @Get('list')
+  public async list(@Query() filter?: ListCategoriesRequest): Promise<CategoryResponse[]> {
+    const query = this.mapper.map(filter, ListCategoriesRequest, ListCategoriesQuery);
+    const result = await this.mediator.execute<ListCategoriesQuery, Category[]>(query);
+    return this.mapper.mapArray(result, Category, CategoryResponse);
+  }
+
+  @ApiOperation({ summary: 'Get category by ID' })
+  @ApiOkResponse({ type: CategoryResponse })
+  @ApiParam({ name: 'id', description: 'Category UUID' })
+  @HttpCode(HttpStatus.OK)
+  @Get(':id')
+  public async getById(@Param('id') id: string): Promise<CategoryResponse> {
+    const query = new GetCategoryQuery();
+    query.id = id;
+    const result = await this.mediator.execute<GetCategoryQuery, Category>(query);
+    return this.mapper.map(result, Category, CategoryResponse);
+  }
+
+  @ApiOperation({ summary: 'Create a new category' })
+  @ApiCreatedResponse({ type: CategoryResponse })
+  @HttpCode(HttpStatus.CREATED)
+  @Post()
+  public async create(@Body() body: CreateCategoryRequest): Promise<CategoryResponse> {
+    const command = this.mapper.map(body, CreateCategoryRequest, CreateCategoryCommand);
+    const result  = await this.mediator.execute<CreateCategoryCommand, Category>(command);
+    return this.mapper.map(result, Category, CategoryResponse);
+  }
+
+  @ApiOperation({ summary: 'Update a category' })
+  @ApiOkResponse({ type: CategoryResponse })
+  @ApiParam({ name: 'id', description: 'Category UUID' })
+  @HttpCode(HttpStatus.OK)
+  @Put(':id')
+  public async update(@Param('id') id: string, @Body() body: UpdateCategoryRequest): Promise<CategoryResponse> {
+    const command = this.mapper.map(body, UpdateCategoryRequest, UpdateCategoryCommand);
+    command.id    = id;
+    const result  = await this.mediator.execute<UpdateCategoryCommand, Category>(command);
+    return this.mapper.map(result, Category, CategoryResponse);
+  }
+
+  @ApiOperation({ summary: 'Delete a category' })
+  @ApiOkResponse({ type: Boolean })
+  @ApiParam({ name: 'id', description: 'Category UUID' })
+  @HttpCode(HttpStatus.OK)
+  @Delete(':id')
+  public async delete(@Param('id') id: string): Promise<boolean> {
+    const command = new DeleteCategoryCommand();
+    command.id    = id;
+    return this.mediator.execute<DeleteCategoryCommand, boolean>(command);
+  }
+}

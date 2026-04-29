@@ -1,0 +1,72 @@
+export enum EAttachmentMimeType {
+  // --- Images ---
+  ImageJpeg = "image/jpeg",
+  ImagePng = "image/png",
+  ImageWebp = "image/webp",
+  ImageGif = "image/gif",
+  ImageHeif = "image/heif",
+  ImageHeic = "image/heic",
+  ImageBmp = "image/bmp",
+  ImageTiff = "image/tiff",
+  ImageIcon = "image/x-icon",
+  ImageSvg = "image/svg+xml",
+  ImagePsd = "image/vnd.adobe.photoshop",
+
+  // --- Audio ---
+  AudioMp3 = "audio/mpeg",
+  AudioWav = "audio/wav",
+  AudioAac = "audio/aac",
+  AudioMp4 = "audio/mp4",
+  AudioOgg = "audio/ogg",
+
+  // --- Video ---
+  VideoMp4 = "video/mp4",
+  VideoMov = "video/quicktime",
+  VideoWebm = "video/webm",
+  VideoMkv = "video/x-matroska",
+  VideoAvi = "video/x-msvideo",
+  VideoAviAlt = "video/vnd.avi",
+  VideoM4v = "video/x-m4v",
+  VideoWmv = "video/x-ms-wmv",
+  Video3gpp = "video/3gpp",
+  Video3gpp2 = "video/3gpp2",
+
+  // --- Documents ---
+  ApplicationPdf = "application/pdf",
+  ApplicationDoc = "application/msword",
+  ApplicationDocx = "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+  ApplicationDocxTemplate = "application/vnd.openxmlformats-officedocument.wordprocessingml.template",
+  ApplicationXlsx = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+  ApplicationXls = "application/vnd.ms-excel",
+  ApplicationXlsxTemplate = "application/vnd.openxmlformats-officedocument.spreadsheetml.template",
+  ApplicationPpt = "application/vnd.ms-powerpoint",
+  ApplicationPptx = "application/vnd.openxmlformats-officedocument.presentationml.presentation",
+  ApplicationPptxSlideshow = "application/vnd.openxmlformats-officedocument.presentationml.slideshow",
+  ApplicationZip = "application/zip",
+  ApplicationRar = "application/vnd.rar",
+  ApplicationGzip = "application/gzip",
+  Application7z = "application/x-7z-compressed",
+  ApplicationTar = "application/x-tar",
+  ApplicationXCFB = "application/x-cfb",
+  ApplicationRtf = "application/rtf",
+  ApplicationPostscript = "application/postscript",
+  ApplicationInDesign = "application/x-indesign",
+  ApplicationEpub = "application/epub+zip",
+  ApplicationWordPerfect = "application/wordperfect",
+  ApplicationJavaArchive = "application/java-archive",
+  ApplicationAndroidPackage = "application/vnd.android.package-archive",
+  ApplicationIso = "application/x-iso9660-image",
+  ApplicationOctetStream = "application/octet-stream",
+  ApplicationSqlite = "application/vnd.sqlite3",
+  ApplicationAccess = "application/x-msaccess",
+  ApplicationMobi = "application/x-mobipocket-ebook",
+  ApplicationAmazonEbook = "application/vnd.amazon.ebook",
+
+  // --- Apple iWork formats ---
+  ApplicationIworkNumbers = "application/x-iwork-numbers-sffnumbers",
+  ApplicationIworkPages = "application/x-iwork-pages-sffpages",
+  ApplicationIworkKeynote = "application/x-iwork-keynote-sffkey",
+
+  // --- text file formats ---
+  TextCsv = "text/csv",
+}

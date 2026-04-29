@@ -1,0 +1,90 @@
+import { Mapper } from '@automapper/core';
+import { InjectMapper } from '@automapper/nestjs';
+import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Post, Put, Query } from '@nestjs/common';
+import { ApiBearerAuth, ApiCreatedResponse, ApiOkResponse, ApiOperation, ApiParam, ApiTags } from '@nestjs/swagger';
+import { InjectPinoLogger, PinoLogger } from 'nestjs-pino';
+import { CqrsMediator } from '../../../common';
+import { IPageable } from '../../../common';
+import { CreateSupplierCommand, DeleteSupplierCommand, UpdateSupplierCommand } from './commands';
+import { Supplier } from './domain';
+import { CreateSupplierRequest, SearchSuppliersRequest, ListSuppliersRequest, SupplierResponse, SuppliersPagedResponse, UpdateSupplierRequest } from './models';
+import { GetSupplierQuery, ListSuppliersQuery, SearchSuppliersQuery } from './queries';
+
+@ApiBearerAuth()
+@ApiTags('Suppliers')
+@Controller({ path: 'suppliers', version: '1' })
+export class SuppliersController {
+  constructor(
+    protected readonly mediator: CqrsMediator,
+    @InjectMapper() protected readonly mapper: Mapper,
+    @InjectPinoLogger(SuppliersController.name) protected readonly logger: PinoLogger,
+  ) {}
+
+  @ApiOperation({ summary: 'Search suppliers (paginated)' })
+  @ApiOkResponse({ type: SuppliersPagedResponse })
+  @HttpCode(HttpStatus.OK)
+  @Get()
+  public async search(@Query() filter?: SearchSuppliersRequest): Promise<SuppliersPagedResponse> {
+    const query = this.mapper.map(filter, SearchSuppliersRequest, SearchSuppliersQuery);
+    const result = await this.mediator.execute<SearchSuppliersQuery, IPageable<Supplier>>(query);
+    return {
+      ...result,
+      items: this.mapper.mapArray(result.items, Supplier, SupplierResponse),
+    };
+  }
+
+  @ApiOperation({ summary: 'List all suppliers' })
+  @ApiOkResponse({ type: [SupplierResponse] })
+  @HttpCode(HttpStatus.OK)
+  @Get('list')
+  public async list(@Query() filter?: ListSuppliersRequest): Promise<SupplierResponse[]> {
+    const query = this.mapper.map(filter, ListSuppliersRequest, ListSuppliersQuery);
+    const result = await this.mediator.execute<ListSuppliersQuery, Supplier[]>(query);
+    return this.mapper.mapArray(result, Supplier, SupplierResponse);
+  }
+
+  @ApiOperation({ summary: 'Get supplier by ID' })
+  @ApiOkResponse({ type: SupplierResponse })
+  @ApiParam({ name: 'id', description: 'Supplier UUID' })
+  @HttpCode(HttpStatus.OK)
+  @Get(':id')
+  public async getById(@Param('id') id: string): Promise<SupplierResponse> {
+    const query = new GetSupplierQuery();
+    query.id = id;
+    const result = await this.mediator.execute<GetSupplierQuery, Supplier>(query);
+    return this.mapper.map(result, Supplier, SupplierResponse);
+  }
+
+  @ApiOperation({ summary: 'Create a new supplier' })
+  @ApiCreatedResponse({ type: SupplierResponse })
+  @HttpCode(HttpStatus.CREATED)
+  @Post()
+  public async create(@Body() body: CreateSupplierRequest): Promise<SupplierResponse> {
+    const command = this.mapper.map(body, CreateSupplierRequest, CreateSupplierCommand);
+    const result  = await this.mediator.execute<CreateSupplierCommand, Supplier>(command);
+    return this.mapper.map(result, Supplier, SupplierResponse);
+  }
+
+  @ApiOperation({ summary: 'Update a supplier' })
+  @ApiOkResponse({ type: SupplierResponse })
+  @ApiParam({ name: 'id', description: 'Supplier UUID' })
+  @HttpCode(HttpStatus.OK)
+  @Put(':id')
+  public async update(@Param('id') id: string, @Body() body: UpdateSupplierRequest): Promise<SupplierResponse> {
+    const command = this.mapper.map(body, UpdateSupplierRequest, UpdateSupplierCommand);
+    command.id    = id;
+    const result  = await this.mediator.execute<UpdateSupplierCommand, Supplier>(command);
+    return this.mapper.map(result, Supplier, SupplierResponse);
+  }
+
+  @ApiOperation({ summary: 'Delete a supplier' })
+  @ApiOkResponse({ type: Boolean })
+  @ApiParam({ name: 'id', description: 'Supplier UUID' })
+  @HttpCode(HttpStatus.OK)
+  @Delete(':id')
+  public async delete(@Param('id') id: string): Promise<boolean> {
+    const command = new DeleteSupplierCommand();
+    command.id    = id;
+    return this.mediator.execute<DeleteSupplierCommand, boolean>(command);
+  }
+}

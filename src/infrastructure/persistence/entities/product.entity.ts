@@ -1,0 +1,128 @@
+import { AutoMap } from '@automapper/classes';
+import {
+  Column,
+  CreateDateColumn,
+  DeleteDateColumn,
+  Entity,
+  JoinColumn,
+  ManyToOne,
+  OneToMany,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
+} from 'typeorm';
+import { CORE_SCHEMA, ECoreTableName } from './e-core-table-name';
+import { OrganizationEntity } from './organization.entity';
+import { CategoryEntity } from './category.entity';
+import { InventoryEntity } from './inventory.entity';
+import { PurchaseItemEntity } from './purchase-item.entity';
+
+const PK_NAME = 'PK_' + ECoreTableName.Products;
+
+export enum EProductUnit {
+  Piece  = 'piece',
+  Kg     = 'kg',
+  Gram   = 'gram',
+  Litre  = 'litre',
+  Ml     = 'ml',
+  Box    = 'box',
+  Pack   = 'pack',
+  Dozen  = 'dozen',
+}
+
+@Entity({ schema: CORE_SCHEMA, name: ECoreTableName.Products })
+export class ProductEntity {
+  @AutoMap()
+  @PrimaryGeneratedColumn('uuid', { primaryKeyConstraintName: PK_NAME })
+  public id: string;
+
+  @AutoMap()
+  @Column({ type: 'uuid' })
+  public organizationId: string;
+
+  @AutoMap()
+  @Column({ type: 'uuid', nullable: true })
+  public categoryId?: string;
+
+  @AutoMap()
+  @Column({ type: 'varchar', length: 255 })
+  public name: string;
+
+  @AutoMap()
+  @Column({ type: 'varchar', length: 100, nullable: true, unique: false })
+  public sku?: string;
+
+  @AutoMap()
+  @Column({ type: 'varchar', length: 100, nullable: true })
+  public barcode?: string;
+
+  @AutoMap()
+  @Column({ type: 'text', nullable: true })
+  public description?: string;
+
+  @AutoMap(() => String)
+  @Column({ type: 'enum', enum: EProductUnit, default: EProductUnit.Piece })
+  public unit: EProductUnit;
+
+  /** Cost price used for valuation */
+  @AutoMap()
+  @Column({ type: 'decimal', precision: 18, scale: 4, default: 0 })
+  public costPrice: number;
+
+  /** Selling price */
+  @AutoMap()
+  @Column({ type: 'decimal', precision: 18, scale: 4, default: 0 })
+  public sellingPrice: number;
+
+  /** Reorder point — triggers low-stock alert */
+  @AutoMap()
+  @Column({ type: 'integer', default: 0 })
+  public reorderPoint: number;
+
+  @AutoMap()
+  @Column({ type: 'varchar', length: 255, nullable: true })
+  public imageUrl?: string;
+
+  @AutoMap()
+  @Column({ type: 'boolean', default: true })
+  public isActive: boolean;
+
+  @AutoMap(() => Date)
+  @CreateDateColumn({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
+  public createdAt: Date;
+
+  @AutoMap(() => Date)
+  @UpdateDateColumn({ type: 'timestamp', nullable: true, onUpdate: 'CURRENT_TIMESTAMP' })
+  public updatedAt?: Date;
+
+  @AutoMap(() => Date)
+  @DeleteDateColumn({ type: 'timestamp', nullable: true })
+  public deletedAt?: Date;
+
+  // ─── Relations ──────────────────────────────────────────────────────────────
+
+  @AutoMap(() => OrganizationEntity)
+  @ManyToOne(() => OrganizationEntity)
+  @JoinColumn({
+    name: 'organization_id',
+    referencedColumnName: 'id',
+    foreignKeyConstraintName: `FK__${ECoreTableName.Products}__${ECoreTableName.Organizations}`,
+  })
+  public organization: OrganizationEntity;
+
+  @AutoMap(() => CategoryEntity)
+  @ManyToOne(() => CategoryEntity, (cat) => cat.products, { nullable: true })
+  @JoinColumn({
+    name: 'category_id',
+    referencedColumnName: 'id',
+    foreignKeyConstraintName: `FK__${ECoreTableName.Products}__${ECoreTableName.Categories}`,
+  })
+  public category?: CategoryEntity;
+
+  @AutoMap(() => [InventoryEntity])
+  @OneToMany(() => InventoryEntity, (inv) => inv.product)
+  public inventory?: InventoryEntity[];
+
+  @AutoMap(() => [PurchaseItemEntity])
+  @OneToMany(() => PurchaseItemEntity, (pi) => pi.product)
+  public purchaseItems?: PurchaseItemEntity[];
+}
