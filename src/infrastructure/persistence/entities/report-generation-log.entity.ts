@@ -1,0 +1,55 @@
+import { AutoMap } from '@automapper/classes';
+import {
+  Column,
+  CreateDateColumn,
+  Entity,
+  JoinColumn,
+  ManyToOne,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
+import { CORE_SCHEMA, ECoreTableName } from './e-core-table-name';
+import { OrganizationEntity } from './organization.entity';
+
+const PK_NAME = 'PK_' + ECoreTableName.ReportGenerationLogs;
+
+@Entity({ schema: CORE_SCHEMA, name: ECoreTableName.ReportGenerationLogs })
+export class ReportGenerationLogEntity {
+  @AutoMap()
+  @PrimaryGeneratedColumn('uuid', { primaryKeyConstraintName: PK_NAME })
+  public id: string;
+
+  @AutoMap()
+  @Column({ name: 'org_id', type: 'uuid' })
+  public organizationId: string;
+
+  @AutoMap()
+  @Column({ name: 'report_type', type: 'varchar', length: 100 })
+  public reportType: string;
+
+  @AutoMap()
+  @Column({ type: 'varchar', length: 50, default: 'pending' })
+  public status: string;
+
+  @AutoMap()
+  @Column({ name: 'file_url', type: 'varchar', length: 255, nullable: true })
+  public fileUrl?: string;
+
+  @AutoMap()
+  @Column({ name: 'error_message', type: 'text', nullable: true })
+  public errorMessage?: string;
+
+  @AutoMap(() => Date)
+  @CreateDateColumn({ name: 'created_at', type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
+  public createdAt: Date;
+
+  // ─── Relations ──────────────────────────────────────────────────────────────
+
+  @AutoMap(() => OrganizationEntity)
+  @ManyToOne(() => OrganizationEntity)
+  @JoinColumn({
+    name: 'org_id',
+    referencedColumnName: 'id',
+    foreignKeyConstraintName: `FK__${ECoreTableName.ReportGenerationLogs}__${ECoreTableName.Organizations}`,
+  })
+  public organization: OrganizationEntity;
+}

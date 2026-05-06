@@ -9,6 +9,23 @@ import { ProductsModule } from './modules/products';
 import { SuppliersModule } from './modules/suppliers';
 import { InventoryModule } from './modules/inventory';
 import { PurchaseOrdersModule } from './modules/purchase-orders';
+import { CustomersModule } from './modules/customers';
+import { OrdersModule } from './modules/orders';
+import { InvoicesModule } from './modules/invoices';
+import { StockTransfersModule } from './modules/stock-transfers';
+import { ExpensesModule } from './modules/expenses';
+import { PlatformConfigurationsModule } from './modules/platform-configurations';
+import { UsersModule } from './modules/users';
+import { RolesModule } from './modules/roles';
+import { UserRolesModule } from './modules/user-roles';
+import { StockMovementsModule } from './modules/stock-movements';
+import { PurchaseItemsModule } from './modules/purchase-items';
+import { ActivityLogsModule } from './modules/activity-logs';
+import { BillsModule } from './modules/bills';
+import { PaymentTransactionsModule } from './modules/payment-transactions';
+import { ItemReturnsModule } from './modules/item-returns';
+import { NotificationsModule } from './modules/notifications';
+import { ReportGenerationLogsModule } from './modules/report-generation-logs';
 
 import { CqrsMediator, CommonModule } from '../common';
 
@@ -28,6 +45,23 @@ export class ApplicationModule {
         SuppliersModule,
         InventoryModule,
         PurchaseOrdersModule,
+        CustomersModule,
+        OrdersModule,
+        InvoicesModule,
+        StockTransfersModule,
+        ExpensesModule,
+        PlatformConfigurationsModule,
+        UsersModule,
+        RolesModule,
+        UserRolesModule,
+        StockMovementsModule,
+        PurchaseItemsModule,
+        ActivityLogsModule,
+        BillsModule,
+        PaymentTransactionsModule,
+        ItemReturnsModule,
+        NotificationsModule,
+        ReportGenerationLogsModule,
         CommonModule,
       ],
       controllers: [],

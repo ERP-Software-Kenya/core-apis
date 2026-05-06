@@ -1,0 +1,90 @@
+import { Mapper } from '@automapper/core';
+import { InjectMapper } from '@automapper/nestjs';
+import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Post, Put, Query } from '@nestjs/common';
+import { ApiBearerAuth, ApiCreatedResponse, ApiOkResponse, ApiOperation, ApiParam, ApiTags } from '@nestjs/swagger';
+import { InjectPinoLogger, PinoLogger } from 'nestjs-pino';
+import { CqrsMediator } from '../../../common';
+import { IPageable } from '../../../common';
+import { CreatePaymentTransactionCommand, DeletePaymentTransactionCommand, UpdatePaymentTransactionCommand } from './commands';
+import { PaymentTransaction } from './domain';
+import { CreatePaymentTransactionRequest, SearchPaymentTransactionsRequest, ListPaymentTransactionsRequest, PaymentTransactionResponse, PaymentTransactionsPagedResponse, UpdatePaymentTransactionRequest } from './models';
+import { GetPaymentTransactionQuery, ListPaymentTransactionsQuery, SearchPaymentTransactionsQuery } from './queries';
+
+@ApiBearerAuth()
+@ApiTags('Payment Transactions')
+@Controller({ path: 'payment-transactions', version: '1' })
+export class PaymentTransactionsController {
+  constructor(
+    protected readonly mediator: CqrsMediator,
+    @InjectMapper() protected readonly mapper: Mapper,
+    @InjectPinoLogger(PaymentTransactionsController.name) protected readonly logger: PinoLogger,
+  ) {}
+
+  @ApiOperation({ summary: 'Search payment transactions (paginated)' })
+  @ApiOkResponse({ type: PaymentTransactionsPagedResponse })
+  @HttpCode(HttpStatus.OK)
+  @Get()
+  public async search(@Query() filter?: SearchPaymentTransactionsRequest): Promise<PaymentTransactionsPagedResponse> {
+    const query = this.mapper.map(filter, SearchPaymentTransactionsRequest, SearchPaymentTransactionsQuery);
+    const result = await this.mediator.execute<SearchPaymentTransactionsQuery, IPageable<PaymentTransaction>>(query);
+    return {
+      ...result,
+      items: this.mapper.mapArray(result.items, PaymentTransaction, PaymentTransactionResponse),
+    };
+  }
+
+  @ApiOperation({ summary: 'List all payment transactions' })
+  @ApiOkResponse({ type: [PaymentTransactionResponse] })
+  @HttpCode(HttpStatus.OK)
+  @Get('list')
+  public async list(@Query() filter?: ListPaymentTransactionsRequest): Promise<PaymentTransactionResponse[]> {
+    const query = this.mapper.map(filter, ListPaymentTransactionsRequest, ListPaymentTransactionsQuery);
+    const result = await this.mediator.execute<ListPaymentTransactionsQuery, PaymentTransaction[]>(query);
+    return this.mapper.mapArray(result, PaymentTransaction, PaymentTransactionResponse);
+  }
+
+  @ApiOperation({ summary: 'Get payment transaction by ID' })
+  @ApiOkResponse({ type: PaymentTransactionResponse })
+  @ApiParam({ name: 'id', description: 'Payment Transaction UUID' })
+  @HttpCode(HttpStatus.OK)
+  @Get(':id')
+  public async getById(@Param('id') id: string): Promise<PaymentTransactionResponse> {
+    const query = new GetPaymentTransactionQuery();
+    query.id = id;
+    const result = await this.mediator.execute<GetPaymentTransactionQuery, PaymentTransaction>(query);
+    return this.mapper.map(result, PaymentTransaction, PaymentTransactionResponse);
+  }
+
+  @ApiOperation({ summary: 'Create a new payment transaction' })
+  @ApiCreatedResponse({ type: PaymentTransactionResponse })
+  @HttpCode(HttpStatus.CREATED)
+  @Post()
+  public async create(@Body() body: CreatePaymentTransactionRequest): Promise<PaymentTransactionResponse> {
+    const command = this.mapper.map(body, CreatePaymentTransactionRequest, CreatePaymentTransactionCommand);
+    const result  = await this.mediator.execute<CreatePaymentTransactionCommand, PaymentTransaction>(command);
+    return this.mapper.map(result, PaymentTransaction, PaymentTransactionResponse);
+  }
+
+  @ApiOperation({ summary: 'Update a payment transaction' })
+  @ApiOkResponse({ type: PaymentTransactionResponse })
+  @ApiParam({ name: 'id', description: 'Payment Transaction UUID' })
+  @HttpCode(HttpStatus.OK)
+  @Put(':id')
+  public async update(@Param('id') id: string, @Body() body: UpdatePaymentTransactionRequest): Promise<PaymentTransactionResponse> {
+    const command = this.mapper.map(body, UpdatePaymentTransactionRequest, UpdatePaymentTransactionCommand);
+    command.id    = id;
+    const result  = await this.mediator.execute<UpdatePaymentTransactionCommand, PaymentTransaction>(command);
+    return this.mapper.map(result, PaymentTransaction, PaymentTransactionResponse);
+  }
+
+  @ApiOperation({ summary: 'Delete a payment transaction' })
+  @ApiOkResponse({ type: Boolean })
+  @ApiParam({ name: 'id', description: 'Payment Transaction UUID' })
+  @HttpCode(HttpStatus.OK)
+  @Delete(':id')
+  public async delete(@Param('id') id: string): Promise<boolean> {
+    const command = new DeletePaymentTransactionCommand();
+    command.id    = id;
+    return this.mediator.execute<DeletePaymentTransactionCommand, boolean>(command);
+  }
+}

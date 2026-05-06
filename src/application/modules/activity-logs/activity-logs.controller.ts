@@ -1,0 +1,43 @@
+import { Mapper } from '@automapper/core';
+import { InjectMapper } from '@automapper/nestjs';
+import { Body, Controller, Get, HttpCode, HttpStatus, Param, Post } from '@nestjs/common';
+import { ApiBearerAuth, ApiCreatedResponse, ApiOkResponse, ApiOperation, ApiParam, ApiTags } from '@nestjs/swagger';
+import { InjectPinoLogger, PinoLogger } from 'nestjs-pino';
+import { CqrsMediator } from '../../../common';
+import { CreateActivityLogCommand } from './commands';
+import { ActivityLog } from './domain';
+import { CreateActivityLogRequest, ActivityLogResponse } from './models';
+import { GetActivityLogQuery } from './queries';
+
+@ApiBearerAuth()
+@ApiTags('ActivityLogs')
+@Controller({ path: 'activity-logs', version: '1' })
+export class ActivityLogsController {
+  constructor(
+    protected readonly mediator: CqrsMediator,
+    @InjectMapper() protected readonly mapper: Mapper,
+    @InjectPinoLogger(ActivityLogsController.name) protected readonly logger: PinoLogger,
+  ) {}
+
+  @ApiOperation({ summary: 'Get activity log by ID' })
+  @ApiOkResponse({ type: ActivityLogResponse })
+  @ApiParam({ name: 'id', description: 'ActivityLog UUID' })
+  @HttpCode(HttpStatus.OK)
+  @Get(':id')
+  public async getById(@Param('id') id: string): Promise<ActivityLogResponse> {
+    const query = new GetActivityLogQuery();
+    query.id = id;
+    const result = await this.mediator.execute<GetActivityLogQuery, ActivityLog>(query);
+    return this.mapper.map(result, ActivityLog, ActivityLogResponse);
+  }
+
+  @ApiOperation({ summary: 'Create a new activity log' })
+  @ApiCreatedResponse({ type: ActivityLogResponse })
+  @HttpCode(HttpStatus.CREATED)
+  @Post()
+  public async create(@Body() body: CreateActivityLogRequest): Promise<ActivityLogResponse> {
+    const command = this.mapper.map(body, CreateActivityLogRequest, CreateActivityLogCommand);
+    const result  = await this.mediator.execute<CreateActivityLogCommand, ActivityLog>(command);
+    return this.mapper.map(result, ActivityLog, ActivityLogResponse);
+  }
+}
