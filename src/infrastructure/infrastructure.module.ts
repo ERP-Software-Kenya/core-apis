@@ -32,6 +32,7 @@ import {
   StockTransferRepo,
   UserRoleRepo,
   UserRepo,
+  VehicleRepo,
 } from './persistence';
 
 import {
@@ -59,6 +60,7 @@ import {
   SUPPLIER_REPO,
   USER_REPO,
   USER_ROLE_REPO,
+  VEHICLE_REPO,
 } from '../application/constants';
 
 @Module({})
@@ -110,6 +112,7 @@ export class InfrastructureModule {
         { provide: STOCK_TRANSFER_REPO, useClass: StockTransferRepo },
         { provide: USER_REPO, useClass: UserRepo },
         { provide: USER_ROLE_REPO, useClass: UserRoleRepo },
+        { provide: VEHICLE_REPO, useClass: VehicleRepo },
       ],
       exports: [
         EntityMapperProfile,
@@ -137,6 +140,7 @@ export class InfrastructureModule {
         STOCK_TRANSFER_REPO,
         USER_REPO,
         USER_ROLE_REPO,
+        VEHICLE_REPO,
       ],
     };
   }

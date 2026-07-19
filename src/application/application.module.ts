@@ -26,8 +26,13 @@ import { PaymentTransactionsModule } from './modules/payment-transactions';
 import { ItemReturnsModule } from './modules/item-returns';
 import { NotificationsModule } from './modules/notifications';
 import { ReportGenerationLogsModule } from './modules/report-generation-logs';
+import { VehiclesModule } from './modules/vehicles';
+import { AnalyticsModule } from './modules/analytics';
+import { DriversModule } from './modules/drivers';
+import { MaintenanceModule } from './modules/maintenance';
 
 import { CqrsMediator, CommonModule } from '../common';
+
 
 @Module({})
 export class ApplicationModule {
@@ -62,6 +67,10 @@ export class ApplicationModule {
         ItemReturnsModule,
         NotificationsModule,
         ReportGenerationLogsModule,
+        VehiclesModule,
+        AnalyticsModule,
+        DriversModule,
+        MaintenanceModule,
         CommonModule,
       ],
       controllers: [],

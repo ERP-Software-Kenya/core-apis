@@ -22,3 +22,4 @@ export * from './stock-movement.repo';
 export * from './stock-transfer.repo';
 export * from './user-role.repo';
 export * from './user.repo';
+export * from './vehicle.repo';
