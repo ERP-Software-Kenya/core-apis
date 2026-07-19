@@ -27,9 +27,9 @@
     "schema:drop": "npm run typeorm -- -d ./src/infrastructure/persistence/type-orm.config.ts schema:drop"
   },
   "dependencies": {
-    "@automapper/classes": "^8.8.1",
-    "@automapper/core": "^8.8.1",
-    "@automapper/nestjs": "^8.8.1",
+    "@automapper/core": "^9.0.2",
+"@automapper/classes": "^9.0.2",
+"@automapper/nestjs": "^9.0.2",
     "@aws-sdk/client-s3": "^3.1038.0",
     "@aws-sdk/cloudfront-signer": "^3.1036.0",
     "@aws-sdk/s3-request-presigner": "^3.1038.0",
