@@ -13,8 +13,7 @@ export class CreateTripHandler implements ICommandHandler<CreateTripCommand, Tri
 
   async execute(command: CreateTripCommand): Promise<Trip> {
     this.logger.log('Executing CreateTripCommand');
-    // Implementation following the organization example
-    // Note: Assuming command.request contains the data
-    return await this.tripRepo.createAsync(command as Trip);
+    return await this.tripRepo.createAsync(command as unknown as Trip);
   }
+
 }

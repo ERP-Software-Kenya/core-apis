@@ -23,3 +23,6 @@ export * from './stock-transfer.repo';
 export * from './user-role.repo';
 export * from './user.repo';
 export * from './vehicle.repo';
+export * from './fuel-transaction.repo';
+export * from './maintenance.repo';
+export * from './vehicle-expense.repo';

@@ -18,7 +18,7 @@ export class ListTripsHandler implements IQueryHandler<ListTripsQuery, Trip[]> {
 
   public async execute(query: ListTripsQuery): Promise<Trip[]> {
     this.logger.info(`Executing Query "${ListTripsQuery.name}"`);
-    const filter = this.filterNormalizer.normalize(query);
+    const filter = this.filterNormalizer.normalize(query as any);
     return this.repo.allAsync(filter as any);
   }
 }
