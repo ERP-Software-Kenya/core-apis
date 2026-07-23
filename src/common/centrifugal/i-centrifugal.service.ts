@@ -1,4 +1,5 @@
 import {
+  BatchPublishResult,
   CentrifugalTokenPayload,
   ChannelNamespace,
   DisconnectRequest,
@@ -28,6 +29,7 @@ export interface ICentrifugalService {
 
   // Publishing methods
   publish<TPayload = unknown>(channel: string, data: TPayload, options?: PublishOptions): Promise<PublishResponse>;
+  publishBatch<TPayload = unknown>(publications: Array<{ channel: string; data: TPayload; options?: PublishOptions }>): Promise<BatchPublishResult[]>;
 
   // Connection management
   subscribe(request: SubscribeRequest): Promise<SubscribeResponse>;
