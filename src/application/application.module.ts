@@ -2,6 +2,7 @@ import { DynamicModule, Module } from '@nestjs/common';
 import { CqrsModule } from '@nestjs/cqrs';
 import { TerminusModule } from '@nestjs/terminus';
 
+import { AuthModule } from './modules/auth';
 import { OrganizationsModule } from './modules/organizations';
 import { StoresModule } from './modules/stores';
 import { CategoriesModule } from './modules/categories';
@@ -38,6 +39,7 @@ export class ApplicationModule {
       imports: [
         CqrsModule,
         TerminusModule,
+        AuthModule,
         OrganizationsModule,
         StoresModule,
         CategoriesModule,

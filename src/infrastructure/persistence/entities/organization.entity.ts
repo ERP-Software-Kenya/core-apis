@@ -45,6 +45,10 @@ export class OrganizationEntity {
   public country?: string;
 
   @AutoMap()
+  @Column({ type: 'varchar', length: 255, unique: true, nullable: true })
+  public clerkOrgId?: string;
+
+  @AutoMap()
   @Column({ type: 'varchar', length: 255, nullable: true })
   public logoUrl?: string;
 

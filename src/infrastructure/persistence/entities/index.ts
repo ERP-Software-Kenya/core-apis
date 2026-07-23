@@ -36,6 +36,7 @@ import { PermissionEntity } from './permission.entity';
 import { RolePermissionEntity } from './role-permission.entity';
 import { PlatformEntity } from './platform.entity';
 import { PlatformConfigurationEntity } from './platform-configuration.entity';
+import { OrgMemberEntity } from './org-member.entity';
 
 export * from './activity-log.entity';
 export * from './category.entity';
@@ -76,6 +77,7 @@ export * from './permission.entity';
 export * from './role-permission.entity';
 export * from './platform.entity';
 export * from './platform-configuration.entity';
+export * from './org-member.entity';
 
 export default [
   ActivityLogEntity,
@@ -116,4 +118,5 @@ export default [
   RolePermissionEntity,
   PlatformEntity,
   PlatformConfigurationEntity,
+  OrgMemberEntity,
 ];
