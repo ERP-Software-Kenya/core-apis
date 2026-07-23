@@ -81,3 +81,9 @@ export interface PresenceStatsResponse extends BaseResponse {
     num_users: number;
   };
 }
+
+export interface BatchPublishResult {
+  channel: string;
+  result?: PublishResponse;
+  error?: unknown;
+}
