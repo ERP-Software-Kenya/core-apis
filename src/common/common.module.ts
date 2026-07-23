@@ -25,26 +25,26 @@ import { isNilOrEmpty } from './utils';
     //     );
     //   },
     // },
-    // {
-    //   provide: CentrifugalServiceOptions,
-    //   useFactory: (config: ConfigService) => {
-    //     return new CentrifugalServiceOptions(
-    //       config.get('CENTRIFUGAL_SECRET_KEY', ''),
-    //       config.get('CENTRIFUGAL_API_KEY', ''),
-    //       config.get('CENTRIFUGAL_API_URL', ''),
-    //     );
-    //   },
-    //   inject: [ConfigService],
-    // },
+    {
+      provide: CentrifugalServiceOptions,
+      useFactory: (config: ConfigService) => {
+        return new CentrifugalServiceOptions(
+          config.get('CENTRIFUGAL_SECRET_KEY', ''),
+          config.get('CENTRIFUGAL_API_KEY', ''),
+          config.get('CENTRIFUGAL_API_URL', ''),
+        );
+      },
+      inject: [ConfigService],
+    },
     // RedisService,
     FileParserService,
-    // CentrifugalService,
+    CentrifugalService,
     JwtService,
   ],
   exports: [
     // RedisService,
     // FileParserService,
-    // CentrifugalService,
+    CentrifugalService,
   ],
 })
 export class CommonModule {}
