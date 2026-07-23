@@ -1,0 +1,6 @@
+Tests authored to gate code MUST pass deterministically. Run any newly-authored test twice back-to-back; if the second run differs from the first, the test is flaky — fix it before claiming PASS, do not ship.
+A test that passes once on the author's machine and fails on the next contributor's pre-merge is worse than no test: it generates a false-green commit that lands on main and blocks the next PR's CI.
+For predicates whose observation depends on a tick boundary (post-mount remeasure, post-effect flush, microtask resolution), prefer `setTimeout(0)` over `requestAnimationFrame` in production code. jsdom polyfills rAF as setTimeout but its scheduling under Jest's standard timers is non-deterministic; jsdom DOES fire setTimeout(0) deterministically under `await waitFor(...)`. Browser semantics are equivalent for the post-paint use case.
+If rAF is required by a real browser-only constraint, the test MUST explicitly flush — `await act(async () => { jest.runOnlyPendingTimers(); })` or equivalent — and use fake timers, not real ones.
+Tests asserting microtask ordering MUST `await` the relevant promise explicitly, not rely on `await waitFor` to catch a microtask chain that hasn't been flushed.
+Recorded failure mode: an rAF-dependent test passed under one runner but failed pre-merge under jsdom; switching to `setTimeout(0)` made it deterministic.

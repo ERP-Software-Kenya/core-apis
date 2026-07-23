@@ -1,5 +1,6 @@
 import { ICoreApiConfig } from './i-core-api.config';
 import { LogLevel } from '@nestjs/common';
+export * from './i-clerk.options';
 
 export const configFactory = (): ICoreApiConfig => {
   const env = process.env.NODE_ENV || 'development';
@@ -40,6 +41,11 @@ export const configFactory = (): ICoreApiConfig => {
       database: process.env.DB_NAME || 'core_db',
       sslEnable: process.env.DB_SSL === 'true',
       sslCert: process.env.DB_SSL_CA,
+    },
+    clerk: {
+      secretKey: process.env.CLERK_SECRET_KEY || '',
+      jwksUrl: process.env.CLERK_JWKS_URL || '',
+      webhookSecret: process.env.CLERK_WEBHOOK_SECRET || '',
     },
   };
 };
