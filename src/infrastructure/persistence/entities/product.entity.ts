@@ -79,7 +79,7 @@ export class ProductEntity {
   public reorderPoint: number;
 
   @AutoMap()
-  @Column({ type: 'varchar', length: 255, nullable: true })
+  @Column({ type: 'text', nullable: true })
   public imageUrl?: string;
 
   @AutoMap()

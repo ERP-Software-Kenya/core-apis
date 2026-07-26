@@ -5,6 +5,7 @@ export * from "./file-system.storage";
 export * from "./i-file-storage";
 export * from "./i-file-url.resolver";
 export * from "./s3-file.storage";
+export * from "./r2-file.storage";
 export * from "./exceptions";
 export * from "./i-worm-file-url.resolver";
 export * from "./i-worm-file.storage";
