@@ -4,6 +4,7 @@ import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 export class ProductResponse {
   @ApiProperty() @AutoMap() public id: string;
   @ApiPropertyOptional() @AutoMap() public name?: string;
+  @ApiPropertyOptional() @AutoMap() public imageUrl?: string;
 }
 
 export class ProductsPagedResponse {
