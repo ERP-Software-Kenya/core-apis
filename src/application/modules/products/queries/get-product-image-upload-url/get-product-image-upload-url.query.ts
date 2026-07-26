@@ -1,5 +1,5 @@
 import { QueryBase } from '../../../../../common';
-import { EAttachmentMimeType } from '../../../../../common/types';
+import { EAttachmentMimeType } from '../../../../../common';
 
 export class GetProductImageUploadUrlQuery extends QueryBase {
   public productId: string;

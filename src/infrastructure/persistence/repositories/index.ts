@@ -23,3 +23,5 @@ export * from './stock-transfer.repo';
 export * from './user-role.repo';
 export * from './user.repo';
 export * from './org-member.repo';
+export * from './product-image.repo';
+export * from './product-supplier.repo';

@@ -33,3 +33,5 @@ export const USER_ADDRESS_REPO            = 'USER_ADDRESS_REPO';
 export const PERMISSION_REPO              = 'PERMISSION_REPO';
 export const ROLE_PERMISSION_REPO         = 'ROLE_PERMISSION_REPO';
 export const STOCK_ENTRY_REPO             = 'STOCK_ENTRY_REPO';
+export const PRODUCT_IMAGE_REPO           = 'PRODUCT_IMAGE_REPO';
+export const PRODUCT_SUPPLIER_REPO        = 'PRODUCT_SUPPLIER_REPO';

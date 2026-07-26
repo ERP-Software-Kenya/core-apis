@@ -1,18 +1,21 @@
 import { Mapper } from '@automapper/core';
 import { InjectMapper } from '@automapper/nestjs';
-import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Post, Put, Query, UploadedFile, UseInterceptors } from '@nestjs/common';
+import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Post, Put, Query, UploadedFile, UseGuards, UseInterceptors } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { ApiBearerAuth, ApiBody, ApiConsumes, ApiCreatedResponse, ApiOkResponse, ApiOperation, ApiParam, ApiTags } from '@nestjs/swagger';
 import { InjectPinoLogger, PinoLogger } from 'nestjs-pino';
-import { CqrsMediator, IPageable } from '../../../common';
-import { CreateProductCommand, DeleteProductCommand, UpdateProductCommand, UploadProductImageCommand } from './commands';
+import { ClerkAuthGuard, CqrsMediator, CurrentUser, IPageable, Roles, RolesGuard, AuthenticatedUser } from '../../../common';
+import { ERole } from '../../../infrastructure';
+import { AddProductImageCommand, CreateProductCommand, DeleteProductCommand, UpdateProductCommand } from './commands';
 import { Product } from './domain';
-import { CreateProductRequest, GetProductImageUploadUrlRequest, ListProductsRequest, ProductImageUploadUrlResponse, ProductResponse, ProductsPagedResponse, SearchProductsRequest, UpdateProductRequest } from './models';
-import { GetProductQuery, GetProductImageUploadUrlQuery, ListProductsQuery, SearchProductsQuery } from './queries';
+import { CreateProductRequest, GetProductImageUploadUrlRequest, ListProductsRequest, ProductImageResponse, ProductImageUploadUrlResponse, ProductResponse, ProductsPagedResponse, SearchProductsRequest, UpdateProductRequest } from './models';
+import { GetProductQuery, GetProductImageUploadUrlQuery, ListProductImagesQuery, ListProductsQuery, SearchProductsQuery } from './queries';
 
 @ApiBearerAuth()
 @ApiTags('Products')
 @Controller({ path: 'products', version: '1' })
+@UseGuards(ClerkAuthGuard, RolesGuard)
+@Roles(ERole.OrgAdmin, ERole.SuperAdmin)
 export class ProductsController {
   constructor(
     protected readonly mediator: CqrsMediator,
@@ -59,9 +62,14 @@ export class ProductsController {
   @ApiCreatedResponse({ type: ProductResponse })
   @HttpCode(HttpStatus.CREATED)
   @Post()
-  public async create(@Body() body: CreateProductRequest): Promise<ProductResponse> {
+  public async create(
+    @CurrentUser() user: AuthenticatedUser,
+    @Body() body: CreateProductRequest,
+  ): Promise<ProductResponse> {
     const command = this.mapper.map(body, CreateProductRequest, CreateProductCommand);
-    const result  = await this.mediator.execute<CreateProductCommand, Product>(command);
+    command.organizationId = user.organizationId;
+    command.createdById    = user.dbUserId;
+    const result = await this.mediator.execute<CreateProductCommand, Product>(command);
     return this.mapper.map(result, Product, ProductResponse);
   }
 
@@ -88,24 +96,36 @@ export class ProductsController {
     return this.mediator.execute<DeleteProductCommand, boolean>(command);
   }
 
-  @ApiOperation({ summary: 'Upload product image (server-side)' })
+  @ApiOperation({ summary: 'Upload an image for a product (stored in B2; key saved to product_images)' })
   @ApiConsumes('multipart/form-data')
   @ApiBody({ schema: { type: 'object', properties: { file: { type: 'string', format: 'binary' } } } })
-  @ApiOkResponse({ type: ProductResponse })
+  @ApiCreatedResponse({ type: ProductImageResponse })
   @ApiParam({ name: 'id', description: 'Product UUID' })
-  @HttpCode(HttpStatus.OK)
+  @HttpCode(HttpStatus.CREATED)
   @UseInterceptors(FileInterceptor('file'))
-  @Post(':id/image')
-  public async uploadImage(
+  @Post(':id/images')
+  public async addImage(
+    @CurrentUser() user: AuthenticatedUser,
     @Param('id') id: string,
     @UploadedFile() file: Express.Multer.File,
-  ): Promise<ProductResponse> {
-    const command = new UploadProductImageCommand();
-    command.productId = id;
-    command.buffer    = file.buffer;
-    command.mimeType  = file.mimetype;
-    const result      = await this.mediator.execute<UploadProductImageCommand, Product>(command);
-    return this.mapper.map(result, Product, ProductResponse);
+  ): Promise<ProductImageResponse> {
+    const command = new AddProductImageCommand();
+    command.productId    = id;
+    command.buffer       = file.buffer;
+    command.mimeType     = file.mimetype;
+    command.uploadedById = user.dbUserId;
+    return this.mediator.execute<AddProductImageCommand, ProductImageResponse>(command);
+  }
+
+  @ApiOperation({ summary: 'List images for a product' })
+  @ApiOkResponse({ type: [ProductImageResponse] })
+  @ApiParam({ name: 'id', description: 'Product UUID' })
+  @HttpCode(HttpStatus.OK)
+  @Get(':id/images')
+  public async listImages(@Param('id') id: string): Promise<ProductImageResponse[]> {
+    const query = new ListProductImagesQuery();
+    query.productId = id;
+    return this.mediator.execute<ListProductImagesQuery, ProductImageResponse[]>(query);
   }
 
   @ApiOperation({ summary: 'Get presigned URL for direct client-side image upload to R2' })

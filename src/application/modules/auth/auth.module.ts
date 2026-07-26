@@ -6,7 +6,7 @@ import { AuthController } from './auth.controller';
 import { AuthCommandHandlers } from './commands';
 import { AuthQueryHandlers } from './queries';
 import { AuthProfile } from './mapper';
-import { ClerkJwtStrategy, RolesGuard, CLERK_STRATEGY } from '../../../common';
+import { ClerkJwtStrategy, ClerkService, RolesGuard, CLERK_STRATEGY } from '../../../common';
 import {
   UserEntity,
   UserRoleEntity,
@@ -31,6 +31,7 @@ import {
   controllers: [AuthController],
   providers: [
     ClerkJwtStrategy,
+    ClerkService,
     RolesGuard,
     AuthProfile,
     ...AuthCommandHandlers,

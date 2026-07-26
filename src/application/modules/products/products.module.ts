@@ -8,7 +8,7 @@ import { ProductProfile } from './mapper';
 import { ProductFeatureOptions } from './options';
 import { ProductFilterNormalizer } from './helpers';
 import { ProductImageStorage } from './storage';
-import { R2StorageOptions } from '../../../common/file-storage/options';
+import { R2StorageOptions } from '../../../common';
 
 @Module({
   imports:     [CqrsModule],
