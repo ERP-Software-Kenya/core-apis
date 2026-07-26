@@ -30,6 +30,8 @@ import { StockTransferItemEntity } from './stock-transfer-item.entity';
 import { StoreMemberEntity } from './store-member.entity';
 import { StoreProductConfigEntity } from './store-product-config.entity';
 import { ProductVariantEntity } from './product-variant.entity';
+import { ProductImageEntity } from './product-image.entity';
+import { ProductSupplierEntity } from './product-supplier.entity';
 import { UserProfileEntity } from './user-profile.entity';
 import { UserAddressEntity } from './user-address.entity';
 import { PermissionEntity } from './permission.entity';
@@ -71,6 +73,8 @@ export * from './stock-transfer-item.entity';
 export * from './store-member.entity';
 export * from './store-product-config.entity';
 export * from './product-variant.entity';
+export * from './product-image.entity';
+export * from './product-supplier.entity';
 export * from './user-profile.entity';
 export * from './user-address.entity';
 export * from './permission.entity';
@@ -112,6 +116,8 @@ export default [
   StoreMemberEntity,
   StoreProductConfigEntity,
   ProductVariantEntity,
+  ProductImageEntity,
+  ProductSupplierEntity,
   UserProfileEntity,
   UserAddressEntity,
   PermissionEntity,

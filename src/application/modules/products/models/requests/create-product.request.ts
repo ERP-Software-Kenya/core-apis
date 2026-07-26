@@ -1,7 +1,84 @@
 import { AutoMap } from '@automapper/classes';
-import { ApiPropertyOptional, ApiProperty } from '@nestjs/swagger';
-import { IsOptional, IsString } from 'class-validator';
+import { ApiPropertyOptional } from '@nestjs/swagger';
+import { IsEnum, IsNumber, IsOptional, IsString, IsUUID, Min } from 'class-validator';
+import { EProductUnit } from '../../../../../infrastructure';
 
 export class CreateProductRequest {
-  @ApiPropertyOptional() @IsOptional() @IsString() @AutoMap() public name?: string;
+  @ApiPropertyOptional()
+  @IsOptional()
+  @IsString()
+  @AutoMap()
+  public name?: string;
+
+  @ApiPropertyOptional()
+  @IsOptional()
+  @IsUUID()
+  @AutoMap()
+  public categoryId?: string;
+
+  @ApiPropertyOptional()
+  @IsOptional()
+  @IsString()
+  @AutoMap()
+  public sku?: string;
+
+  @ApiPropertyOptional()
+  @IsOptional()
+  @IsString()
+  @AutoMap()
+  public barcode?: string;
+
+  @ApiPropertyOptional()
+  @IsOptional()
+  @IsString()
+  @AutoMap()
+  public description?: string;
+
+  @ApiPropertyOptional({ enum: EProductUnit })
+  @IsOptional()
+  @IsEnum(EProductUnit)
+  @AutoMap(() => String)
+  public unit?: EProductUnit;
+
+  @ApiPropertyOptional()
+  @IsOptional()
+  @IsNumber()
+  @Min(0)
+  @AutoMap()
+  public costPrice?: number;
+
+  @ApiPropertyOptional()
+  @IsOptional()
+  @IsNumber()
+  @Min(0)
+  @AutoMap()
+  public retailPrice?: number;
+
+  @ApiPropertyOptional()
+  @IsOptional()
+  @IsNumber()
+  @Min(0)
+  @AutoMap()
+  public loyaltyPrice?: number;
+
+  @ApiPropertyOptional()
+  @IsOptional()
+  @IsNumber()
+  @Min(0)
+  @AutoMap()
+  public wholesalePrice?: number;
+
+  @ApiPropertyOptional()
+  @IsOptional()
+  @IsNumber()
+  @Min(0)
+  @AutoMap()
+  public transferPrice?: number;
+
+  @ApiPropertyOptional()
+  @IsOptional()
+  @IsNumber()
+  @Min(0)
+  @AutoMap()
+  public reorderPoint?: number;
 }

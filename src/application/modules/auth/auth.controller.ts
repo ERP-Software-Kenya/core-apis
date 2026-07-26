@@ -10,25 +10,29 @@ import { Mapper } from '@automapper/core';
 import { InjectMapper } from '@automapper/nestjs';
 import { InjectPinoLogger, PinoLogger } from 'nestjs-pino';
 import {
-  CqrsMediator,
+  AllowAnonymous,
+  AuthenticatedUser,
   ClerkAuthGuard,
+  CqrsMediator,
   CurrentUser,
   Roles,
   RolesGuard,
-  AuthenticatedUser,
 } from '../../../common';
-import { ERole } from '../../../infrastructure/persistence/entities';
+import { ERole } from '../../../infrastructure';
 import { SyncUserCommand } from './commands/sync-user';
 import { OnboardOrganizationCommand, OnboardOrganizationResult } from './commands/onboard-organization';
 import { InviteMemberCommand } from './commands/invite-member';
 import { GetMeQuery, MeResult } from './queries/get-me';
+import { GetTokenQuery } from './queries/get-token';
 import {
-  OnboardOrganizationRequest,
+  GetTokenRequest,
   InviteMemberRequest,
+  OnboardOrganizationRequest,
   MeResponse,
   SyncUserResponse,
   OnboardOrganizationResponse,
   InviteMemberResponse,
+  TokenResponse,
   OrganizationSummary,
   MembershipSummary,
 } from './models';
@@ -44,6 +48,22 @@ export class AuthController {
     @InjectMapper() protected readonly mapper: Mapper,
     @InjectPinoLogger(AuthController.name) protected readonly logger: PinoLogger,
   ) {}
+
+  // ── POST /auth/token (dev only) ─────────────────────────────────────────────
+  @ApiOperation({
+    summary: 'Get a Clerk JWT for a user (development only)',
+    description: 'Finds the most recent active Clerk session for the given user ID and returns a signed JWT.',
+  })
+  @ApiCreatedResponse({ type: TokenResponse })
+  @HttpCode(HttpStatus.CREATED)
+  @AllowAnonymous()
+  @Post('token')
+  public async getToken(@Body() body: GetTokenRequest): Promise<TokenResponse> {
+    const query   = new GetTokenQuery();
+    query.userId  = body.userId;
+    const token = await this.mediator.execute<GetTokenQuery, string>(query);
+    return { token };
+  }
 
   // ── POST /auth/sync ─────────────────────────────────────────────────────────
   @ApiOperation({
@@ -205,18 +225,3 @@ export class AuthController {
     };
   }
 }
-
-
-
-// 🚀 ~ AuthController ~ sync ~ currentUser: AuthenticatedUser {
-//   clerkUserId: 'user_3GsF8kdeckWhNhxashwsacJytC1',
-//   dbUserId: undefined,
-//   email: 'dumforgo1@gmail.com',
-//   firstName: 'Dummy',
-//   lastName: 'Dummy',
-//   imageUrl: 'https://img.clerk.com/eyJ0eXBlIjoicHJveHkiLCJzcmMiOiJodHRwczovL2ltYWdlcy5jbGVyay5kZXYvb2F1dGhfZ29vZ2xlL2ltZ18zR3NGOGxIYTZvTG9QbmN1OUdnbFpjYlBmTFgifQ',
-//   organizationId: undefined,
-//   clerkOrgId: 'org_3GsFABcpIWssY6cNGlEgRKLGjWA',
-//   clerkOrgRole: 'admin',
-//   roles: []
-// }`

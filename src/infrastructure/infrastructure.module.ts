@@ -33,6 +33,8 @@ import {
   UserRoleRepo,
   UserRepo,
   OrgMemberRepo,
+  ProductImageRepo,
+  ProductSupplierRepo,
 } from './persistence';
 
 import {
@@ -61,6 +63,8 @@ import {
   USER_REPO,
   USER_ROLE_REPO,
   ORG_MEMBER_REPO,
+  PRODUCT_IMAGE_REPO,
+  PRODUCT_SUPPLIER_REPO,
 } from '../application/constants';
 
 @Module({})
@@ -113,6 +117,8 @@ export class InfrastructureModule {
         { provide: USER_REPO, useClass: UserRepo },
         { provide: USER_ROLE_REPO, useClass: UserRoleRepo },
         { provide: ORG_MEMBER_REPO, useClass: OrgMemberRepo },
+        { provide: PRODUCT_IMAGE_REPO, useClass: ProductImageRepo },
+        { provide: PRODUCT_SUPPLIER_REPO, useClass: ProductSupplierRepo },
       ],
       exports: [
         EntityMapperProfile,
@@ -141,6 +147,8 @@ export class InfrastructureModule {
         USER_REPO,
         USER_ROLE_REPO,
         ORG_MEMBER_REPO,
+        PRODUCT_IMAGE_REPO,
+        PRODUCT_SUPPLIER_REPO,
       ],
     };
   }
