@@ -14,8 +14,6 @@ import { CORE_SCHEMA, ECoreTableName } from './e-core-table-name';
 import { OrganizationEntity } from './organization.entity';
 import { UserRoleEntity } from './user-role.entity';
 import { PurchaseOrderEntity } from './purchase-order.entity';
-import { StockMovementEntity } from './stock-movement.entity';
-import { InventoryEntity } from './inventory.entity';
 
 const PK_NAME = 'PK_' + ECoreTableName.Stores;
 
@@ -84,17 +82,9 @@ export class StoreEntity {
   })
   public organization: OrganizationEntity;
 
-  @AutoMap(() => [InventoryEntity])
-  @OneToMany(() => InventoryEntity, (inv) => inv.store)
-  public inventory?: InventoryEntity[];
-
   @AutoMap(() => [UserRoleEntity])
   @OneToMany(() => UserRoleEntity, (ur) => ur.store)
   public userRoles?: UserRoleEntity[];
-
-  @AutoMap(() => [StockMovementEntity])
-  @OneToMany(() => StockMovementEntity, (sm) => sm.store)
-  public stockMovements?: StockMovementEntity[];
 
   @AutoMap(() => [PurchaseOrderEntity])
   @OneToMany(() => PurchaseOrderEntity, (po) => po.store)

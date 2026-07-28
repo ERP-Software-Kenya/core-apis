@@ -1,0 +1,16 @@
+export enum EProductLogAction {
+  ProductCreated            = 'product_created',
+  ProductUpdated            = 'product_updated',
+  ProductDisabled           = 'product_disabled',
+  ProductEnabled            = 'product_enabled',
+  StockAdded                = 'stock_added',
+  StockRemoved              = 'stock_removed',
+  StockAdjusted             = 'stock_adjusted',
+  StockReserved             = 'stock_reserved',
+  StockReservationReleased  = 'stock_reservation_released',
+  StockPublished            = 'stock_published',
+  StockDamaged              = 'stock_damaged',
+  StockWrittenOff           = 'stock_written_off',
+  StockTransferredOut       = 'stock_transferred_out',
+  StockTransferredIn        = 'stock_transferred_in',
+}

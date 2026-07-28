@@ -1,4 +1,4 @@
 // Standard barrel file
+export { Inventory } from './domain';
 export * from './i-inventory.repo';
-export * from './inventory.controller';
 export * from './inventory.module';
