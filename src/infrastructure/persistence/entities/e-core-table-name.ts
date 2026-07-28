@@ -1,6 +1,7 @@
 export const CORE_SCHEMA = 'core';
 
 export enum ECoreTableName {
+  Locations             = 'locations',
   Organizations         = 'organizations',
   OrgAddresses          = 'org_addresses',
   OrgMembers            = 'org_members',
@@ -41,6 +42,7 @@ export enum ECoreTableName {
   ActivityLogs          = 'activity_logs',
   OrgActivityLogs       = 'org_activity_logs',
   ReportGenerationLogs  = 'report_generation_logs',
+  ProductLogs           = 'product_logs',
   Platforms             = 'platforms',
   PlatformConfigurations = 'platform_configurations',
 }

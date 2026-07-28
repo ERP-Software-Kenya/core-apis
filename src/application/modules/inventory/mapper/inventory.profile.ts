@@ -1,11 +1,11 @@
 import { createMap, Mapper } from '@automapper/core';
 import { AutomapperProfile, InjectMapper } from '@automapper/nestjs';
 import { Injectable } from '@nestjs/common';
-import { InventoryEntity } from '../../../../infrastructure/persistence/entities';
+import { InventoryEntity } from 'src/infrastructure/persistence/entities';
 import { Inventory } from '../domain';
-import { CreateInventoryRequest, InventoryResponse, SearchInventoryRequest, ListInventoryRequest, UpdateInventoryRequest } from '../models';
 import { CreateInventoryCommand, UpdateInventoryCommand } from '../commands';
 import { SearchInventoryQuery, ListInventoryQuery } from '../queries';
+import { CreateInventoryRequest, InventoryResponse, SearchInventoryRequest, ListInventoryRequest, UpdateInventoryRequest } from '../models';
 
 @Injectable()
 export class InventoryProfile extends AutomapperProfile {
@@ -15,6 +15,8 @@ export class InventoryProfile extends AutomapperProfile {
     return (mapper: Mapper) => {
       createMap(mapper, InventoryEntity, Inventory);
       createMap(mapper, Inventory, InventoryEntity);
+      createMap(mapper, CreateInventoryCommand, Inventory);
+      createMap(mapper, UpdateInventoryCommand, Inventory);
       createMap(mapper, CreateInventoryRequest, CreateInventoryCommand);
       createMap(mapper, UpdateInventoryRequest, UpdateInventoryCommand);
       createMap(mapper, SearchInventoryRequest, SearchInventoryQuery);

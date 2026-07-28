@@ -9,13 +9,14 @@ import { InventoryEntity } from '../entities';
 @Injectable()
 export class InventorySeed extends BaseSeed<InventoryEntity> {
   public get version(): number { return 1; }
-    public get seedingData(): Partial<InventoryEntity>[] {
+  public get seedingData(): Partial<InventoryEntity>[] {
     return [
       {
-        storeId: '00000000-0000-4000-8000-000000000002',
-        productId: '00000000-0000-4000-8000-000000000005',
+        organizationId: '00000000-0000-4000-8000-000000000001',
+        locationId:     '00000000-0000-4000-8000-000000000002',
+        productId:      '00000000-0000-4000-8000-000000000005',
         quantityOnHand: 150,
-      }
+      },
     ];
   }
 
@@ -27,8 +28,8 @@ export class InventorySeed extends BaseSeed<InventoryEntity> {
     super(dataSource, repo, logger);
   }
 
-  protected equalityCheck(x: Partial<InventoryEntity>, y: Partial<InventoryEntity>): boolean {
-    return x.storeId === y.storeId && x.productId === y.productId;
+  protected equalityCheck(xx: Partial<InventoryEntity>, yy: Partial<InventoryEntity>): boolean {
+    return xx.locationId === yy.locationId && xx.productId === yy.productId;
   }
 
   protected createFilter(): FindOptionsWhere<InventoryEntity> { return {}; }
