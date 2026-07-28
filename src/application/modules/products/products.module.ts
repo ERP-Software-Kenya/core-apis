@@ -1,6 +1,7 @@
 import { Module } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { CqrsModule } from '@nestjs/cqrs';
+import { SharedModule } from 'src/application/shared';
 import { ProductsController } from './products.controller';
 import { ProductCommandHandlers } from './commands';
 import { ProductQueryHandlers } from './queries';
@@ -11,7 +12,7 @@ import { ProductImageStorage } from './storage';
 import { R2StorageOptions } from '../../../common';
 
 @Module({
-  imports:     [CqrsModule],
+  imports:     [CqrsModule, SharedModule],
   controllers: [ProductsController],
   providers:   [
     {

@@ -1,3 +1,5 @@
+export * from './location.repo';
+export * from './product-log.repo';
 export * from './category.repo';
 export * from './inventory.repo';
 export * from './organization.repo';

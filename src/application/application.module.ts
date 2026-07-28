@@ -27,6 +27,9 @@ import { PaymentTransactionsModule } from './modules/payment-transactions';
 import { ItemReturnsModule } from './modules/item-returns';
 import { NotificationsModule } from './modules/notifications';
 import { ReportGenerationLogsModule } from './modules/report-generation-logs';
+import { LocationsModule } from './modules/locations';
+import { ProductLogsModule } from './modules/product-logs';
+import { SharedModule } from './shared';
 
 import { CqrsMediator, CommonModule } from '../common';
 
@@ -64,6 +67,9 @@ export class ApplicationModule {
         ItemReturnsModule,
         NotificationsModule,
         ReportGenerationLogsModule,
+        LocationsModule,
+        ProductLogsModule,
+        SharedModule,
         CommonModule,
       ],
       controllers: [],

@@ -1,4 +1,6 @@
 export const AUTH_SERVICE         = 'AUTH_SERVICE';
+export const LOCATION_REPO        = 'LOCATION_REPO';
+export const PRODUCT_LOG_REPO     = 'PRODUCT_LOG_REPO';
 export const ORG_MEMBER_REPO      = 'ORG_MEMBER_REPO';
 export const USER_SERVICE         = 'USER_SERVICE';
 export const ORGANIZATION_REPO    = 'ORGANIZATION_REPO';

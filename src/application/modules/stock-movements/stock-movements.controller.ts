@@ -1,17 +1,20 @@
 import { Mapper } from '@automapper/core';
 import { InjectMapper } from '@automapper/nestjs';
-import { Body, Controller, Get, HttpCode, HttpStatus, Param, Post } from '@nestjs/common';
+import { Body, Controller, Get, HttpCode, HttpStatus, Param, Post, UseGuards } from '@nestjs/common';
 import { ApiBearerAuth, ApiCreatedResponse, ApiOkResponse, ApiOperation, ApiParam, ApiTags } from '@nestjs/swagger';
 import { InjectPinoLogger, PinoLogger } from 'nestjs-pino';
-import { CqrsMediator } from '../../../common';
-import { CreateStockMovementCommand } from './commands';
+import { ClerkAuthGuard, CqrsMediator, CurrentUser, AuthenticatedUser, Roles, RolesGuard } from 'src/common';
+import { ERole } from 'src/infrastructure/persistence/entities/role.entity';
+import { AddStockCommand, AdjustStockCommand, AddUnpublishedStockCommand, DamageStockCommand, PublishStockCommand, ReleaseReservationCommand, RemoveStockCommand, ReserveStockCommand, WriteOffStockCommand } from './commands';
 import { StockMovement } from './domain';
-import { CreateStockMovementRequest, StockMovementResponse } from './models';
-import { GetStockMovementQuery } from './queries';
+import { AdjustStockRequest, PublishStockRequest, StockMovementResponse, StockOperationRequest } from './models';
+import { GetStockMovementQuery, ListMovementsByInventoryQuery } from './queries';
 
 @ApiBearerAuth()
-@ApiTags('StockMovements')
+@ApiTags('Stock Movements')
 @Controller({ path: 'stock-movements', version: '1' })
+@UseGuards(ClerkAuthGuard, RolesGuard)
+@Roles(ERole.OrgAdmin, ERole.SuperAdmin, ERole.StoreManager, ERole.StoreStaff)
 export class StockMovementsController {
   constructor(
     protected readonly mediator: CqrsMediator,
@@ -25,19 +28,156 @@ export class StockMovementsController {
   @HttpCode(HttpStatus.OK)
   @Get(':id')
   public async getById(@Param('id') id: string): Promise<StockMovementResponse> {
-    const query = new GetStockMovementQuery();
-    query.id = id;
+    const query  = new GetStockMovementQuery();
+    query.id     = id;
     const result = await this.mediator.execute<GetStockMovementQuery, StockMovement>(query);
     return this.mapper.map(result, StockMovement, StockMovementResponse);
   }
 
-  @ApiOperation({ summary: 'Create a new stock movement' })
-  @ApiCreatedResponse({ type: StockMovementResponse })
+  @ApiOperation({ summary: 'List stock movements for an inventory record' })
+  @ApiOkResponse({ type: [StockMovementResponse] })
+  @ApiParam({ name: 'inventoryId', description: 'Inventory UUID' })
+  @HttpCode(HttpStatus.OK)
+  @Get('by-inventory/:inventoryId')
+  public async listByInventory(@Param('inventoryId') inventoryId: string): Promise<StockMovementResponse[]> {
+    const query        = new ListMovementsByInventoryQuery();
+    query.inventoryId  = inventoryId;
+    const result = await this.mediator.execute<ListMovementsByInventoryQuery, StockMovement[]>(query);
+    return this.mapper.mapArray(result, StockMovement, StockMovementResponse);
+  }
+
+  @ApiOperation({ summary: 'Add published stock to an inventory record' })
+  @ApiCreatedResponse()
   @HttpCode(HttpStatus.CREATED)
-  @Post()
-  public async create(@Body() body: CreateStockMovementRequest): Promise<StockMovementResponse> {
-    const command = this.mapper.map(body, CreateStockMovementRequest, CreateStockMovementCommand);
-    const result  = await this.mediator.execute<CreateStockMovementCommand, StockMovement>(command);
-    return this.mapper.map(result, StockMovement, StockMovementResponse);
+  @Roles(ERole.OrgAdmin, ERole.SuperAdmin, ERole.StoreManager)
+  @Post('add')
+  public async addStock(
+    @CurrentUser() user: AuthenticatedUser,
+    @Body() body: StockOperationRequest,
+  ): Promise<void> {
+    const command          = this.mapper.map(body, StockOperationRequest, AddStockCommand);
+    command.organizationId = user.organizationId;
+    command.performedById  = user.dbUserId;
+    await this.mediator.execute<AddStockCommand, void>(command);
+  }
+
+  @ApiOperation({ summary: 'Remove stock from an inventory record' })
+  @ApiCreatedResponse()
+  @HttpCode(HttpStatus.CREATED)
+  @Roles(ERole.OrgAdmin, ERole.SuperAdmin, ERole.StoreManager)
+  @Post('remove')
+  public async removeStock(
+    @CurrentUser() user: AuthenticatedUser,
+    @Body() body: StockOperationRequest,
+  ): Promise<void> {
+    const command          = this.mapper.map(body, StockOperationRequest, RemoveStockCommand);
+    command.organizationId = user.organizationId;
+    command.performedById  = user.dbUserId;
+    await this.mediator.execute<RemoveStockCommand, void>(command);
+  }
+
+  @ApiOperation({ summary: 'Adjust stock to an absolute quantity' })
+  @ApiCreatedResponse()
+  @HttpCode(HttpStatus.CREATED)
+  @Roles(ERole.OrgAdmin, ERole.SuperAdmin, ERole.StoreManager)
+  @Post('adjust')
+  public async adjustStock(
+    @CurrentUser() user: AuthenticatedUser,
+    @Body() body: AdjustStockRequest,
+  ): Promise<void> {
+    const command          = this.mapper.map(body, AdjustStockRequest, AdjustStockCommand);
+    command.organizationId = user.organizationId;
+    command.performedById  = user.dbUserId;
+    await this.mediator.execute<AdjustStockCommand, void>(command);
+  }
+
+  @ApiOperation({ summary: 'Reserve stock for a pending order' })
+  @ApiCreatedResponse()
+  @HttpCode(HttpStatus.CREATED)
+  @Roles(ERole.OrgAdmin, ERole.SuperAdmin, ERole.StoreManager)
+  @Post('reserve')
+  public async reserveStock(
+    @CurrentUser() user: AuthenticatedUser,
+    @Body() body: StockOperationRequest,
+  ): Promise<void> {
+    const command          = this.mapper.map(body, StockOperationRequest, ReserveStockCommand);
+    command.organizationId = user.organizationId;
+    command.performedById  = user.dbUserId;
+    await this.mediator.execute<ReserveStockCommand, void>(command);
+  }
+
+  @ApiOperation({ summary: 'Release a stock reservation' })
+  @ApiCreatedResponse()
+  @HttpCode(HttpStatus.CREATED)
+  @Roles(ERole.OrgAdmin, ERole.SuperAdmin, ERole.StoreManager)
+  @Post('release-reservation')
+  public async releaseReservation(
+    @CurrentUser() user: AuthenticatedUser,
+    @Body() body: StockOperationRequest,
+  ): Promise<void> {
+    const command          = this.mapper.map(body, StockOperationRequest, ReleaseReservationCommand);
+    command.organizationId = user.organizationId;
+    command.performedById  = user.dbUserId;
+    await this.mediator.execute<ReleaseReservationCommand, void>(command);
+  }
+
+  @ApiOperation({ summary: 'Add stock to the unpublished (quarantine) pool' })
+  @ApiCreatedResponse()
+  @HttpCode(HttpStatus.CREATED)
+  @Roles(ERole.OrgAdmin, ERole.SuperAdmin, ERole.StoreManager)
+  @Post('add-unpublished')
+  public async addUnpublishedStock(
+    @CurrentUser() user: AuthenticatedUser,
+    @Body() body: StockOperationRequest,
+  ): Promise<void> {
+    const command          = this.mapper.map(body, StockOperationRequest, AddUnpublishedStockCommand);
+    command.organizationId = user.organizationId;
+    command.performedById  = user.dbUserId;
+    await this.mediator.execute<AddUnpublishedStockCommand, void>(command);
+  }
+
+  @ApiOperation({ summary: 'Publish stock from unpublished pool to live inventory' })
+  @ApiCreatedResponse()
+  @HttpCode(HttpStatus.CREATED)
+  @Roles(ERole.OrgAdmin, ERole.SuperAdmin, ERole.StoreManager)
+  @Post('publish')
+  public async publishStock(
+    @CurrentUser() user: AuthenticatedUser,
+    @Body() body: PublishStockRequest,
+  ): Promise<void> {
+    const command          = this.mapper.map(body, PublishStockRequest, PublishStockCommand);
+    command.organizationId = user.organizationId;
+    command.performedById  = user.dbUserId;
+    await this.mediator.execute<PublishStockCommand, void>(command);
+  }
+
+  @ApiOperation({ summary: 'Mark stock as damaged' })
+  @ApiCreatedResponse()
+  @HttpCode(HttpStatus.CREATED)
+  @Roles(ERole.OrgAdmin, ERole.SuperAdmin, ERole.StoreManager)
+  @Post('damage')
+  public async damageStock(
+    @CurrentUser() user: AuthenticatedUser,
+    @Body() body: StockOperationRequest,
+  ): Promise<void> {
+    const command          = this.mapper.map(body, StockOperationRequest, DamageStockCommand);
+    command.organizationId = user.organizationId;
+    command.performedById  = user.dbUserId;
+    await this.mediator.execute<DamageStockCommand, void>(command);
+  }
+
+  @ApiOperation({ summary: 'Write off stock (shrinkage, expiry)' })
+  @ApiCreatedResponse()
+  @HttpCode(HttpStatus.CREATED)
+  @Roles(ERole.OrgAdmin, ERole.SuperAdmin, ERole.StoreManager)
+  @Post('write-off')
+  public async writeOffStock(
+    @CurrentUser() user: AuthenticatedUser,
+    @Body() body: StockOperationRequest,
+  ): Promise<void> {
+    const command          = this.mapper.map(body, StockOperationRequest, WriteOffStockCommand);
+    command.organizationId = user.organizationId;
+    command.performedById  = user.dbUserId;
+    await this.mediator.execute<WriteOffStockCommand, void>(command);
   }
 }

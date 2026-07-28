@@ -7,17 +7,18 @@ import {
   ManyToOne,
   OneToMany,
   PrimaryGeneratedColumn,
-  UpdateDateColumn,
   Unique,
+  UpdateDateColumn,
 } from 'typeorm';
 import { CORE_SCHEMA, ECoreTableName } from './e-core-table-name';
-import { StoreEntity } from './store.entity';
+import { LocationEntity } from './location.entity';
 import { ProductEntity } from './product.entity';
 import { StockMovementEntity } from './stock-movement.entity';
+import { OrganizationEntity } from './organization.entity';
 
 const PK_NAME = 'PK_' + ECoreTableName.Inventory;
 
-@Unique(`UQ__${ECoreTableName.Inventory}__store_product`, ['storeId', 'productId'])
+@Unique(`UQ__${ECoreTableName.Inventory}__org_location_product`, ['organizationId', 'locationId', 'productId'])
 @Entity({ schema: CORE_SCHEMA, name: ECoreTableName.Inventory })
 export class InventoryEntity {
   @AutoMap()
@@ -25,56 +26,79 @@ export class InventoryEntity {
   public id: string;
 
   @AutoMap()
-  @Column({ type: 'uuid' })
-  public storeId: string;
+  @Column({ name: 'organization_id', type: 'uuid' })
+  public organizationId: string;
 
   @AutoMap()
-  @Column({ type: 'uuid' })
+  @Column({ name: 'location_id', type: 'uuid' })
+  public locationId: string;
+
+  @AutoMap()
+  @Column({ name: 'product_id', type: 'uuid' })
   public productId: string;
 
-  /** Current on-hand quantity */
+  /** Published live stock — visible to all ERP operations */
   @AutoMap()
-  @Column({ type: 'decimal', precision: 18, scale: 4, default: 0 })
+  @Column({ name: 'quantity_on_hand', type: 'decimal', precision: 18, scale: 4, default: 0 })
   public quantityOnHand: number;
 
-  /** Reserved for pending orders — logical hold */
+  /** Holding/quarantine pool — invisible to ERP operations until published */
   @AutoMap()
-  @Column({ type: 'decimal', precision: 18, scale: 4, default: 0 })
+  @Column({ name: 'quantity_unpublished', type: 'decimal', precision: 18, scale: 4, default: 0 })
+  public quantityUnpublished: number;
+
+  /** Reserved for pending orders */
+  @AutoMap()
+  @Column({ name: 'quantity_reserved', type: 'decimal', precision: 18, scale: 4, default: 0 })
   public quantityReserved: number;
 
   /** Min quantity before reorder alert fires */
   @AutoMap()
-  @Column({ type: 'decimal', precision: 18, scale: 4, default: 0 })
+  @Column({ name: 'reorder_level', type: 'decimal', precision: 18, scale: 4, default: 0 })
   public reorderLevel: number;
 
-  /** Max stocking capacity for this store */
+  /** Max stocking capacity for this location */
   @AutoMap()
-  @Column({ type: 'decimal', precision: 18, scale: 4, nullable: true })
+  @Column({ name: 'max_stock', type: 'decimal', precision: 18, scale: 4, nullable: true })
   public maxStock?: number;
 
-  /** Physical location within the store (aisle/shelf/bin) */
+  /** Running weighted average unit cost */
   @AutoMap()
-  @Column({ type: 'varchar', length: 100, nullable: true })
-  public location?: string;
+  @Column({ name: 'average_cost', type: 'decimal', precision: 18, scale: 4, nullable: true })
+  public averageCost?: number;
+
+  /** Physical location within the store/warehouse (aisle/shelf/bin) */
+  @AutoMap()
+  @Column({ name: 'bin_location', type: 'varchar', length: 100, nullable: true })
+  public binLocation?: string;
 
   @AutoMap(() => Date)
-  @CreateDateColumn({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
+  @CreateDateColumn({ name: 'created_at', type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
   public createdAt: Date;
 
   @AutoMap(() => Date)
-  @UpdateDateColumn({ type: 'timestamp', nullable: true, onUpdate: 'CURRENT_TIMESTAMP' })
+  @UpdateDateColumn({ name: 'updated_at', type: 'timestamp', nullable: true, onUpdate: 'CURRENT_TIMESTAMP' })
   public updatedAt?: Date;
 
   // ─── Relations ──────────────────────────────────────────────────────────────
 
-  @AutoMap(() => StoreEntity)
-  @ManyToOne(() => StoreEntity, (store) => store.inventory)
+  @AutoMap(() => OrganizationEntity)
+  @ManyToOne(() => OrganizationEntity)
   @JoinColumn({
-    name: 'store_id',
+    name: 'organization_id',
     referencedColumnName: 'id',
-    foreignKeyConstraintName: `FK__${ECoreTableName.Inventory}__${ECoreTableName.Stores}`,
+    foreignKeyConstraintName: `FK__${ECoreTableName.Inventory}__${ECoreTableName.Organizations}`,
   })
-  public store: StoreEntity;
+  public organization: OrganizationEntity;
+
+  @AutoMap(() => LocationEntity)
+  @ManyToOne(() => LocationEntity, (loc) => loc.inventory)
+  @JoinColumn({
+    name: 'location_id',
+    referencedColumnName: 'id',
+    foreignKeyConstraintName: `FK__${ECoreTableName.Inventory}__${ECoreTableName.Locations}`,
+  })
+  public location: LocationEntity;
 
   @AutoMap(() => ProductEntity)
   @ManyToOne(() => ProductEntity, (product) => product.inventory)

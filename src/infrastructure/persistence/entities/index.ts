@@ -1,3 +1,5 @@
+import { LocationEntity } from './location.entity';
+import { ProductLogEntity } from './product-log.entity';
 import { ActivityLogEntity } from './activity-log.entity';
 import { CategoryEntity } from './category.entity';
 import { InventoryEntity } from './inventory.entity';
@@ -40,6 +42,8 @@ import { PlatformEntity } from './platform.entity';
 import { PlatformConfigurationEntity } from './platform-configuration.entity';
 import { OrgMemberEntity } from './org-member.entity';
 
+export * from './location.entity';
+export * from './product-log.entity';
 export * from './activity-log.entity';
 export * from './category.entity';
 export * from './e-core-table-name';
@@ -84,6 +88,8 @@ export * from './platform-configuration.entity';
 export * from './org-member.entity';
 
 export default [
+  LocationEntity,
+  ProductLogEntity,
   ActivityLogEntity,
   CategoryEntity,
   InventoryEntity,

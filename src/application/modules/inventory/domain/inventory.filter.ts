@@ -1,6 +1,7 @@
 import { AutoMap } from '@automapper/classes';
 
 export class InventoryFilter {
-  @AutoMap() public storeId?: string;
+  @AutoMap() public organizationId?: string;
+  @AutoMap() public locationId?: string;
   @AutoMap() public productId?: string;
 }

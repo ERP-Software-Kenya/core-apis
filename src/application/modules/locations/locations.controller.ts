@@ -1,0 +1,133 @@
+import { Mapper } from '@automapper/core';
+import { InjectMapper } from '@automapper/nestjs';
+import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Post, Put, Query, UploadedFile, UseGuards, UseInterceptors } from '@nestjs/common';
+import { FileInterceptor } from '@nestjs/platform-express';
+import { ApiBearerAuth, ApiBody, ApiConsumes, ApiCreatedResponse, ApiOkResponse, ApiOperation, ApiParam, ApiTags } from '@nestjs/swagger';
+import { InjectPinoLogger, PinoLogger } from 'nestjs-pino';
+import { ClerkAuthGuard, CqrsMediator, CurrentUser, AuthenticatedUser, IPageable, Roles, RolesGuard } from 'src/common';
+import { ERole } from 'src/infrastructure/persistence/entities/role.entity';
+import { CreateLocationCommand, DeleteLocationCommand, RemoveLocationImageCommand, UpdateLocationCommand, UploadLocationImageCommand } from './commands';
+import { Location } from './domain';
+import { CreateLocationRequest, ListLocationsRequest, LocationResponse, LocationsPagedResponse, SearchLocationsRequest, UpdateLocationRequest } from './models';
+import { GetLocationQuery, ListLocationsQuery, SearchLocationsQuery } from './queries';
+
+@ApiBearerAuth()
+@ApiTags('Locations')
+@Controller({ path: 'locations', version: '1' })
+@UseGuards(ClerkAuthGuard, RolesGuard)
+@Roles(ERole.OrgAdmin, ERole.SuperAdmin, ERole.StoreManager, ERole.StoreStaff)
+export class LocationsController {
+  constructor(
+    protected readonly mediator: CqrsMediator,
+    @InjectMapper() protected readonly mapper: Mapper,
+    @InjectPinoLogger(LocationsController.name) protected readonly logger: PinoLogger,
+  ) {}
+
+  @ApiOperation({ summary: 'Search locations (paginated)' })
+  @ApiOkResponse({ type: LocationsPagedResponse })
+  @HttpCode(HttpStatus.OK)
+  @Roles(ERole.OrgAdmin, ERole.SuperAdmin, ERole.StoreManager, ERole.StoreStaff)
+  @Get()
+  public async search(@Query() filter?: SearchLocationsRequest): Promise<LocationsPagedResponse> {
+    const query  = this.mapper.map(filter, SearchLocationsRequest, SearchLocationsQuery);
+    const result = await this.mediator.execute<SearchLocationsQuery, IPageable<Location>>(query);
+    return { ...result, items: this.mapper.mapArray(result.items, Location, LocationResponse) };
+  }
+
+  @ApiOperation({ summary: 'List all locations' })
+  @ApiOkResponse({ type: [LocationResponse] })
+  @HttpCode(HttpStatus.OK)
+  @Roles(ERole.OrgAdmin, ERole.SuperAdmin, ERole.StoreManager, ERole.StoreStaff)
+  @Get('list')
+  public async list(@Query() filter?: ListLocationsRequest): Promise<LocationResponse[]> {
+    const query  = this.mapper.map(filter, ListLocationsRequest, ListLocationsQuery);
+    const result = await this.mediator.execute<ListLocationsQuery, Location[]>(query);
+    return this.mapper.mapArray(result, Location, LocationResponse);
+  }
+
+  @ApiOperation({ summary: 'Get location by ID' })
+  @ApiOkResponse({ type: LocationResponse })
+  @ApiParam({ name: 'id', description: 'Location UUID' })
+  @HttpCode(HttpStatus.OK)
+  @Roles(ERole.OrgAdmin, ERole.SuperAdmin, ERole.StoreManager, ERole.StoreStaff)
+  @Get(':id')
+  public async getById(@Param('id') id: string): Promise<LocationResponse> {
+    const query  = new GetLocationQuery();
+    query.id     = id;
+    const result = await this.mediator.execute<GetLocationQuery, Location>(query);
+    return this.mapper.map(result, Location, LocationResponse);
+  }
+
+  @ApiOperation({ summary: 'Create a new location' })
+  @ApiCreatedResponse({ type: LocationResponse })
+  @HttpCode(HttpStatus.CREATED)
+  @Roles(ERole.OrgAdmin, ERole.SuperAdmin, ERole.StoreManager)
+  @Post()
+  public async create(
+    @CurrentUser() user: AuthenticatedUser,
+    @Body() body: CreateLocationRequest,
+  ): Promise<LocationResponse> {
+    const command            = this.mapper.map(body, CreateLocationRequest, CreateLocationCommand);
+    command.organizationId   = user.organizationId;
+    const result             = await this.mediator.execute<CreateLocationCommand, Location>(command);
+    return this.mapper.map(result, Location, LocationResponse);
+  }
+
+  @ApiOperation({ summary: 'Update a location' })
+  @ApiOkResponse({ type: LocationResponse })
+  @ApiParam({ name: 'id', description: 'Location UUID' })
+  @HttpCode(HttpStatus.OK)
+  @Roles(ERole.OrgAdmin, ERole.SuperAdmin, ERole.StoreManager)
+  @Put(':id')
+  public async update(@Param('id') id: string, @Body() body: UpdateLocationRequest): Promise<LocationResponse> {
+    const command = this.mapper.map(body, UpdateLocationRequest, UpdateLocationCommand);
+    command.id    = id;
+    const result  = await this.mediator.execute<UpdateLocationCommand, Location>(command);
+    return this.mapper.map(result, Location, LocationResponse);
+  }
+
+  @ApiOperation({ summary: 'Delete a location' })
+  @ApiOkResponse({ type: Boolean })
+  @ApiParam({ name: 'id', description: 'Location UUID' })
+  @HttpCode(HttpStatus.OK)
+  @Roles(ERole.OrgAdmin, ERole.SuperAdmin)
+  @Delete(':id')
+  public async delete(@Param('id') id: string): Promise<boolean> {
+    const command = new DeleteLocationCommand();
+    command.id    = id;
+    return this.mediator.execute<DeleteLocationCommand, boolean>(command);
+  }
+
+  @ApiOperation({ summary: 'Upload image for a location' })
+  @ApiConsumes('multipart/form-data')
+  @ApiBody({ schema: { type: 'object', properties: { file: { type: 'string', format: 'binary' } } } })
+  @ApiCreatedResponse({ type: LocationResponse })
+  @ApiParam({ name: 'id', description: 'Location UUID' })
+  @HttpCode(HttpStatus.CREATED)
+  @UseInterceptors(FileInterceptor('file'))
+  @Roles(ERole.OrgAdmin, ERole.SuperAdmin, ERole.StoreManager)
+  @Post(':id/image')
+  public async uploadImage(
+    @Param('id') id: string,
+    @UploadedFile() file: Express.Multer.File,
+  ): Promise<LocationResponse> {
+    const command           = new UploadLocationImageCommand();
+    command.locationId      = id;
+    command.buffer          = file.buffer;
+    command.mimeType        = file.mimetype;
+    const result = await this.mediator.execute<UploadLocationImageCommand, Location>(command);
+    return this.mapper.map(result, Location, LocationResponse);
+  }
+
+  @ApiOperation({ summary: 'Remove image from a location' })
+  @ApiOkResponse({ type: Boolean })
+  @ApiParam({ name: 'id', description: 'Location UUID' })
+  @HttpCode(HttpStatus.OK)
+  @Roles(ERole.OrgAdmin, ERole.SuperAdmin, ERole.StoreManager)
+  @Delete(':id/image')
+  public async removeImage(@Param('id') id: string): Promise<boolean> {
+    const command      = new RemoveLocationImageCommand();
+    command.locationId = id;
+    return this.mediator.execute<RemoveLocationImageCommand, boolean>(command);
+  }
+}
