@@ -6,10 +6,10 @@ import { ApiBearerAuth, ApiBody, ApiConsumes, ApiCreatedResponse, ApiOkResponse,
 import { InjectPinoLogger, PinoLogger } from 'nestjs-pino';
 import { ClerkAuthGuard, CqrsMediator, CurrentUser, IPageable, Roles, RolesGuard, AuthenticatedUser } from '../../../common';
 import { ERole } from '../../../infrastructure';
-import { AddProductImageCommand, CreateProductCommand, DeleteProductCommand, UpdateProductCommand } from './commands';
-import { Product } from './domain';
-import { CreateProductRequest, GetProductImageUploadUrlRequest, ListProductsRequest, ProductImageResponse, ProductImageUploadUrlResponse, ProductResponse, ProductsPagedResponse, SearchProductsRequest, UpdateProductRequest } from './models';
-import { GetProductQuery, GetProductImageUploadUrlQuery, ListProductImagesQuery, ListProductsQuery, SearchProductsQuery } from './queries';
+import { AddProductImageCommand, CreateProductCommand, DeleteProductCommand, LinkProductSupplierCommand, UnlinkProductSupplierCommand, UpdateProductCommand, UpdateProductSupplierCommand } from './commands';
+import { Product, ProductSupplier } from './domain';
+import { CreateProductRequest, GetProductImageUploadUrlRequest, LinkProductSupplierRequest, ListProductsRequest, ProductImageResponse, ProductImageUploadUrlResponse, ProductResponse, ProductSupplierResponse, ProductsPagedResponse, SearchProductsRequest, UpdateProductRequest, UpdateProductSupplierRequest } from './models';
+import { GetProductQuery, GetProductImageUploadUrlQuery, ListProductImagesQuery, ListProductSuppliersQuery, ListProductsQuery, SearchProductsQuery } from './queries';
 
 @ApiBearerAuth()
 @ApiTags('Products')
@@ -141,5 +141,66 @@ export class ProductsController {
     query.productId = id;
     query.mimeType  = queryParams.mimeType;
     return this.mediator.execute<GetProductImageUploadUrlQuery, ProductImageUploadUrlResponse>(query);
+  }
+
+  @ApiOperation({ summary: 'List all suppliers linked to a product' })
+  @ApiOkResponse({ type: [ProductSupplierResponse] })
+  @ApiParam({ name: 'id', description: 'Product UUID' })
+  @HttpCode(HttpStatus.OK)
+  @Get(':id/suppliers')
+  public async listSuppliers(@Param('id') id: string): Promise<ProductSupplierResponse[]> {
+    const query     = new ListProductSuppliersQuery();
+    query.productId = id;
+    const result    = await this.mediator.execute<ListProductSuppliersQuery, ProductSupplier[]>(query);
+    return this.mapper.mapArray(result, ProductSupplier, ProductSupplierResponse);
+  }
+
+  @ApiOperation({ summary: 'Link a supplier to a product' })
+  @ApiCreatedResponse({ type: ProductSupplierResponse })
+  @ApiParam({ name: 'id', description: 'Product UUID' })
+  @HttpCode(HttpStatus.CREATED)
+  @Post(':id/suppliers')
+  public async linkSupplier(
+    @Param('id') id: string,
+    @Body() body: LinkProductSupplierRequest,
+  ): Promise<ProductSupplierResponse> {
+    const command     = this.mapper.map(body, LinkProductSupplierRequest, LinkProductSupplierCommand);
+    command.productId = id;
+    const result      = await this.mediator.execute<LinkProductSupplierCommand, ProductSupplier>(command);
+    return this.mapper.map(result, ProductSupplier, ProductSupplierResponse);
+  }
+
+  @ApiOperation({ summary: 'Update a supplier link (isDefault, unitCost, leadTimeDays, minOrderQty)' })
+  @ApiOkResponse({ type: ProductSupplierResponse })
+  @ApiParam({ name: 'id', description: 'Product UUID' })
+  @ApiParam({ name: 'supplierId', description: 'Supplier UUID' })
+  @HttpCode(HttpStatus.OK)
+  @Put(':id/suppliers/:supplierId')
+  public async updateSupplierLink(
+    @Param('id') id: string,
+    @Param('supplierId') supplierId: string,
+    @Body() body: UpdateProductSupplierRequest,
+  ): Promise<ProductSupplierResponse> {
+    const command       = this.mapper.map(body, UpdateProductSupplierRequest, UpdateProductSupplierCommand);
+    command.productId   = id;
+    command.supplierId  = supplierId;
+    const result        = await this.mediator.execute<UpdateProductSupplierCommand, ProductSupplier>(command);
+    return this.mapper.map(result, ProductSupplier, ProductSupplierResponse);
+  }
+
+  @ApiOperation({ summary: 'Unlink a supplier from a product' })
+  @ApiOkResponse({ type: Boolean })
+  @ApiParam({ name: 'id', description: 'Product UUID' })
+  @ApiParam({ name: 'supplierId', description: 'Supplier UUID' })
+  @HttpCode(HttpStatus.OK)
+  @Delete(':id/suppliers/:supplierId')
+  public async unlinkSupplier(
+    @Param('id') id: string,
+    @Param('supplierId') supplierId: string,
+  ): Promise<boolean> {
+    const command      = new UnlinkProductSupplierCommand();
+    command.productId  = id;
+    command.supplierId = supplierId;
+    return this.mediator.execute<UnlinkProductSupplierCommand, boolean>(command);
   }
 }

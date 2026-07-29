@@ -3,7 +3,7 @@ import { Filter, PageableFilter } from '../../../common';
 import { Supplier } from './domain';
 
 export interface SupplierFilter {
-  search?: string;
+  name?: string;
   isActive?: boolean;
 }
 
