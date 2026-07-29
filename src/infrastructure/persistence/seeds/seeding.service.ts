@@ -25,8 +25,8 @@ export class SeedingService {
     private readonly categoriesSeed: CategoriesSeed,
     private readonly productsSeed: ProductsSeed,
     private readonly suppliersSeed: SuppliersSeed,
-    private readonly inventorySeed: InventorySeed,
-    private readonly purchaseOrdersSeed: PurchaseOrdersSeed,
+    // private readonly inventorySeed: InventorySeed,
+    // private readonly purchaseOrdersSeed: PurchaseOrdersSeed,
   ) {}
 
   public async runAsync(): Promise<void> {
@@ -41,8 +41,8 @@ export class SeedingService {
     // Tier 3 – depend on org + category
     await this.productsSeed.runAsync();
     // Tier 4 – depend on store + product
-    await this.inventorySeed.runAsync();
-    await this.purchaseOrdersSeed.runAsync();
+    // await this.inventorySeed.runAsync();
+    // await this.purchaseOrdersSeed.runAsync();
     this.logger.info('All seeds applied successfully');
   }
 }
