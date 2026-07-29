@@ -15,7 +15,6 @@ export class StockMovementResponse {
   @ApiProperty() @AutoMap() public quantityBefore: number;
   @ApiProperty() @AutoMap() public quantityAfter: number;
   @ApiPropertyOptional() @AutoMap() public unitCost?: number;
-  @ApiProperty() @AutoMap() public isUnpublishedEntry: boolean;
   @ApiPropertyOptional() @AutoMap() public notes?: string;
   @ApiPropertyOptional() @AutoMap(() => Date) public createdAt?: Date;
 }

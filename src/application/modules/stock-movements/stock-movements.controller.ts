@@ -5,9 +5,9 @@ import { ApiBearerAuth, ApiCreatedResponse, ApiOkResponse, ApiOperation, ApiPara
 import { InjectPinoLogger, PinoLogger } from 'nestjs-pino';
 import { ClerkAuthGuard, CqrsMediator, CurrentUser, AuthenticatedUser, Roles, RolesGuard } from 'src/common';
 import { ERole } from 'src/infrastructure/persistence/entities/role.entity';
-import { AddStockCommand, AdjustStockCommand, AddUnpublishedStockCommand, DamageStockCommand, PublishStockCommand, ReleaseReservationCommand, RemoveStockCommand, ReserveStockCommand, WriteOffStockCommand } from './commands';
+import { AddStockCommand, AdjustStockCommand, DamageStockCommand, ReleaseReservationCommand, RemoveStockCommand, ReserveStockCommand, WriteOffStockCommand } from './commands';
 import { StockMovement } from './domain';
-import { AdjustStockRequest, PublishStockRequest, StockMovementResponse, StockOperationRequest } from './models';
+import { AdjustStockRequest, StockMovementResponse, StockOperationRequest } from './models';
 import { GetStockMovementQuery, ListMovementsByInventoryQuery } from './queries';
 
 @ApiBearerAuth()
@@ -40,8 +40,8 @@ export class StockMovementsController {
   @HttpCode(HttpStatus.OK)
   @Get('by-inventory/:inventoryId')
   public async listByInventory(@Param('inventoryId') inventoryId: string): Promise<StockMovementResponse[]> {
-    const query        = new ListMovementsByInventoryQuery();
-    query.inventoryId  = inventoryId;
+    const query       = new ListMovementsByInventoryQuery();
+    query.inventoryId = inventoryId;
     const result = await this.mediator.execute<ListMovementsByInventoryQuery, StockMovement[]>(query);
     return this.mapper.mapArray(result, StockMovement, StockMovementResponse);
   }
@@ -119,36 +119,6 @@ export class StockMovementsController {
     command.organizationId = user.organizationId;
     command.performedById  = user.dbUserId;
     await this.mediator.execute<ReleaseReservationCommand, void>(command);
-  }
-
-  @ApiOperation({ summary: 'Add stock to the unpublished (quarantine) pool' })
-  @ApiCreatedResponse()
-  @HttpCode(HttpStatus.CREATED)
-  @Roles(ERole.OrgAdmin, ERole.SuperAdmin, ERole.StoreManager)
-  @Post('add-unpublished')
-  public async addUnpublishedStock(
-    @CurrentUser() user: AuthenticatedUser,
-    @Body() body: StockOperationRequest,
-  ): Promise<void> {
-    const command          = this.mapper.map(body, StockOperationRequest, AddUnpublishedStockCommand);
-    command.organizationId = user.organizationId;
-    command.performedById  = user.dbUserId;
-    await this.mediator.execute<AddUnpublishedStockCommand, void>(command);
-  }
-
-  @ApiOperation({ summary: 'Publish stock from unpublished pool to live inventory' })
-  @ApiCreatedResponse()
-  @HttpCode(HttpStatus.CREATED)
-  @Roles(ERole.OrgAdmin, ERole.SuperAdmin, ERole.StoreManager)
-  @Post('publish')
-  public async publishStock(
-    @CurrentUser() user: AuthenticatedUser,
-    @Body() body: PublishStockRequest,
-  ): Promise<void> {
-    const command          = this.mapper.map(body, PublishStockRequest, PublishStockCommand);
-    command.organizationId = user.organizationId;
-    command.performedById  = user.dbUserId;
-    await this.mediator.execute<PublishStockCommand, void>(command);
   }
 
   @ApiOperation({ summary: 'Mark stock as damaged' })

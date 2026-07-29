@@ -14,7 +14,6 @@ export class StockMovement {
   @AutoMap() public quantityBefore: number;
   @AutoMap() public quantityAfter: number;
   @AutoMap() public unitCost?: number;
-  @AutoMap() public isUnpublishedEntry: boolean;
   @AutoMap() public notes?: string;
   @AutoMap(() => Date) public createdAt?: Date;
 }

@@ -29,6 +29,7 @@ import { NotificationsModule } from './modules/notifications';
 import { ReportGenerationLogsModule } from './modules/report-generation-logs';
 import { LocationsModule } from './modules/locations';
 import { ProductLogsModule } from './modules/product-logs';
+import { UnpublishedStockModule } from './modules/unpublished-stock';
 import { SharedModule } from './shared';
 
 import { CqrsMediator, CommonModule } from '../common';
@@ -69,6 +70,7 @@ export class ApplicationModule {
         ReportGenerationLogsModule,
         LocationsModule,
         ProductLogsModule,
+        UnpublishedStockModule,
         SharedModule,
         CommonModule,
       ],

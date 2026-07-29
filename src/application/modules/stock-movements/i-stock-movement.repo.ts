@@ -7,7 +7,6 @@ export interface StockMovementFilter {
   inventoryId?: string;
   locationId?: string;
   productId?: string;
-  isUnpublishedEntry?: boolean;
 }
 
 export const STOCK_MOVEMENT_REPO = 'STOCK_MOVEMENT_REPO';

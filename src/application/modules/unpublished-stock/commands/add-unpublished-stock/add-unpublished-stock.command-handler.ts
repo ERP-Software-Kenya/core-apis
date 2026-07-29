@@ -12,7 +12,7 @@ export class AddUnpublishedStockCommandHandler implements ICommandHandler<AddUnp
   ) {}
 
   public async execute(command: AddUnpublishedStockCommand): Promise<void> {
-    this.logger.info(`Executing ${AddUnpublishedStockCommand.name} inventoryId=${command.inventoryId}`);
+    this.logger.info(`Executing ${AddUnpublishedStockCommand.name} locationId=${command.locationId} productId=${command.productId}`);
     await this.orchestrator.addUnpublishedStock(command);
   }
 }

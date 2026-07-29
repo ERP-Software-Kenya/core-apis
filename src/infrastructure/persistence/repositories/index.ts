@@ -27,3 +27,5 @@ export * from './user.repo';
 export * from './org-member.repo';
 export * from './product-image.repo';
 export * from './product-supplier.repo';
+export * from './unpublished-stock.repo';
+export * from './unpublished-stock-movement.repo';

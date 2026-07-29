@@ -84,11 +84,6 @@ export class StockMovementEntity {
   @Column({ name: 'unit_cost', type: 'decimal', precision: 18, scale: 4, nullable: true })
   public unitCost?: number;
 
-  /** When true, belongs to the unpublished pool — hidden from published stock history */
-  @AutoMap()
-  @Column({ name: 'is_unpublished_entry', type: 'boolean', default: false })
-  public isUnpublishedEntry: boolean;
-
   @AutoMap()
   @Column({ type: 'text', nullable: true })
   public notes?: string;

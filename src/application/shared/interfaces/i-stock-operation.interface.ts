@@ -1,5 +1,5 @@
 import { AutoMap } from '@automapper/classes';
-import { EMovementType } from 'src/infrastructure/persistence/entities';
+import { EMovementType, EUnpublishedMovementType } from 'src/infrastructure/persistence/entities';
 
 export interface IStockOperation {
   inventoryId: string;
@@ -15,12 +15,20 @@ export interface IStockOperation {
 }
 
 export interface IPublishStockOperation {
-  inventoryId: string;
+  unpublishedStockId: string;
   organizationId: string;
-  productId: string;
-  locationId: string;
   quantity: number;
   performedById?: string;
+  notes?: string;
+}
+
+export interface IAddUnpublishedStockOperation {
+  organizationId: string;
+  locationId: string;
+  productId: string;
+  quantity: number;
+  performedById?: string;
+  unitCost?: number;
   notes?: string;
 }
 
@@ -60,6 +68,18 @@ export class StockMovementInput {
   @AutoMap() public quantityBefore: number;
   @AutoMap() public quantityAfter: number;
   @AutoMap() public unitCost?: number;
-  @AutoMap() public isUnpublishedEntry: boolean;
+  @AutoMap() public notes?: string;
+}
+
+export class UnpublishedStockMovementInput {
+  @AutoMap() public unpublishedStockId: string;
+  @AutoMap() public locationId: string;
+  @AutoMap() public productId: string;
+  @AutoMap() public performedById?: string;
+  @AutoMap(() => String) public movementType: EUnpublishedMovementType;
+  @AutoMap() public quantity: number;
+  @AutoMap() public quantityBefore: number;
+  @AutoMap() public quantityAfter: number;
+  @AutoMap() public unitCost?: number;
   @AutoMap() public notes?: string;
 }

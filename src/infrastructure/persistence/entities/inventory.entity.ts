@@ -42,11 +42,6 @@ export class InventoryEntity {
   @Column({ name: 'quantity_on_hand', type: 'decimal', precision: 18, scale: 4, default: 0 })
   public quantityOnHand: number;
 
-  /** Holding/quarantine pool — invisible to ERP operations until published */
-  @AutoMap()
-  @Column({ name: 'quantity_unpublished', type: 'decimal', precision: 18, scale: 4, default: 0 })
-  public quantityUnpublished: number;
-
   /** Reserved for pending orders */
   @AutoMap()
   @Column({ name: 'quantity_reserved', type: 'decimal', precision: 18, scale: 4, default: 0 })
