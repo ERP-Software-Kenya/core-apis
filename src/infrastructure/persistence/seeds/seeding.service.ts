@@ -33,13 +33,13 @@ export class SeedingService {
     this.logger.info('Applying seeds...');
     // Tier 1 – no FK deps
     await this.rolesSeed.runAsync();
-    await this.defaultOrganizationSeed.runAsync();  // creates org + super-admin user
+    // await this.defaultOrganizationSeed.runAsync();  // creates org + super-admin user
     // Tier 2 – depend on org
-    await this.storesSeed.runAsync();
+    // await this.storesSeed.runAsync();
     await this.categoriesSeed.runAsync();
-    await this.suppliersSeed.runAsync();
+    // await this.suppliersSeed.runAsync();
     // Tier 3 – depend on org + category
-    await this.productsSeed.runAsync();
+    // await this.productsSeed.runAsync();
     // Tier 4 – depend on store + product
     // await this.inventorySeed.runAsync();
     // await this.purchaseOrdersSeed.runAsync();
