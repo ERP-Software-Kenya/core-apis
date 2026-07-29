@@ -7,8 +7,8 @@ import { AuthenticatedUser, ClerkAuthGuard, CqrsMediator, CurrentUser, IPageable
 import { ERole } from '../../../infrastructure';
 import { CreateCategoryCommand, DeleteCategoryCommand, UpdateCategoryCommand } from './commands';
 import { Category } from './domain';
-import { CreateCategoryRequest, SearchCategoriesRequest, ListCategoriesRequest, CategoryResponse, CategorysPagedResponse, UpdateCategoryRequest } from './models';
-import { GetCategoryQuery, ListCategoriesQuery, SearchCategoriesQuery } from './queries';
+import { CreateCategoryRequest, SearchCategoriesRequest, ListCategoriesRequest, ListParentCategoriesRequest, CategoryResponse, CategorysPagedResponse, UpdateCategoryRequest } from './models';
+import { GetCategoryQuery, ListCategoriesQuery, ListParentCategoriesQuery, SearchCategoriesQuery } from './queries';
 
 @ApiBearerAuth()
 @ApiTags('Categories')
@@ -42,6 +42,16 @@ export class CategoriesController {
   public async list(@Query() filter?: ListCategoriesRequest): Promise<CategoryResponse[]> {
     const query = this.mapper.map(filter, ListCategoriesRequest, ListCategoriesQuery);
     const result = await this.mediator.execute<ListCategoriesQuery, Category[]>(query);
+    return this.mapper.mapArray(result, Category, CategoryResponse);
+  }
+
+  @ApiOperation({ summary: 'List all root (parent) categories — use to populate parent selector when creating sub-categories' })
+  @ApiOkResponse({ type: [CategoryResponse] })
+  @HttpCode(HttpStatus.OK)
+  @Get('parents')
+  public async listParents(@Query() filter?: ListParentCategoriesRequest): Promise<CategoryResponse[]> {
+    const query  = this.mapper.map(filter, ListParentCategoriesRequest, ListParentCategoriesQuery);
+    const result = await this.mediator.execute<ListParentCategoriesQuery, Category[]>(query);
     return this.mapper.mapArray(result, Category, CategoryResponse);
   }
 

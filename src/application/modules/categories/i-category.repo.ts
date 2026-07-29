@@ -5,6 +5,7 @@ import { Category } from './domain';
 export interface CategoryFilter {
   name?: string;
   isActive?: boolean;
+  parentId?: string | null;
 }
 export const CATEGORY_REPO = 'CATEGORY_REPO';
 

@@ -2,10 +2,9 @@ import { AutoMap } from '@automapper/classes';
 import { EOrder, Filter, QueryBase } from '../../../../../common';
 import { CategoryFilter } from '../..';
 
-export class ListCategoriesQuery extends QueryBase implements Filter<CategoryFilter> {
+export class ListParentCategoriesQuery extends QueryBase implements Filter<CategoryFilter> {
   @AutoMap() public name?: string;
   @AutoMap() public isActive?: boolean;
-  @AutoMap() public parentId?: string | null;
 
   @AutoMap(() => Array) public $ids?: string[];
 

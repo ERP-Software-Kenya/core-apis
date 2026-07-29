@@ -1,14 +1,12 @@
 import { AutoMap } from '@automapper/classes';
 import { ApiPropertyOptional } from '@nestjs/swagger';
-import { IsBoolean, IsEnum, IsOptional, IsString, IsUUID } from 'class-validator';
+import { IsBoolean, IsEnum, IsOptional, IsString } from 'class-validator';
 import { EOrder, Filter } from '../../../../../common';
 import { CategoryFilter } from '../..';
 
-export class ListCategoriesRequest implements Filter<CategoryFilter> {
+export class ListParentCategoriesRequest implements Filter<CategoryFilter> {
   @ApiPropertyOptional() @IsOptional() @IsString() @AutoMap() public name?: string;
   @ApiPropertyOptional() @IsOptional() @IsBoolean() @AutoMap() public isActive?: boolean;
-  @ApiPropertyOptional({ description: 'Filter by parent category UUID — returns only direct children of that parent' })
-  @IsOptional() @IsUUID() @AutoMap() public parentId?: string;
 
   @ApiPropertyOptional() @IsOptional() @IsString({ each: true }) @AutoMap(() => Array) public $ids?: string[];
 
