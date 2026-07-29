@@ -1,7 +1,9 @@
 import { AutoMap } from '@automapper/classes';
-import { ApiPropertyOptional, ApiProperty } from '@nestjs/swagger';
-import { IsOptional, IsString } from 'class-validator';
+import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
+import { IsNotEmpty, IsOptional, IsString, IsUUID } from 'class-validator';
 
 export class CreateCategoryRequest {
-  @ApiPropertyOptional() @IsOptional() @IsString() @AutoMap() public name?: string;
+  @ApiProperty() @IsNotEmpty() @IsString() @AutoMap() public name: string;
+  @ApiPropertyOptional() @IsOptional() @IsString() @AutoMap() public description?: string;
+  @ApiPropertyOptional() @IsOptional() @IsUUID() @AutoMap() public parentId?: string;
 }
