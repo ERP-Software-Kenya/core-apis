@@ -41,6 +41,8 @@ import { RolePermissionEntity } from './role-permission.entity';
 import { PlatformEntity } from './platform.entity';
 import { PlatformConfigurationEntity } from './platform-configuration.entity';
 import { OrgMemberEntity } from './org-member.entity';
+import { UnpublishedStockEntity } from './unpublished-stock.entity';
+import { UnpublishedStockMovementEntity } from './unpublished-stock-movement.entity';
 
 export * from './location.entity';
 export * from './product-log.entity';
@@ -86,6 +88,8 @@ export * from './role-permission.entity';
 export * from './platform.entity';
 export * from './platform-configuration.entity';
 export * from './org-member.entity';
+export * from './unpublished-stock.entity';
+export * from './unpublished-stock-movement.entity';
 
 export default [
   LocationEntity,
@@ -131,4 +135,6 @@ export default [
   PlatformEntity,
   PlatformConfigurationEntity,
   OrgMemberEntity,
+  UnpublishedStockEntity,
+  UnpublishedStockMovementEntity,
 ];

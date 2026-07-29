@@ -37,6 +37,8 @@ import {
   ProductSupplierRepo,
   LocationRepo,
   ProductLogRepo,
+  UnpublishedStockRepo,
+  UnpublishedStockMovementRepo,
 } from './persistence';
 
 import {
@@ -69,6 +71,8 @@ import {
   PRODUCT_SUPPLIER_REPO,
   LOCATION_REPO,
   PRODUCT_LOG_REPO,
+  UNPUBLISHED_STOCK_REPO,
+  UNPUBLISHED_STOCK_MOVEMENT_REPO,
 } from '../application/constants';
 
 @Module({})
@@ -125,6 +129,8 @@ export class InfrastructureModule {
         { provide: PRODUCT_SUPPLIER_REPO, useClass: ProductSupplierRepo },
         { provide: LOCATION_REPO, useClass: LocationRepo },
         { provide: PRODUCT_LOG_REPO, useClass: ProductLogRepo },
+        { provide: UNPUBLISHED_STOCK_REPO, useClass: UnpublishedStockRepo },
+        { provide: UNPUBLISHED_STOCK_MOVEMENT_REPO, useClass: UnpublishedStockMovementRepo },
       ],
       exports: [
         EntityMapperProfile,
@@ -157,6 +163,8 @@ export class InfrastructureModule {
         PRODUCT_SUPPLIER_REPO,
         LOCATION_REPO,
         PRODUCT_LOG_REPO,
+        UNPUBLISHED_STOCK_REPO,
+        UNPUBLISHED_STOCK_MOVEMENT_REPO,
       ],
     };
   }

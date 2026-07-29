@@ -73,28 +73,9 @@ export class InventoryRepo
     return this.mapper.map(entity, InventoryEntity, Inventory);
   }
 
-  public async addUnpublishedStockAsync(id: string, quantity: number, unitCost: number | undefined, manager: EntityManager): Promise<Inventory> {
-    const entity = await manager.findOneOrFail(InventoryEntity, { where: { id } });
-    const before = Number(entity.quantityUnpublished);
-    manager.merge(InventoryEntity, entity, {
-      quantityUnpublished: before + quantity,
-      ...(unitCost != null && { averageCost: this.calcAvgCost(Number(entity.quantityOnHand), Number(entity.averageCost ?? 0), quantity, unitCost) }),
-    });
-    await manager.save(InventoryEntity, entity);
-    return this.mapper.map(entity, InventoryEntity, Inventory);
-  }
-
-  public async publishStockAsync(id: string, quantity: number, manager: EntityManager): Promise<Inventory> {
-    const entity = await manager.findOneOrFail(InventoryEntity, { where: { id } });
-    if (quantity > Number(entity.quantityUnpublished)) {
-      throw new BadRequestException(`Cannot publish more than unpublished stock: ${entity.quantityUnpublished}`);
-    }
-    manager.merge(InventoryEntity, entity, {
-      quantityUnpublished: Number(entity.quantityUnpublished) - quantity,
-      quantityOnHand:      Number(entity.quantityOnHand) + quantity,
-    });
-    await manager.save(InventoryEntity, entity);
-    return this.mapper.map(entity, InventoryEntity, Inventory);
+  public async findByOrgLocationProductAsync(organizationId: string, locationId: string, productId: string, manager: EntityManager): Promise<Inventory | null> {
+    const entity = await manager.findOne(InventoryEntity, { where: { organizationId, locationId, productId } });
+    return entity ? this.mapper.map(entity, InventoryEntity, Inventory) : null;
   }
 
   public async deductStockAsync(id: string, quantity: number, manager: EntityManager): Promise<Inventory> {

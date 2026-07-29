@@ -22,10 +22,3 @@ export class AdjustStockRequest {
   @ApiPropertyOptional() @IsOptional() @IsString() @AutoMap() public notes?: string;
 }
 
-export class PublishStockRequest {
-  @ApiProperty() @IsNotEmpty() @IsString() @AutoMap() public inventoryId: string;
-  @ApiProperty() @IsNotEmpty() @IsString() @AutoMap() public locationId: string;
-  @ApiProperty() @IsNotEmpty() @IsString() @AutoMap() public productId: string;
-  @ApiProperty() @IsNumber() @IsPositive() @AutoMap() public quantity: number;
-  @ApiPropertyOptional() @IsOptional() @IsString() @AutoMap() public notes?: string;
-}

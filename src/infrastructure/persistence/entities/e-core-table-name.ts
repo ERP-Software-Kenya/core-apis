@@ -23,6 +23,8 @@ export enum ECoreTableName {
   Suppliers             = 'suppliers',
   Inventory             = 'inventory',
   StockMovements        = 'stock_movements',
+  UnpublishedStock      = 'unpublished_stock',
+  UnpublishedStockMovements = 'unpublished_stock_movements',
   StockEntries          = 'stock_entries',
   StockTransfers        = 'stock_transfers',
   StockTransferItems    = 'stock_transfer_items',

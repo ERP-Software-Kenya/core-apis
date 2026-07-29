@@ -7,7 +7,6 @@ export class InventoryResponse {
   @ApiProperty() @AutoMap() public locationId: string;
   @ApiProperty() @AutoMap() public productId: string;
   @ApiProperty() @AutoMap() public quantityOnHand: number;
-  @ApiProperty() @AutoMap() public quantityUnpublished: number;
   @ApiProperty() @AutoMap() public quantityReserved: number;
   @ApiProperty() @AutoMap() public reorderLevel: number;
   @ApiPropertyOptional() @AutoMap() public maxStock?: number;

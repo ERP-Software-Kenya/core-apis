@@ -6,7 +6,6 @@ export class Inventory {
   @AutoMap() public locationId: string;
   @AutoMap() public productId: string;
   @AutoMap() public quantityOnHand: number;
-  @AutoMap() public quantityUnpublished: number;
   @AutoMap() public quantityReserved: number;
   @AutoMap() public reorderLevel: number;
   @AutoMap() public maxStock?: number;

@@ -1,0 +1,13 @@
+import { AutoMap } from '@automapper/classes';
+
+export class UnpublishedStock {
+  @AutoMap() public id: string;
+  @AutoMap() public organizationId: string;
+  @AutoMap() public locationId: string;
+  @AutoMap() public productId: string;
+  @AutoMap() public quantityOnHand: number;
+  @AutoMap() public averageCost?: number;
+  @AutoMap() public binLocation?: string;
+  @AutoMap(() => Date) public createdAt?: Date;
+  @AutoMap(() => Date) public updatedAt?: Date;
+}
