@@ -16,7 +16,9 @@ export class CategoryProfile extends AutomapperProfile {
       createMap(mapper, CategoryEntity, Category);
       createMap(mapper, Category, CategoryEntity);
       createMap(mapper, CreateCategoryRequest, CreateCategoryCommand);
+      createMap(mapper, CreateCategoryCommand, Category);
       createMap(mapper, UpdateCategoryRequest, UpdateCategoryCommand);
+      createMap(mapper, UpdateCategoryCommand, Category);
       createMap(mapper, SearchCategoriesRequest, SearchCategoriesQuery);
       createMap(mapper, ListCategoriesRequest, ListCategoriesQuery);
       createMap(mapper, Category, CategoryResponse);

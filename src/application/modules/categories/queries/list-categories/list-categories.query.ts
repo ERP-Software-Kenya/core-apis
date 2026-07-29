@@ -4,6 +4,7 @@ import { CategoryFilter } from '../..';
 
 export class ListCategoriesQuery extends QueryBase implements Filter<CategoryFilter> {
   @AutoMap() public name?: string;
+  @AutoMap() public isActive?: boolean;
 
   @AutoMap(() => Array) public $ids?: string[];
 
