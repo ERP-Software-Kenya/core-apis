@@ -35,7 +35,7 @@ async function bootstrap(): Promise<void> {
 
   const seeds = context.get<SeedingService>(SeedingService);
   logger.log(`Seeds starting`);
-  await seeds.runAsync();
+  // await seeds.runAsync();
   logger.log(`Seeds applied`);
 
   await context.close();
