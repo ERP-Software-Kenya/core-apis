@@ -4,8 +4,9 @@ import { Injectable } from '@nestjs/common';
 import { ProductEntity, ProductImageEntity, ProductSupplierEntity } from '../../../../infrastructure';
 import { Product, ProductImage, ProductSupplier } from '../domain';
 import { CreateProductRequest, UpdateProductRequest, ProductResponse, ProductImageResponse, ListProductsRequest, SearchProductsRequest } from '../models';
-import { AddProductImageCommand, CreateProductCommand, UpdateProductCommand } from '../commands';
+import { AddProductImageCommand, CreateProductCommand, UpdateProductCommand, LinkProductSupplierCommand, UpdateProductSupplierCommand } from '../commands';
 import { ListProductsQuery, SearchProductsQuery } from '../queries';
+import { ProductSupplierResponse, LinkProductSupplierRequest, UpdateProductSupplierRequest } from '../models';
 
 @Injectable()
 export class ProductProfile extends AutomapperProfile {
@@ -28,6 +29,11 @@ export class ProductProfile extends AutomapperProfile {
       createMap(mapper, UpdateProductRequest, UpdateProductCommand);
       createMap(mapper, UpdateProductCommand, Product);
       createMap(mapper, Product, ProductResponse);
+      createMap(mapper, LinkProductSupplierRequest, LinkProductSupplierCommand);
+      createMap(mapper, LinkProductSupplierCommand, ProductSupplier);
+      createMap(mapper, UpdateProductSupplierRequest, UpdateProductSupplierCommand);
+      createMap(mapper, UpdateProductSupplierCommand, ProductSupplier);
+      createMap(mapper, ProductSupplier, ProductSupplierResponse);
     };
   }
 }
