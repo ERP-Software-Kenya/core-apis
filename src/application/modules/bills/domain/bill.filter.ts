@@ -1,5 +1,8 @@
+import { EBillStatus } from '../../../../infrastructure/persistence/entities/bill.entity';
+
 export interface BillFilter {
-  supplierId?: string;
-  storeId?: string;
-  status?: string;
+  organizationId?: string;
+  locationId?: string;
+  customerId?: string;
+  status?: EBillStatus;
 }

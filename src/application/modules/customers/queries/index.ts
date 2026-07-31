@@ -1,3 +1,10 @@
 export * from './get-customer';
+export * from './search-customers';
+
 import { GetCustomerQueryHandler } from './get-customer';
-export const CustomerQueryHandlers = [GetCustomerQueryHandler];
+import { SearchCustomersQueryHandler } from './search-customers';
+
+export const CustomerQueryHandlers = [
+  GetCustomerQueryHandler,
+  SearchCustomersQueryHandler,
+];

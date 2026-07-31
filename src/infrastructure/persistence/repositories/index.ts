@@ -9,6 +9,7 @@ export * from './store.repo';
 export * from './supplier.repo';
 export * from './activity-log.repo';
 export * from './bill.repo';
+export * from './bill-item.repo';
 export * from './customer.repo';
 export * from './expense.repo';
 export * from './invoice.repo';

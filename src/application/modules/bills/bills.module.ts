@@ -8,9 +8,9 @@ import { BillFeatureOptions } from './options/bill-feature.options';
 import { BillFilterNormalizer } from './helpers/bill-filter.normalizer';
 
 @Module({
-  imports: [CqrsModule],
+  imports:     [CqrsModule],
   controllers: [BillsController],
-  providers: [
+  providers:   [
     ...BillCommandHandlers,
     ...BillQueryHandlers,
     BillProfile,
