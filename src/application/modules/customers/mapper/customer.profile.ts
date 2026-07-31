@@ -3,8 +3,10 @@ import { AutomapperProfile, InjectMapper } from '@automapper/nestjs';
 import { Injectable } from '@nestjs/common';
 import { CustomerEntity } from '../../../../infrastructure/persistence/entities';
 import { Customer } from '../domain';
-import { CreateCustomerRequest, UpdateCustomerRequest, CustomerResponse } from '../models';
-import { CreateCustomerCommand } from '../commands';
+import { CreateCustomerRequest, UpdateCustomerRequest, SearchCustomersRequest, CustomerResponse } from '../models';
+import { CreateCustomerCommand } from '../commands/create-customer';
+import { UpdateCustomerCommand } from '../commands/update-customer';
+import { SearchCustomersQuery } from '../queries/search-customers';
 
 @Injectable()
 export class CustomerProfile extends AutomapperProfile {
@@ -14,8 +16,12 @@ export class CustomerProfile extends AutomapperProfile {
     return (mapper: Mapper) => {
       createMap(mapper, CustomerEntity, Customer);
       createMap(mapper, Customer, CustomerEntity);
-      createMap(mapper, CreateCustomerRequest, CreateCustomerCommand);
       createMap(mapper, Customer, CustomerResponse);
+      createMap(mapper, CreateCustomerRequest, CreateCustomerCommand);
+      createMap(mapper, CreateCustomerCommand, Customer);
+      createMap(mapper, UpdateCustomerRequest, UpdateCustomerCommand);
+      createMap(mapper, UpdateCustomerCommand, Customer);
+      createMap(mapper, SearchCustomersRequest, SearchCustomersQuery);
     };
   }
 }
