@@ -34,6 +34,8 @@ export class CategoryRepo extends BaseRepo<CategoryEntity, Category, string, Pag
   ): void {
     if (filterObj.hasParent === true) {
       (findOpts.where as Record<string, unknown>).parentId = Not(IsNull());
+    } else if (filterObj.hasParent === false) {
+      (findOpts.where as Record<string, unknown>).parentId = IsNull();
     }
   }
 }

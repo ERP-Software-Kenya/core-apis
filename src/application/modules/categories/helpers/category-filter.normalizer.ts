@@ -10,13 +10,6 @@ export class CategoryFilterNormalizer implements IFilterNormalizer<CategoryFilte
   public normalize(filter: Filter<CategoryFilter>): Filter<CategoryFilter> {
     filter.$orderBy = filter.$orderBy ?? this.options.orderBy;
     filter.$order = filter.$order ?? this.options.order;
-
-    // hasParent === false: root categories only — set parentId IS NULL.
-    // hasParent === true: sub-categories only — handled by CategoryRepo.modifyFindOption.
-    if (filter.hasParent === false) {
-      filter.parentId = null;
-    }
-
     return filter;
   }
 
