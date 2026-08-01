@@ -7,6 +7,8 @@ export class ListStoresQuery extends QueryBase implements Filter<StoreFilter> {
 
   @AutoMap() public organizationId?: string;
 
+  @AutoMap() public isActive?: boolean;
+
   @AutoMap(() => Array) public $ids?: string[];
 
   @AutoMap() public $orderBy?: string;

@@ -8,6 +8,7 @@ export class CreateLocationCommand extends CommandBase {
   @AutoMap(() => String) public type: ELocationType;
   @AutoMap() public address?: string;
   @AutoMap() public city?: string;
+  @AutoMap() public state?: string;
   @AutoMap() public country?: string;
   @AutoMap() public phone?: string;
 }

@@ -10,6 +10,7 @@ export class LocationResponse {
   @ApiPropertyOptional() @AutoMap() public imageKey?: string;
   @ApiPropertyOptional() @AutoMap() public address?: string;
   @ApiPropertyOptional() @AutoMap() public city?: string;
+  @ApiPropertyOptional() @AutoMap() public state?: string;
   @ApiPropertyOptional() @AutoMap() public country?: string;
   @ApiPropertyOptional() @AutoMap() public phone?: string;
   @ApiProperty() @AutoMap() public isActive: boolean;

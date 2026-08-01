@@ -8,6 +8,7 @@ export class CreateLocationRequest {
   @ApiProperty({ enum: ELocationType }) @IsEnum(ELocationType) @AutoMap(() => String) public type: ELocationType;
   @ApiPropertyOptional() @IsOptional() @IsString() @AutoMap() public address?: string;
   @ApiPropertyOptional() @IsOptional() @IsString() @AutoMap() public city?: string;
+  @ApiPropertyOptional() @IsOptional() @IsString() @AutoMap() public state?: string;
   @ApiPropertyOptional() @IsOptional() @IsString() @AutoMap() public country?: string;
   @ApiPropertyOptional() @IsOptional() @IsString() @AutoMap() public phone?: string;
 }

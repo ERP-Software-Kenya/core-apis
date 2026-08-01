@@ -2,8 +2,20 @@ import { AutoMap } from '@automapper/classes';
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 
 export class StoreResponse {
-  @ApiProperty() @AutoMap() public id: string;
+  @ApiProperty()          @AutoMap() public id: string;
+  @ApiPropertyOptional() @AutoMap() public organizationId?: string;
   @ApiPropertyOptional() @AutoMap() public name?: string;
+  @ApiPropertyOptional() @AutoMap() public code?: string;
+  @ApiPropertyOptional() @AutoMap() public address?: string;
+  @ApiPropertyOptional() @AutoMap() public city?: string;
+  @ApiPropertyOptional() @AutoMap() public state?: string;
+  @ApiPropertyOptional() @AutoMap() public country?: string;
+  @ApiPropertyOptional() @AutoMap() public phone?: string;
+  @ApiPropertyOptional() @AutoMap() public email?: string;
+  @ApiPropertyOptional() @AutoMap() public imageKey?: string;
+  @ApiPropertyOptional() @AutoMap() public isActive?: boolean;
+  @ApiPropertyOptional() @AutoMap(() => Date) public createdAt?: Date;
+  @ApiPropertyOptional() @AutoMap(() => Date) public updatedAt?: Date;
 }
 
 export class StoresPagedResponse {
