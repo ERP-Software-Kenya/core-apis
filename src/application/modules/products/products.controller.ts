@@ -27,8 +27,12 @@ export class ProductsController {
   @ApiOkResponse({ type: ProductsPagedResponse })
   @HttpCode(HttpStatus.OK)
   @Get()
-  public async search(@Query() filter?: SearchProductsRequest): Promise<ProductsPagedResponse> {
+  public async search(
+    @CurrentUser() user: AuthenticatedUser,
+    @Query() filter?: SearchProductsRequest,
+  ): Promise<ProductsPagedResponse> {
     const query = this.mapper.map(filter, SearchProductsRequest, SearchProductsQuery);
+    query.organizationId = user.organizationId;
     const result = await this.mediator.execute<SearchProductsQuery, IPageable<Product>>(query);
     return {
       ...result,
@@ -40,8 +44,12 @@ export class ProductsController {
   @ApiOkResponse({ type: [ProductResponse] })
   @HttpCode(HttpStatus.OK)
   @Get('list')
-  public async list(@Query() filter?: ListProductsRequest): Promise<ProductResponse[]> {
+  public async list(
+    @CurrentUser() user: AuthenticatedUser,
+    @Query() filter?: ListProductsRequest,
+  ): Promise<ProductResponse[]> {
     const query = this.mapper.map(filter, ListProductsRequest, ListProductsQuery);
+    query.organizationId = user.organizationId;
     const result = await this.mediator.execute<ListProductsQuery, Product[]>(query);
     return this.mapper.mapArray(result, Product, ProductResponse);
   }
