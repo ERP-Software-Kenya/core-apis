@@ -9,6 +9,7 @@ export class Location {
   @AutoMap() public imageKey?: string;
   @AutoMap() public address?: string;
   @AutoMap() public city?: string;
+  @AutoMap() public state?: string;
   @AutoMap() public country?: string;
   @AutoMap() public phone?: string;
   @AutoMap() public isActive: boolean;

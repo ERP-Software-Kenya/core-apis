@@ -4,6 +4,7 @@ import { Store } from './domain';
 
 export interface StoreFilter {
   search?: string;
+  organizationId?: string;
   isActive?: boolean;
 }
 export const STORE_REPO = 'STORE_REPO';

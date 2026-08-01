@@ -45,6 +45,10 @@ export class StoreEntity {
 
   @AutoMap()
   @Column({ type: 'varchar', length: 100, nullable: true })
+  public state?: string;
+
+  @AutoMap()
+  @Column({ type: 'varchar', length: 100, nullable: true })
   public country?: string;
 
   @AutoMap()
@@ -54,6 +58,10 @@ export class StoreEntity {
   @AutoMap()
   @Column({ type: 'varchar', length: 255, nullable: true })
   public email?: string;
+
+  @AutoMap()
+  @Column({ name: 'image_key', type: 'varchar', length: 500, nullable: true })
+  public imageKey?: string;
 
   @AutoMap()
   @Column({ type: 'boolean', default: true })

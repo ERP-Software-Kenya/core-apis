@@ -18,7 +18,9 @@ export class StoreProfile extends AutomapperProfile {
       createMap(mapper, StoreEntity, Store);
       createMap(mapper, Store, StoreEntity);
       createMap(mapper, CreateStoreRequest, CreateStoreCommand);
+      createMap(mapper, CreateStoreCommand, Store);
       createMap(mapper, UpdateStoreRequest, UpdateStoreCommand);
+      createMap(mapper, UpdateStoreCommand, Store);
       createMap(mapper, SearchStoresRequest, SearchStoresQuery);
       createMap(mapper, ListStoresRequest, ListStoresQuery);
       createMap(mapper, Store, StoreResponse);
