@@ -26,8 +26,12 @@ export class CategoriesController {
   @ApiOkResponse({ type: CategorysPagedResponse })
   @HttpCode(HttpStatus.OK)
   @Get()
-  public async search(@Query() filter?: SearchCategoriesRequest): Promise<CategorysPagedResponse> {
+  public async search(
+    @CurrentUser() user: AuthenticatedUser,
+    @Query() filter?: SearchCategoriesRequest,
+  ): Promise<CategorysPagedResponse> {
     const query = this.mapper.map(filter, SearchCategoriesRequest, SearchCategoriesQuery);
+    query.organizationId = user.organizationId;
     const result = await this.mediator.execute<SearchCategoriesQuery, IPageable<Category>>(query);
     return {
       ...result,
@@ -39,8 +43,12 @@ export class CategoriesController {
   @ApiOkResponse({ type: [CategoryResponse] })
   @HttpCode(HttpStatus.OK)
   @Get('list')
-  public async list(@Query() filter?: ListCategoriesRequest): Promise<CategoryResponse[]> {
+  public async list(
+    @CurrentUser() user: AuthenticatedUser,
+    @Query() filter?: ListCategoriesRequest,
+  ): Promise<CategoryResponse[]> {
     const query = this.mapper.map(filter, ListCategoriesRequest, ListCategoriesQuery);
+    query.organizationId = user.organizationId;
     const result = await this.mediator.execute<ListCategoriesQuery, Category[]>(query);
     return this.mapper.mapArray(result, Category, CategoryResponse);
   }
@@ -49,8 +57,12 @@ export class CategoriesController {
   @ApiOkResponse({ type: [CategoryResponse] })
   @HttpCode(HttpStatus.OK)
   @Get('parents')
-  public async listParents(@Query() filter?: ListParentCategoriesRequest): Promise<CategoryResponse[]> {
+  public async listParents(
+    @CurrentUser() user: AuthenticatedUser,
+    @Query() filter?: ListParentCategoriesRequest,
+  ): Promise<CategoryResponse[]> {
     const query  = this.mapper.map(filter, ListParentCategoriesRequest, ListParentCategoriesQuery);
+    query.organizationId = user.organizationId;
     const result = await this.mediator.execute<ListParentCategoriesQuery, Category[]>(query);
     return this.mapper.mapArray(result, Category, CategoryResponse);
   }
