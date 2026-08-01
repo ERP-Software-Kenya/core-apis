@@ -5,6 +5,7 @@ import { CategoryFilter } from '../..';
 export class ListParentCategoriesQuery extends QueryBase implements Filter<CategoryFilter> {
   @AutoMap() public name?: string;
   @AutoMap() public isActive?: boolean;
+  @AutoMap() public organizationId?: string;
 
   @AutoMap(() => Array) public $ids?: string[];
 
