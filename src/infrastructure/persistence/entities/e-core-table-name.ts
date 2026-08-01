@@ -48,4 +48,11 @@ export enum ECoreTableName {
   ProductLogs           = 'product_logs',
   Platforms             = 'platforms',
   PlatformConfigurations = 'platform_configurations',
+
+  // ─── Reference / Lookup tables ───────────────────────────────────────────────
+  Countries              = 'ref_countries',
+  States                 = 'ref_states',
+  Cities                 = 'ref_cities',
+  Currencies             = 'ref_currencies',
+  Languages              = 'ref_languages',
 }

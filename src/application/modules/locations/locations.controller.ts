@@ -28,9 +28,13 @@ export class LocationsController {
   @HttpCode(HttpStatus.OK)
   @Roles(ERole.OrgAdmin, ERole.SuperAdmin, ERole.StoreManager, ERole.StoreStaff)
   @Get()
-  public async search(@Query() filter?: SearchLocationsRequest): Promise<LocationsPagedResponse> {
-    const query  = this.mapper.map(filter, SearchLocationsRequest, SearchLocationsQuery);
-    const result = await this.mediator.execute<SearchLocationsQuery, IPageable<Location>>(query);
+  public async search(
+    @CurrentUser() user: AuthenticatedUser,
+    @Query() filter?: SearchLocationsRequest,
+  ): Promise<LocationsPagedResponse> {
+    const query              = this.mapper.map(filter, SearchLocationsRequest, SearchLocationsQuery);
+    query.organizationId     = user.organizationId;
+    const result             = await this.mediator.execute<SearchLocationsQuery, IPageable<Location>>(query);
     return { ...result, items: this.mapper.mapArray(result.items, Location, LocationResponse) };
   }
 
@@ -39,9 +43,13 @@ export class LocationsController {
   @HttpCode(HttpStatus.OK)
   @Roles(ERole.OrgAdmin, ERole.SuperAdmin, ERole.StoreManager, ERole.StoreStaff)
   @Get('list')
-  public async list(@Query() filter?: ListLocationsRequest): Promise<LocationResponse[]> {
-    const query  = this.mapper.map(filter, ListLocationsRequest, ListLocationsQuery);
-    const result = await this.mediator.execute<ListLocationsQuery, Location[]>(query);
+  public async list(
+    @CurrentUser() user: AuthenticatedUser,
+    @Query() filter?: ListLocationsRequest,
+  ): Promise<LocationResponse[]> {
+    const query              = this.mapper.map(filter, ListLocationsRequest, ListLocationsQuery);
+    query.organizationId     = user.organizationId;
+    const result             = await this.mediator.execute<ListLocationsQuery, Location[]>(query);
     return this.mapper.mapArray(result, Location, LocationResponse);
   }
 

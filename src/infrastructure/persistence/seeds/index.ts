@@ -8,16 +8,28 @@ export * from './roles.seed';
 export * from './seeding.service';
 export * from './stores.seed';
 export * from './suppliers.seed';
-export * from "./seeding.service";
+export * from './ref-countries.seed';
+export * from './ref-states.seed';
+export * from './ref-cities.seed';
+export * from './ref-currencies.seed';
+export * from './ref-languages.seed';
 
-import { SeedingService } from "./seeding.service";
 import { CategoriesSeed } from "./categories.seed";
-import { DefaultOrganizationSeed } from "./default-organization.seed";
-import { InventorySeed } from "./inventory.seed";
-import { ProductsSeed } from "./products.seed";
-import { PurchaseOrdersSeed } from "./purchase-orders.seed";
+import { SeedingService } from "./seeding.service";
 import { RolesSeed } from "./roles.seed";
-import { StoresSeed } from "./stores.seed";
-import { SuppliersSeed } from "./suppliers.seed";
+import { RefCountriesSeed } from './ref-countries.seed';
+import { RefStatesSeed } from './ref-states.seed';
+import { RefCitiesSeed } from './ref-cities.seed';
+import { RefCurrenciesSeed } from './ref-currencies.seed';
+import { RefLanguagesSeed } from './ref-languages.seed';
 
-export default [SeedingService,CategoriesSeed,DefaultOrganizationSeed,InventorySeed,ProductsSeed,PurchaseOrdersSeed,RolesSeed,StoresSeed,SuppliersSeed];
+export default [
+  SeedingService,
+  RolesSeed,
+  CategoriesSeed,
+  RefCountriesSeed,
+  RefStatesSeed,
+  RefCitiesSeed,
+  RefCurrenciesSeed,
+  RefLanguagesSeed
+];

@@ -40,6 +40,11 @@ import {
   ProductLogRepo,
   UnpublishedStockRepo,
   UnpublishedStockMovementRepo,
+  CountryRepo,
+  StateRepo,
+  CityRepo,
+  CurrencyRepo,
+  LanguageRepo,
 } from './persistence';
 
 import {
@@ -75,6 +80,11 @@ import {
   PRODUCT_LOG_REPO,
   UNPUBLISHED_STOCK_REPO,
   UNPUBLISHED_STOCK_MOVEMENT_REPO,
+  COUNTRY_REPO,
+  STATE_REPO,
+  CITY_REPO,
+  CURRENCY_REPO,
+  LANGUAGE_REPO,
 } from '../application/constants';
 
 @Module({})
@@ -134,6 +144,11 @@ export class InfrastructureModule {
         { provide: PRODUCT_LOG_REPO, useClass: ProductLogRepo },
         { provide: UNPUBLISHED_STOCK_REPO, useClass: UnpublishedStockRepo },
         { provide: UNPUBLISHED_STOCK_MOVEMENT_REPO, useClass: UnpublishedStockMovementRepo },
+        { provide: COUNTRY_REPO, useClass: CountryRepo },
+        { provide: STATE_REPO, useClass: StateRepo },
+        { provide: CITY_REPO, useClass: CityRepo },
+        { provide: CURRENCY_REPO, useClass: CurrencyRepo },
+        { provide: LANGUAGE_REPO, useClass: LanguageRepo },
       ],
       exports: [
         EntityMapperProfile,
@@ -169,6 +184,11 @@ export class InfrastructureModule {
         PRODUCT_LOG_REPO,
         UNPUBLISHED_STOCK_REPO,
         UNPUBLISHED_STOCK_MOVEMENT_REPO,
+        COUNTRY_REPO,
+        STATE_REPO,
+        CITY_REPO,
+        CURRENCY_REPO,
+        LANGUAGE_REPO,
       ],
     };
   }

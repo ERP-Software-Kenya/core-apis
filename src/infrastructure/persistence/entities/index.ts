@@ -44,6 +44,11 @@ import { PlatformConfigurationEntity } from './platform-configuration.entity';
 import { OrgMemberEntity } from './org-member.entity';
 import { UnpublishedStockEntity } from './unpublished-stock.entity';
 import { UnpublishedStockMovementEntity } from './unpublished-stock-movement.entity';
+import { CountryEntity } from './country.entity';
+import { StateEntity } from './state.entity';
+import { CityEntity } from './city.entity';
+import { CurrencyEntity } from './currency.entity';
+import { LanguageEntity } from './language.entity';
 
 export * from './location.entity';
 export * from './product-log.entity';
@@ -92,6 +97,11 @@ export * from './platform-configuration.entity';
 export * from './org-member.entity';
 export * from './unpublished-stock.entity';
 export * from './unpublished-stock-movement.entity';
+export * from './country.entity';
+export * from './state.entity';
+export * from './city.entity';
+export * from './currency.entity';
+export * from './language.entity';
 
 export default [
   LocationEntity,
@@ -140,4 +150,9 @@ export default [
   OrgMemberEntity,
   UnpublishedStockEntity,
   UnpublishedStockMovementEntity,
-];
+  CountryEntity,
+  StateEntity,
+  CityEntity,
+  CurrencyEntity,
+  LanguageEntity,
+];

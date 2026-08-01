@@ -30,3 +30,8 @@ export * from './product-image.repo';
 export * from './product-supplier.repo';
 export * from './unpublished-stock.repo';
 export * from './unpublished-stock-movement.repo';
+export * from './country.repo';
+export * from './state.repo';
+export * from './city.repo';
+export * from './currency.repo';
+export * from './language.repo';
