@@ -21,6 +21,7 @@ class CustomersPagedResponse {
 
 @ApiBearerAuth()
 @ApiTags('Customers')
+@UseGuards(ClerkAuthGuard)
 @Controller({ path: 'customers', version: '1' })
 export class CustomersController {
   constructor(
