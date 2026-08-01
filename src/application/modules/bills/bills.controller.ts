@@ -32,6 +32,7 @@ import { GetBillQuery, ListBillsQuery, SearchBillsQuery } from './queries';
 
 @ApiBearerAuth()
 @ApiTags('Bills')
+@UseGuards(ClerkAuthGuard)
 @Controller({ path: 'bills', version: '1' })
 export class BillsController {
   constructor(
