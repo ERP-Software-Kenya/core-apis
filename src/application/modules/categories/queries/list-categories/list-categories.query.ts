@@ -7,6 +7,7 @@ export class ListCategoriesQuery extends QueryBase implements Filter<CategoryFil
   @AutoMap() public isActive?: boolean;
   @AutoMap() public parentId?: string | null;
   @AutoMap() public organizationId?: string;
+  @AutoMap() public hasParent?: boolean;
 
   @AutoMap(() => Array) public $ids?: string[];
 
