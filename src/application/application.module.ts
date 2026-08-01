@@ -31,6 +31,7 @@ import { LocationsModule } from './modules/locations';
 import { ProductLogsModule } from './modules/product-logs';
 import { UnpublishedStockModule } from './modules/unpublished-stock';
 import { SharedModule } from './shared';
+import { CommonUtilityModule } from './modules/common-utility';
 
 import { CqrsMediator, CommonModule } from '../common';
 
@@ -72,6 +73,7 @@ export class ApplicationModule {
         ProductLogsModule,
         UnpublishedStockModule,
         SharedModule,
+        CommonUtilityModule,
         CommonModule,
       ],
       controllers: [],

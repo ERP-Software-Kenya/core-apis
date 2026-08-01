@@ -15,7 +15,7 @@ import { SeedingService } from './infrastructure/persistence/seeds';
 import { AppModule } from './app.module';
 
 const PCKG_VERSION = process.env.npm_package_version || '1.0.0';
-const PCKG_NAME = process.env.npm_package_name || 'core-apis';
+const PCKG_NAME = process.env.npm_package_name || 'ERP-Core-APIs';
 const GLOBAL_VERSION = '1';
 
 async function bootstrap(): Promise<void> {
@@ -35,7 +35,7 @@ async function bootstrap(): Promise<void> {
 
   const seeds = context.get<SeedingService>(SeedingService);
   logger.log(`Seeds starting`);
-  // await seeds.runAsync();
+  await seeds.runAsync();
   logger.log(`Seeds applied`);
 
   await context.close();
