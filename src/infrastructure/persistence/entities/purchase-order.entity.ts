@@ -11,7 +11,7 @@ import {
 } from 'typeorm';
 import { CORE_SCHEMA, ECoreTableName } from './e-core-table-name';
 import { OrganizationEntity } from './organization.entity';
-import { StoreEntity } from './store.entity';
+import { LocationEntity } from './location.entity';
 import { SupplierEntity } from './supplier.entity';
 import { UserEntity } from './user.entity';
 import { PurchaseItemEntity } from './purchase-item.entity';
@@ -33,7 +33,7 @@ export class PurchaseOrderEntity {
 
   @AutoMap()
   @Column({ type: 'uuid' })
-  public storeId: string;
+  public locationId: string;
 
   @AutoMap()
   @Column({ type: 'uuid' })
@@ -89,14 +89,14 @@ export class PurchaseOrderEntity {
   })
   public organization: OrganizationEntity;
 
-  @AutoMap(() => StoreEntity)
-  @ManyToOne(() => StoreEntity, (store) => store.purchaseOrders)
+  @AutoMap(() => LocationEntity)
+  @ManyToOne(() => LocationEntity)
   @JoinColumn({
-    name: 'store_id',
+    name: 'location_id',
     referencedColumnName: 'id',
-    foreignKeyConstraintName: `FK__${ECoreTableName.PurchaseOrders}__${ECoreTableName.Stores}`,
+    foreignKeyConstraintName: `FK__${ECoreTableName.PurchaseOrders}__${ECoreTableName.Locations}`,
   })
-  public store: StoreEntity;
+  public location: LocationEntity;
 
   @AutoMap(() => SupplierEntity)
   @ManyToOne(() => SupplierEntity, (sup) => sup.purchaseOrders)
