@@ -4,7 +4,7 @@ import { EPurchaseOrderStatus } from 'src/application/shared/enums';
 export class PurchaseOrder {
   @AutoMap() public id: string;
   @AutoMap() public organizationId: string;
-  @AutoMap() public storeId: string;
+  @AutoMap() public locationId: string;
   @AutoMap() public supplierId: string;
   @AutoMap() public createdById?: string;
   @AutoMap() public poNumber: string;

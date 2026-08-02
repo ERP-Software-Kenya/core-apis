@@ -95,6 +95,6 @@ export class StoreEntity {
   public userRoles?: UserRoleEntity[];
 
   @AutoMap(() => [PurchaseOrderEntity])
-  @OneToMany(() => PurchaseOrderEntity, (po) => po.store)
+  @OneToMany(() => PurchaseOrderEntity, (po) => po.id)
   public purchaseOrders?: PurchaseOrderEntity[];
 }

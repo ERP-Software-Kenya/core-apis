@@ -69,9 +69,13 @@ export class StoresController {
   @ApiCreatedResponse({ type: StoreResponse })
   @HttpCode(HttpStatus.CREATED)
   @Post()
-  public async create(@Body() body: CreateStoreRequest): Promise<StoreResponse> {
-    const command = this.mapper.map(body, CreateStoreRequest, CreateStoreCommand);
-    const result  = await this.mediator.execute<CreateStoreCommand, Store>(command);
+  public async create(
+    @CurrentUser() user: AuthenticatedUser,
+    @Body() body: CreateStoreRequest,
+  ): Promise<StoreResponse> {
+    const command          = this.mapper.map(body, CreateStoreRequest, CreateStoreCommand);
+    command.organizationId = user.organizationId;
+    const result           = await this.mediator.execute<CreateStoreCommand, Store>(command);
     return this.mapper.map(result, Store, StoreResponse);
   }
 
