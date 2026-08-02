@@ -3,7 +3,7 @@ import { AutoMap } from '@automapper/classes';
 export class Expense {
   @AutoMap() public id: string;
   @AutoMap() public organizationId: string;
-  @AutoMap() public storeId?: string;
+  @AutoMap() public locationId?: string;
   @AutoMap() public category: string;
   @AutoMap() public amount: number;
   @AutoMap(() => Date) public expenseDate: Date;

@@ -3,7 +3,7 @@ import { ApiProperty } from '@nestjs/swagger';
 
 export class ItemReturnResponse {
   @AutoMap() @ApiProperty() public id: string;
-  @AutoMap() @ApiProperty() public storeId: string;
+  @AutoMap() @ApiProperty() public locationId: string;
   @AutoMap() @ApiProperty() public orderId?: string;
   @AutoMap() @ApiProperty() public supplierId?: string;
   @AutoMap() @ApiProperty() public returnType: string;

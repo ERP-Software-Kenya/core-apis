@@ -1,5 +1,5 @@
 export interface ItemReturnFilter {
-  storeId?: string;
+  locationId?: string;
   orderId?: string;
   status?: string;
 }

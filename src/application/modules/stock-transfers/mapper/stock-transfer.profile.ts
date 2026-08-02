@@ -15,6 +15,7 @@ export class StockTransferProfile extends AutomapperProfile {
       createMap(mapper, StockTransferEntity, StockTransfer);
       createMap(mapper, StockTransfer, StockTransferEntity);
       createMap(mapper, CreateStockTransferRequest, CreateStockTransferCommand);
+      createMap(mapper, CreateStockTransferCommand, StockTransfer);
       createMap(mapper, StockTransfer, StockTransferResponse);
       createMap(mapper, CompleteTransferItemRequest, CompleteTransferItemInput);
       createMap(

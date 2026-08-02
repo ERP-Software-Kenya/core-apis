@@ -6,7 +6,6 @@ export * from './products.seed';
 export * from './purchase-orders.seed';
 export * from './roles.seed';
 export * from './seeding.service';
-export * from './stores.seed';
 export * from './suppliers.seed';
 export * from './ref-countries.seed';
 export * from './ref-states.seed';

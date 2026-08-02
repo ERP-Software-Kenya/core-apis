@@ -4,7 +4,6 @@ import { TerminusModule } from '@nestjs/terminus';
 
 import { AuthModule } from './modules/auth';
 import { OrganizationsModule } from './modules/organizations';
-import { StoresModule } from './modules/stores';
 import { CategoriesModule } from './modules/categories';
 import { ProductsModule } from './modules/products';
 import { SuppliersModule } from './modules/suppliers';
@@ -46,7 +45,6 @@ export class ApplicationModule {
         TerminusModule,
         AuthModule,
         OrganizationsModule,
-        StoresModule,
         CategoriesModule,
         ProductsModule,
         SuppliersModule,

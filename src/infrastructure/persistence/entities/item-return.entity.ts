@@ -10,7 +10,7 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 import { CORE_SCHEMA, ECoreTableName } from './e-core-table-name';
-import { StoreEntity } from './store.entity';
+import { LocationEntity } from './location.entity';
 import { OrderEntity } from './order.entity';
 import { SupplierEntity } from './supplier.entity';
 import { ReturnItemEntity } from './return-item.entity';
@@ -24,8 +24,8 @@ export class ItemReturnEntity {
   public id: string;
 
   @AutoMap()
-  @Column({ name: 'store_id', type: 'uuid' })
-  public storeId: string;
+  @Column({ name: 'location_id', type: 'uuid' })
+  public locationId: string;
 
   @AutoMap()
   @Column({ name: 'order_id', type: 'uuid', nullable: true })
@@ -57,14 +57,14 @@ export class ItemReturnEntity {
 
   // ─── Relations ──────────────────────────────────────────────────────────────
 
-  @AutoMap(() => StoreEntity)
-  @ManyToOne(() => StoreEntity)
+  @AutoMap(() => LocationEntity)
+  @ManyToOne(() => LocationEntity)
   @JoinColumn({
-    name: 'store_id',
+    name: 'location_id',
     referencedColumnName: 'id',
-    foreignKeyConstraintName: `FK__${ECoreTableName.ItemReturns}__${ECoreTableName.Stores}`,
+    foreignKeyConstraintName: `FK__${ECoreTableName.ItemReturns}__${ECoreTableName.Locations}`,
   })
-  public store: StoreEntity;
+  public location: LocationEntity;
 
   @AutoMap(() => OrderEntity)
   @ManyToOne(() => OrderEntity)

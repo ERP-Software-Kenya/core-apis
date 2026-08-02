@@ -2,7 +2,7 @@ import { AutoMap } from '@automapper/classes';
 import { Column, CreateDateColumn, DeleteDateColumn, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
 import { CORE_SCHEMA, ECoreTableName } from './e-core-table-name';
 import { OrganizationEntity } from './organization.entity';
-import { StoreEntity } from './store.entity';
+import { LocationEntity } from './location.entity';
 
 const PK_NAME = 'PK_' + ECoreTableName.Expenses;
 
@@ -17,8 +17,8 @@ export class ExpenseEntity {
   public organizationId: string;
 
   @AutoMap()
-  @Column({ name: 'store_id', type: 'uuid', nullable: true })
-  public storeId?: string;
+  @Column({ name: 'location_id', type: 'uuid', nullable: true })
+  public locationId?: string;
 
   @AutoMap()
   @Column({ type: 'varchar', length: 50 })
@@ -57,12 +57,12 @@ export class ExpenseEntity {
   })
   public organization: OrganizationEntity;
 
-  @AutoMap(() => StoreEntity)
-  @ManyToOne(() => StoreEntity)
+  @AutoMap(() => LocationEntity)
+  @ManyToOne(() => LocationEntity)
   @JoinColumn({
-    name: 'store_id',
+    name: 'location_id',
     referencedColumnName: 'id',
-    foreignKeyConstraintName: `FK__${ECoreTableName.Expenses}__${ECoreTableName.Stores}`,
+    foreignKeyConstraintName: `FK__${ECoreTableName.Expenses}__${ECoreTableName.Locations}`,
   })
-  public store?: StoreEntity;
+  public location?: LocationEntity;
 }

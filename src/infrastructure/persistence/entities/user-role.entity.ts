@@ -11,7 +11,7 @@ import {
 import { CORE_SCHEMA, ECoreTableName } from './e-core-table-name';
 import { UserEntity } from './user.entity';
 import { RoleEntity } from './role.entity';
-import { StoreEntity } from './store.entity';
+import { LocationEntity } from './location.entity';
 
 const PK_NAME = 'PK_' + ECoreTableName.UserRoles;
 
@@ -29,10 +29,10 @@ export class UserRoleEntity {
   @Column({ type: 'uuid' })
   public roleId: string;
 
-  /** Optional scope — null means org-wide, non-null scopes role to a specific store */
+  /** Optional scope — null means org-wide, non-null scopes role to a specific location */
   @AutoMap()
-  @Column({ type: 'uuid', nullable: true })
-  public storeId?: string;
+  @Column({ name: 'location_id', type: 'uuid', nullable: true })
+  public locationId?: string;
 
   @AutoMap(() => Date)
   @CreateDateColumn({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
@@ -62,12 +62,12 @@ export class UserRoleEntity {
   })
   public role: RoleEntity;
 
-  @AutoMap(() => StoreEntity)
-  @ManyToOne(() => StoreEntity, (store) => store.userRoles, { nullable: true })
+  @AutoMap(() => LocationEntity)
+  @ManyToOne(() => LocationEntity, { nullable: true })
   @JoinColumn({
-    name: 'store_id',
+    name: 'location_id',
     referencedColumnName: 'id',
-    foreignKeyConstraintName: `FK__${ECoreTableName.UserRoles}__${ECoreTableName.Stores}`,
+    foreignKeyConstraintName: `FK__${ECoreTableName.UserRoles}__${ECoreTableName.Locations}`,
   })
-  public store?: StoreEntity;
+  public location?: LocationEntity;
 }
