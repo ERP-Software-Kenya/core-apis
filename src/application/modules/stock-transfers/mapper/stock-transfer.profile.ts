@@ -2,6 +2,7 @@ import { createMap, forMember, mapFrom, Mapper } from '@automapper/core';
 import { AutomapperProfile, InjectMapper } from '@automapper/nestjs';
 import { Injectable } from '@nestjs/common';
 import { StockTransferEntity } from '../../../../infrastructure/persistence/entities/stock-transfer.entity';
+import { TransferStockOperationInput } from 'src/application/shared';
 import { StockTransfer } from '../domain';
 import { CreateStockTransferRequest, StockTransferResponse, CompleteStockTransferRequest, CompleteTransferItemRequest } from '../models';
 import { CreateStockTransferCommand, CompleteStockTransferCommand, CompleteTransferItemInput } from '../commands';
@@ -18,6 +19,7 @@ export class StockTransferProfile extends AutomapperProfile {
       createMap(mapper, CreateStockTransferCommand, StockTransfer);
       createMap(mapper, StockTransfer, StockTransferResponse);
       createMap(mapper, CompleteTransferItemRequest, CompleteTransferItemInput);
+      createMap(mapper, CompleteTransferItemInput, TransferStockOperationInput);
       createMap(
         mapper,
         CompleteStockTransferRequest,

@@ -5,6 +5,7 @@ import { InjectMapper } from '@automapper/nestjs';
 import { randomUUID } from 'crypto';
 import { InjectPinoLogger, PinoLogger } from 'nestjs-pino';
 import { CommandHandlerStrict } from '../../../../../common';
+import { EStockTransferStatus } from 'src/application/shared';
 import { STOCK_TRANSFER_REPO } from '../../../../constants';
 import { StockTransfer } from '../../domain';
 import { IStockTransferRepo } from '../..';
@@ -22,7 +23,7 @@ export class CreateStockTransferCommandHandler implements ICommandHandler<Create
     this.logger.info(`Executing ${CreateStockTransferCommand.name}`);
     const transfer          = this.mapper.map(command, CreateStockTransferCommand, StockTransfer);
     transfer.transferNumber = `STX-${randomUUID()}`;
-    transfer.status         = 'PENDING';
+    transfer.status         = EStockTransferStatus.Pending;
     return this.repo.createAsync(transfer);
   }
 }

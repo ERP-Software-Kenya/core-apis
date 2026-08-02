@@ -23,7 +23,7 @@ export class UpdateInventoryCommandHandler implements ICommandHandler<UpdateInve
     const patch    = this.mapper.map(command, UpdateInventoryCommand, Inventory);
     (Object.keys(patch) as Array<keyof Inventory>).forEach((key) => {
       if (patch[key] !== undefined) {
-        (existing as unknown as Record<string, unknown>)[key] = patch[key];
+        existing[key] = patch[key] as never;
       }
     });
     return this.repo.updateAsync(existing);

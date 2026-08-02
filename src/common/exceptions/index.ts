@@ -11,5 +11,6 @@ export * from './rpc-not-found.exception';
 export * from './rpc-not-implemented.exception';
 export * from './rpc-not-acceptable.exception';
 export * from './beneficiary';
+export * from './inventory';
 export * from './organizations';
 export * from './users';

@@ -56,6 +56,19 @@ export interface ITransferStockOperation {
   notes?: string;
 }
 
+export class TransferStockOperationInput implements ITransferStockOperation {
+  @AutoMap() public fromInventoryId: string;
+  @AutoMap() public toInventoryId: string;
+  @AutoMap() public organizationId: string;
+  @AutoMap() public productId: string;
+  @AutoMap() public fromLocationId: string;
+  @AutoMap() public toLocationId: string;
+  @AutoMap() public quantity: number;
+  @AutoMap() public performedById?: string;
+  @AutoMap() public referenceId?: string;
+  @AutoMap() public notes?: string;
+}
+
 export class StockMovementInput {
   @AutoMap() public inventoryId: string;
   @AutoMap() public locationId: string;
