@@ -1,6 +1,6 @@
 import { Mapper } from '@automapper/core';
 import { InjectMapper } from '@automapper/nestjs';
-import { Body, Controller, Get, HttpCode, HttpStatus, Param, Post, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, HttpCode, HttpStatus, Param, Post, Query, UseGuards } from '@nestjs/common';
 import { ApiBearerAuth, ApiCreatedResponse, ApiOkResponse, ApiOperation, ApiParam, ApiTags } from '@nestjs/swagger';
 import { InjectPinoLogger, PinoLogger } from 'nestjs-pino';
 import { ClerkAuthGuard, CqrsMediator, CurrentUser, AuthenticatedUser, Roles, RolesGuard, InventoryNotOwnedByOrgException } from 'src/common';
@@ -12,8 +12,9 @@ import {
   PublishUnpublishedStockRequest,
   UnpublishedStockResponse,
   UnpublishedStockMovementResponse,
+  ListUnpublishedStockRequest,
 } from './models';
-import { GetUnpublishedStockQuery, ListMovementsByUnpublishedStockQuery } from './queries';
+import { GetUnpublishedStockQuery, ListMovementsByUnpublishedStockQuery, ListUnpublishedStockQuery } from './queries';
 
 @ApiBearerAuth()
 @ApiTags('Unpublished Stock')
@@ -26,6 +27,17 @@ export class UnpublishedStockController {
     @InjectMapper() protected readonly mapper: Mapper,
     @InjectPinoLogger(UnpublishedStockController.name) protected readonly logger: PinoLogger,
   ) {}
+
+  @ApiOperation({ summary: 'List all unpublished stock records for the current organization' })
+  @ApiOkResponse({ type: [UnpublishedStockResponse] })
+  @HttpCode(HttpStatus.OK)
+  @Get()
+  public async list(@CurrentUser() user: AuthenticatedUser, @Query() filter: ListUnpublishedStockRequest): Promise<UnpublishedStockResponse[]> {
+    const query          = this.mapper.map(filter, ListUnpublishedStockRequest, ListUnpublishedStockQuery);
+    query.organizationId = user.organizationId;
+    const result         = await this.mediator.execute<ListUnpublishedStockQuery, UnpublishedStock[]>(query);
+    return this.mapper.mapArray(result, UnpublishedStock, UnpublishedStockResponse);
+  }
 
   @ApiOperation({ summary: 'Get unpublished stock record by ID' })
   @ApiOkResponse({ type: UnpublishedStockResponse })
