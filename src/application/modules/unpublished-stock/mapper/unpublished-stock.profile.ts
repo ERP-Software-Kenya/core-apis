@@ -9,8 +9,10 @@ import {
   PublishUnpublishedStockRequest,
   UnpublishedStockResponse,
   UnpublishedStockMovementResponse,
+  ListUnpublishedStockRequest,
 } from '../models';
 import { UnpublishedStockMovementInput } from 'src/application/shared';
+import { ListUnpublishedStockQuery } from '../queries';
 
 @Injectable()
 export class UnpublishedStockProfile extends AutomapperProfile {
@@ -26,6 +28,7 @@ export class UnpublishedStockProfile extends AutomapperProfile {
       createMap(mapper, UnpublishedStock, UnpublishedStockResponse);
       createMap(mapper, AddUnpublishedStockRequest, AddUnpublishedStockCommand);
       createMap(mapper, PublishUnpublishedStockRequest, PublishUnpublishedStockCommand);
+      createMap(mapper, ListUnpublishedStockRequest, ListUnpublishedStockQuery);
     };
   }
 }
