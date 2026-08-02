@@ -4,7 +4,7 @@ import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 export class OrderResponse {
   @ApiProperty() @AutoMap() public id: string;
   @ApiProperty() @AutoMap() public orderNumber: string;
-  @ApiProperty() @AutoMap() public storeId: string;
+  @ApiProperty() @AutoMap() public locationId: string;
   @ApiProperty() @AutoMap() public customerId: string;
   @ApiPropertyOptional() @AutoMap() public status?: string;
   @ApiPropertyOptional() @AutoMap() public subtotal?: number;

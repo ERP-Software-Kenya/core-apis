@@ -7,7 +7,6 @@ export const ORGANIZATION_REPO    = 'ORGANIZATION_REPO';
 export const ROLE_REPO            = 'ROLE_REPO';
 export const USER_REPO            = 'USER_REPO';
 export const USER_ROLE_REPO       = 'USER_ROLE_REPO';
-export const STORE_REPO           = 'STORE_REPO';
 export const CATEGORY_REPO        = 'CATEGORY_REPO';
 export const PRODUCT_REPO         = 'PRODUCT_REPO';
 export const SUPPLIER_REPO        = 'SUPPLIER_REPO';

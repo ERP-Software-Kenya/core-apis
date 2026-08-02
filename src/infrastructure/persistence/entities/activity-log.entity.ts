@@ -10,7 +10,7 @@ import {
 import { CORE_SCHEMA, ECoreTableName } from './e-core-table-name';
 import { UserEntity } from './user.entity';
 import { OrganizationEntity } from './organization.entity';
-import { StoreEntity } from './store.entity';
+import { LocationEntity } from './location.entity';
 
 const PK_NAME = 'PK_' + ECoreTableName.ActivityLogs;
 
@@ -55,8 +55,8 @@ export class ActivityLogEntity {
   public organizationId: string;
 
   @AutoMap()
-  @Column({ type: 'uuid', nullable: true })
-  public storeId?: string;
+  @Column({ name: 'location_id', type: 'uuid', nullable: true })
+  public locationId?: string;
 
   @AutoMap(() => String)
   @Column({ type: 'enum', enum: EActivityAction })
@@ -110,12 +110,12 @@ export class ActivityLogEntity {
   })
   public organization: OrganizationEntity;
 
-  @AutoMap(() => StoreEntity)
-  @ManyToOne(() => StoreEntity, { nullable: true })
+  @AutoMap(() => LocationEntity)
+  @ManyToOne(() => LocationEntity, { nullable: true })
   @JoinColumn({
-    name: 'store_id',
+    name: 'location_id',
     referencedColumnName: 'id',
-    foreignKeyConstraintName: `FK__${ECoreTableName.ActivityLogs}__${ECoreTableName.Stores}`,
+    foreignKeyConstraintName: `FK__${ECoreTableName.ActivityLogs}__${ECoreTableName.Locations}`,
   })
-  public store?: StoreEntity;
+  public location?: LocationEntity;
 }

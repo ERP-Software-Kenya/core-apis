@@ -8,6 +8,6 @@ export class CreateUserCommand extends CommandBase {
   @AutoMap() public lastName: string;
   @AutoMap() public phone?: string;
   @AutoMap() public organizationId: string;
-  @AutoMap() public storeId?: string;
+  @AutoMap() public locationId?: string;
   @AutoMap() public isActive?: boolean;
 }

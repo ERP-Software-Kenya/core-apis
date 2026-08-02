@@ -6,6 +6,6 @@ export class UpdateUserRequest {
   @ApiPropertyOptional() @IsOptional() @IsString() @AutoMap() public firstName?: string;
   @ApiPropertyOptional() @IsOptional() @IsString() @AutoMap() public lastName?: string;
   @ApiPropertyOptional() @IsOptional() @IsString() @AutoMap() public phone?: string;
-  @ApiPropertyOptional() @IsOptional() @IsUUID() @AutoMap() public storeId?: string;
+  @ApiPropertyOptional() @IsOptional() @IsUUID() @AutoMap() public locationId?: string;
   @ApiPropertyOptional() @IsOptional() @IsBoolean() @AutoMap() public isActive?: boolean;
 }

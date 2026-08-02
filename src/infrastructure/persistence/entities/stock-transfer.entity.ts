@@ -2,7 +2,7 @@ import { AutoMap } from '@automapper/classes';
 import { Column, CreateDateColumn, DeleteDateColumn, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
 import { CORE_SCHEMA, ECoreTableName } from './e-core-table-name';
 import { OrganizationEntity } from './organization.entity';
-import { StoreEntity } from './store.entity';
+import { LocationEntity } from './location.entity';
 import { StockTransferItemEntity } from './stock-transfer-item.entity';
 
 const PK_NAME = 'PK_' + ECoreTableName.StockTransfers;
@@ -18,12 +18,12 @@ export class StockTransferEntity {
   public organizationId: string;
 
   @AutoMap()
-  @Column({ name: 'from_store_id', type: 'uuid' })
-  public fromStoreId: string;
+  @Column({ name: 'from_location_id', type: 'uuid' })
+  public fromLocationId: string;
 
   @AutoMap()
-  @Column({ name: 'to_store_id', type: 'uuid' })
-  public toStoreId: string;
+  @Column({ name: 'to_location_id', type: 'uuid' })
+  public toLocationId: string;
 
   @AutoMap()
   @Column({ name: 'transfer_number', type: 'varchar', length: 50, unique: true })
@@ -54,23 +54,23 @@ export class StockTransferEntity {
   })
   public organization: OrganizationEntity;
 
-  @AutoMap(() => StoreEntity)
-  @ManyToOne(() => StoreEntity)
+  @AutoMap(() => LocationEntity)
+  @ManyToOne(() => LocationEntity)
   @JoinColumn({
-    name: 'from_store_id',
+    name: 'from_location_id',
     referencedColumnName: 'id',
-    foreignKeyConstraintName: `FK__${ECoreTableName.StockTransfers}__from_${ECoreTableName.Stores}`,
+    foreignKeyConstraintName: `FK__${ECoreTableName.StockTransfers}__from_${ECoreTableName.Locations}`,
   })
-  public fromStore: StoreEntity;
+  public fromLocation: LocationEntity;
 
-  @AutoMap(() => StoreEntity)
-  @ManyToOne(() => StoreEntity)
+  @AutoMap(() => LocationEntity)
+  @ManyToOne(() => LocationEntity)
   @JoinColumn({
-    name: 'to_store_id',
+    name: 'to_location_id',
     referencedColumnName: 'id',
-    foreignKeyConstraintName: `FK__${ECoreTableName.StockTransfers}__to_${ECoreTableName.Stores}`,
+    foreignKeyConstraintName: `FK__${ECoreTableName.StockTransfers}__to_${ECoreTableName.Locations}`,
   })
-  public toStore: StoreEntity;
+  public toLocation: LocationEntity;
 
   @AutoMap(() => [StockTransferItemEntity])
   @OneToMany(() => StockTransferItemEntity, (item) => item.stockTransfer)

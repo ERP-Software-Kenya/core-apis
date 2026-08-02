@@ -8,6 +8,6 @@ export class UserResponse {
   @ApiProperty() @AutoMap() public lastName: string;
   @ApiPropertyOptional() @AutoMap() public phone?: string;
   @ApiProperty() @AutoMap() public organizationId: string;
-  @ApiPropertyOptional() @AutoMap() public storeId?: string;
+  @ApiPropertyOptional() @AutoMap() public locationId?: string;
   @ApiProperty() @AutoMap() public isActive: boolean;
 }

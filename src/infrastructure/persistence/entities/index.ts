@@ -9,7 +9,6 @@ import { PurchaseItemEntity } from './purchase-item.entity';
 import { PurchaseOrderEntity } from './purchase-order.entity';
 import { RoleEntity } from './role.entity';
 import { StockMovementEntity } from './stock-movement.entity';
-import { StoreEntity } from './store.entity';
 import { SupplierEntity } from './supplier.entity';
 import { UserEntity } from './user.entity';
 import { UserRoleEntity } from './user-role.entity';
@@ -30,8 +29,6 @@ import { ReportGenerationLogEntity } from './report-generation-log.entity';
 import { StockEntryEntity } from './stock-entry.entity';
 import { StockTransferEntity } from './stock-transfer.entity';
 import { StockTransferItemEntity } from './stock-transfer-item.entity';
-import { StoreMemberEntity } from './store-member.entity';
-import { StoreProductConfigEntity } from './store-product-config.entity';
 import { ProductVariantEntity } from './product-variant.entity';
 import { ProductImageEntity } from './product-image.entity';
 import { ProductSupplierEntity } from './product-supplier.entity';
@@ -62,7 +59,6 @@ export * from './purchase-item.entity';
 export * from './purchase-order.entity';
 export * from './role.entity';
 export * from './stock-movement.entity';
-export * from './store.entity';
 export * from './supplier.entity';
 export * from './user.entity';
 export * from './user-role.entity';
@@ -83,8 +79,6 @@ export * from './report-generation-log.entity';
 export * from './stock-entry.entity';
 export * from './stock-transfer.entity';
 export * from './stock-transfer-item.entity';
-export * from './store-member.entity';
-export * from './store-product-config.entity';
 export * from './product-variant.entity';
 export * from './product-image.entity';
 export * from './product-supplier.entity';
@@ -115,7 +109,6 @@ export default [
   PurchaseOrderEntity,
   RoleEntity,
   StockMovementEntity,
-  StoreEntity,
   SupplierEntity,
   UserEntity,
   UserRoleEntity,
@@ -136,8 +129,6 @@ export default [
   StockEntryEntity,
   StockTransferEntity,
   StockTransferItemEntity,
-  StoreMemberEntity,
-  StoreProductConfigEntity,
   ProductVariantEntity,
   ProductImageEntity,
   ProductSupplierEntity,
