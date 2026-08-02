@@ -3,7 +3,7 @@ import { InjectMapper } from '@automapper/nestjs';
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { InjectPinoLogger, PinoLogger } from 'nestjs-pino';
-import { EntityManager, LessThanOrEqual, Repository } from 'typeorm';
+import { EntityManager, Repository } from 'typeorm';
 import { BaseRepo, Filter, PageableFilter } from '../../../common';
 import { InventoryEntity } from '../entities';
 import { Inventory, InventoryFilter, IInventoryRepo } from 'src/application/modules/inventory';
@@ -88,9 +88,11 @@ export class InventoryRepo
   }
 
   public async getLowStockAsync(organizationId: string): Promise<Inventory[]> {
-    const entities = await this.internalRepo.find({
-      where: { organizationId, quantityOnHand: LessThanOrEqual('reorder_level') as any },
-    });
+    const entities = await this.internalRepo
+      .createQueryBuilder('inv')
+      .where('inv.organization_id = :organizationId', { organizationId })
+      .andWhere('inv.quantity_on_hand <= inv.reorder_level')
+      .getMany();
     return this.mapper.mapArray(entities, InventoryEntity, Inventory);
   }
 

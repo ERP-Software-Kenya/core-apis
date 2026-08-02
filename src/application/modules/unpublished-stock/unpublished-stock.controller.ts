@@ -3,7 +3,7 @@ import { InjectMapper } from '@automapper/nestjs';
 import { Body, Controller, Get, HttpCode, HttpStatus, Param, Post, UseGuards } from '@nestjs/common';
 import { ApiBearerAuth, ApiCreatedResponse, ApiOkResponse, ApiOperation, ApiParam, ApiTags } from '@nestjs/swagger';
 import { InjectPinoLogger, PinoLogger } from 'nestjs-pino';
-import { ClerkAuthGuard, CqrsMediator, CurrentUser, AuthenticatedUser, Roles, RolesGuard } from 'src/common';
+import { ClerkAuthGuard, CqrsMediator, CurrentUser, AuthenticatedUser, Roles, RolesGuard, InventoryNotOwnedByOrgException } from 'src/common';
 import { ERole } from 'src/infrastructure/persistence/entities/role.entity';
 import { AddUnpublishedStockCommand, PublishUnpublishedStockCommand } from './commands';
 import { UnpublishedStock, UnpublishedStockMovement } from './domain';
@@ -32,10 +32,11 @@ export class UnpublishedStockController {
   @ApiParam({ name: 'id', description: 'UnpublishedStock UUID' })
   @HttpCode(HttpStatus.OK)
   @Get(':id')
-  public async getById(@Param('id') id: string): Promise<UnpublishedStockResponse> {
-    const query = new GetUnpublishedStockQuery();
-    query.id    = id;
+  public async getById(@Param('id') id: string, @CurrentUser() user: AuthenticatedUser): Promise<UnpublishedStockResponse> {
+    const query  = new GetUnpublishedStockQuery();
+    query.id     = id;
     const result = await this.mediator.execute<GetUnpublishedStockQuery, UnpublishedStock>(query);
+    if (result.organizationId !== user.organizationId) throw new InventoryNotOwnedByOrgException();
     return this.mapper.map(result, UnpublishedStock, UnpublishedStockResponse);
   }
 
@@ -44,10 +45,14 @@ export class UnpublishedStockController {
   @ApiParam({ name: 'unpublishedStockId', description: 'UnpublishedStock UUID' })
   @HttpCode(HttpStatus.OK)
   @Get('by-record/:unpublishedStockId')
-  public async listMovements(@Param('unpublishedStockId') unpublishedStockId: string): Promise<UnpublishedStockMovementResponse[]> {
+  public async listMovements(@Param('unpublishedStockId') unpublishedStockId: string, @CurrentUser() user: AuthenticatedUser): Promise<UnpublishedStockMovementResponse[]> {
+    const stockQuery = new GetUnpublishedStockQuery();
+    stockQuery.id    = unpublishedStockId;
+    const stock      = await this.mediator.execute<GetUnpublishedStockQuery, UnpublishedStock>(stockQuery);
+    if (stock.organizationId !== user.organizationId) throw new InventoryNotOwnedByOrgException();
     const query                = new ListMovementsByUnpublishedStockQuery();
     query.unpublishedStockId   = unpublishedStockId;
-    const result = await this.mediator.execute<ListMovementsByUnpublishedStockQuery, UnpublishedStockMovement[]>(query);
+    const result               = await this.mediator.execute<ListMovementsByUnpublishedStockQuery, UnpublishedStockMovement[]>(query);
     return this.mapper.mapArray(result, UnpublishedStockMovement, UnpublishedStockMovementResponse);
   }
 
@@ -56,10 +61,7 @@ export class UnpublishedStockController {
   @HttpCode(HttpStatus.CREATED)
   @Roles(ERole.OrgAdmin, ERole.SuperAdmin, ERole.StoreManager)
   @Post('add')
-  public async addStock(
-    @CurrentUser() user: AuthenticatedUser,
-    @Body() body: AddUnpublishedStockRequest,
-  ): Promise<void> {
+  public async addStock(@CurrentUser() user: AuthenticatedUser, @Body() body: AddUnpublishedStockRequest): Promise<void> {
     const command          = this.mapper.map(body, AddUnpublishedStockRequest, AddUnpublishedStockCommand);
     command.organizationId = user.organizationId;
     command.performedById  = user.dbUserId;
@@ -71,10 +73,7 @@ export class UnpublishedStockController {
   @HttpCode(HttpStatus.CREATED)
   @Roles(ERole.OrgAdmin, ERole.SuperAdmin, ERole.StoreManager)
   @Post('publish')
-  public async publishStock(
-    @CurrentUser() user: AuthenticatedUser,
-    @Body() body: PublishUnpublishedStockRequest,
-  ): Promise<void> {
+  public async publishStock(@CurrentUser() user: AuthenticatedUser, @Body() body: PublishUnpublishedStockRequest): Promise<void> {
     const command          = this.mapper.map(body, PublishUnpublishedStockRequest, PublishUnpublishedStockCommand);
     command.organizationId = user.organizationId;
     command.performedById  = user.dbUserId;

@@ -1,15 +1,17 @@
 import { BadRequestException, Inject, Injectable } from '@nestjs/common';
 import { InjectPinoLogger, PinoLogger } from 'nestjs-pino';
-import { DataSource } from 'typeorm';
+import { DataSource, EntityManager } from 'typeorm';
 import { InjectDataSource } from '@nestjs/typeorm';
-import { EMovementType, EUnpublishedMovementType, UnpublishedStockEntity } from 'src/infrastructure/persistence/entities';
+import { EMovementType, EUnpublishedMovementType, StockTransferEntity, UnpublishedStockEntity } from 'src/infrastructure/persistence/entities';
 import { EProductLogAction } from '../enums/e-product-log-action.enum';
+import { EStockTransferStatus } from '../enums/e-stock-transfer-status';
 import {
   IStockOperation,
   IAdjustStockOperation,
   IPublishStockOperation,
   IAddUnpublishedStockOperation,
   ITransferStockOperation,
+  TransferStockOperationInput,
   StockMovementInput,
   UnpublishedStockMovementInput,
 } from '../interfaces/i-stock-operation.interface';
@@ -18,6 +20,7 @@ import { IInventoryRepo } from 'src/application/modules/inventory';
 import { IStockMovementRepo } from 'src/application/modules/stock-movements';
 import { IUnpublishedStockRepo } from 'src/application/modules/unpublished-stock/i-unpublished-stock.repo';
 import { IUnpublishedStockMovementRepo } from 'src/application/modules/unpublished-stock/i-unpublished-stock-movement.repo';
+import { UnpublishedStockNotFoundException } from 'src/common';
 import { ProductActivityLogger, ProductLogEntry } from './product-activity-logger.service';
 
 @Injectable()
@@ -53,10 +56,12 @@ export class StockOrchestrationService {
   }
 
   public async adjustStock(input: IAdjustStockOperation): Promise<void> {
+    const snapshot       = await this.inventoryRepo.getAsync(input.inventoryId);
+    const quantityBefore = Number(snapshot.quantityOnHand);
     await this.dataSource.transaction(async (manager) => {
       const inv = await this.inventoryRepo.adjustStockAsync(input.inventoryId, input.absoluteQuantity, input.unitCost, manager);
       const op: IStockOperation = { ...input, quantity: input.absoluteQuantity };
-      await this.movementRepo.createWithManagerAsync(this.buildMovementInput(op, EMovementType.Adjustment, 0, inv.quantityOnHand), manager);
+      await this.movementRepo.createWithManagerAsync(this.buildMovementInput(op, EMovementType.Adjustment, quantityBefore, inv.quantityOnHand), manager);
       await this.activityLogger.log(this.buildLogEntry(op, EProductLogAction.StockAdjusted, inv.quantityOnHand));
     });
   }
@@ -99,17 +104,19 @@ export class StockOrchestrationService {
 
   public async publishStock(input: IPublishStockOperation): Promise<void> {
     await this.dataSource.transaction(async (manager) => {
-      const unpublished = await manager.findOneOrFail(UnpublishedStockEntity, { where: { id: input.unpublishedStockId } });
+      const unpublished = await manager.findOne(UnpublishedStockEntity, { where: { id: input.unpublishedStockId, organizationId: input.organizationId } });
+      if (!unpublished) throw new UnpublishedStockNotFoundException();
       if (input.quantity > Number(unpublished.quantityOnHand)) {
         throw new BadRequestException(`Cannot publish more than available unpublished stock: ${unpublished.quantityOnHand}`);
       }
       const { organizationId, locationId, productId } = unpublished;
       const inv = await this.inventoryRepo.findByOrgLocationProductAsync(organizationId, locationId, productId, manager);
       if (!inv) throw new BadRequestException('No published inventory record found for this product/location. Create one first.');
-      const unpBefore = Number(unpublished.quantityOnHand);
-      const invBefore = Number(inv.quantityOnHand);
+      const unpBefore  = Number(unpublished.quantityOnHand);
+      const invBefore  = Number(inv.quantityOnHand);
+      const unitCost   = unpublished.averageCost ? Number(unpublished.averageCost) : undefined;
       const updatedUnp = await this.unpublishedStockRepo.deductStockAsync(input.unpublishedStockId, input.quantity, manager);
-      const updatedInv = await this.inventoryRepo.addStockAsync(inv.id, input.quantity, undefined, manager);
+      const updatedInv = await this.inventoryRepo.addStockAsync(inv.id, input.quantity, unitCost, manager);
       await this.unpublishedMovementRepo.createWithManagerAsync(
         this.buildUnpublishedMovementInput(input.unpublishedStockId, { organizationId, locationId, productId, quantity: input.quantity, performedById: input.performedById, notes: input.notes }, EUnpublishedMovementType.TransferOut, unpBefore, updatedUnp.quantityOnHand),
         manager,
@@ -143,17 +150,30 @@ export class StockOrchestrationService {
 
   public async transferStock(input: ITransferStockOperation): Promise<void> {
     await this.dataSource.transaction(async (manager) => {
-      const src  = await this.inventoryRepo.deductStockAsync(input.fromInventoryId, input.quantity, manager);
-      const dest = await this.inventoryRepo.addStockAsync(input.toInventoryId, input.quantity, undefined, manager);
-
-      const srcOp: IStockOperation  = { inventoryId: input.fromInventoryId, organizationId: input.organizationId, productId: input.productId, locationId: input.fromLocationId, quantity: input.quantity, performedById: input.performedById, referenceId: input.referenceId, notes: input.notes };
-      const destOp: IStockOperation = { inventoryId: input.toInventoryId, organizationId: input.organizationId, productId: input.productId, locationId: input.toLocationId, quantity: input.quantity, performedById: input.performedById, referenceId: input.referenceId, notes: input.notes };
-
-      await this.movementRepo.createWithManagerAsync(this.buildMovementInput(srcOp, EMovementType.TransferOut, src.quantityOnHand + input.quantity, src.quantityOnHand), manager);
-      await this.movementRepo.createWithManagerAsync(this.buildMovementInput(destOp, EMovementType.TransferIn, dest.quantityOnHand - input.quantity, dest.quantityOnHand), manager);
-      await this.activityLogger.log(this.buildLogEntry(srcOp, EProductLogAction.StockTransferredOut, input.quantity));
-      await this.activityLogger.log(this.buildLogEntry(destOp, EProductLogAction.StockTransferredIn, input.quantity));
+      await this.runTransferWithManager(input, manager);
     });
+  }
+
+  public async completeTransferBatch(transferId: string, inputs: TransferStockOperationInput[]): Promise<void> {
+    await this.dataSource.transaction(async (manager) => {
+      for (const input of inputs) {
+        await this.runTransferWithManager(input, manager);
+      }
+      await manager.update(StockTransferEntity, { id: transferId }, { status: EStockTransferStatus.Completed });
+    });
+  }
+
+  private async runTransferWithManager(input: ITransferStockOperation, manager: EntityManager): Promise<void> {
+    const src  = await this.inventoryRepo.deductStockAsync(input.fromInventoryId, input.quantity, manager);
+    const dest = await this.inventoryRepo.addStockAsync(input.toInventoryId, input.quantity, undefined, manager);
+
+    const srcOp: IStockOperation  = { inventoryId: input.fromInventoryId, organizationId: input.organizationId, productId: input.productId, locationId: input.fromLocationId, quantity: input.quantity, performedById: input.performedById, referenceId: input.referenceId, notes: input.notes };
+    const destOp: IStockOperation = { inventoryId: input.toInventoryId, organizationId: input.organizationId, productId: input.productId, locationId: input.toLocationId, quantity: input.quantity, performedById: input.performedById, referenceId: input.referenceId, notes: input.notes };
+
+    await this.movementRepo.createWithManagerAsync(this.buildMovementInput(srcOp, EMovementType.TransferOut, src.quantityOnHand + input.quantity, src.quantityOnHand), manager);
+    await this.movementRepo.createWithManagerAsync(this.buildMovementInput(destOp, EMovementType.TransferIn, dest.quantityOnHand - input.quantity, dest.quantityOnHand), manager);
+    await this.activityLogger.log(this.buildLogEntry(srcOp, EProductLogAction.StockTransferredOut, input.quantity));
+    await this.activityLogger.log(this.buildLogEntry(destOp, EProductLogAction.StockTransferredIn, input.quantity));
   }
 
   private buildMovementInput(op: IStockOperation, movementType: EMovementType, quantityBefore: number, quantityAfter: number): StockMovementInput {
