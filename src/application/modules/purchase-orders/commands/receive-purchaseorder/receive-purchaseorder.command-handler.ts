@@ -65,13 +65,13 @@ export class ReceivePurchaseOrderCommandHandler implements ICommandHandler<Recei
         notes:         command.notes,
       });
 
-      item.quantityReceived = (item.quantityReceived ?? 0) + recv.quantityReceived;
+      item.quantityReceived = Number(item.quantityReceived ?? 0) + Number(recv.quantityReceived);
       await this.itemRepo.updateAsync(item);
     }
 
     const allItems   = await this.itemRepo.allAsync({ purchaseOrderId: command.purchaseOrderId });
-    const allDone    = allItems.every(i => (i.quantityReceived ?? 0) >= i.quantityOrdered);
-    const anyDone    = allItems.some(i => (i.quantityReceived ?? 0) > 0);
+    const allDone    = allItems.every(i => Number(i.quantityReceived ?? 0) >= Number(i.quantityOrdered));
+    const anyDone    = allItems.some(i => Number(i.quantityReceived ?? 0) > 0);
 
     if (allDone) {
       po.status     = EPurchaseOrderStatus.Received;
