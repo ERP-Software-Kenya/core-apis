@@ -15,7 +15,9 @@ export class PurchaseOrderProfile extends AutomapperProfile {
       createMap(mapper, PurchaseOrderEntity, PurchaseOrder);
       createMap(mapper, PurchaseOrder, PurchaseOrderEntity);
       createMap(mapper, CreatePurchaseOrderRequest, CreatePurchaseOrderCommand);
+      createMap(mapper, CreatePurchaseOrderCommand, PurchaseOrder);
       createMap(mapper, UpdatePurchaseOrderRequest, UpdatePurchaseOrderCommand);
+      createMap(mapper, UpdatePurchaseOrderCommand, PurchaseOrder);
       createMap(mapper, PurchaseOrder, PurchaseOrderResponse);
     };
   }

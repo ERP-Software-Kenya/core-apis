@@ -35,13 +35,18 @@ export class SuppliersController {
     };
   }
 
-  @ApiOperation({ summary: 'List all suppliers' })
+  @ApiOperation({ summary: 'List all suppliers for the current organization' })
   @ApiOkResponse({ type: [SupplierResponse] })
   @HttpCode(HttpStatus.OK)
   @Get('list')
-  public async list(@Query() filter?: ListSuppliersRequest): Promise<SupplierResponse[]> {
-    const query = this.mapper.map(filter, ListSuppliersRequest, ListSuppliersQuery);
-    const result = await this.mediator.execute<ListSuppliersQuery, Supplier[]>(query);
+  public async list(
+    @CurrentUser() user: AuthenticatedUser,
+    @Query() filter?: ListSuppliersRequest,
+  ): Promise<SupplierResponse[]> {
+    if (!user.organizationId) return [];
+    const query          = this.mapper.map(filter, ListSuppliersRequest, ListSuppliersQuery);
+    query.organizationId = user.organizationId;
+    const result         = await this.mediator.execute<ListSuppliersQuery, Supplier[]>(query);
     return this.mapper.mapArray(result, Supplier, SupplierResponse);
   }
 

@@ -5,6 +5,7 @@ import { Supplier } from './domain';
 export interface SupplierFilter {
   name?: string;
   isActive?: boolean;
+  organizationId?: string;
 }
 
 export const SUPPLIER_REPO = 'SUPPLIER_REPO';

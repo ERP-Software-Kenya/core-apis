@@ -10,6 +10,7 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 import { CORE_SCHEMA, ECoreTableName } from './e-core-table-name';
+import { OrganizationEntity } from './organization.entity';
 import { StoreEntity } from './store.entity';
 import { SupplierEntity } from './supplier.entity';
 import { UserEntity } from './user.entity';
@@ -25,6 +26,10 @@ export class PurchaseOrderEntity {
   @AutoMap()
   @PrimaryGeneratedColumn('uuid', { primaryKeyConstraintName: PK_NAME })
   public id: string;
+
+  @AutoMap()
+  @Column({ type: 'uuid' })
+  public organizationId: string;
 
   @AutoMap()
   @Column({ type: 'uuid' })
@@ -74,6 +79,15 @@ export class PurchaseOrderEntity {
   public updatedAt?: Date;
 
   // ─── Relations ──────────────────────────────────────────────────────────────
+
+  @AutoMap(() => OrganizationEntity)
+  @ManyToOne(() => OrganizationEntity)
+  @JoinColumn({
+    name: 'organization_id',
+    referencedColumnName: 'id',
+    foreignKeyConstraintName: `FK__${ECoreTableName.PurchaseOrders}__${ECoreTableName.Organizations}`,
+  })
+  public organization: OrganizationEntity;
 
   @AutoMap(() => StoreEntity)
   @ManyToOne(() => StoreEntity, (store) => store.purchaseOrders)
