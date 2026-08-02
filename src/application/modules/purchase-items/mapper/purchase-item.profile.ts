@@ -1,4 +1,4 @@
-import { createMap, Mapper } from '@automapper/core';
+import { createMap, forMember, mapFrom, Mapper } from '@automapper/core';
 import { AutomapperProfile, InjectMapper } from '@automapper/nestjs';
 import { Injectable } from '@nestjs/common';
 import { PurchaseItem } from '../domain';
@@ -15,6 +15,13 @@ export class PurchaseItemProfile extends AutomapperProfile {
       createMap(mapper, PurchaseItemEntity, PurchaseItem);
       createMap(mapper, PurchaseItem, PurchaseItemEntity);
       createMap(mapper, CreatePurchaseItemRequest, CreatePurchaseItemCommand);
+      createMap(
+        mapper,
+        CreatePurchaseItemCommand,
+        PurchaseItem,
+        forMember(dest => dest.totalCost, mapFrom(src => src.quantityOrdered * src.unitCost)),
+        forMember(dest => dest.quantityReceived, mapFrom(() => 0)),
+      );
       createMap(mapper, PurchaseItem, PurchaseItemResponse);
     };
   }

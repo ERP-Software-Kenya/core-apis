@@ -1,10 +1,13 @@
 import { IBaseRepo } from '../../../common';
 import { Filter, PageableFilter } from '../../../common';
 import { PurchaseOrder } from './domain';
+import { EPurchaseOrderStatus } from 'src/application/shared/enums';
 
 export interface PurchaseOrderFilter {
-  search?: string;
-  isActive?: boolean;
+  organizationId?: string;
+  storeId?: string;
+  supplierId?: string;
+  status?: EPurchaseOrderStatus;
 }
 
 export const PURCHASE_ORDER_REPO = 'PURCHASE_ORDER_REPO';

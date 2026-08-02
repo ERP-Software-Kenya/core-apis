@@ -7,6 +7,7 @@ import { SupplierFilter } from '../../domain';
 export class ListSuppliersRequest implements Filter<SupplierFilter> {
   @ApiPropertyOptional() @IsOptional() @IsString() @AutoMap() public name?: string;
   @ApiPropertyOptional() @IsOptional() @IsBoolean() @AutoMap() public isActive?: boolean;
+  @ApiPropertyOptional() @IsOptional() @IsString() @AutoMap() public organizationId?: string;
 
   @ApiPropertyOptional() @IsOptional() @IsString({ each: true }) @AutoMap(() => Array) public $ids?: string[];
 

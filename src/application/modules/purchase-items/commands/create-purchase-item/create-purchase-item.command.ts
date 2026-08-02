@@ -4,6 +4,6 @@ import { CommandBase } from '../../../../../common';
 export class CreatePurchaseItemCommand extends CommandBase {
   @AutoMap() public purchaseOrderId: string;
   @AutoMap() public productId: string;
-  @AutoMap() public quantity: number;
-  @AutoMap() public unitPrice: number;
+  @AutoMap() public quantityOrdered: number;
+  @AutoMap() public unitCost: number;
 }
