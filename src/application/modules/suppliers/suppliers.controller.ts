@@ -26,9 +26,14 @@ export class SuppliersController {
   @ApiOkResponse({ type: SuppliersPagedResponse })
   @HttpCode(HttpStatus.OK)
   @Get()
-  public async search(@Query() filter?: SearchSuppliersRequest): Promise<SuppliersPagedResponse> {
-    const query = this.mapper.map(filter, SearchSuppliersRequest, SearchSuppliersQuery);
-    const result = await this.mediator.execute<SearchSuppliersQuery, IPageable<Supplier>>(query);
+  public async search(
+    @CurrentUser() user: AuthenticatedUser,
+    @Query() filter?: SearchSuppliersRequest,
+  ): Promise<SuppliersPagedResponse> {
+    if (!user.organizationId) return { items: [], page: 1, perPage: 15, totalCount: 0, totalPages: 0 };
+    const query          = this.mapper.map(filter, SearchSuppliersRequest, SearchSuppliersQuery);
+    query.organizationId = user.organizationId;
+    const result         = await this.mediator.execute<SearchSuppliersQuery, IPageable<Supplier>>(query);
     return {
       ...result,
       items: this.mapper.mapArray(result.items, Supplier, SupplierResponse),

@@ -3,8 +3,9 @@ import { AutomapperProfile, InjectMapper } from '@automapper/nestjs';
 import { Injectable } from '@nestjs/common';
 import { PurchaseOrderEntity } from '../../../../infrastructure/persistence/entities';
 import { PurchaseOrder } from '../domain';
-import { CreatePurchaseOrderRequest, PurchaseOrderResponse, UpdatePurchaseOrderRequest } from '../models';
+import { CreatePurchaseOrderRequest, ListPurchaseOrdersRequest, PurchaseOrderResponse, SearchPurchaseOrdersRequest, UpdatePurchaseOrderRequest } from '../models';
 import { CreatePurchaseOrderCommand, UpdatePurchaseOrderCommand } from '../commands';
+import { ListPurchaseOrdersQuery, SearchPurchaseOrdersQuery } from '../queries';
 
 @Injectable()
 export class PurchaseOrderProfile extends AutomapperProfile {
@@ -14,6 +15,8 @@ export class PurchaseOrderProfile extends AutomapperProfile {
     return (mapper: Mapper) => {
       createMap(mapper, PurchaseOrderEntity, PurchaseOrder);
       createMap(mapper, PurchaseOrder, PurchaseOrderEntity);
+      createMap(mapper, SearchPurchaseOrdersRequest, SearchPurchaseOrdersQuery);
+      createMap(mapper, ListPurchaseOrdersRequest, ListPurchaseOrdersQuery);
       createMap(mapper, CreatePurchaseOrderRequest, CreatePurchaseOrderCommand);
       createMap(mapper, CreatePurchaseOrderCommand, PurchaseOrder);
       createMap(mapper, UpdatePurchaseOrderRequest, UpdatePurchaseOrderCommand);
