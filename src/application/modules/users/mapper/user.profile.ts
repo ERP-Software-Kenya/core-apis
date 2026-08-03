@@ -3,8 +3,9 @@ import { AutomapperProfile, InjectMapper } from '@automapper/nestjs';
 import { Injectable } from '@nestjs/common';
 import { UserEntity } from '../../../../infrastructure/persistence/entities/user.entity';
 import { User } from '../domain';
-import { CreateUserRequest, UpdateUserRequest, UserResponse } from '../models';
-import { CreateUserCommand } from '../commands';
+import { AssignUserToOrgRequest, CreateUserRequest, InviteUserRequest, UpdateUserRequest, UpdateUserRolesRequest } from '../models';
+import { CreateUserCommand, InviteUserCommand, UpdateUserRolesCommand, AssignUserToOrgCommand } from '../commands';
+import { UserResponse } from '../models';
 
 @Injectable()
 export class UserProfile extends AutomapperProfile {
@@ -12,10 +13,13 @@ export class UserProfile extends AutomapperProfile {
 
   public get profile() {
     return (mapper: Mapper) => {
-      createMap(mapper, UserEntity, User);
-      createMap(mapper, User, UserEntity);
-      createMap(mapper, CreateUserRequest, CreateUserCommand);
-      createMap(mapper, User, UserResponse);
+      createMap(mapper, UserEntity,           User);
+      createMap(mapper, User,                 UserEntity);
+      createMap(mapper, CreateUserRequest,    CreateUserCommand);
+      createMap(mapper, User,                 UserResponse);
+      createMap(mapper, InviteUserRequest,    InviteUserCommand);
+      createMap(mapper, UpdateUserRolesRequest, UpdateUserRolesCommand);
+      createMap(mapper, AssignUserToOrgRequest, AssignUserToOrgCommand);
     };
   }
 }
