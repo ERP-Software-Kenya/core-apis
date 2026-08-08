@@ -2,7 +2,7 @@ import { AutoMap } from '@automapper/classes';
 
 export class ItemReturn {
   @AutoMap() public id: string;
-  @AutoMap() public storeId: string;
+  @AutoMap() public locationId: string;
   @AutoMap() public orderId?: string;
   @AutoMap() public supplierId?: string;
   @AutoMap() public returnType: string;

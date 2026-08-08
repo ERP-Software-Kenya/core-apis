@@ -4,8 +4,10 @@ export class PurchaseItem {
   @AutoMap() public id: string;
   @AutoMap() public purchaseOrderId: string;
   @AutoMap() public productId: string;
-  @AutoMap() public quantity: number;
-  @AutoMap() public unitPrice: number;
-  @AutoMap() public totalPrice: number;
+  @AutoMap() public quantityOrdered: number;
+  @AutoMap() public quantityReceived: number;
+  @AutoMap() public unitCost: number;
+  @AutoMap() public totalCost: number;
   @AutoMap(() => Date) public createdAt?: Date;
+  @AutoMap(() => Date) public updatedAt?: Date;
 }

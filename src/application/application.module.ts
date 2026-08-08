@@ -2,8 +2,8 @@ import { DynamicModule, Module } from '@nestjs/common';
 import { CqrsModule } from '@nestjs/cqrs';
 import { TerminusModule } from '@nestjs/terminus';
 
+import { AuthModule } from './modules/auth';
 import { OrganizationsModule } from './modules/organizations';
-import { StoresModule } from './modules/stores';
 import { CategoriesModule } from './modules/categories';
 import { ProductsModule } from './modules/products';
 import { SuppliersModule } from './modules/suppliers';
@@ -26,10 +26,17 @@ import { PaymentTransactionsModule } from './modules/payment-transactions';
 import { ItemReturnsModule } from './modules/item-returns';
 import { NotificationsModule } from './modules/notifications';
 import { ReportGenerationLogsModule } from './modules/report-generation-logs';
+import { LocationsModule } from './modules/locations';
+import { ProductLogsModule } from './modules/product-logs';
+import { UnpublishedStockModule } from './modules/unpublished-stock';
+import { SharedModule } from './shared';
+import { CommonUtilityModule } from './modules/common-utility';
 import { VehiclesModule } from './modules/vehicles';
 import { AnalyticsModule } from './modules/analytics';
 import { DriversModule } from './modules/drivers';
 import { MaintenanceModule } from './modules/maintenance';
+import { TripsModule } from './modules/trips';
+import { VehicleExpensesModule } from './modules/vehicle-expenses';
 
 import { CqrsMediator, CommonModule } from '../common';
 
@@ -43,8 +50,8 @@ export class ApplicationModule {
       imports: [
         CqrsModule,
         TerminusModule,
+        AuthModule,
         OrganizationsModule,
-        StoresModule,
         CategoriesModule,
         ProductsModule,
         SuppliersModule,
@@ -67,10 +74,17 @@ export class ApplicationModule {
         ItemReturnsModule,
         NotificationsModule,
         ReportGenerationLogsModule,
+        LocationsModule,
+        ProductLogsModule,
+        UnpublishedStockModule,
+        SharedModule,
+        CommonUtilityModule,
         VehiclesModule,
         AnalyticsModule,
         DriversModule,
         MaintenanceModule,
+        TripsModule,
+        VehicleExpensesModule,
         CommonModule,
       ],
       controllers: [],

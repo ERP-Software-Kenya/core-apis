@@ -25,24 +25,28 @@ export class UserEntity {
   public id: string;
 
   @AutoMap()
-  @Column({ type: 'uuid' })
-  public organizationId: string;
+  @Column({ type: 'uuid', nullable: true })
+  public organizationId?: string;
 
   @AutoMap()
-  @Column({ type: 'varchar', length: 255 })
-  public firstName: string;
+  @Column({ type: 'varchar', length: 255, nullable: true })
+  public firstName?: string;
 
   @AutoMap()
-  @Column({ type: 'varchar', length: 255 })
-  public lastName: string;
+  @Column({ type: 'varchar', length: 255, nullable: true })
+  public lastName?: string;
 
   @AutoMap()
   @Column({ type: 'varchar', length: 255, unique: true })
   public email: string;
 
-  /** Hashed via bcrypt — never expose via API response */
-  @Column({ type: 'varchar', length: 255, select: false })
-  public passwordHash: string;
+  @AutoMap()
+  @Column({ type: 'varchar', length: 255, unique: true, nullable: true })
+  public clerkUserId?: string;
+
+  /** Hashed via bcrypt — never expose via API response. Nullable for Clerk-managed accounts. */
+  @Column({ type: 'varchar', length: 255, select: false, nullable: true })
+  public passwordHash?: string;
 
   @AutoMap()
   @Column({ type: 'varchar', length: 20, nullable: true })

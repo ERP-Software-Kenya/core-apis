@@ -3,4 +3,7 @@ import { User } from './domain';
 
 export type UserFilter = Record<string, never>;
 
-export type IUserRepo = IBaseRepo<User, string, PageableFilter<UserFilter>, Filter<UserFilter>>;
+export interface IUserRepo extends IBaseRepo<User, string, PageableFilter<UserFilter>, Filter<UserFilter>> {
+  findByClerkIdAsync(clerkUserId: string): Promise<User | null>;
+  upsertByClerkIdAsync(clerkUserId: string, data: Partial<User>): Promise<User>;
+}

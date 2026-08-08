@@ -10,7 +10,8 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 import { CORE_SCHEMA, ECoreTableName } from './e-core-table-name';
-import { StoreEntity } from './store.entity';
+import { OrganizationEntity } from './organization.entity';
+import { LocationEntity } from './location.entity';
 import { SupplierEntity } from './supplier.entity';
 import { UserEntity } from './user.entity';
 import { PurchaseItemEntity } from './purchase-item.entity';
@@ -28,7 +29,11 @@ export class PurchaseOrderEntity {
 
   @AutoMap()
   @Column({ type: 'uuid' })
-  public storeId: string;
+  public organizationId: string;
+
+  @AutoMap()
+  @Column({ type: 'uuid' })
+  public locationId: string;
 
   @AutoMap()
   @Column({ type: 'uuid' })
@@ -75,14 +80,23 @@ export class PurchaseOrderEntity {
 
   // ─── Relations ──────────────────────────────────────────────────────────────
 
-  @AutoMap(() => StoreEntity)
-  @ManyToOne(() => StoreEntity, (store) => store.purchaseOrders)
+  @AutoMap(() => OrganizationEntity)
+  @ManyToOne(() => OrganizationEntity)
   @JoinColumn({
-    name: 'store_id',
+    name: 'organization_id',
     referencedColumnName: 'id',
-    foreignKeyConstraintName: `FK__${ECoreTableName.PurchaseOrders}__${ECoreTableName.Stores}`,
+    foreignKeyConstraintName: `FK__${ECoreTableName.PurchaseOrders}__${ECoreTableName.Organizations}`,
   })
-  public store: StoreEntity;
+  public organization: OrganizationEntity;
+
+  @AutoMap(() => LocationEntity)
+  @ManyToOne(() => LocationEntity)
+  @JoinColumn({
+    name: 'location_id',
+    referencedColumnName: 'id',
+    foreignKeyConstraintName: `FK__${ECoreTableName.PurchaseOrders}__${ECoreTableName.Locations}`,
+  })
+  public location: LocationEntity;
 
   @AutoMap(() => SupplierEntity)
   @ManyToOne(() => SupplierEntity, (sup) => sup.purchaseOrders)

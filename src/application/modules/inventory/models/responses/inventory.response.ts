@@ -3,7 +3,17 @@ import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 
 export class InventoryResponse {
   @ApiProperty() @AutoMap() public id: string;
-  @ApiPropertyOptional() @AutoMap() public name?: string;
+  @ApiProperty() @AutoMap() public organizationId: string;
+  @ApiProperty() @AutoMap() public locationId: string;
+  @ApiProperty() @AutoMap() public productId: string;
+  @ApiProperty() @AutoMap() public quantityOnHand: number;
+  @ApiProperty() @AutoMap() public quantityReserved: number;
+  @ApiProperty() @AutoMap() public reorderLevel: number;
+  @ApiPropertyOptional() @AutoMap() public maxStock?: number;
+  @ApiPropertyOptional() @AutoMap() public averageCost?: number;
+  @ApiPropertyOptional() @AutoMap() public binLocation?: string;
+  @ApiPropertyOptional() @AutoMap(() => Date) public createdAt?: Date;
+  @ApiPropertyOptional() @AutoMap(() => Date) public updatedAt?: Date;
 }
 
 export class InventorysPagedResponse {

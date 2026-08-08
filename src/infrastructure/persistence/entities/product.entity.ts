@@ -15,6 +15,9 @@ import { OrganizationEntity } from './organization.entity';
 import { CategoryEntity } from './category.entity';
 import { InventoryEntity } from './inventory.entity';
 import { PurchaseItemEntity } from './purchase-item.entity';
+import { UserEntity } from './user.entity';
+import { ProductImageEntity } from './product-image.entity';
+import { ProductSupplierEntity } from './product-supplier.entity';
 
 const PK_NAME = 'PK_' + ECoreTableName.Products;
 
@@ -44,6 +47,10 @@ export class ProductEntity {
   public categoryId?: string;
 
   @AutoMap()
+  @Column({ type: 'uuid', nullable: true })
+  public createdById?: string;
+
+  @AutoMap()
   @Column({ type: 'varchar', length: 255 })
   public name: string;
 
@@ -63,24 +70,35 @@ export class ProductEntity {
   @Column({ type: 'enum', enum: EProductUnit, default: EProductUnit.Piece })
   public unit: EProductUnit;
 
-  /** Cost price used for valuation */
+  /** Acquisition / landed cost */
   @AutoMap()
-  @Column({ type: 'decimal', precision: 18, scale: 4, default: 0 })
+  @Column({ name: 'cost_price', type: 'decimal', precision: 18, scale: 4, default: 0 })
   public costPrice: number;
 
-  /** Selling price */
+  /** Tier 1 — Walk-in / retail customers */
   @AutoMap()
-  @Column({ type: 'decimal', precision: 18, scale: 4, default: 0 })
-  public sellingPrice: number;
+  @Column({ name: 'retail_price', type: 'decimal', precision: 18, scale: 4, default: 0 })
+  public retailPrice: number;
+
+  /** Tier 2 — Regular / loyal customers */
+  @AutoMap()
+  @Column({ name: 'loyalty_price', type: 'decimal', precision: 18, scale: 4, default: 0 })
+  public loyaltyPrice: number;
+
+  /** Tier 3 — Wholesale / other shops */
+  @AutoMap()
+  @Column({ name: 'wholesale_price', type: 'decimal', precision: 18, scale: 4, default: 0 })
+  public wholesalePrice: number;
+
+  /** Tier 4 — Cost-to-cost transfer price for other branches */
+  @AutoMap()
+  @Column({ name: 'transfer_price', type: 'decimal', precision: 18, scale: 4, default: 0 })
+  public transferPrice: number;
 
   /** Reorder point — triggers low-stock alert */
   @AutoMap()
   @Column({ type: 'integer', default: 0 })
   public reorderPoint: number;
-
-  @AutoMap()
-  @Column({ type: 'varchar', length: 255, nullable: true })
-  public imageUrl?: string;
 
   @AutoMap()
   @Column({ type: 'boolean', default: true })
@@ -117,6 +135,23 @@ export class ProductEntity {
     foreignKeyConstraintName: `FK__${ECoreTableName.Products}__${ECoreTableName.Categories}`,
   })
   public category?: CategoryEntity;
+
+  @AutoMap(() => UserEntity)
+  @ManyToOne(() => UserEntity, { nullable: true })
+  @JoinColumn({
+    name: 'created_by_id',
+    referencedColumnName: 'id',
+    foreignKeyConstraintName: `FK__${ECoreTableName.Products}__${ECoreTableName.Users}`,
+  })
+  public createdBy?: UserEntity;
+
+  @AutoMap(() => [ProductImageEntity])
+  @OneToMany(() => ProductImageEntity, (img) => img.product)
+  public images?: ProductImageEntity[];
+
+  @AutoMap(() => [ProductSupplierEntity])
+  @OneToMany(() => ProductSupplierEntity, (ps) => ps.product)
+  public productSuppliers?: ProductSupplierEntity[];
 
   @AutoMap(() => [InventoryEntity])
   @OneToMany(() => InventoryEntity, (inv) => inv.product)

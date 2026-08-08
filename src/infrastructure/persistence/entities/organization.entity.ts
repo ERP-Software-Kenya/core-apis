@@ -9,7 +9,6 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 import { CORE_SCHEMA, ECoreTableName } from './e-core-table-name';
-import { StoreEntity } from './store.entity';
 import { UserEntity } from './user.entity';
 
 const PK_NAME = 'PK_' + ECoreTableName.Organizations;
@@ -45,6 +44,10 @@ export class OrganizationEntity {
   public country?: string;
 
   @AutoMap()
+  @Column({ type: 'varchar', length: 255, unique: true, nullable: true })
+  public clerkOrgId?: string;
+
+  @AutoMap()
   @Column({ type: 'varchar', length: 255, nullable: true })
   public logoUrl?: string;
 
@@ -65,10 +68,6 @@ export class OrganizationEntity {
   public deletedAt?: Date;
 
   // ─── Relations ──────────────────────────────────────────────────────────────
-
-  @AutoMap(() => [StoreEntity])
-  @OneToMany(() => StoreEntity, (store) => store.organization)
-  public stores?: StoreEntity[];
 
   @AutoMap(() => [UserEntity])
   @OneToMany(() => UserEntity, (user) => user.organization)

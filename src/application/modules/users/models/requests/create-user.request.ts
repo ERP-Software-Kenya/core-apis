@@ -9,6 +9,6 @@ export class CreateUserRequest {
   @ApiProperty() @IsNotEmpty() @IsString() @AutoMap() public lastName: string;
   @ApiPropertyOptional() @IsOptional() @IsString() @AutoMap() public phone?: string;
   @ApiProperty() @IsNotEmpty() @IsUUID() @AutoMap() public organizationId: string;
-  @ApiPropertyOptional() @IsOptional() @IsUUID() @AutoMap() public storeId?: string;
+  @ApiPropertyOptional() @IsOptional() @IsUUID() @AutoMap() public locationId?: string;
   @ApiPropertyOptional() @IsOptional() @IsBoolean() @AutoMap() public isActive?: boolean;
 }

@@ -1,6 +1,5 @@
 import { IBaseRepo, Filter, PageableFilter } from '../../../common';
-import { Customer } from './domain';
+import { Customer, CustomerFilter } from './domain';
 
-export type CustomerFilter = Record<string, never>;
-
+export type { CustomerFilter };
 export type ICustomerRepo = IBaseRepo<Customer, string, PageableFilter<CustomerFilter>, Filter<CustomerFilter>>;

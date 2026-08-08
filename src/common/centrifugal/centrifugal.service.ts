@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-magic-numbers */
 import { isNilOrEmpty, omitBy, size, uuid } from "..";
 import { Injectable } from "@nestjs/common";
 import { PinoLogger } from "nestjs-pino";
@@ -32,8 +31,9 @@ import {
   CentrifugalResponse,
   PublishRequest,
   RPCRequest,
+  BatchPublishResult,
 } from "./domain";
-import { CHANNEL_NAME_REGEX, MAX_CHAR_LENGTH, MAX_TOKEN_EXPIRY, HOURS_IN_ONE_DAY, SECOND, HOUR_IN_SECONDS } from "./constants";
+import { CHANNEL_NAME_REGEX, MAX_CHAR_LENGTH, MAX_TOKEN_EXPIRY, HOURS_IN_ONE_DAY, SECOND, HOUR_IN_SECONDS, EXPONENTIAL_BASE } from "./constants";
 import { isBase64 } from "class-validator";
 import axios, { AxiosError } from "axios";
 import { CentrifugalException } from "./centrifugal.exception";
@@ -68,6 +68,7 @@ export class CentrifugalService implements ICentrifugalService {
         throw this.createError("Invalid token expiry time", CentrifugalErrorCode.INVALID_EXPIRY);
       }
 
+      const channels = options.channels ?? payload.channels;
       const tokenPayload = {
         jti,
         sub: payload.id,
@@ -75,8 +76,7 @@ export class CentrifugalService implements ICentrifugalService {
         exp: now + expiresIn,
         ...(payload.info && { info: payload.info }),
         ...(options.b64info && { b64info: options.b64info }),
-        ...(payload.channels && { channels: payload.channels }),
-        ...(options.channels && { channels: options.channels }),
+        ...(channels && { channels }),
       };
 
       const token = this.jwtService.sign(tokenPayload, {
@@ -267,28 +267,20 @@ export class CentrifugalService implements ICentrifugalService {
   /**
    * Publish to multiple channels at once
    */
-  public async publishBatch<TPayload = unknown>(publications: Array<{ channel: string; data: TPayload; options?: PublishOptions }>): Promise<PublishResponse[]> {
-    const results = await Promise.allSettled(publications.map((pub) => this.publish(pub.channel, pub.data, pub.options)));
+  public async publishBatch<TPayload = unknown>(publications: Array<{ channel: string; data: TPayload; options?: PublishOptions }>): Promise<BatchPublishResult[]> {
+    const settled = await Promise.allSettled(publications.map((pub) => this.publish(pub.channel, pub.data, pub.options)));
 
-    const responses: PublishResponse[] = [];
-    const errors: Array<{ channel: string; error: unknown }> = [];
+    const results: BatchPublishResult[] = settled.map((outcome, index) => ({
+      channel: publications[index].channel,
+      ...(outcome.status === "fulfilled" ? { result: outcome.value } : { error: outcome.reason }),
+    }));
 
-    results.forEach((result, index) => {
-      if (result.status === "fulfilled") {
-        responses.push(result.value);
-      } else {
-        errors.push({
-          channel: publications[index].channel,
-          error: result.reason,
-        });
-      }
-    });
-
-    if (errors.length > 0) {
-      this.logger.warn({ errors, successCount: responses.length, totalCount: publications.length }, "Some batch publications failed");
+    const failCount = results.filter((rr) => rr.error !== undefined).length;
+    if (failCount > 0) {
+      this.logger.warn({ failCount, totalCount: publications.length }, "Some batch publications failed");
     }
 
-    return responses;
+    return results;
   }
   /**
    * Generate a user-specific channel with validation
@@ -296,7 +288,7 @@ export class CentrifugalService implements ICentrifugalService {
    */
   public getChannel(nameSpace: ChannelNamespace, identity: string): string {
     this.validateChannel(identity);
-    return `${nameSpace}_${identity}`;
+    return `${nameSpace}:${identity}`;
   }
   /**
    * Generate a user-specific channel with validation
@@ -347,7 +339,8 @@ export class CentrifugalService implements ICentrifugalService {
         params: {},
       };
 
-      return await this.makeRequest<boolean>(requestBody);
+      await this.makeRequest<Record<string, unknown>>(requestBody);
+      return true;
     } catch (err) {
       this.logger.error({ err }, "Centrifugal health check failed");
       return false;
@@ -406,7 +399,7 @@ export class CentrifugalService implements ICentrifugalService {
       if (response.status < 200 || response.status >= 300) {
         if (response.status >= 500 && retryCount < this.maxRetries) {
           this.logger.warn({ statusCode: response.status, retryCount }, `HTTP ${response.status}, retrying request (${retryCount + 1}/${this.maxRetries})`);
-          await this.sleep(this.retryDelay * Math.pow(2, retryCount));
+          await this.sleep(this.retryDelay * Math.pow(EXPONENTIAL_BASE, retryCount));
           return this.makeRequest<TResponse>(payload, retryCount + 1);
         }
 
@@ -431,7 +424,7 @@ export class CentrifugalService implements ICentrifugalService {
       // Handle network errors (ECONNREFUSED, ETIMEDOUT, etc.)
       if (retryCount < this.maxRetries && (error.code === "ECONNREFUSED" || error.code === "ETIMEDOUT")) {
         this.logger.warn({ error: error.message, retryCount }, `Connection error, retrying request (${retryCount + 1}/${this.maxRetries})`);
-        await this.sleep(this.retryDelay * Math.pow(2, retryCount));
+        await this.sleep(this.retryDelay * Math.pow(EXPONENTIAL_BASE, retryCount));
         return this.makeRequest<TResponse>(payload, retryCount + 1);
       }
 

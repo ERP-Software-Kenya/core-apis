@@ -1,10 +1,10 @@
 import { Mapper } from '@automapper/core';
 import { InjectMapper } from '@automapper/nestjs';
-import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Post, Put, Query } from '@nestjs/common';
+import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Post, Put, Query, UseGuards } from '@nestjs/common';
 import { ApiBearerAuth, ApiCreatedResponse, ApiOkResponse, ApiOperation, ApiParam, ApiTags } from '@nestjs/swagger';
 import { InjectPinoLogger, PinoLogger } from 'nestjs-pino';
-import { CqrsMediator } from '../../../common';
-import { IPageable } from '../../../common';
+import { AuthenticatedUser, ClerkAuthGuard, CqrsMediator, CurrentUser, IPageable, Roles, RolesGuard } from '../../../common';
+import { ERole } from '../../../infrastructure';
 import { CreateSupplierCommand, DeleteSupplierCommand, UpdateSupplierCommand } from './commands';
 import { Supplier } from './domain';
 import { CreateSupplierRequest, SearchSuppliersRequest, ListSuppliersRequest, SupplierResponse, SuppliersPagedResponse, UpdateSupplierRequest } from './models';
@@ -13,6 +13,8 @@ import { GetSupplierQuery, ListSuppliersQuery, SearchSuppliersQuery } from './qu
 @ApiBearerAuth()
 @ApiTags('Suppliers')
 @Controller({ path: 'suppliers', version: '1' })
+@UseGuards(ClerkAuthGuard, RolesGuard)
+@Roles(ERole.OrgAdmin, ERole.SuperAdmin)
 export class SuppliersController {
   constructor(
     protected readonly mediator: CqrsMediator,
@@ -24,22 +26,32 @@ export class SuppliersController {
   @ApiOkResponse({ type: SuppliersPagedResponse })
   @HttpCode(HttpStatus.OK)
   @Get()
-  public async search(@Query() filter?: SearchSuppliersRequest): Promise<SuppliersPagedResponse> {
-    const query = this.mapper.map(filter, SearchSuppliersRequest, SearchSuppliersQuery);
-    const result = await this.mediator.execute<SearchSuppliersQuery, IPageable<Supplier>>(query);
+  public async search(
+    @CurrentUser() user: AuthenticatedUser,
+    @Query() filter?: SearchSuppliersRequest,
+  ): Promise<SuppliersPagedResponse> {
+    if (!user.organizationId) return { items: [], page: 1, perPage: 15, totalCount: 0, totalPages: 0 };
+    const query          = this.mapper.map(filter, SearchSuppliersRequest, SearchSuppliersQuery);
+    query.organizationId = user.organizationId;
+    const result         = await this.mediator.execute<SearchSuppliersQuery, IPageable<Supplier>>(query);
     return {
       ...result,
       items: this.mapper.mapArray(result.items, Supplier, SupplierResponse),
     };
   }
 
-  @ApiOperation({ summary: 'List all suppliers' })
+  @ApiOperation({ summary: 'List all suppliers for the current organization' })
   @ApiOkResponse({ type: [SupplierResponse] })
   @HttpCode(HttpStatus.OK)
   @Get('list')
-  public async list(@Query() filter?: ListSuppliersRequest): Promise<SupplierResponse[]> {
-    const query = this.mapper.map(filter, ListSuppliersRequest, ListSuppliersQuery);
-    const result = await this.mediator.execute<ListSuppliersQuery, Supplier[]>(query);
+  public async list(
+    @CurrentUser() user: AuthenticatedUser,
+    @Query() filter?: ListSuppliersRequest,
+  ): Promise<SupplierResponse[]> {
+    if (!user.organizationId) return [];
+    const query          = this.mapper.map(filter, ListSuppliersRequest, ListSuppliersQuery);
+    query.organizationId = user.organizationId;
+    const result         = await this.mediator.execute<ListSuppliersQuery, Supplier[]>(query);
     return this.mapper.mapArray(result, Supplier, SupplierResponse);
   }
 
@@ -59,9 +71,13 @@ export class SuppliersController {
   @ApiCreatedResponse({ type: SupplierResponse })
   @HttpCode(HttpStatus.CREATED)
   @Post()
-  public async create(@Body() body: CreateSupplierRequest): Promise<SupplierResponse> {
+  public async create(
+    @CurrentUser() user: AuthenticatedUser,
+    @Body() body: CreateSupplierRequest,
+  ): Promise<SupplierResponse> {
     const command = this.mapper.map(body, CreateSupplierRequest, CreateSupplierCommand);
-    const result  = await this.mediator.execute<CreateSupplierCommand, Supplier>(command);
+    command.organizationId = user.organizationId;
+    const result = await this.mediator.execute<CreateSupplierCommand, Supplier>(command);
     return this.mapper.map(result, Supplier, SupplierResponse);
   }
 

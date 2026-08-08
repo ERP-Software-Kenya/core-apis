@@ -8,7 +8,7 @@ import {
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { CORE_SCHEMA, ECoreTableName } from './e-core-table-name';
-import { StoreEntity } from './store.entity';
+import { LocationEntity } from './location.entity';
 import { ProductEntity } from './product.entity';
 import { UserEntity } from './user.entity';
 import { InventoryEntity } from './inventory.entity';
@@ -16,13 +16,17 @@ import { InventoryEntity } from './inventory.entity';
 const PK_NAME = 'PK_' + ECoreTableName.StockMovements;
 
 export enum EMovementType {
-  StockIn       = 'stock_in',
-  StockOut      = 'stock_out',
-  Adjustment    = 'adjustment',
-  Transfer      = 'transfer',
-  Return        = 'return',
-  Damage        = 'damage',
-  PurchaseReceipt = 'purchase_receipt',
+  StockIn                 = 'stock_in',
+  StockOut                = 'stock_out',
+  Adjustment              = 'adjustment',
+  TransferIn              = 'transfer_in',
+  TransferOut             = 'transfer_out',
+  Return                  = 'return',
+  Damage                  = 'damage',
+  WriteOff                = 'write_off',
+  Published               = 'published',
+  Reserved                = 'reserved',
+  ReservationReleased     = 'reservation_released',
 }
 
 @Entity({ schema: CORE_SCHEMA, name: ECoreTableName.StockMovements })
@@ -32,52 +36,52 @@ export class StockMovementEntity {
   public id: string;
 
   @AutoMap()
-  @Column({ type: 'uuid' })
+  @Column({ name: 'inventory_id', type: 'uuid' })
   public inventoryId: string;
 
   @AutoMap()
-  @Column({ type: 'uuid' })
-  public storeId: string;
+  @Column({ name: 'location_id', type: 'uuid' })
+  public locationId: string;
 
   @AutoMap()
-  @Column({ type: 'uuid' })
+  @Column({ name: 'product_id', type: 'uuid' })
   public productId: string;
 
   @AutoMap()
-  @Column({ type: 'uuid', nullable: true })
+  @Column({ name: 'performed_by_id', type: 'uuid', nullable: true })
   public performedById?: string;
 
-  /** Reference to a purchase order, sale, or any business document */
+  /** Reference to a purchase order, sale, transfer, or any business document */
   @AutoMap()
-  @Column({ type: 'uuid', nullable: true })
+  @Column({ name: 'reference_id', type: 'uuid', nullable: true })
   public referenceId?: string;
 
   @AutoMap()
-  @Column({ type: 'varchar', length: 50, nullable: true })
+  @Column({ name: 'reference_type', type: 'varchar', length: 50, nullable: true })
   public referenceType?: string;
 
   @AutoMap(() => String)
-  @Column({ type: 'enum', enum: EMovementType })
+  @Column({ name: 'movement_type', type: 'enum', enum: EMovementType })
   public movementType: EMovementType;
 
-  /** Always positive — sign derived from movementType */
+  /** Always positive — direction derived from movementType */
   @AutoMap()
   @Column({ type: 'decimal', precision: 18, scale: 4 })
   public quantity: number;
 
   /** Snapshot of on-hand qty BEFORE this movement */
   @AutoMap()
-  @Column({ type: 'decimal', precision: 18, scale: 4 })
+  @Column({ name: 'quantity_before', type: 'decimal', precision: 18, scale: 4 })
   public quantityBefore: number;
 
   /** Snapshot of on-hand qty AFTER this movement */
   @AutoMap()
-  @Column({ type: 'decimal', precision: 18, scale: 4 })
+  @Column({ name: 'quantity_after', type: 'decimal', precision: 18, scale: 4 })
   public quantityAfter: number;
 
-  /** Unit cost at time of movement (for FIFO/avg cost valuation) */
+  /** Unit cost at time of movement (for avg cost valuation) */
   @AutoMap()
-  @Column({ type: 'decimal', precision: 18, scale: 4, nullable: true })
+  @Column({ name: 'unit_cost', type: 'decimal', precision: 18, scale: 4, nullable: true })
   public unitCost?: number;
 
   @AutoMap()
@@ -85,7 +89,7 @@ export class StockMovementEntity {
   public notes?: string;
 
   @AutoMap(() => Date)
-  @CreateDateColumn({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
+  @CreateDateColumn({ name: 'created_at', type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
   public createdAt: Date;
 
   // ─── Relations ──────────────────────────────────────────────────────────────
@@ -99,14 +103,14 @@ export class StockMovementEntity {
   })
   public inventory: InventoryEntity;
 
-  @AutoMap(() => StoreEntity)
-  @ManyToOne(() => StoreEntity, (store) => store.stockMovements)
+  @AutoMap(() => LocationEntity)
+  @ManyToOne(() => LocationEntity, (loc) => loc.stockMovements)
   @JoinColumn({
-    name: 'store_id',
+    name: 'location_id',
     referencedColumnName: 'id',
-    foreignKeyConstraintName: `FK__${ECoreTableName.StockMovements}__${ECoreTableName.Stores}`,
+    foreignKeyConstraintName: `FK__${ECoreTableName.StockMovements}__${ECoreTableName.Locations}`,
   })
-  public store: StoreEntity;
+  public location: LocationEntity;
 
   @AutoMap(() => ProductEntity)
   @ManyToOne(() => ProductEntity)
@@ -118,7 +122,7 @@ export class StockMovementEntity {
   public product: ProductEntity;
 
   @AutoMap(() => UserEntity)
-  @ManyToOne(() => UserEntity, (user) => user.stockMovements, { nullable: true })
+  @ManyToOne(() => UserEntity, { nullable: true })
   @JoinColumn({
     name: 'performed_by_id',
     referencedColumnName: 'id',

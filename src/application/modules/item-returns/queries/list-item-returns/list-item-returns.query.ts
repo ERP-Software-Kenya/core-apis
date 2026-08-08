@@ -3,7 +3,7 @@ import { EOrder, Filter, QueryBase } from '../../../../../common';
 import { ItemReturnFilter } from '../../domain';
 
 export class ListItemReturnsQuery extends QueryBase implements Filter<ItemReturnFilter> {
-  @AutoMap() public storeId?: string;
+  @AutoMap() public locationId?: string;
   @AutoMap() public orderId?: string;
   @AutoMap() public status?: string;
 

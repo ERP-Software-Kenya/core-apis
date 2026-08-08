@@ -1,24 +1,45 @@
-import { ApiProperty } from '@nestjs/swagger';
+import { AutoMap } from '@automapper/classes';
+import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
+import { IsArray, IsEnum, IsNumber, IsOptional, IsString, IsUUID, ValidateNested } from 'class-validator';
+import { Type } from 'class-transformer';
+import { EBillStatus } from '../../../../../infrastructure/persistence/entities/bill.entity';
+import { CreateBillItemRequest } from './create-bill-item.request';
 
 export class CreateBillRequest {
-  @ApiProperty() public orgId: string;
-  @ApiProperty() public billNumber: string;
-  @ApiProperty() public amount: number;
-  @ApiProperty({ default: 'UNPAID' }) public status?: string;
+  @ApiProperty() @IsUUID() @AutoMap() public locationId: string;
+  @ApiPropertyOptional() @IsOptional() @IsUUID() @AutoMap() public customerId?: string;
+  @ApiPropertyOptional() @IsOptional() @IsString() @AutoMap() public walkInName?: string;
+  @ApiPropertyOptional() @IsOptional() @IsString() @AutoMap() public walkInPhone?: string;
+  @ApiPropertyOptional() @IsOptional() @IsString() @AutoMap() public walkInGstin?: string;
+  @ApiPropertyOptional() @IsOptional() @IsString() @AutoMap() public notes?: string;
+  @ApiProperty({ type: [CreateBillItemRequest] })
+  @IsArray()
+  @ValidateNested({ each: true })
+  @Type(() => CreateBillItemRequest)
+  @AutoMap(() => [CreateBillItemRequest])
+  public items: CreateBillItemRequest[];
 }
 
 export class UpdateBillRequest {
-  @ApiProperty({ required: false }) public status?: string;
-  @ApiProperty({ required: false }) public amount?: number;
+  @ApiPropertyOptional() @IsOptional() @IsUUID() @AutoMap() public locationId?: string;
+  @ApiPropertyOptional() @IsOptional() @IsUUID() @AutoMap() public customerId?: string;
+  @ApiPropertyOptional() @IsOptional() @IsString() @AutoMap() public walkInName?: string;
+  @ApiPropertyOptional() @IsOptional() @IsString() @AutoMap() public walkInPhone?: string;
+  @ApiPropertyOptional() @IsOptional() @IsString() @AutoMap() public walkInGstin?: string;
+  @ApiPropertyOptional() @IsOptional() @IsString() @AutoMap() public notes?: string;
 }
 
 export class SearchBillsRequest {
-  @ApiProperty({ required: false }) public orgId?: string;
-  @ApiProperty({ required: false }) public status?: string;
-  @ApiProperty({ required: false, default: 1 }) public $page?: number;
-  @ApiProperty({ required: false, default: 20 }) public $perPage?: number;
+  @ApiPropertyOptional() @IsOptional() @IsUUID() @AutoMap() public organizationId?: string;
+  @ApiPropertyOptional() @IsOptional() @IsUUID() @AutoMap() public locationId?: string;
+  @ApiPropertyOptional() @IsOptional() @IsUUID() @AutoMap() public customerId?: string;
+  @ApiPropertyOptional({ enum: EBillStatus }) @IsOptional() @IsEnum(EBillStatus) @AutoMap(() => String) public status?: EBillStatus;
+  @ApiPropertyOptional() @IsOptional() @IsNumber() @AutoMap() public $page?: number;
+  @ApiPropertyOptional() @IsOptional() @IsNumber() @AutoMap() public $perPage?: number;
 }
 
 export class ListBillsRequest {
-  @ApiProperty({ required: false }) public orgId?: string;
+  @ApiPropertyOptional() @IsOptional() @IsUUID() @AutoMap() public organizationId?: string;
+  @ApiPropertyOptional() @IsOptional() @IsUUID() @AutoMap() public locationId?: string;
+  @ApiPropertyOptional({ enum: EBillStatus }) @IsOptional() @IsEnum(EBillStatus) @AutoMap(() => String) public status?: EBillStatus;
 }

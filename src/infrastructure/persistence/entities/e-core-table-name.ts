@@ -1,6 +1,7 @@
 export const CORE_SCHEMA = 'core';
 
 export enum ECoreTableName {
+  Locations             = 'locations',
   Organizations         = 'organizations',
   OrgAddresses          = 'org_addresses',
   OrgMembers            = 'org_members',
@@ -15,11 +16,15 @@ export enum ECoreTableName {
   RolePermissions       = 'role_permissions',
   Categories            = 'categories',
   Products              = 'products',
+  ProductImages         = 'product_images',
+  ProductSuppliers      = 'product_suppliers',
   ProductVariants       = 'product_variants',
   StoreProductConfig    = 'store_product_config',
   Suppliers             = 'suppliers',
   Inventory             = 'inventory',
   StockMovements        = 'stock_movements',
+  UnpublishedStock      = 'unpublished_stock',
+  UnpublishedStockMovements = 'unpublished_stock_movements',
   StockEntries          = 'stock_entries',
   StockTransfers        = 'stock_transfers',
   StockTransferItems    = 'stock_transfer_items',
@@ -31,6 +36,7 @@ export enum ECoreTableName {
   DiscountCoupons       = 'discount_coupons',
   Invoices              = 'invoices',
   Bills                 = 'bills',
+  BillItems             = 'bill_items',
   PaymentTransactions   = 'payment_transactions',
   Expenses              = 'expenses',
   ItemReturns           = 'item_returns',
@@ -39,8 +45,18 @@ export enum ECoreTableName {
   ActivityLogs          = 'activity_logs',
   OrgActivityLogs       = 'org_activity_logs',
   ReportGenerationLogs  = 'report_generation_logs',
+  ProductLogs           = 'product_logs',
   Platforms             = 'platforms',
   PlatformConfigurations = 'platform_configurations',
+
+  // ─── Reference / Lookup tables ───────────────────────────────────────────────
+  Countries             = 'ref_countries',
+  States                = 'ref_states',
+  Cities                = 'ref_cities',
+  Currencies            = 'ref_currencies',
+  Languages             = 'ref_languages',
+
+  // ─── Vehicle & Transportation ─────────────────────────────────────────────────
   Vehicles              = 'vehicles',
   VehicleTypes          = 'vehicle_types',
   VehicleBrands         = 'vehicle_brands',
@@ -51,6 +67,7 @@ export enum ECoreTableName {
   Trips                 = 'trips',
   TripCheckpoints       = 'trip_checkpoints',
   TripGoods             = 'trip_goods',
+  TripEvents            = 'trip_events',
   FuelTransactions      = 'fuel_transactions',
   Maintenance           = 'maintenance',
   MaintenanceTypes      = 'maintenance_types',
@@ -58,10 +75,9 @@ export enum ECoreTableName {
   VehicleExpenses       = 'vehicle_expenses',
   VehicleDocuments      = 'vehicle_documents',
   DriverDocuments       = 'driver_documents',
+  VehicleInsurance      = 'vehicle_insurance',
   TransportationOrders  = 'transportation_orders',
   TransportationOrderItems = 'transportation_order_items',
-  TripEvents            = 'trip_events',
   GpsDevices            = 'gps_devices',
   Alerts                = 'alerts',
-  VehicleInsurance      = 'vehicle_insurance',
 }

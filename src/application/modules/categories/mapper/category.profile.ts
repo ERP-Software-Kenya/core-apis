@@ -3,9 +3,9 @@ import { AutomapperProfile, InjectMapper } from '@automapper/nestjs';
 import { Injectable } from '@nestjs/common';
 import { CategoryEntity } from '../../../../infrastructure/persistence/entities';
 import { Category } from '../domain';
-import { CreateCategoryRequest, CategoryResponse, SearchCategoriesRequest, ListCategoriesRequest, UpdateCategoryRequest } from '../models';
+import { CreateCategoryRequest, CategoryResponse, SearchCategoriesRequest, ListCategoriesRequest, ListParentCategoriesRequest, UpdateCategoryRequest } from '../models';
 import { CreateCategoryCommand, UpdateCategoryCommand } from '../commands';
-import { SearchCategoriesQuery, ListCategoriesQuery } from '../queries';
+import { SearchCategoriesQuery, ListCategoriesQuery, ListParentCategoriesQuery } from '../queries';
 
 @Injectable()
 export class CategoryProfile extends AutomapperProfile {
@@ -16,9 +16,12 @@ export class CategoryProfile extends AutomapperProfile {
       createMap(mapper, CategoryEntity, Category);
       createMap(mapper, Category, CategoryEntity);
       createMap(mapper, CreateCategoryRequest, CreateCategoryCommand);
+      createMap(mapper, CreateCategoryCommand, Category);
       createMap(mapper, UpdateCategoryRequest, UpdateCategoryCommand);
+      createMap(mapper, UpdateCategoryCommand, Category);
       createMap(mapper, SearchCategoriesRequest, SearchCategoriesQuery);
       createMap(mapper, ListCategoriesRequest, ListCategoriesQuery);
+      createMap(mapper, ListParentCategoriesRequest, ListParentCategoriesQuery);
       createMap(mapper, Category, CategoryResponse);
     };
   }

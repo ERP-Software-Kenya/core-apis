@@ -1,11 +1,14 @@
 import { AutoMap } from '@automapper/classes';
-import { ApiProperty } from '@nestjs/swagger';
+import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 
 export class PurchaseItemResponse {
   @ApiProperty() @AutoMap() public id: string;
   @ApiProperty() @AutoMap() public purchaseOrderId: string;
   @ApiProperty() @AutoMap() public productId: string;
-  @ApiProperty() @AutoMap() public quantity: number;
-  @ApiProperty() @AutoMap() public unitPrice: number;
-  @ApiProperty() @AutoMap() public totalPrice: number;
+  @ApiProperty() @AutoMap() public quantityOrdered: number;
+  @ApiProperty() @AutoMap() public quantityReceived: number;
+  @ApiProperty() @AutoMap() public unitCost: number;
+  @ApiProperty() @AutoMap() public totalCost: number;
+  @ApiPropertyOptional() @AutoMap(() => Date) public createdAt?: Date;
+  @ApiPropertyOptional() @AutoMap(() => Date) public updatedAt?: Date;
 }

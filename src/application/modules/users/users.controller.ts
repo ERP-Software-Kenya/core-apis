@@ -1,13 +1,39 @@
 import { Mapper } from '@automapper/core';
 import { InjectMapper } from '@automapper/nestjs';
-import { Body, Controller, Get, HttpCode, HttpStatus, Param, Post } from '@nestjs/common';
-import { ApiBearerAuth, ApiCreatedResponse, ApiOkResponse, ApiOperation, ApiParam, ApiTags } from '@nestjs/swagger';
+import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Post, Put, Query } from '@nestjs/common';
+import { ApiBearerAuth, ApiCreatedResponse, ApiNoContentResponse, ApiOkResponse, ApiOperation, ApiParam, ApiTags } from '@nestjs/swagger';
 import { InjectPinoLogger, PinoLogger } from 'nestjs-pino';
 import { CqrsMediator } from '../../../common';
-import { CreateUserCommand } from './commands';
+import {
+  AssignUserToOrgCommand,
+  BanUserCommand,
+  CreateUserCommand,
+  DeleteUserCommand,
+  InviteUserCommand,
+  RemoveUserFromOrgCommand,
+  UnbanUserCommand,
+  UpdateUserRolesCommand,
+} from './commands';
 import { User } from './domain';
-import { CreateUserRequest, UserResponse } from './models';
-import { GetUserQuery } from './queries';
+import {
+  AssignUserToOrgRequest,
+  CreateUserRequest,
+  InviteUserRequest,
+  ListUsersRequest,
+  SearchUsersRequest,
+  UpdateUserRolesRequest,
+} from './models';
+import {
+  ClerkUserListResponse,
+  ClerkUserRolesResponse,
+  UserResponse,
+} from './models';
+import {
+  GetUserQuery,
+  GetUserRolesQuery,
+  ListUsersQuery,
+  SearchUsersQuery,
+} from './queries';
 
 @ApiBearerAuth()
 @ApiTags('Users')
@@ -19,17 +45,56 @@ export class UsersController {
     @InjectPinoLogger(UsersController.name) protected readonly logger: PinoLogger,
   ) {}
 
-  @ApiOperation({ summary: 'Get user by ID' })
+  // ─── Queries ──────────────────────────────────────────────────────────────
+
+  @ApiOperation({ summary: 'List all users (Clerk)' })
+  @ApiOkResponse({ type: ClerkUserListResponse })
+  @HttpCode(HttpStatus.OK)
+  @Get()
+  public async list(@Query() params: ListUsersRequest): Promise<ClerkUserListResponse> {
+    const query              = new ListUsersQuery();
+    query.limit              = params.limit;
+    query.offset             = params.offset;
+    query.organizationId     = params.organizationId;
+    return this.mediator.execute<ListUsersQuery, ClerkUserListResponse>(query);
+  }
+
+  @ApiOperation({ summary: 'Search users by name / email (Clerk)' })
+  @ApiOkResponse({ type: ClerkUserListResponse })
+  @HttpCode(HttpStatus.OK)
+  @Get('search')
+  public async search(@Query() params: SearchUsersRequest): Promise<ClerkUserListResponse> {
+    const query    = new SearchUsersQuery();
+    query.query    = params.query;
+    query.limit    = params.limit;
+    query.offset   = params.offset;
+    return this.mediator.execute<SearchUsersQuery, ClerkUserListResponse>(query);
+  }
+
+  @ApiOperation({ summary: 'Get user by local DB ID' })
   @ApiOkResponse({ type: UserResponse })
   @ApiParam({ name: 'id', description: 'User UUID' })
   @HttpCode(HttpStatus.OK)
   @Get(':id')
   public async getById(@Param('id') id: string): Promise<UserResponse> {
     const query = new GetUserQuery();
-    query.id = id;
+    query.id    = id;
     const result = await this.mediator.execute<GetUserQuery, User>(query);
     return this.mapper.map(result, User, UserResponse);
   }
+
+  @ApiOperation({ summary: 'Get Clerk roles for a user' })
+  @ApiOkResponse({ type: ClerkUserRolesResponse })
+  @ApiParam({ name: 'clerkUserId', description: 'Clerk user ID (user_xxx)' })
+  @HttpCode(HttpStatus.OK)
+  @Get('clerk/:clerkUserId/roles')
+  public async getRoles(@Param('clerkUserId') clerkUserId: string): Promise<ClerkUserRolesResponse> {
+    const query         = new GetUserRolesQuery();
+    query.clerkUserId   = clerkUserId;
+    return this.mediator.execute<GetUserRolesQuery, ClerkUserRolesResponse>(query);
+  }
+
+  // ─── Commands ─────────────────────────────────────────────────────────────
 
   @ApiOperation({ summary: 'Create a new user' })
   @ApiCreatedResponse({ type: UserResponse })
@@ -39,5 +104,91 @@ export class UsersController {
     const command = this.mapper.map(body, CreateUserRequest, CreateUserCommand);
     const result  = await this.mediator.execute<CreateUserCommand, User>(command);
     return this.mapper.map(result, User, UserResponse);
+  }
+
+  @ApiOperation({ summary: 'Invite a user via Clerk email invitation' })
+  @ApiNoContentResponse()
+  @HttpCode(HttpStatus.NO_CONTENT)
+  @Post('clerk/invite')
+  public async invite(@Body() body: InviteUserRequest): Promise<void> {
+    const command = this.mapper.map(body, InviteUserRequest, InviteUserCommand);
+    await this.mediator.execute<InviteUserCommand, void>(command);
+  }
+
+  @ApiOperation({ summary: 'Update Clerk roles for a user' })
+  @ApiNoContentResponse()
+  @ApiParam({ name: 'clerkUserId', description: 'Clerk user ID (user_xxx)' })
+  @HttpCode(HttpStatus.NO_CONTENT)
+  @Put('clerk/:clerkUserId/roles')
+  public async updateRoles(
+    @Param('clerkUserId') clerkUserId: string,
+    @Body() body: UpdateUserRolesRequest,
+  ): Promise<void> {
+    const command           = this.mapper.map(body, UpdateUserRolesRequest, UpdateUserRolesCommand);
+    command.clerkUserId     = clerkUserId;
+    await this.mediator.execute<UpdateUserRolesCommand, void>(command);
+  }
+
+  @ApiOperation({ summary: 'Ban a user in Clerk (sets isActive=false locally)' })
+  @ApiNoContentResponse()
+  @ApiParam({ name: 'clerkUserId', description: 'Clerk user ID (user_xxx)' })
+  @HttpCode(HttpStatus.NO_CONTENT)
+  @Put('clerk/:clerkUserId/ban')
+  public async ban(@Param('clerkUserId') clerkUserId: string): Promise<void> {
+    const command         = new BanUserCommand();
+    command.clerkUserId   = clerkUserId;
+    await this.mediator.execute<BanUserCommand, void>(command);
+  }
+
+  @ApiOperation({ summary: 'Unban a user in Clerk (sets isActive=true locally)' })
+  @ApiNoContentResponse()
+  @ApiParam({ name: 'clerkUserId', description: 'Clerk user ID (user_xxx)' })
+  @HttpCode(HttpStatus.NO_CONTENT)
+  @Put('clerk/:clerkUserId/unban')
+  public async unban(@Param('clerkUserId') clerkUserId: string): Promise<void> {
+    const command         = new UnbanUserCommand();
+    command.clerkUserId   = clerkUserId;
+    await this.mediator.execute<UnbanUserCommand, void>(command);
+  }
+
+  @ApiOperation({ summary: 'Delete a user from Clerk and local DB' })
+  @ApiNoContentResponse()
+  @ApiParam({ name: 'clerkUserId', description: 'Clerk user ID (user_xxx)' })
+  @HttpCode(HttpStatus.NO_CONTENT)
+  @Delete('clerk/:clerkUserId')
+  public async deleteClerkUser(@Param('clerkUserId') clerkUserId: string): Promise<void> {
+    const command         = new DeleteUserCommand();
+    command.clerkUserId   = clerkUserId;
+    await this.mediator.execute<DeleteUserCommand, void>(command);
+  }
+
+  @ApiOperation({ summary: 'Assign a user to a Clerk organization' })
+  @ApiNoContentResponse()
+  @ApiParam({ name: 'clerkUserId', description: 'Clerk user ID (user_xxx)' })
+  @HttpCode(HttpStatus.NO_CONTENT)
+  @Post('clerk/:clerkUserId/organizations')
+  public async assignToOrg(
+    @Param('clerkUserId') clerkUserId: string,
+    @Body() body: AssignUserToOrgRequest,
+  ): Promise<void> {
+    const command           = this.mapper.map(body, AssignUserToOrgRequest, AssignUserToOrgCommand);
+    command.clerkUserId     = clerkUserId;
+    await this.mediator.execute<AssignUserToOrgCommand, void>(command);
+  }
+
+  @ApiOperation({ summary: 'Remove a user from a Clerk organization' })
+  @ApiNoContentResponse()
+  @ApiParam({ name: 'clerkUserId', description: 'Clerk user ID (user_xxx)' })
+  @ApiParam({ name: 'organizationId', description: 'Clerk organization ID (org_xxx)' })
+  @HttpCode(HttpStatus.NO_CONTENT)
+  @Delete('clerk/:clerkUserId/organizations/:organizationId')
+  public async removeFromOrg(
+    @Param('clerkUserId') clerkUserId: string,
+    @Param('organizationId') organizationId: string,
+  ): Promise<void> {
+    const command             = new RemoveUserFromOrgCommand();
+    command.clerkUserId       = clerkUserId;
+    command.organizationId    = organizationId;
+    await this.mediator.execute<RemoveUserFromOrgCommand, void>(command);
   }
 }
