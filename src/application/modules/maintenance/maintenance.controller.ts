@@ -31,7 +31,7 @@ export class MaintenanceController {
   ): Promise<MaintenanceResponse> {
     const command           = this.mapper.map(body, CreateMaintenanceRequest, CreateMaintenanceCommand);
     command.organizationId  = user?.organizationId ?? FALLBACK_ORG_ID;
-    command.createdBy       = user?.dbUserId ?? user?.clerkUserId;
+    command.createdBy       = user?.dbUserId;
     const result            = await this.mediator.execute<CreateMaintenanceCommand, Maintenance>(command);
     return this.mapper.map(result, Maintenance, MaintenanceResponse);
   }

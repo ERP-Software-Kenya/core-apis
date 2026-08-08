@@ -1,4 +1,5 @@
 import { AutoMap } from '@automapper/classes';
+import { Type } from 'class-transformer';
 import { IsDate, IsNotEmpty, IsNumber, IsOptional, IsString, IsUUID } from 'class-validator';
 
 export class CreateTripRequest {
@@ -34,6 +35,7 @@ export class CreateTripRequest {
 
   @AutoMap()
   @IsNotEmpty()
+  @Type(() => Date)
   @IsDate()
   public startDatetime: Date;
 

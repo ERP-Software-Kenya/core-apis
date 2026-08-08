@@ -6,6 +6,7 @@ import { Trip } from '../domain';
 import { CreateTripCommand, UpdateTripCommand } from '../commands';
 import { SearchTripsQuery } from '../queries/search-trips/search-trips.query';
 import { ListTripsQuery } from '../queries/list-trips/list-trips.query';
+import { TripEntity } from '../../../../infrastructure/persistence/entities';
 
 @Injectable()
 export class TripProfile extends AutomapperProfile {
@@ -15,6 +16,7 @@ export class TripProfile extends AutomapperProfile {
 
   public override get profile(): MappingProfile {
     return (mapper) => {
+      createMap(mapper, TripEntity, Trip);
       createMap(mapper, CreateTripRequest, CreateTripCommand);
       createMap(mapper, CreateTripCommand, Trip);
       createMap(mapper, UpdateTripRequest, UpdateTripCommand);

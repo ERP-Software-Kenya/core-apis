@@ -6,6 +6,7 @@ import { Driver } from '../domain';
 import { CreateDriverCommand, UpdateDriverCommand } from '../commands';
 import { SearchDriversQuery } from '../queries/search-drivers/search-drivers.query';
 import { ListDriversQuery } from '../queries/list-drivers/list-drivers.query';
+import { DriverEntity } from '../../../../infrastructure/persistence/entities';
 
 @Injectable()
 export class DriverProfile extends AutomapperProfile {
@@ -15,6 +16,7 @@ export class DriverProfile extends AutomapperProfile {
 
   public override get profile(): MappingProfile {
     return (mapper) => {
+      createMap(mapper, DriverEntity, Driver);
       createMap(mapper, CreateDriverRequest, CreateDriverCommand);
       createMap(mapper, CreateDriverCommand, Driver);
       createMap(mapper, UpdateDriverRequest, UpdateDriverCommand);

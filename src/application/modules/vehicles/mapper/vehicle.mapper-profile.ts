@@ -6,6 +6,7 @@ import { Vehicle } from '../domain';
 import { CreateVehicleCommand, UpdateVehicleCommand } from '../commands';
 import { SearchVehiclesQuery } from '../queries/search-vehicles/search-vehicles.query';
 import { ListVehiclesQuery } from '../queries/list-vehicles/list-vehicles.query';
+import { VehicleEntity } from '../../../../infrastructure/persistence/entities';
 
 @Injectable()
 export class VehicleProfile extends AutomapperProfile {
@@ -15,6 +16,7 @@ export class VehicleProfile extends AutomapperProfile {
 
   public override get profile(): MappingProfile {
     return (mapper) => {
+      createMap(mapper, VehicleEntity, Vehicle);
       createMap(mapper, CreateVehicleRequest, CreateVehicleCommand);
       createMap(mapper, CreateVehicleCommand, Vehicle);
       createMap(mapper, UpdateVehicleRequest, UpdateVehicleCommand);
