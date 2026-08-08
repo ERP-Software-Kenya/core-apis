@@ -13,7 +13,6 @@ export * from './ref-cities.seed';
 export * from './ref-currencies.seed';
 export * from './ref-languages.seed';
 
-import { CategoriesSeed } from "./categories.seed";
 import { SeedingService } from "./seeding.service";
 import { RolesSeed } from "./roles.seed";
 import { RefCountriesSeed } from './ref-countries.seed';
@@ -25,7 +24,6 @@ import { RefLanguagesSeed } from './ref-languages.seed';
 export default [
   SeedingService,
   RolesSeed,
-  CategoriesSeed,
   RefCountriesSeed,
   RefStatesSeed,
   RefCitiesSeed,

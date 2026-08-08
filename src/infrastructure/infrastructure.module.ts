@@ -44,6 +44,12 @@ import {
   CityRepo,
   CurrencyRepo,
   LanguageRepo,
+  VehicleRepo,
+  DriverRepo,
+  TripRepo,
+  FuelTransactionRepo,
+  MaintenanceRepo,
+  VehicleExpenseRepo,
   PageAccessRepo,
 } from './persistence';
 
@@ -84,6 +90,12 @@ import {
   CITY_REPO,
   CURRENCY_REPO,
   LANGUAGE_REPO,
+  VEHICLE_REPO,
+  DRIVER_REPO,
+  TRIP_REPO,
+  FUEL_TRANSACTION_REPO,
+  MAINTENANCE_REPO,
+  VEHICLE_EXPENSE_REPO,
   PAGE_ACCESS_REPO,
 } from '../application/constants';
 
@@ -148,6 +160,12 @@ export class InfrastructureModule {
         { provide: CITY_REPO, useClass: CityRepo },
         { provide: CURRENCY_REPO, useClass: CurrencyRepo },
         { provide: LANGUAGE_REPO, useClass: LanguageRepo },
+        { provide: VEHICLE_REPO, useClass: VehicleRepo },
+        { provide: DRIVER_REPO, useClass: DriverRepo },
+        { provide: TRIP_REPO, useClass: TripRepo },
+        { provide: FUEL_TRANSACTION_REPO, useClass: FuelTransactionRepo },
+        { provide: MAINTENANCE_REPO, useClass: MaintenanceRepo },
+        { provide: VEHICLE_EXPENSE_REPO, useClass: VehicleExpenseRepo },
         { provide: PAGE_ACCESS_REPO, useClass: PageAccessRepo },
       ],
       exports: [
@@ -188,6 +206,12 @@ export class InfrastructureModule {
         CITY_REPO,
         CURRENCY_REPO,
         LANGUAGE_REPO,
+        VEHICLE_REPO,
+        DRIVER_REPO,
+        TRIP_REPO,
+        FUEL_TRANSACTION_REPO,
+        MAINTENANCE_REPO,
+        VEHICLE_EXPENSE_REPO,
         PAGE_ACCESS_REPO,
       ],
     };

@@ -47,6 +47,30 @@ import { CityEntity } from './city.entity';
 import { CurrencyEntity } from './currency.entity';
 import { LanguageEntity } from './language.entity';
 import { PageAccessEntity } from './page-access.entity';
+// Vehicle & Transportation
+import { VehicleTypeEntity } from './vehicle-type.entity';
+import { VehicleBrandEntity } from './vehicle-brand.entity';
+import { FuelTypeEntity } from './fuel-type.entity';
+import { VehicleEntity } from './vehicle.entity';
+import { DriverEntity } from './driver.entity';
+import { VehicleDriverAssignmentEntity } from './vehicle-driver-assignment.entity';
+import { VehicleLocationEntity } from './vehicle-location.entity';
+import { TripEntity } from './trip.entity';
+import { TripCheckpointEntity } from './trip-checkpoint.entity';
+import { TripGoodsEntity } from './trip-goods.entity';
+import { TripEventEntity } from './trip-event.entity';
+import { FuelTransactionEntity } from './fuel-transaction.entity';
+import { MaintenanceEntity } from './maintenance.entity';
+import { MaintenanceTypeEntity } from './maintenance-type.entity';
+import { MaintenancePartEntity } from './maintenance-part.entity';
+import { VehicleExpenseEntity } from './vehicle-expense.entity';
+import { VehicleDocumentEntity } from './vehicle-document.entity';
+import { DriverDocumentEntity } from './driver-document.entity';
+import { VehicleInsuranceEntity } from './vehicle-insurance.entity';
+import { TransportationOrderEntity } from './transportation-order.entity';
+import { TransportationOrderItemEntity } from './transportation-order-item.entity';
+import { GpsDeviceEntity } from './gps-device.entity';
+import { AlertEntity } from './alert.entity';
 
 export * from './location.entity';
 export * from './product-log.entity';
@@ -98,6 +122,29 @@ export * from './city.entity';
 export * from './currency.entity';
 export * from './language.entity';
 export * from './page-access.entity';
+export * from './vehicle-type.entity';
+export * from './vehicle-brand.entity';
+export * from './fuel-type.entity';
+export * from './vehicle.entity';
+export * from './driver.entity';
+export * from './vehicle-driver-assignment.entity';
+export * from './vehicle-location.entity';
+export * from './trip.entity';
+export * from './trip-checkpoint.entity';
+export * from './trip-goods.entity';
+export * from './trip-event.entity';
+export * from './fuel-transaction.entity';
+export * from './maintenance.entity';
+export * from './maintenance-type.entity';
+export * from './maintenance-part.entity';
+export * from './vehicle-expense.entity';
+export * from './vehicle-document.entity';
+export * from './driver-document.entity';
+export * from './vehicle-insurance.entity';
+export * from './transportation-order.entity';
+export * from './transportation-order-item.entity';
+export * from './gps-device.entity';
+export * from './alert.entity';
 
 export default [
   LocationEntity,
@@ -149,4 +196,27 @@ export default [
   CurrencyEntity,
   LanguageEntity,
   PageAccessEntity,
-];
+  VehicleTypeEntity,
+  VehicleBrandEntity,
+  FuelTypeEntity,
+  VehicleEntity,
+  DriverEntity,
+  VehicleDriverAssignmentEntity,
+  VehicleLocationEntity,
+  TripEntity,
+  TripCheckpointEntity,
+  TripGoodsEntity,
+  TripEventEntity,
+  FuelTransactionEntity,
+  MaintenanceEntity,
+  MaintenanceTypeEntity,
+  MaintenancePartEntity,
+  VehicleExpenseEntity,
+  VehicleDocumentEntity,
+  DriverDocumentEntity,
+  VehicleInsuranceEntity,
+  TransportationOrderEntity,
+  TransportationOrderItemEntity,
+  GpsDeviceEntity,
+  AlertEntity,
+];

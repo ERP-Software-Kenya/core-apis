@@ -1,0 +1,401 @@
+Vehicle & Transportation Management Database Design
+1. vehicles
+
+Stores master information about vehicles.
+
+Column	Type
+id	UUID PK
+vehicle_number	VARCHAR(30) UNIQUE
+vin_number	VARCHAR(100)
+registration_number	VARCHAR(50)
+company_id	UUID
+vehicle_type_id	UUID FK
+brand_id	UUID FK
+model	VARCHAR(100)
+manufacture_year	INT
+color	VARCHAR(50)
+fuel_type_id	UUID FK
+tank_capacity	DECIMAL
+payload_capacity	DECIMAL
+mileage	DECIMAL
+purchase_date	DATE
+purchase_price	DECIMAL
+insurance_expiry	DATE
+registration_expiry	DATE
+status	ENUM
+image_url	TEXT
+notes	TEXT
+created_at	TIMESTAMP
+updated_at	TIMESTAMP
+2. vehicle_types
+id
+name
+description
+
+Examples
+
+Truck
+Van
+Pickup
+Tempo
+Bike
+Trailer
+3. vehicle_brands
+id
+brand_name
+
+Examples
+
+Tata
+Ashok Leyland
+Mahindra
+Volvo
+4. fuel_types
+id
+name
+
+Examples
+
+Diesel
+Petrol
+CNG
+EV
+Hybrid
+5. drivers
+id
+employee_id
+first_name
+last_name
+phone
+email
+license_number
+license_type
+license_expiry
+joining_date
+experience_years
+blood_group
+address
+emergency_contact
+status
+profile_image
+created_at
+updated_at
+6. vehicle_driver_assignments
+
+Keeps assignment history.
+
+id
+vehicle_id
+driver_id
+assigned_date
+released_date
+is_active
+remarks
+7. vehicle_locations
+
+Stores GPS history.
+
+id
+vehicle_id
+latitude
+longitude
+speed
+heading
+altitude
+fuel_level
+odometer
+engine_status
+gps_time
+created_at
+
+Never overwrite.
+
+Always insert new records.
+
+8. trips
+
+Transportation Job
+
+id
+trip_number
+vehicle_id
+driver_id
+customer_id
+pickup_location
+drop_location
+start_datetime
+end_datetime
+estimated_distance
+actual_distance
+estimated_duration
+actual_duration
+trip_status
+priority
+remarks
+created_at
+9. trip_checkpoints
+id
+trip_id
+location
+latitude
+longitude
+arrival_time
+departure_time
+sequence
+10. trip_goods
+id
+trip_id
+product_id
+quantity
+weight
+volume
+remarks
+11. fuel_transactions
+id
+vehicle_id
+driver_id
+trip_id
+fuel_station
+fuel_quantity
+price_per_liter
+total_cost
+odometer
+payment_mode
+receipt_image
+filled_at
+12. maintenance
+id
+vehicle_id
+maintenance_type_id
+service_center
+description
+cost
+service_date
+next_service_date
+odometer
+invoice_number
+status
+created_by
+13. maintenance_types
+id
+name
+
+Examples
+
+Oil Change
+Tyre Change
+Engine Repair
+14. maintenance_parts
+id
+maintenance_id
+part_name
+quantity
+price
+15. vehicle_expenses
+id
+vehicle_id
+trip_id
+expense_type
+amount
+expense_date
+remarks
+attachment
+
+Expense Type
+
+Fuel
+Toll
+Parking
+Insurance
+Tax
+Washing
+Repair
+16. vehicle_documents
+id
+vehicle_id
+document_type
+document_number
+issue_date
+expiry_date
+file_url
+17. driver_documents
+id
+driver_id
+document_type
+file_url
+expiry_date
+18. customers
+id
+company_name
+contact_person
+phone
+email
+gst_number
+address
+19. transportation_orders
+
+This is the booking created by admin.
+
+id
+order_number
+customer_id
+pickup_address
+delivery_address
+expected_delivery
+status
+priority
+remarks
+20. transportation_order_items
+id
+order_id
+product_id
+quantity
+weight
+volume
+21. trip_events
+
+Timeline
+
+id
+trip_id
+event_type
+title
+description
+latitude
+longitude
+created_at
+
+Examples
+
+Started
+Loading
+Unloading
+Reached
+Fuel Added
+Delay
+Maintenance
+22. gps_devices
+id
+device_number
+imei
+vehicle_id
+provider
+status
+last_sync
+23. alerts
+id
+vehicle_id
+driver_id
+alert_type
+severity
+message
+status
+created_at
+
+Examples
+
+Overspeed
+Low Fuel
+Offline
+Maintenance Due
+Insurance Expiring
+24. vehicle_insurance
+id
+vehicle_id
+provider
+policy_number
+start_date
+expiry_date
+premium
+coverage
+25. vehicle_performance_summary
+
+(Optional Materialized View)
+
+vehicle_id
+
+total_trips
+
+total_distance
+
+fuel_used
+
+fuel_cost
+
+maintenance_cost
+
+expense
+
+average_mileage
+
+average_speed
+
+running_hours
+
+idle_hours
+
+performance_score
+Relationships
+Vehicle
+   │
+   ├──────── Fuel Transactions
+   │
+   ├──────── Maintenance
+   │
+   ├──────── Expenses
+   │
+   ├──────── Documents
+   │
+   ├──────── GPS Locations
+   │
+   ├──────── Driver Assignment
+   │
+   └──────── Trips
+                    │
+                    ├──────── Checkpoints
+                    ├──────── Goods
+                    └──────── Timeline
+
+Driver
+   │
+   ├──────── Assignments
+   ├──────── Trips
+   └──────── Documents
+
+Customer
+      │
+      └──────── Transportation Orders
+                     │
+                     └──────── Trips
+Dashboard KPIs
+
+With this schema, you can easily compute:
+
+Total Vehicles
+Active Vehicles
+Vehicles in Transit
+Idle Vehicles
+Under Maintenance
+Available Vehicles
+Driver Utilization
+Total Distance
+Fuel Consumption
+Fuel Cost
+Average Mileage
+Cost per Kilometer
+Total Trips
+Delayed Trips
+Vehicle-wise Performance
+Driver Performance
+Monthly Expenses
+Monthly Maintenance Cost
+Top Performing Vehicles
+Most Fuel Efficient Vehicles
+Highest Expense Vehicles
+Upcoming Maintenance
+Insurance Expiry
+Registration Expiry
+Live Vehicle Tracking
+Vehicle Availability
+Transportation Job Status
+Delivery Success Rate

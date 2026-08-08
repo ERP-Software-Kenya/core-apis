@@ -31,8 +31,15 @@ import { ProductLogsModule } from './modules/product-logs';
 import { UnpublishedStockModule } from './modules/unpublished-stock';
 import { SharedModule } from './shared';
 import { CommonUtilityModule } from './modules/common-utility';
+import { VehiclesModule } from './modules/vehicles';
+import { AnalyticsModule } from './modules/analytics';
+import { DriversModule } from './modules/drivers';
+import { MaintenanceModule } from './modules/maintenance';
+import { TripsModule } from './modules/trips';
+import { VehicleExpensesModule } from './modules/vehicle-expenses';
 
 import { CqrsMediator, CommonModule } from '../common';
+
 
 @Module({})
 export class ApplicationModule {
@@ -72,6 +79,12 @@ export class ApplicationModule {
         UnpublishedStockModule,
         SharedModule,
         CommonUtilityModule,
+        VehiclesModule,
+        AnalyticsModule,
+        DriversModule,
+        MaintenanceModule,
+        TripsModule,
+        VehicleExpensesModule,
         CommonModule,
       ],
       controllers: [],

@@ -8,3 +8,4 @@ export * from './1800000000001-migration';
 export * from './1800000000002-migration';
 export * from './1800000000003-migration';
 export * from './1786179977432-migration';
+export * from './1786218933007-migration';
