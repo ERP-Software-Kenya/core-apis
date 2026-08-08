@@ -1,19 +1,24 @@
-import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
-import { DeleteVehicleCommand } from './delete-vehicle.command';
+import { ICommandHandler } from '@nestjs/cqrs';
 import { Inject, NotFoundException } from '@nestjs/common';
+import { InjectPinoLogger, PinoLogger } from 'nestjs-pino';
+import { CommandHandlerStrict } from '../../../../common';
 import { VEHICLE_REPO } from '../../../../constants';
 import { IVehicleRepo } from '../../repositories/i-vehicle.repo';
+import { DeleteVehicleCommand } from './delete-vehicle.command';
 
-@CommandHandler(DeleteVehicleCommand)
+@CommandHandlerStrict(DeleteVehicleCommand)
 export class DeleteVehicleHandler implements ICommandHandler<DeleteVehicleCommand, boolean> {
-  constructor(@Inject(VEHICLE_REPO) private readonly vehicleRepo: IVehicleRepo) {}
+  public constructor(
+    @Inject(VEHICLE_REPO) private readonly vehicleRepo: IVehicleRepo,
+    @InjectPinoLogger(DeleteVehicleHandler.name) private readonly logger: PinoLogger,
+  ) {}
 
-  async execute(command: DeleteVehicleCommand): Promise<boolean> {
-    const existingVehicle = await this.vehicleRepo.getAsync(command.id);
-    if (!existingVehicle) {
+  public async execute(command: DeleteVehicleCommand): Promise<boolean> {
+    this.logger.info(`Executing Command '${DeleteVehicleCommand.name}'`);
+    const existing = await this.vehicleRepo.getAsync(command.id);
+    if (!existing) {
       throw new NotFoundException(`Vehicle with ID ${command.id} not found`);
     }
-
-    return await this.vehicleRepo.deleteAsync(command.id);
+    return this.vehicleRepo.deleteAsync(command.id);
   }
 }

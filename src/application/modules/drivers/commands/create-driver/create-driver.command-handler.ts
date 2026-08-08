@@ -1,25 +1,25 @@
-import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
-import { CreateDriverCommand } from './create-driver.command';
-import { Inject, Logger } from '@nestjs/common';
-import { DRIVER_REPO } from 'src/application/constants';
-import { IDriverRepo } from '../../repositories/i-driver.repo';
-import { Mapper } from '@automapper/core';
+import { ICommandHandler } from '@nestjs/cqrs';
+import { Inject } from '@nestjs/common';
 import { InjectMapper } from '@automapper/nestjs';
+import { Mapper } from '@automapper/core';
+import { InjectPinoLogger, PinoLogger } from 'nestjs-pino';
+import { CommandHandlerStrict } from '../../../../common';
+import { DRIVER_REPO } from '../../../../constants';
+import { IDriverRepo } from '../../repositories/i-driver.repo';
 import { Driver } from '../../domain';
-import { CreateDriverRequest } from '../../models';
+import { CreateDriverCommand } from './create-driver.command';
 
-@CommandHandler(CreateDriverCommand)
+@CommandHandlerStrict(CreateDriverCommand)
 export class CreateDriverHandler implements ICommandHandler<CreateDriverCommand, Driver> {
-  private readonly logger = new Logger(CreateDriverHandler.name);
-
-  constructor(
+  public constructor(
     @Inject(DRIVER_REPO) private readonly driverRepo: IDriverRepo,
     @InjectMapper() private readonly mapper: Mapper,
+    @InjectPinoLogger(CreateDriverHandler.name) private readonly logger: PinoLogger,
   ) {}
 
-  async execute(command: CreateDriverCommand): Promise<Driver> {
-    this.logger.log('Executing CreateDriverCommand');
-    const driver = this.mapper.map(command.request, CreateDriverRequest, Driver);
-    return await this.driverRepo.createAsync(driver);
+  public async execute(command: CreateDriverCommand): Promise<Driver> {
+    this.logger.info(`Executing Command '${CreateDriverCommand.name}'`);
+    const driver = this.mapper.map(command, CreateDriverCommand, Driver);
+    return this.driverRepo.createAsync(driver);
   }
 }

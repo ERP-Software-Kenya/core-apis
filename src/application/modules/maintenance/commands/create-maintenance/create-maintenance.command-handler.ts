@@ -1,27 +1,25 @@
-import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
-import { CreateMaintenanceCommand } from './create-maintenance.command';
-import { Inject, Logger } from '@nestjs/common';
+import { ICommandHandler } from '@nestjs/cqrs';
+import { Inject } from '@nestjs/common';
+import { InjectMapper } from '@automapper/nestjs';
+import { Mapper } from '@automapper/core';
+import { InjectPinoLogger, PinoLogger } from 'nestjs-pino';
+import { CommandHandlerStrict } from '../../../../common';
 import { MAINTENANCE_REPO } from '../../../../constants';
 import { IMaintenanceRepo } from '../../repositories/i-maintenance.repo';
-import { Mapper } from '@automapper/core';
-import { InjectMapper } from '@automapper/nestjs';
-import { CreateMaintenanceRequest } from '../../models';
 import { Maintenance } from '../../domain';
+import { CreateMaintenanceCommand } from './create-maintenance.command';
 
-@CommandHandler(CreateMaintenanceCommand)
+@CommandHandlerStrict(CreateMaintenanceCommand)
 export class CreateMaintenanceHandler implements ICommandHandler<CreateMaintenanceCommand, Maintenance> {
-  private readonly logger = new Logger(CreateMaintenanceHandler.name);
-
-  constructor(
+  public constructor(
     @Inject(MAINTENANCE_REPO) private readonly maintenanceRepo: IMaintenanceRepo,
     @InjectMapper() private readonly mapper: Mapper,
+    @InjectPinoLogger(CreateMaintenanceHandler.name) private readonly logger: PinoLogger,
   ) {}
 
-  async execute(command: CreateMaintenanceCommand): Promise<Maintenance> {
-    this.logger.log('Executing CreateMaintenanceCommand');
-    const maintenance = this.mapper.map(command.request, CreateMaintenanceRequest, Maintenance);
-    // Assuming createdBy is handled by auth middleware or should be set here
-    maintenance.createdBy = 'system'; // Placeholder
-    return await this.maintenanceRepo.createAsync(maintenance);
+  public async execute(command: CreateMaintenanceCommand): Promise<Maintenance> {
+    this.logger.info(`Executing Command '${CreateMaintenanceCommand.name}'`);
+    const maintenance = this.mapper.map(command, CreateMaintenanceCommand, Maintenance);
+    return this.maintenanceRepo.createAsync(maintenance);
   }
 }

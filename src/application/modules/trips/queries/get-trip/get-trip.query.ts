@@ -1,5 +1,6 @@
-import { IQuery } from '@nestjs/cqrs';
+import { AutoMap } from '@automapper/classes';
+import { QueryBase } from '../../../../common';
 
-export class GetTripQuery implements IQuery {
-  public id: string;
+export class GetTripQuery extends QueryBase {
+  @AutoMap() public id: string;
 }

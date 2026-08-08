@@ -1,5 +1,6 @@
-import { IQuery } from '@nestjs/cqrs';
+import { AutoMap } from '@automapper/classes';
+import { QueryBase } from '../../../../common';
 
-export class GetVehicleQuery implements IQuery {
-  public id: string;
+export class GetVehicleQuery extends QueryBase {
+  @AutoMap() public id: string;
 }

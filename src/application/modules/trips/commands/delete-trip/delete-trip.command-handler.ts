@@ -1,19 +1,24 @@
-import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
-import { DeleteTripCommand } from './delete-trip.command';
+import { ICommandHandler } from '@nestjs/cqrs';
 import { Inject, NotFoundException } from '@nestjs/common';
+import { InjectPinoLogger, PinoLogger } from 'nestjs-pino';
+import { CommandHandlerStrict } from '../../../../common';
 import { TRIP_REPO } from '../../../../constants';
 import { ITripRepo } from '../../repositories/i-trip.repo';
+import { DeleteTripCommand } from './delete-trip.command';
 
-@CommandHandler(DeleteTripCommand)
+@CommandHandlerStrict(DeleteTripCommand)
 export class DeleteTripHandler implements ICommandHandler<DeleteTripCommand, boolean> {
-  constructor(@Inject(TRIP_REPO) private readonly tripRepo: ITripRepo) {}
+  public constructor(
+    @Inject(TRIP_REPO) private readonly tripRepo: ITripRepo,
+    @InjectPinoLogger(DeleteTripHandler.name) private readonly logger: PinoLogger,
+  ) {}
 
-  async execute(command: DeleteTripCommand): Promise<boolean> {
-    const existingTrip = await this.tripRepo.getAsync(command.id);
-    if (!existingTrip) {
+  public async execute(command: DeleteTripCommand): Promise<boolean> {
+    this.logger.info(`Executing Command '${DeleteTripCommand.name}'`);
+    const existing = await this.tripRepo.getAsync(command.id);
+    if (!existing) {
       throw new NotFoundException(`Trip with ID ${command.id} not found`);
     }
-
-    return await this.tripRepo.deleteAsync(command.id);
+    return this.tripRepo.deleteAsync(command.id);
   }
 }

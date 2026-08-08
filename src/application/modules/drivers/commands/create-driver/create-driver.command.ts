@@ -1,9 +1,13 @@
-import { CommandBase } from "src/common";
-import { CreateDriverRequest } from "../../models";
-
+import { AutoMap } from '@automapper/classes';
+import { CommandBase } from '../../../../common';
 
 export class CreateDriverCommand extends CommandBase {
-  constructor(public readonly request: CreateDriverRequest) {
-    super();
-  }
+  @AutoMap() public organizationId: string;
+  @AutoMap() public firstName: string;
+  @AutoMap() public lastName: string;
+  @AutoMap() public phone: string;
+  @AutoMap() public email?: string;
+  @AutoMap() public licenseNumber: string;
+  @AutoMap() public licenseType?: string;
+  @AutoMap() public employeeId?: string;
 }

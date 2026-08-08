@@ -1,10 +1,15 @@
-import { CommandBase } from "src/common";
-import { UpdateTripRequest } from "../../models";
-
+import { AutoMap } from '@automapper/classes';
+import { CommandBase } from '../../../../common';
 
 export class UpdateTripCommand extends CommandBase {
-  public id: string;
-  constructor(public readonly request: UpdateTripRequest) {
-    super();
-  }
+  @AutoMap() public id: string;
+  @AutoMap() public vehicleId?: string;
+  @AutoMap() public driverId?: string;
+  @AutoMap() public pickupLocation?: string;
+  @AutoMap() public dropLocation?: string;
+  @AutoMap() public startDatetime?: Date;
+  @AutoMap() public endDatetime?: Date;
+  @AutoMap() public estimatedDistance?: number;
+  @AutoMap() public actualDistance?: number;
+  @AutoMap() public priority?: string;
 }

@@ -1,5 +1,5 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
-import { IsString, IsOptional, IsUUID, IsNumber } from 'class-validator';
+import { IsString, IsOptional, IsUUID } from 'class-validator';
 import { AutoMap } from '@automapper/classes';
 
 export class CreateVehicleRequest {
@@ -13,11 +13,6 @@ export class CreateVehicleRequest {
   @IsOptional()
   @IsString()
   public vinNumber?: string;
-
-  @ApiProperty()
-  @AutoMap()
-  @IsUUID()
-  public companyId: string;
 
   @ApiProperty()
   @AutoMap()

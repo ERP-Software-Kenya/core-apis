@@ -1,8 +1,8 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { Driver } from '../../domain';
+import { DriverResponse } from './driver.response';
 
 export class DriversPagedResponse {
-  @ApiProperty({ type: [Driver] }) public items: Driver[];
+  @ApiProperty({ type: [DriverResponse] }) public items: DriverResponse[];
   @ApiProperty() public page: number;
   @ApiProperty() public perPage: number;
   @ApiProperty() public totalCount: number;

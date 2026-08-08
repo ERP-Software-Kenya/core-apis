@@ -1,15 +1,21 @@
-import { QueryHandler, IQueryHandler } from '@nestjs/cqrs';
-import { GetDriverQuery } from './get-driver.query';
+import { IQueryHandler } from '@nestjs/cqrs';
 import { Inject, NotFoundException } from '@nestjs/common';
+import { InjectPinoLogger, PinoLogger } from 'nestjs-pino';
+import { QueryHandlerStrict } from '../../../../common';
 import { DRIVER_REPO } from '../../../../constants';
 import { IDriverRepo } from '../../repositories/i-driver.repo';
-import { Driver } from '../../domain/driver';
+import { Driver } from '../../domain';
+import { GetDriverQuery } from './get-driver.query';
 
-@QueryHandler(GetDriverQuery)
+@QueryHandlerStrict(GetDriverQuery)
 export class GetDriverHandler implements IQueryHandler<GetDriverQuery, Driver> {
-  constructor(@Inject(DRIVER_REPO) private readonly driverRepo: IDriverRepo) {}
+  public constructor(
+    @Inject(DRIVER_REPO) private readonly driverRepo: IDriverRepo,
+    @InjectPinoLogger(GetDriverHandler.name) private readonly logger: PinoLogger,
+  ) {}
 
-  async execute(query: GetDriverQuery): Promise<Driver> {
+  public async execute(query: GetDriverQuery): Promise<Driver> {
+    this.logger.info(`Executing Query '${GetDriverQuery.name}'`);
     const driver = await this.driverRepo.getAsync(query.id);
     if (!driver) {
       throw new NotFoundException(`Driver with ID ${query.id} not found`);

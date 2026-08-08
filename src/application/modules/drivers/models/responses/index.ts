@@ -1,2 +1,2 @@
-// Standard barrel file
-export * from './drivers-paged.response'
+export * from './drivers-paged.response';
+export * from './driver.response';

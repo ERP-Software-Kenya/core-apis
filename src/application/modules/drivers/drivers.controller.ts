@@ -1,60 +1,93 @@
 import { Mapper } from '@automapper/core';
 import { InjectMapper } from '@automapper/nestjs';
-import { Body, Controller, Get, HttpCode, HttpStatus, Param, Post, Query, Inject } from '@nestjs/common';
+import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Post, Put, Query, UseGuards } from '@nestjs/common';
 import { ApiBearerAuth, ApiCreatedResponse, ApiOkResponse, ApiOperation, ApiParam, ApiTags } from '@nestjs/swagger';
-import { CqrsMediator } from '../../../common';
-import { CreateDriverRequest, SearchDriversRequest, ListDriversRequest, DriversPagedResponse } from './models';
+import { InjectPinoLogger, PinoLogger } from 'nestjs-pino';
+import { AuthenticatedUser, ClerkAuthGuard, CqrsMediator, CurrentUser, IPageable } from '../../../common';
+import { CreateDriverRequest, UpdateDriverRequest, SearchDriversRequest, ListDriversRequest, DriverResponse, DriversPagedResponse } from './models';
 import { Driver } from './domain';
 import { GetDriverQuery, SearchDriversQuery, ListDriversQuery } from './queries';
-import { CreateDriverCommand } from './commands';
+import { CreateDriverCommand, UpdateDriverCommand, DeleteDriverCommand } from './commands';
+
+const FALLBACK_ORG_ID = '00000000-0000-4000-8000-000000000001';
 
 @ApiBearerAuth()
 @ApiTags('Drivers')
+@UseGuards(ClerkAuthGuard)
 @Controller({ path: 'drivers', version: '1' })
 export class DriversController {
-  @Inject(CqrsMediator) protected readonly mediator: CqrsMediator;
-  @InjectMapper() protected readonly mapper: Mapper;
+  public constructor(
+    protected readonly mediator: CqrsMediator,
+    @InjectMapper() protected readonly mapper: Mapper,
+    @InjectPinoLogger(DriversController.name) protected readonly logger: PinoLogger,
+  ) {}
 
   @ApiOperation({ summary: 'Search drivers (paginated)' })
   @ApiOkResponse({ type: DriversPagedResponse })
   @HttpCode(HttpStatus.OK)
   @Get()
   public async search(@Query() filter?: SearchDriversRequest): Promise<DriversPagedResponse> {
-    const query = this.mapper.map(filter, SearchDriversRequest, SearchDriversQuery);
-    const result = await this.mediator.execute<SearchDriversQuery, any>(query);
-    return {
-      ...result,
-      items: this.mapper.mapArray(result.items, Driver, Driver),
-    };
+    const query  = this.mapper.map(filter, SearchDriversRequest, SearchDriversQuery);
+    const result = await this.mediator.execute<SearchDriversQuery, IPageable<Driver>>(query);
+    return { ...result, items: this.mapper.mapArray(result.items, Driver, DriverResponse) };
   }
 
   @ApiOperation({ summary: 'List all drivers' })
-  @ApiOkResponse({ type: [Driver] })
+  @ApiOkResponse({ type: [DriverResponse] })
   @HttpCode(HttpStatus.OK)
   @Get('list')
-  public async list(@Query() filter?: ListDriversRequest): Promise<Driver[]> {
-    const query = this.mapper.map(filter, ListDriversRequest, ListDriversQuery);
-    return await this.mediator.execute<ListDriversQuery, Driver[]>(query);
+  public async list(@Query() filter?: ListDriversRequest): Promise<DriverResponse[]> {
+    const query  = this.mapper.map(filter, ListDriversRequest, ListDriversQuery);
+    const result = await this.mediator.execute<ListDriversQuery, Driver[]>(query);
+    return this.mapper.mapArray(result, Driver, DriverResponse);
   }
 
   @ApiOperation({ summary: 'Get driver by ID' })
-  @ApiOkResponse({ type: Driver })
+  @ApiOkResponse({ type: DriverResponse })
   @ApiParam({ name: 'id', description: 'Driver UUID' })
   @HttpCode(HttpStatus.OK)
   @Get(':id')
-  public async getById(@Param('id') id: string): Promise<Driver> {
-    const query = new GetDriverQuery();
-    query.id = id;
-    return await this.mediator.execute<GetDriverQuery, Driver>(query);
+  public async getById(@Param('id') id: string): Promise<DriverResponse> {
+    const query  = new GetDriverQuery();
+    query.id     = id;
+    const result = await this.mediator.execute<GetDriverQuery, Driver>(query);
+    return this.mapper.map(result, Driver, DriverResponse);
   }
 
   @ApiOperation({ summary: 'Create a new driver' })
-  @ApiCreatedResponse({ type: Driver })
+  @ApiCreatedResponse({ type: DriverResponse })
   @HttpCode(HttpStatus.CREATED)
   @Post()
-  public async create(@Body() body: CreateDriverRequest): Promise<Driver> {
-    const command = this.mapper.map(body, CreateDriverRequest, CreateDriverCommand);
-    const result  = await this.mediator.execute<CreateDriverCommand, Driver>(command);
-    return result;
+  public async create(
+    @Body() body: CreateDriverRequest,
+    @CurrentUser() user?: AuthenticatedUser,
+  ): Promise<DriverResponse> {
+    const command             = this.mapper.map(body, CreateDriverRequest, CreateDriverCommand);
+    command.organizationId    = user?.organizationId ?? FALLBACK_ORG_ID;
+    const result              = await this.mediator.execute<CreateDriverCommand, Driver>(command);
+    return this.mapper.map(result, Driver, DriverResponse);
+  }
+
+  @ApiOperation({ summary: 'Update a driver' })
+  @ApiOkResponse({ type: DriverResponse })
+  @ApiParam({ name: 'id', description: 'Driver UUID' })
+  @HttpCode(HttpStatus.OK)
+  @Put(':id')
+  public async update(@Param('id') id: string, @Body() body: UpdateDriverRequest): Promise<DriverResponse> {
+    const command = this.mapper.map(body, UpdateDriverRequest, UpdateDriverCommand);
+    command.id    = id;
+    const result  = await this.mediator.execute<UpdateDriverCommand, Driver>(command);
+    return this.mapper.map(result, Driver, DriverResponse);
+  }
+
+  @ApiOperation({ summary: 'Delete a driver' })
+  @ApiOkResponse({ type: Boolean })
+  @ApiParam({ name: 'id', description: 'Driver UUID' })
+  @HttpCode(HttpStatus.OK)
+  @Delete(':id')
+  public async delete(@Param('id') id: string): Promise<boolean> {
+    const command = new DeleteDriverCommand();
+    command.id    = id;
+    return this.mediator.execute<DeleteDriverCommand, boolean>(command);
   }
 }

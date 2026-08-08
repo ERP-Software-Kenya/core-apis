@@ -1,3 +1,3 @@
-import { IQuery } from '@nestjs/cqrs';
+import { QueryBase } from '../../../../common';
 
-export class GetFinancialKpisQuery implements IQuery {}
+export class GetFinancialKpisQuery extends QueryBase {}

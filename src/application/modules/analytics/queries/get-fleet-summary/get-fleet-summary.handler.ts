@@ -1,25 +1,31 @@
-import { QueryHandler, IQueryHandler } from '@nestjs/cqrs';
-import { GetFleetSummaryKpisQuery } from './get-fleet-summary.query';
+import { IQueryHandler } from '@nestjs/cqrs';
 import { Inject } from '@nestjs/common';
+import { InjectPinoLogger, PinoLogger } from 'nestjs-pino';
+import { QueryHandlerStrict } from '../../../../common';
 import { VEHICLE_REPO } from '../../../../constants';
-import { EVehicleStatus } from '../../../../shared';
-import { IVehicleRepo } from 'src/application/modules/vehicles';
-import { FleetSummaryResponse } from '../../models';
+import { IVehicleRepo } from '../../vehicles/repositories/i-vehicle.repo';
+import { EVehicleStatus } from '../../../shared';
+import { GetFleetSummaryKpisQuery } from './get-fleet-summary.query';
+import { FleetSummaryResponse } from '../../models/responses/fleet-summary.response';
 
-@QueryHandler(GetFleetSummaryKpisQuery)
+@QueryHandlerStrict(GetFleetSummaryKpisQuery)
 export class GetFleetSummaryKpisHandler implements IQueryHandler<GetFleetSummaryKpisQuery, FleetSummaryResponse> {
-  constructor(@Inject(VEHICLE_REPO) private readonly vehicleRepo: IVehicleRepo) {}
+  public constructor(
+    @Inject(VEHICLE_REPO) private readonly vehicleRepo: IVehicleRepo,
+    @InjectPinoLogger(GetFleetSummaryKpisHandler.name) private readonly logger: PinoLogger,
+  ) {}
 
-  async execute(): Promise<FleetSummaryResponse> {
-    const allVehicles = await this.vehicleRepo.allAsync(); // Assuming allAsync() exists
-    
+  public async execute(): Promise<FleetSummaryResponse> {
+    this.logger.info(`Executing Query '${GetFleetSummaryKpisQuery.name}'`);
+    const allVehicles = await this.vehicleRepo.allAsync();
+
     return {
-      totalVehicles: allVehicles.length,
-      activeVehicles: allVehicles.filter(v => v.status === EVehicleStatus.Available || v.status === EVehicleStatus.InTransit).length,
-      inTransitVehicles: allVehicles.filter(v => v.status === EVehicleStatus.InTransit).length,
-      idleVehicles: allVehicles.filter(v => v.status === EVehicleStatus.Idle).length,
-      maintenanceVehicles: allVehicles.filter(v => v.status === EVehicleStatus.Maintenance).length,
-      availableVehicles: allVehicles.filter(v => v.status === EVehicleStatus.Available).length,
+      totalVehicles:       allVehicles.length,
+      activeVehicles:      allVehicles.filter(veh => veh.status === EVehicleStatus.Available || veh.status === EVehicleStatus.InTransit).length,
+      inTransitVehicles:   allVehicles.filter(veh => veh.status === EVehicleStatus.InTransit).length,
+      idleVehicles:        allVehicles.filter(veh => veh.status === EVehicleStatus.Idle).length,
+      maintenanceVehicles: allVehicles.filter(veh => veh.status === EVehicleStatus.Maintenance).length,
+      availableVehicles:   allVehicles.filter(veh => veh.status === EVehicleStatus.Available).length,
     };
   }
 }

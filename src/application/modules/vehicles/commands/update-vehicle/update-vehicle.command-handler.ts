@@ -1,26 +1,30 @@
-import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
-import { UpdateVehicleCommand } from './update-vehicle.command';
+import { ICommandHandler } from '@nestjs/cqrs';
 import { Inject, NotFoundException } from '@nestjs/common';
-import { VEHICLE_REPO } from '../../../../constants';
-import { Mapper } from '@automapper/core';
 import { InjectMapper } from '@automapper/nestjs';
+import { Mapper } from '@automapper/core';
+import { InjectPinoLogger, PinoLogger } from 'nestjs-pino';
+import { CommandHandlerStrict } from '../../../../common';
+import { VEHICLE_REPO } from '../../../../constants';
+import { IVehicleRepo } from '../../repositories/i-vehicle.repo';
 import { Vehicle } from '../../domain';
-import { IVehicleRepo } from '../../repositories';
+import { UpdateVehicleCommand } from './update-vehicle.command';
 
-@CommandHandler(UpdateVehicleCommand)
+@CommandHandlerStrict(UpdateVehicleCommand)
 export class UpdateVehicleHandler implements ICommandHandler<UpdateVehicleCommand, Vehicle> {
-  constructor(
+  public constructor(
     @Inject(VEHICLE_REPO) private readonly vehicleRepo: IVehicleRepo,
     @InjectMapper() private readonly mapper: Mapper,
+    @InjectPinoLogger(UpdateVehicleHandler.name) private readonly logger: PinoLogger,
   ) {}
 
-  async execute(command: UpdateVehicleCommand): Promise<Vehicle> {
-    const existingVehicle = await this.vehicleRepo.getAsync(command.id);
-    if (!existingVehicle) {
+  public async execute(command: UpdateVehicleCommand): Promise<Vehicle> {
+    this.logger.info(`Executing Command '${UpdateVehicleCommand.name}'`);
+    const existing = await this.vehicleRepo.getAsync(command.id);
+    if (!existing) {
       throw new NotFoundException(`Vehicle with ID ${command.id} not found`);
     }
-
-    const updatedVehicle = { ...existingVehicle, ...command.request };
-    return await this.vehicleRepo.updateAsync(updatedVehicle);
+    const update = this.mapper.map(command, UpdateVehicleCommand, Vehicle);
+    const merged: Vehicle = { ...existing, ...update };
+    return this.vehicleRepo.updateAsync(merged);
   }
 }

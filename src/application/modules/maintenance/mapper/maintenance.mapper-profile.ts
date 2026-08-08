@@ -3,15 +3,18 @@ import { createMap, Mapper, MappingProfile } from '@automapper/core';
 import { Injectable } from '@nestjs/common';
 import { CreateMaintenanceRequest, MaintenanceResponse } from '../models';
 import { Maintenance } from '../domain';
+import { CreateMaintenanceCommand } from '../commands';
 
 @Injectable()
 export class MaintenanceProfile extends AutomapperProfile {
-  constructor(@InjectMapper() mapper: Mapper) {
+  public constructor(@InjectMapper() mapper: Mapper) {
     super(mapper);
   }
 
-  override get profile(): MappingProfile {
+  public override get profile(): MappingProfile {
     return (mapper) => {
+      createMap(mapper, CreateMaintenanceRequest, CreateMaintenanceCommand);
+      createMap(mapper, CreateMaintenanceCommand, Maintenance);
       createMap(mapper, CreateMaintenanceRequest, Maintenance);
       createMap(mapper, Maintenance, MaintenanceResponse);
     };

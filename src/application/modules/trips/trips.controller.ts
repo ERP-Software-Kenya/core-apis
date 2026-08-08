@@ -1,31 +1,35 @@
 import { Mapper } from '@automapper/core';
 import { InjectMapper } from '@automapper/nestjs';
-import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Post, Put, Query, Inject } from '@nestjs/common';
+import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Post, Put, Query, UseGuards } from '@nestjs/common';
 import { ApiBearerAuth, ApiCreatedResponse, ApiOkResponse, ApiOperation, ApiParam, ApiTags } from '@nestjs/swagger';
-import { CqrsMediator } from '../../../common';
+import { InjectPinoLogger, PinoLogger } from 'nestjs-pino';
+import { AuthenticatedUser, ClerkAuthGuard, CqrsMediator, CurrentUser, IPageable } from '../../../common';
 import { GetTripQuery, SearchTripsQuery, ListTripsQuery } from './queries';
 import { CreateTripRequest, UpdateTripRequest, SearchTripsRequest, ListTripsRequest, CreateTripResponse, TripsPagedResponse } from './models';
 import { Trip } from './domain';
 import { CreateTripCommand, DeleteTripCommand, UpdateTripCommand } from './commands';
 
+const FALLBACK_ORG_ID = '00000000-0000-4000-8000-000000000001';
+
 @ApiBearerAuth()
 @ApiTags('Trips')
+@UseGuards(ClerkAuthGuard)
 @Controller({ path: 'trips', version: '1' })
 export class TripsController {
-  @Inject(CqrsMediator) protected readonly mediator: CqrsMediator;
-  @InjectMapper() protected readonly mapper: Mapper;
+  public constructor(
+    protected readonly mediator: CqrsMediator,
+    @InjectMapper() protected readonly mapper: Mapper,
+    @InjectPinoLogger(TripsController.name) protected readonly logger: PinoLogger,
+  ) {}
 
   @ApiOperation({ summary: 'Search trips (paginated)' })
   @ApiOkResponse({ type: TripsPagedResponse })
   @HttpCode(HttpStatus.OK)
   @Get()
   public async search(@Query() filter?: SearchTripsRequest): Promise<TripsPagedResponse> {
-    const query = this.mapper.map(filter, SearchTripsRequest, SearchTripsQuery);
-    const result = await this.mediator.execute<SearchTripsQuery, any>(query);
-    return {
-      ...result,
-      items: this.mapper.mapArray(result.items, Trip, CreateTripResponse),
-    };
+    const query  = this.mapper.map(filter, SearchTripsRequest, SearchTripsQuery);
+    const result = await this.mediator.execute<SearchTripsQuery, IPageable<Trip>>(query);
+    return { ...result, items: this.mapper.mapArray(result.items, Trip, CreateTripResponse) };
   }
 
   @ApiOperation({ summary: 'List all trips' })
@@ -33,7 +37,7 @@ export class TripsController {
   @HttpCode(HttpStatus.OK)
   @Get('list')
   public async list(@Query() filter?: ListTripsRequest): Promise<CreateTripResponse[]> {
-    const query = this.mapper.map(filter, ListTripsRequest, ListTripsQuery);
+    const query  = this.mapper.map(filter, ListTripsRequest, ListTripsQuery);
     const result = await this.mediator.execute<ListTripsQuery, Trip[]>(query);
     return this.mapper.mapArray(result, Trip, CreateTripResponse);
   }
@@ -44,8 +48,8 @@ export class TripsController {
   @HttpCode(HttpStatus.OK)
   @Get(':id')
   public async getById(@Param('id') id: string): Promise<CreateTripResponse> {
-    const query = new GetTripQuery();
-    query.id = id;
+    const query  = new GetTripQuery();
+    query.id     = id;
     const result = await this.mediator.execute<GetTripQuery, Trip>(query);
     return this.mapper.map(result, Trip, CreateTripResponse);
   }
@@ -54,9 +58,13 @@ export class TripsController {
   @ApiCreatedResponse({ type: CreateTripResponse })
   @HttpCode(HttpStatus.CREATED)
   @Post()
-  public async create(@Body() body: CreateTripRequest): Promise<CreateTripResponse> {
-    const command = this.mapper.map(body, CreateTripRequest, CreateTripCommand);
-    const result  = await this.mediator.execute<CreateTripCommand, Trip>(command);
+  public async create(
+    @Body() body: CreateTripRequest,
+    @CurrentUser() user?: AuthenticatedUser,
+  ): Promise<CreateTripResponse> {
+    const command           = this.mapper.map(body, CreateTripRequest, CreateTripCommand);
+    command.organizationId  = user?.organizationId ?? FALLBACK_ORG_ID;
+    const result            = await this.mediator.execute<CreateTripCommand, Trip>(command);
     return this.mapper.map(result, Trip, CreateTripResponse);
   }
 

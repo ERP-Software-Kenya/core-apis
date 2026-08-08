@@ -1,25 +1,25 @@
-import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
-import { CreateVehicleCommand } from './create-vehicle.command';
-import { Inject, Logger } from '@nestjs/common';
+import { ICommandHandler } from '@nestjs/cqrs';
+import { Inject } from '@nestjs/common';
+import { InjectMapper } from '@automapper/nestjs';
+import { Mapper } from '@automapper/core';
+import { InjectPinoLogger, PinoLogger } from 'nestjs-pino';
+import { CommandHandlerStrict } from '../../../../common';
 import { VEHICLE_REPO } from '../../../../constants';
 import { IVehicleRepo } from '../../repositories/i-vehicle.repo';
-import { Mapper } from '@automapper/core';
-import { InjectMapper } from '@automapper/nestjs';
 import { Vehicle } from '../../domain';
-import { CreateVehicleRequest } from '../../models';
+import { CreateVehicleCommand } from './create-vehicle.command';
 
-@CommandHandler(CreateVehicleCommand)
+@CommandHandlerStrict(CreateVehicleCommand)
 export class CreateVehicleHandler implements ICommandHandler<CreateVehicleCommand, Vehicle> {
-  private readonly logger = new Logger(CreateVehicleHandler.name);
-
-  constructor(
+  public constructor(
     @Inject(VEHICLE_REPO) private readonly vehicleRepo: IVehicleRepo,
     @InjectMapper() private readonly mapper: Mapper,
+    @InjectPinoLogger(CreateVehicleHandler.name) private readonly logger: PinoLogger,
   ) {}
 
-  async execute(command: CreateVehicleCommand): Promise<Vehicle> {
-    this.logger.log('Executing CreateVehicleCommand');
-    const vehicle = this.mapper.map(command.request, CreateVehicleRequest, Vehicle);
-    return await this.vehicleRepo.createAsync(vehicle);
+  public async execute(command: CreateVehicleCommand): Promise<Vehicle> {
+    this.logger.info(`Executing Command '${CreateVehicleCommand.name}'`);
+    const vehicle = this.mapper.map(command, CreateVehicleCommand, Vehicle);
+    return this.vehicleRepo.createAsync(vehicle);
   }
 }
