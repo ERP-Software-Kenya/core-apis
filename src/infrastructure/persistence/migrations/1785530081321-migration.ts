@@ -4,6 +4,14 @@ export class BillingModuleSchema1785530081321 implements MigrationInterface {
     name = 'BillingModuleSchema1785530081321'
 
     public async up(queryRunner: QueryRunner): Promise<void> {
+        // On fresh install, 1800000000003 creates bills with the final schema already.
+        // Skip if bills does not have the old supplier_id column (table absent or already migrated).
+        const rows = await queryRunner.query(
+            `SELECT 1 FROM information_schema.columns
+             WHERE table_schema='core' AND table_name='bills' AND column_name='supplier_id'`
+        );
+        if (rows.length === 0) return;
+
         await queryRunner.query(`ALTER TABLE "core"."bills" DROP CONSTRAINT "FK__bills__stores"`);
         await queryRunner.query(`ALTER TABLE "core"."bills" DROP CONSTRAINT "FK__bills__suppliers"`);
         await queryRunner.query(`CREATE TABLE "core"."bill_items" ("id" uuid NOT NULL DEFAULT uuid_generate_v4(), "bill_id" uuid NOT NULL, "product_id" uuid NOT NULL, "variant_id" uuid, "quantity" numeric(18,4) NOT NULL, "unit_price" numeric(18,4) NOT NULL, "tax_rate" numeric(5,2) NOT NULL DEFAULT '0', "tax_amount" numeric(18,4) NOT NULL DEFAULT '0', "discount_amount" numeric(18,4) NOT NULL DEFAULT '0', "line_total" numeric(18,4) NOT NULL, CONSTRAINT "PK_bill_items" PRIMARY KEY ("id"))`);
@@ -38,6 +46,13 @@ export class BillingModuleSchema1785530081321 implements MigrationInterface {
     }
 
     public async down(queryRunner: QueryRunner): Promise<void> {
+        // Skip if bills is already in old schema (no bill_number column)
+        const rows = await queryRunner.query(
+            `SELECT 1 FROM information_schema.columns
+             WHERE table_schema='core' AND table_name='bills' AND column_name='bill_number'`
+        );
+        if (rows.length === 0) return;
+
         await queryRunner.query(`ALTER TABLE "core"."bills" DROP CONSTRAINT "FK__bills__users"`);
         await queryRunner.query(`ALTER TABLE "core"."bills" DROP CONSTRAINT "FK__bills__customers"`);
         await queryRunner.query(`ALTER TABLE "core"."bills" DROP CONSTRAINT "FK__bills__locations"`);
@@ -70,5 +85,4 @@ export class BillingModuleSchema1785530081321 implements MigrationInterface {
         await queryRunner.query(`ALTER TABLE "core"."bills" ADD CONSTRAINT "FK__bills__suppliers" FOREIGN KEY ("supplier_id") REFERENCES "core"."suppliers"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`);
         await queryRunner.query(`ALTER TABLE "core"."bills" ADD CONSTRAINT "FK__bills__stores" FOREIGN KEY ("store_id") REFERENCES "core"."stores"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`);
     }
-
 }

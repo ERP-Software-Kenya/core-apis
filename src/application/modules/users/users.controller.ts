@@ -1,9 +1,10 @@
 import { Mapper } from '@automapper/core';
 import { InjectMapper } from '@automapper/nestjs';
-import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Post, Put, Query } from '@nestjs/common';
+import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Post, Put, Query, UseGuards } from '@nestjs/common';
 import { ApiBearerAuth, ApiCreatedResponse, ApiNoContentResponse, ApiOkResponse, ApiOperation, ApiParam, ApiTags } from '@nestjs/swagger';
 import { InjectPinoLogger, PinoLogger } from 'nestjs-pino';
-import { CqrsMediator } from '../../../common';
+import { ClerkAuthGuard, CqrsMediator, Roles, RolesGuard } from '../../../common';
+import { ERole } from '../../../infrastructure';
 import {
   AssignUserToOrgCommand,
   BanUserCommand,
@@ -38,6 +39,7 @@ import {
 @ApiBearerAuth()
 @ApiTags('Users')
 @Controller({ path: 'users', version: '1' })
+@UseGuards(ClerkAuthGuard)
 export class UsersController {
   constructor(
     protected readonly mediator: CqrsMediator,
@@ -50,6 +52,8 @@ export class UsersController {
   @ApiOperation({ summary: 'List all users (Clerk)' })
   @ApiOkResponse({ type: ClerkUserListResponse })
   @HttpCode(HttpStatus.OK)
+  @UseGuards(RolesGuard)
+  @Roles(ERole.OrgAdmin, ERole.SuperAdmin)
   @Get()
   public async list(@Query() params: ListUsersRequest): Promise<ClerkUserListResponse> {
     const query              = new ListUsersQuery();
@@ -62,6 +66,8 @@ export class UsersController {
   @ApiOperation({ summary: 'Search users by name / email (Clerk)' })
   @ApiOkResponse({ type: ClerkUserListResponse })
   @HttpCode(HttpStatus.OK)
+  @UseGuards(RolesGuard)
+  @Roles(ERole.OrgAdmin, ERole.SuperAdmin)
   @Get('search')
   public async search(@Query() params: SearchUsersRequest): Promise<ClerkUserListResponse> {
     const query    = new SearchUsersQuery();
@@ -87,6 +93,8 @@ export class UsersController {
   @ApiOkResponse({ type: ClerkUserRolesResponse })
   @ApiParam({ name: 'clerkUserId', description: 'Clerk user ID (user_xxx)' })
   @HttpCode(HttpStatus.OK)
+  @UseGuards(RolesGuard)
+  @Roles(ERole.OrgAdmin, ERole.SuperAdmin)
   @Get('clerk/:clerkUserId/roles')
   public async getRoles(@Param('clerkUserId') clerkUserId: string): Promise<ClerkUserRolesResponse> {
     const query         = new GetUserRolesQuery();
@@ -109,6 +117,8 @@ export class UsersController {
   @ApiOperation({ summary: 'Invite a user via Clerk email invitation' })
   @ApiNoContentResponse()
   @HttpCode(HttpStatus.NO_CONTENT)
+  @UseGuards(RolesGuard)
+  @Roles(ERole.OrgAdmin, ERole.SuperAdmin)
   @Post('clerk/invite')
   public async invite(@Body() body: InviteUserRequest): Promise<void> {
     const command = this.mapper.map(body, InviteUserRequest, InviteUserCommand);
@@ -119,6 +129,8 @@ export class UsersController {
   @ApiNoContentResponse()
   @ApiParam({ name: 'clerkUserId', description: 'Clerk user ID (user_xxx)' })
   @HttpCode(HttpStatus.NO_CONTENT)
+  @UseGuards(RolesGuard)
+  @Roles(ERole.OrgAdmin, ERole.SuperAdmin)
   @Put('clerk/:clerkUserId/roles')
   public async updateRoles(
     @Param('clerkUserId') clerkUserId: string,
@@ -133,6 +145,8 @@ export class UsersController {
   @ApiNoContentResponse()
   @ApiParam({ name: 'clerkUserId', description: 'Clerk user ID (user_xxx)' })
   @HttpCode(HttpStatus.NO_CONTENT)
+  @UseGuards(RolesGuard)
+  @Roles(ERole.OrgAdmin, ERole.SuperAdmin)
   @Put('clerk/:clerkUserId/ban')
   public async ban(@Param('clerkUserId') clerkUserId: string): Promise<void> {
     const command         = new BanUserCommand();
@@ -144,6 +158,8 @@ export class UsersController {
   @ApiNoContentResponse()
   @ApiParam({ name: 'clerkUserId', description: 'Clerk user ID (user_xxx)' })
   @HttpCode(HttpStatus.NO_CONTENT)
+  @UseGuards(RolesGuard)
+  @Roles(ERole.OrgAdmin, ERole.SuperAdmin)
   @Put('clerk/:clerkUserId/unban')
   public async unban(@Param('clerkUserId') clerkUserId: string): Promise<void> {
     const command         = new UnbanUserCommand();
@@ -151,10 +167,12 @@ export class UsersController {
     await this.mediator.execute<UnbanUserCommand, void>(command);
   }
 
-  @ApiOperation({ summary: 'Delete a user from Clerk and local DB' })
+  @ApiOperation({ summary: 'Delete a user from Clerk and local DB (SuperAdmin only)' })
   @ApiNoContentResponse()
   @ApiParam({ name: 'clerkUserId', description: 'Clerk user ID (user_xxx)' })
   @HttpCode(HttpStatus.NO_CONTENT)
+  @UseGuards(RolesGuard)
+  @Roles(ERole.SuperAdmin)
   @Delete('clerk/:clerkUserId')
   public async deleteClerkUser(@Param('clerkUserId') clerkUserId: string): Promise<void> {
     const command         = new DeleteUserCommand();
@@ -166,6 +184,8 @@ export class UsersController {
   @ApiNoContentResponse()
   @ApiParam({ name: 'clerkUserId', description: 'Clerk user ID (user_xxx)' })
   @HttpCode(HttpStatus.NO_CONTENT)
+  @UseGuards(RolesGuard)
+  @Roles(ERole.OrgAdmin, ERole.SuperAdmin)
   @Post('clerk/:clerkUserId/organizations')
   public async assignToOrg(
     @Param('clerkUserId') clerkUserId: string,
@@ -181,6 +201,8 @@ export class UsersController {
   @ApiParam({ name: 'clerkUserId', description: 'Clerk user ID (user_xxx)' })
   @ApiParam({ name: 'organizationId', description: 'Clerk organization ID (org_xxx)' })
   @HttpCode(HttpStatus.NO_CONTENT)
+  @UseGuards(RolesGuard)
+  @Roles(ERole.OrgAdmin, ERole.SuperAdmin)
   @Delete('clerk/:clerkUserId/organizations/:organizationId')
   public async removeFromOrg(
     @Param('clerkUserId') clerkUserId: string,

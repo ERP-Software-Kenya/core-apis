@@ -50,6 +50,7 @@ import {
   FuelTransactionRepo,
   MaintenanceRepo,
   VehicleExpenseRepo,
+  PageAccessRepo,
 } from './persistence';
 
 import {
@@ -95,6 +96,7 @@ import {
   FUEL_TRANSACTION_REPO,
   MAINTENANCE_REPO,
   VEHICLE_EXPENSE_REPO,
+  PAGE_ACCESS_REPO,
 } from '../application/constants';
 
 @Module({})
@@ -164,6 +166,7 @@ export class InfrastructureModule {
         { provide: FUEL_TRANSACTION_REPO, useClass: FuelTransactionRepo },
         { provide: MAINTENANCE_REPO, useClass: MaintenanceRepo },
         { provide: VEHICLE_EXPENSE_REPO, useClass: VehicleExpenseRepo },
+        { provide: PAGE_ACCESS_REPO, useClass: PageAccessRepo },
       ],
       exports: [
         EntityMapperProfile,
@@ -209,6 +212,7 @@ export class InfrastructureModule {
         FUEL_TRANSACTION_REPO,
         MAINTENANCE_REPO,
         VEHICLE_EXPENSE_REPO,
+        PAGE_ACCESS_REPO,
       ],
     };
   }

@@ -34,6 +34,7 @@ export * from './state.repo';
 export * from './city.repo';
 export * from './currency.repo';
 export * from './language.repo';
+export * from './page-access.repo';
 export * from './vehicle.repo';
 export * from './driver.repo';
 export * from './trip.repo';

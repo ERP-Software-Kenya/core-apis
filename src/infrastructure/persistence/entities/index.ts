@@ -46,6 +46,7 @@ import { StateEntity } from './state.entity';
 import { CityEntity } from './city.entity';
 import { CurrencyEntity } from './currency.entity';
 import { LanguageEntity } from './language.entity';
+import { PageAccessEntity } from './page-access.entity';
 // Vehicle & Transportation
 import { VehicleTypeEntity } from './vehicle-type.entity';
 import { VehicleBrandEntity } from './vehicle-brand.entity';
@@ -120,6 +121,7 @@ export * from './state.entity';
 export * from './city.entity';
 export * from './currency.entity';
 export * from './language.entity';
+export * from './page-access.entity';
 export * from './vehicle-type.entity';
 export * from './vehicle-brand.entity';
 export * from './fuel-type.entity';
@@ -193,6 +195,7 @@ export default [
   CityEntity,
   CurrencyEntity,
   LanguageEntity,
+  PageAccessEntity,
   VehicleTypeEntity,
   VehicleBrandEntity,
   FuelTypeEntity,
