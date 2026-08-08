@@ -8,6 +8,7 @@ export * from "./list-currencies/list-currencies.query";
 export * from "./search-currencies/search-currencies.query";
 export * from "./list-languages/list-languages.query";
 export * from "./search-languages/search-languages.query";
+export * from "./get-page-access/get-page-access.query";
 
 import { ListCountriesQueryHandler } from "./list-countries/list-countries.query-handler";
 import { SearchCountriesQueryHandler } from "./search-countries/search-countries.query-handler";
@@ -19,6 +20,7 @@ import { ListCurrenciesQueryHandler } from "./list-currencies/list-currencies.qu
 import { SearchCurrenciesQueryHandler } from "./search-currencies/search-currencies.query-handler";
 import { ListLanguagesQueryHandler } from "./list-languages/list-languages.query-handler";
 import { SearchLanguagesQueryHandler } from "./search-languages/search-languages.query-handler";
+import { GetPageAccessQueryHandler } from "./get-page-access/get-page-access.query-handler";
 
 export const CommonUtilityQueryHandlers = [
   ListCountriesQueryHandler,
@@ -31,4 +33,5 @@ export const CommonUtilityQueryHandlers = [
   SearchCurrenciesQueryHandler,
   ListLanguagesQueryHandler,
   SearchLanguagesQueryHandler,
+  GetPageAccessQueryHandler,
 ];

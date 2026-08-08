@@ -1,9 +1,10 @@
 import { Mapper } from '@automapper/core';
 import { InjectMapper } from '@automapper/nestjs';
-import { Controller, Get, HttpCode, HttpStatus, Query } from '@nestjs/common';
-import { ApiBearerAuth, ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
+import { Body, Controller, Get, HttpCode, HttpStatus, Put, Query, UseGuards } from '@nestjs/common';
+import { ApiBearerAuth, ApiNoContentResponse, ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { InjectPinoLogger, PinoLogger } from 'nestjs-pino';
-import { CqrsMediator, IPageable } from '../../../common';
+import { ClerkAuthGuard, CqrsMediator, IPageable, Roles, RolesGuard } from '../../../common';
+import { ERole } from '../../../infrastructure';
 import { Country, State, City, Currency, Language } from './domain';
 import {
   ListCountriesRequest, SearchCountriesRequest, CountriesPagedResponse, CountryResponse,
@@ -11,6 +12,7 @@ import {
   ListCitiesRequest, SearchCitiesRequest, CitiesPagedResponse, CityResponse,
   ListCurrenciesRequest, SearchCurrenciesRequest, CurrenciesPagedResponse, CurrencyResponse,
   ListLanguagesRequest, SearchLanguagesRequest, LanguagesPagedResponse, LanguageResponse,
+  UpdatePageAccessRequest, PageAccessConfigResponse,
 } from './models';
 import {
   ListCountriesQuery, SearchCountriesQuery,
@@ -18,19 +20,47 @@ import {
   ListCitiesQuery, SearchCitiesQuery,
   ListCurrenciesQuery, SearchCurrenciesQuery,
   ListLanguagesQuery, SearchLanguagesQuery,
+  GetPageAccessQuery,
 } from './queries';
+import { UpdatePageAccessCommand } from './commands';
 
 @ApiBearerAuth()
 @ApiTags('Common Utility')
 @Controller({ path: 'common-utility', version: '1' })
 export class CommonUtilityController {
-  constructor(
+  public constructor(
     protected readonly mediator: CqrsMediator,
     @InjectMapper() protected readonly mapper: Mapper,
     @InjectPinoLogger(CommonUtilityController.name) protected readonly logger: PinoLogger,
   ) {}
 
-  // Countries
+  // ── Page Access ───────────────────────────────────────────────────────────
+
+  @ApiOperation({ summary: 'Get all page-access configurations' })
+  @ApiOkResponse({ type: [PageAccessConfigResponse] })
+  @HttpCode(HttpStatus.OK)
+  @UseGuards(ClerkAuthGuard)
+  @Get('page-access')
+  public async getPageAccess(): Promise<PageAccessConfigResponse[]> {
+    return this.mediator.execute<GetPageAccessQuery, PageAccessConfigResponse[]>(
+      new GetPageAccessQuery(),
+    );
+  }
+
+  @ApiOperation({ summary: 'Bulk-upsert page-access configurations (SuperAdmin only)' })
+  @ApiNoContentResponse()
+  @HttpCode(HttpStatus.NO_CONTENT)
+  @UseGuards(ClerkAuthGuard, RolesGuard)
+  @Roles(ERole.SuperAdmin)
+  @Put('page-access')
+  public async updatePageAccess(@Body() body: UpdatePageAccessRequest): Promise<void> {
+    const command   = new UpdatePageAccessCommand();
+    command.configs = body.configs;
+    await this.mediator.execute<UpdatePageAccessCommand, void>(command);
+  }
+
+  // ── Countries ─────────────────────────────────────────────────────────────
+
   @ApiOperation({ summary: 'Search countries (paginated)' })
   @ApiOkResponse({ type: CountriesPagedResponse })
   @HttpCode(HttpStatus.OK)
@@ -54,7 +84,8 @@ export class CommonUtilityController {
     return this.mapper.mapArray(result, Country, CountryResponse);
   }
 
-  // States
+  // ── States ────────────────────────────────────────────────────────────────
+
   @ApiOperation({ summary: 'Search states (paginated)' })
   @ApiOkResponse({ type: StatesPagedResponse })
   @HttpCode(HttpStatus.OK)
@@ -78,7 +109,8 @@ export class CommonUtilityController {
     return this.mapper.mapArray(result, State, StateResponse);
   }
 
-  // Cities
+  // ── Cities ────────────────────────────────────────────────────────────────
+
   @ApiOperation({ summary: 'Search cities (paginated)' })
   @ApiOkResponse({ type: CitiesPagedResponse })
   @HttpCode(HttpStatus.OK)
@@ -102,7 +134,8 @@ export class CommonUtilityController {
     return this.mapper.mapArray(result, City, CityResponse);
   }
 
-  // Currencies
+  // ── Currencies ────────────────────────────────────────────────────────────
+
   @ApiOperation({ summary: 'Search currencies (paginated)' })
   @ApiOkResponse({ type: CurrenciesPagedResponse })
   @HttpCode(HttpStatus.OK)
@@ -126,7 +159,8 @@ export class CommonUtilityController {
     return this.mapper.mapArray(result, Currency, CurrencyResponse);
   }
 
-  // Languages
+  // ── Languages ─────────────────────────────────────────────────────────────
+
   @ApiOperation({ summary: 'Search languages (paginated)' })
   @ApiOkResponse({ type: LanguagesPagedResponse })
   @HttpCode(HttpStatus.OK)

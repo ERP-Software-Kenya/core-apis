@@ -8,3 +8,4 @@ export * from "./list-currencies.request";
 export * from "./search-currencies.request";
 export * from "./list-languages.request";
 export * from "./search-languages.request";
+export * from "./update-page-access.request";

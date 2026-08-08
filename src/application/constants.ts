@@ -44,3 +44,4 @@ export const STATE_REPO                        = 'STATE_REPO';
 export const CITY_REPO                         = 'CITY_REPO';
 export const CURRENCY_REPO                     = 'CURRENCY_REPO';
 export const LANGUAGE_REPO                     = 'LANGUAGE_REPO';
+export const PAGE_ACCESS_REPO                  = 'IPageAccessRepo';
