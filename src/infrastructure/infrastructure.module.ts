@@ -44,6 +44,7 @@ import {
   CityRepo,
   CurrencyRepo,
   LanguageRepo,
+  PageAccessRepo,
 } from './persistence';
 
 import {
@@ -83,6 +84,7 @@ import {
   CITY_REPO,
   CURRENCY_REPO,
   LANGUAGE_REPO,
+  PAGE_ACCESS_REPO,
 } from '../application/constants';
 
 @Module({})
@@ -146,6 +148,7 @@ export class InfrastructureModule {
         { provide: CITY_REPO, useClass: CityRepo },
         { provide: CURRENCY_REPO, useClass: CurrencyRepo },
         { provide: LANGUAGE_REPO, useClass: LanguageRepo },
+        { provide: PAGE_ACCESS_REPO, useClass: PageAccessRepo },
       ],
       exports: [
         EntityMapperProfile,
@@ -185,6 +188,7 @@ export class InfrastructureModule {
         CITY_REPO,
         CURRENCY_REPO,
         LANGUAGE_REPO,
+        PAGE_ACCESS_REPO,
       ],
     };
   }

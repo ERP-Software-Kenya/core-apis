@@ -46,6 +46,7 @@ import { StateEntity } from './state.entity';
 import { CityEntity } from './city.entity';
 import { CurrencyEntity } from './currency.entity';
 import { LanguageEntity } from './language.entity';
+import { PageAccessEntity } from './page-access.entity';
 
 export * from './location.entity';
 export * from './product-log.entity';
@@ -96,6 +97,7 @@ export * from './state.entity';
 export * from './city.entity';
 export * from './currency.entity';
 export * from './language.entity';
+export * from './page-access.entity';
 
 export default [
   LocationEntity,
@@ -146,4 +148,5 @@ export default [
   CityEntity,
   CurrencyEntity,
   LanguageEntity,
+  PageAccessEntity,
 ];

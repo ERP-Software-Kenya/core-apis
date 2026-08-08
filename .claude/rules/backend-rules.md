@@ -85,5 +85,16 @@ You MUST maintain strict layer boundaries:
 - **Types**: Don't use `any` or `unknown`. Use `unknown` for unknown types. Always create types if not exist.
 ## 9. Executor Standards
 - **Base Class**: Every executor extends `EventBaseExecutor`.
-- **Remember**: When create new method in executor, map event and command or query in mapper files. 
+- **Remember**: When create new method in executor, map event and command or query in mapper files.
+---
+## 10. TypeORM Migration Rules (CRITICAL — NEVER VIOLATE)
+- **NEVER rename a migration file.** The filename IS the timestamp. TypeORM uses it for ordering. Renaming breaks fresh-init order and pollutes migration history.
+- **NEVER manually write a new migration file.** Always use `npm run migration:generate` to produce migration files. The generated timestamp guarantees correct ordering.
+- **NEVER delete a migration file.** If a migration was applied on any DB (even locally), deleting it corrupts the migration chain. If the content is wrong, write a new migration that corrects it.
+- **NEVER manually edit migration content to add seed data.** Seeds go in the separate seeder configuration. Migrations are DDL-only.
+- **All migrations must work on a fresh init.** If someone drops the schema and runs `migration:up` from scratch, every migration must succeed in timestamp order without manual intervention.
+- **Idempotency for out-of-order manually-authored migrations.** If a manually-authored migration (not generated) references tables that a later migration creates, make it idempotent using `information_schema` column/table existence checks — never rename or delete the file.
+- **After generating, add the file to `migrations/index.ts` barrel** and run `migration:up` to apply.
+- **The `migration:generate` command** is the only allowed way to create a migration file. Run it only when the DB is in a clean, up-to-date state (all prior migrations applied).
+- **Do not fix ordering bugs by renaming.** If two migrations are out of order, make the earlier one idempotent OR update a later migration that creates the table to include the final schema (so the earlier one becomes a no-op on fresh install).
 ```

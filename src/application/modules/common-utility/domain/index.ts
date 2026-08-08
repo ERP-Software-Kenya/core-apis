@@ -5,3 +5,4 @@ export * from './currency.model';
 export * from './language.model';
 
 export * from "./filters";
+export * from "./page-access.model";

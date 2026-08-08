@@ -8,3 +8,4 @@ export * from "./currency.response";
 export * from "./currencies-paged.response";
 export * from "./language.response";
 export * from "./languages-paged.response";
+export * from "./page-access-config.response";
