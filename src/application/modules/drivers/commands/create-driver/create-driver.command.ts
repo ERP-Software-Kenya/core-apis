@@ -1,5 +1,5 @@
-import { AutoMap } from '@automapper/classes';
-import { CommandBase } from '../../../../common';
+﻿import { AutoMap } from '@automapper/classes';
+import { CommandBase } from 'src/common';
 
 export class CreateDriverCommand extends CommandBase {
   @AutoMap() public organizationId: string;

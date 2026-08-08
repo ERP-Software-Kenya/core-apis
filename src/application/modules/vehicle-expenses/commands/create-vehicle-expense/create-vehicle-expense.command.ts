@@ -1,6 +1,6 @@
-import { AutoMap } from '@automapper/classes';
-import { CommandBase } from '../../../../common';
-import { EExpenseType } from '../../../shared/enums/e-expense-type';
+﻿import { AutoMap } from '@automapper/classes';
+import { CommandBase } from 'src/common';
+import { EExpenseType } from 'src/application/shared/enums/e-expense-type';
 
 export class CreateVehicleExpenseCommand extends CommandBase {
   @AutoMap() public organizationId: string;

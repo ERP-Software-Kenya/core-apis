@@ -1,8 +1,8 @@
-import { IQueryHandler } from '@nestjs/cqrs';
+﻿import { IQueryHandler } from '@nestjs/cqrs';
 import { Inject, NotFoundException } from '@nestjs/common';
 import { InjectPinoLogger, PinoLogger } from 'nestjs-pino';
-import { QueryHandlerStrict } from '../../../../common';
-import { DRIVER_REPO } from '../../../../constants';
+import { QueryHandlerStrict } from 'src/common';
+import { DRIVER_REPO } from 'src/application/constants';
 import { IDriverRepo } from '../../repositories/i-driver.repo';
 import { Driver } from '../../domain';
 import { GetDriverQuery } from './get-driver.query';

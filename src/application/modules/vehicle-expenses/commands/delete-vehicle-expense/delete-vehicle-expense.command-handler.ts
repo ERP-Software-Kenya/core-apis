@@ -1,8 +1,8 @@
-import { ICommandHandler } from '@nestjs/cqrs';
+﻿import { ICommandHandler } from '@nestjs/cqrs';
 import { Inject, NotFoundException } from '@nestjs/common';
 import { InjectPinoLogger, PinoLogger } from 'nestjs-pino';
-import { CommandHandlerStrict } from '../../../../common';
-import { VEHICLE_EXPENSE_REPO } from '../../../../constants';
+import { CommandHandlerStrict } from 'src/common';
+import { VEHICLE_EXPENSE_REPO } from 'src/application/constants';
 import { IVehicleExpenseRepo } from '../../repositories/i-vehicle-expense.repo';
 import { DeleteVehicleExpenseCommand } from './delete-vehicle-expense.command';
 

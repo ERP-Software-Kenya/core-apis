@@ -1,8 +1,8 @@
-import { ICommandHandler } from '@nestjs/cqrs';
+﻿import { ICommandHandler } from '@nestjs/cqrs';
 import { Inject, NotFoundException } from '@nestjs/common';
 import { InjectPinoLogger, PinoLogger } from 'nestjs-pino';
-import { CommandHandlerStrict } from '../../../../common';
-import { DRIVER_REPO } from '../../../../constants';
+import { CommandHandlerStrict } from 'src/common';
+import { DRIVER_REPO } from 'src/application/constants';
 import { IDriverRepo } from '../../repositories/i-driver.repo';
 import { DeleteDriverCommand } from './delete-driver.command';
 

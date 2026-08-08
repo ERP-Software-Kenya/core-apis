@@ -1,6 +1,6 @@
-import { AutoMap } from '@automapper/classes';
-import { CommandBase } from '../../../../common';
-import { EMaintenanceStatus } from '../../../shared/enums/e-maintenance-status';
+﻿import { AutoMap } from '@automapper/classes';
+import { CommandBase } from 'src/common';
+import { EMaintenanceStatus } from 'src/application/shared/enums/e-maintenance-status';
 
 export class CreateMaintenanceCommand extends CommandBase {
   @AutoMap() public organizationId: string;

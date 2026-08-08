@@ -1,10 +1,10 @@
-import { ICommandHandler } from '@nestjs/cqrs';
+﻿import { ICommandHandler } from '@nestjs/cqrs';
 import { Inject } from '@nestjs/common';
 import { InjectMapper } from '@automapper/nestjs';
 import { Mapper } from '@automapper/core';
 import { InjectPinoLogger, PinoLogger } from 'nestjs-pino';
-import { CommandHandlerStrict } from '../../../../common';
-import { MAINTENANCE_REPO } from '../../../../constants';
+import { CommandHandlerStrict } from 'src/common';
+import { MAINTENANCE_REPO } from 'src/application/constants';
 import { IMaintenanceRepo } from '../../repositories/i-maintenance.repo';
 import { Maintenance } from '../../domain';
 import { CreateMaintenanceCommand } from './create-maintenance.command';

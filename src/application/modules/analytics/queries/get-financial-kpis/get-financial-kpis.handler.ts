@@ -1,8 +1,8 @@
-import { IQueryHandler } from '@nestjs/cqrs';
+﻿import { IQueryHandler } from '@nestjs/cqrs';
 import { Inject } from '@nestjs/common';
 import { InjectPinoLogger, PinoLogger } from 'nestjs-pino';
-import { QueryHandlerStrict } from '../../../../common';
-import { FUEL_TRANSACTION_REPO, MAINTENANCE_REPO, VEHICLE_EXPENSE_REPO } from '../../../../constants';
+import { QueryHandlerStrict } from 'src/common';
+import { FUEL_TRANSACTION_REPO, MAINTENANCE_REPO, VEHICLE_EXPENSE_REPO } from 'src/application/constants';
 import { IFuelTransactionRepo } from '../../../maintenance/repositories/i-fuel-transaction.repo';
 import { IMaintenanceRepo } from '../../../maintenance/repositories/i-maintenance.repo';
 import { IVehicleExpenseRepo } from '../../../vehicle-expenses/repositories/i-vehicle-expense.repo';

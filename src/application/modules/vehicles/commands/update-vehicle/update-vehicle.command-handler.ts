@@ -1,10 +1,10 @@
-import { ICommandHandler } from '@nestjs/cqrs';
+﻿import { ICommandHandler } from '@nestjs/cqrs';
 import { Inject, NotFoundException } from '@nestjs/common';
 import { InjectMapper } from '@automapper/nestjs';
 import { Mapper } from '@automapper/core';
 import { InjectPinoLogger, PinoLogger } from 'nestjs-pino';
-import { CommandHandlerStrict } from '../../../../common';
-import { VEHICLE_REPO } from '../../../../constants';
+import { CommandHandlerStrict } from 'src/common';
+import { VEHICLE_REPO } from 'src/application/constants';
 import { IVehicleRepo } from '../../repositories/i-vehicle.repo';
 import { Vehicle } from '../../domain';
 import { UpdateVehicleCommand } from './update-vehicle.command';

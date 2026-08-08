@@ -1,5 +1,5 @@
-import { AutoMap } from '@automapper/classes';
-import { CommandBase } from '../../../../common';
+﻿import { AutoMap } from '@automapper/classes';
+import { CommandBase } from 'src/common';
 
 export class CreateVehicleCommand extends CommandBase {
   @AutoMap() public vehicleNumber: string;

@@ -1,10 +1,10 @@
-import { IQueryHandler } from '@nestjs/cqrs';
+﻿import { IQueryHandler } from '@nestjs/cqrs';
 import { Inject } from '@nestjs/common';
 import { InjectPinoLogger, PinoLogger } from 'nestjs-pino';
-import { QueryHandlerStrict } from '../../../../common';
-import { VEHICLE_REPO } from '../../../../constants';
-import { IVehicleRepo } from '../../vehicles/repositories/i-vehicle.repo';
-import { EVehicleStatus } from '../../../shared';
+import { QueryHandlerStrict } from 'src/common';
+import { VEHICLE_REPO } from 'src/application/constants';
+import { IVehicleRepo } from '../../../vehicles/repositories/i-vehicle.repo';
+import { EVehicleStatus } from 'src/application/shared';
 import { GetFleetSummaryKpisQuery } from './get-fleet-summary.query';
 import { FleetSummaryResponse } from '../../models/responses/fleet-summary.response';
 

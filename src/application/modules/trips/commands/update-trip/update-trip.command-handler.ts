@@ -1,10 +1,10 @@
-import { ICommandHandler } from '@nestjs/cqrs';
+﻿import { ICommandHandler } from '@nestjs/cqrs';
 import { Inject, NotFoundException } from '@nestjs/common';
 import { InjectMapper } from '@automapper/nestjs';
 import { Mapper } from '@automapper/core';
 import { InjectPinoLogger, PinoLogger } from 'nestjs-pino';
-import { CommandHandlerStrict } from '../../../../common';
-import { TRIP_REPO } from '../../../../constants';
+import { CommandHandlerStrict } from 'src/common';
+import { TRIP_REPO } from 'src/application/constants';
 import { ITripRepo } from '../../repositories/i-trip.repo';
 import { Trip } from '../../domain';
 import { UpdateTripCommand } from './update-trip.command';

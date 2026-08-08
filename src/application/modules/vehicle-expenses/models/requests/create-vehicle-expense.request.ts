@@ -1,7 +1,7 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { IsEnum, IsNumber, IsOptional, IsString, IsUUID, IsDateString } from 'class-validator';
 import { AutoMap } from '@automapper/classes';
-import { EExpenseType } from '../../../shared/enums/e-expense-type';
+import { EExpenseType } from 'src/application/shared/enums/e-expense-type';
 
 export class CreateVehicleExpenseRequest {
   @ApiProperty() @AutoMap() @IsUUID() public vehicleId: string;

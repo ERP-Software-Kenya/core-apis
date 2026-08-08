@@ -1,8 +1,8 @@
-import { IQueryHandler } from '@nestjs/cqrs';
+﻿import { IQueryHandler } from '@nestjs/cqrs';
 import { Inject, NotFoundException } from '@nestjs/common';
 import { InjectPinoLogger, PinoLogger } from 'nestjs-pino';
-import { QueryHandlerStrict } from '../../../../common';
-import { TRIP_REPO } from '../../../../constants';
+import { QueryHandlerStrict } from 'src/common';
+import { TRIP_REPO } from 'src/application/constants';
 import { ITripRepo } from '../../repositories/i-trip.repo';
 import { Trip } from '../../domain';
 import { GetTripQuery } from './get-trip.query';
