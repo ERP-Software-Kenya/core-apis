@@ -11,6 +11,8 @@ import { GetTopCustomersQuery } from './queries/get-top-customers/get-top-custom
 import { GetPurchaseSummaryQuery } from './queries/get-purchase-summary/get-purchase-summary.query';
 import { GetPurchaseTrendQuery } from './queries/get-purchase-trend/get-purchase-trend.query';
 import { GetTopSuppliersQuery } from './queries/get-top-suppliers/get-top-suppliers.query';
+import { GetInventorySummaryQuery } from './queries/get-inventory-summary/get-inventory-summary.query';
+import { GetStockByLocationQuery } from './queries/get-stock-by-location/get-stock-by-location.query';
 import {
   FleetSummaryResponse,
   FinancialKpisResponse,
@@ -21,6 +23,8 @@ import {
   PurchaseSummaryResponse,
   PurchaseTrendPointResponse,
   TopSupplierResponse,
+  InventorySummaryResponse,
+  StockByLocationPointResponse,
 } from './models';
 
 const FALLBACK_ORG_ID = '00000000-0000-4000-8000-000000000001';
@@ -130,5 +134,23 @@ export class AnalyticsController {
     query.organizationId = user?.organizationId ?? FALLBACK_ORG_ID;
     query.limit = rawLimit ? Math.max(1, Math.min(50, parseInt(rawLimit, 10))) : 10;
     return this.mediator.execute<GetTopSuppliersQuery, TopSupplierResponse[]>(query);
+  }
+
+  @ApiOperation({ summary: 'Get inventory summary KPIs (total SKUs, low stock, zero stock, valuation)' })
+  @ApiOkResponse({ type: InventorySummaryResponse })
+  @Get('inventory-summary')
+  public async getInventorySummary(@CurrentUser() user?: AuthenticatedUser): Promise<InventorySummaryResponse> {
+    const query = new GetInventorySummaryQuery();
+    query.organizationId = user?.organizationId ?? FALLBACK_ORG_ID;
+    return this.mediator.execute<GetInventorySummaryQuery, InventorySummaryResponse>(query);
+  }
+
+  @ApiOperation({ summary: 'Get stock totals and valuation grouped by location' })
+  @ApiOkResponse({ type: [StockByLocationPointResponse] })
+  @Get('stock-by-location')
+  public async getStockByLocation(@CurrentUser() user?: AuthenticatedUser): Promise<StockByLocationPointResponse[]> {
+    const query = new GetStockByLocationQuery();
+    query.organizationId = user?.organizationId ?? FALLBACK_ORG_ID;
+    return this.mediator.execute<GetStockByLocationQuery, StockByLocationPointResponse[]>(query);
   }
 }

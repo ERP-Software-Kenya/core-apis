@@ -7,3 +7,5 @@ export * from './top-customer.response';
 export * from './purchase-summary.response';
 export * from './purchase-trend-point.response';
 export * from './top-supplier.response';
+export * from './inventory-summary.response';
+export * from './stock-by-location-point.response';
