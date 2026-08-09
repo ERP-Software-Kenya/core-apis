@@ -1,6 +1,7 @@
 import { Module } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { CqrsModule } from '@nestjs/cqrs';
+import { SharedModule } from '../../shared';
 import { BillsController } from './bills.controller';
 import { BillCommandHandlers } from './commands';
 import { BillQueryHandlers } from './queries';
@@ -12,7 +13,7 @@ import { ICoreApiConfig } from '../../../configuration';
 import { BillsMailService } from './mail';
 
 @Module({
-  imports:     [CqrsModule],
+  imports: [CqrsModule, SharedModule],
   controllers: [BillsController],
   providers:   [
     {

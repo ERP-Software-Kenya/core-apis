@@ -22,6 +22,7 @@ import { StockMovementsModule } from './modules/stock-movements';
 import { PurchaseItemsModule } from './modules/purchase-items';
 import { ActivityLogsModule } from './modules/activity-logs';
 import { BillsModule } from './modules/bills';
+import { CreditApprovalsModule } from './modules/credit-approvals';
 import { PaymentTransactionsModule } from './modules/payment-transactions';
 import { ItemReturnsModule } from './modules/item-returns';
 import { NotificationsModule } from './modules/notifications';
@@ -71,6 +72,7 @@ export class ApplicationModule {
         PurchaseItemsModule,
         ActivityLogsModule,
         BillsModule,
+        CreditApprovalsModule,
         PaymentTransactionsModule,
         ItemReturnsModule,
         NotificationsModule,

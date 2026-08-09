@@ -1,4 +1,4 @@
-import { AutoMap } from "@automapper/classes";
+import { AutoMap } from '@automapper/classes';
 
 export class BillItem {
   @AutoMap() public id: string;
@@ -11,4 +11,6 @@ export class BillItem {
   @AutoMap() public taxAmount: number;
   @AutoMap() public discountAmount: number;
   @AutoMap() public lineTotal: number;
+  @AutoMap(() => Date) public createdAt?: Date;
+  @AutoMap(() => Date) public updatedAt?: Date;
 }

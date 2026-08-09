@@ -1,5 +1,11 @@
 import { AutoMap } from '@automapper/classes';
-import { EBillStatus, EPaymentMethod } from '../../../../infrastructure/persistence/entities/bill.entity';
+import {
+  EBillStatus,
+  ECustomerType,
+  EPaymentMethod,
+  EPaymentTiming,
+  ESaleType,
+} from '../../../../infrastructure/persistence/entities';
 import { BillItem } from './bill-item.model';
 
 export class Bill {
@@ -8,12 +14,20 @@ export class Bill {
   @AutoMap() public organizationId: string;
   @AutoMap() public locationId: string;
   @AutoMap() public customerId?: string;
-  @AutoMap() public createdById: string;
+  @AutoMap() public createdById?: string;
   @AutoMap() public walkInName?: string;
   @AutoMap() public walkInPhone?: string;
   @AutoMap() public walkInGstin?: string;
-  @AutoMap() public status: EBillStatus;
-  @AutoMap() public paymentMethod?: EPaymentMethod;
+  @AutoMap(() => String) public status: EBillStatus;
+  @AutoMap(() => String) public paymentMethod?: EPaymentMethod;
+  @AutoMap(() => String) public saleType: ESaleType;
+  @AutoMap(() => String) public customerType?: ECustomerType;
+  @AutoMap(() => String) public paymentTiming?: EPaymentTiming;
+  @AutoMap() public partialAmount?: number;
+  @AutoMap() public blackAmount: number;
+  @AutoMap() public facilitatorUserId?: string;
+  @AutoMap() public facilitatorName?: string;
+  @AutoMap() public commissionAmount: number;
   @AutoMap() public subtotal: number;
   @AutoMap() public taxAmount: number;
   @AutoMap() public discountAmount: number;

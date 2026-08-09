@@ -13,10 +13,11 @@ import { UserRoleEntity } from './user-role.entity';
 const PK_NAME = 'PK_' + ECoreTableName.Roles;
 
 export enum ERole {
-  SuperAdmin  = 'super_admin',
-  OrgAdmin    = 'org_admin',
-  StoreManager= 'store_manager',
-  StoreStaff  = 'store_staff',
+  SuperAdmin   = 'super_admin',
+  OrgAdmin     = 'org_admin',
+  OrgManager   = 'org_manager',
+  StoreManager = 'store_manager',
+  StoreStaff   = 'store_staff',
 }
 
 @Entity({ schema: CORE_SCHEMA, name: ECoreTableName.Roles })
