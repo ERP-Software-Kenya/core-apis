@@ -73,11 +73,6 @@ export class InventoryRepo
     return this.mapper.map(entity, InventoryEntity, Inventory);
   }
 
-  public async findByOrgLocationProductAsync(organizationId: string, locationId: string, productId: string, manager: EntityManager): Promise<Inventory | null> {
-    const entity = await manager.findOne(InventoryEntity, { where: { organizationId, locationId, productId } });
-    return entity ? this.mapper.map(entity, InventoryEntity, Inventory) : null;
-  }
-
   public async deductStockAsync(id: string, quantity: number, manager: EntityManager): Promise<Inventory> {
     const entity = await manager.findOneOrFail(InventoryEntity, { where: { id } });
     const onHand = Number(entity.quantityOnHand);

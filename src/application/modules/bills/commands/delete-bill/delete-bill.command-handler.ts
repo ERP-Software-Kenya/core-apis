@@ -18,7 +18,7 @@ export class DeleteBillCommandHandler implements ICommandHandler<DeleteBillComma
     this.logger.info(`Executing ${DeleteBillCommand.name} id=${command.id}`);
     const bill = await this.repo.getAsync(command.id);
     if (!bill) throw new NotFoundException(`Bill ${command.id} not found`);
-    if (bill.status === EBillStatus.COMPLETED || bill.status === EBillStatus.CANCELLED) {
+    if (bill.status === EBillStatus.Completed || bill.status === EBillStatus.Cancelled) {
       throw new BadRequestException(`Cannot delete bill in ${bill.status} status`);
     }
     return this.repo.deleteAsync(command.id);
