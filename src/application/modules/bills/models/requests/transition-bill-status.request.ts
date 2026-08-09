@@ -4,7 +4,7 @@ import { IsEnum, IsOptional } from 'class-validator';
 import { EBillStatus, EPaymentMethod } from '../../../../../infrastructure/persistence/entities/bill.entity';
 
 export class TransitionBillStatusRequest {
-  @ApiProperty({ enum: [EBillStatus.DRAFT, EBillStatus.COMPLETED, EBillStatus.CANCELLED] })
+  @ApiProperty({ enum: [EBillStatus.Draft, EBillStatus.Completed, EBillStatus.Cancelled] })
   @IsEnum(EBillStatus)
   @AutoMap()
   public status: EBillStatus;

@@ -7,19 +7,7 @@ import {
   EPaymentTiming,
   ESaleType,
 } from '../../../../../infrastructure/persistence/entities';
-
-export class BillItemResponse {
-  @ApiProperty() @AutoMap() public id: string;
-  @ApiProperty() @AutoMap() public billId: string;
-  @ApiProperty() @AutoMap() public productId: string;
-  @ApiPropertyOptional({ nullable: true }) @AutoMap() public variantId?: string;
-  @ApiProperty() @AutoMap() public quantity: number;
-  @ApiProperty() @AutoMap() public unitPrice: number;
-  @ApiProperty() @AutoMap() public taxRate: number;
-  @ApiProperty() @AutoMap() public taxAmount: number;
-  @ApiProperty() @AutoMap() public discountAmount: number;
-  @ApiProperty() @AutoMap() public lineTotal: number;
-}
+import { BillItemResponse } from './bill-item.response';
 
 export class BillResponse {
   @ApiProperty() @AutoMap() public id: string;

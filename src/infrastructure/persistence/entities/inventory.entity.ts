@@ -67,6 +67,11 @@ export class InventoryEntity {
   @Column({ name: 'bin_location', type: 'varchar', length: 100, nullable: true })
   public binLocation?: string;
 
+  /** Off-ledger / black stock — deducted on black sales, not visible in published stock */
+  @AutoMap()
+  @Column({ name: 'quantity_unpublished', type: 'decimal', precision: 18, scale: 4, default: 0 })
+  public quantityUnpublished: number;
+
   @AutoMap(() => Date)
   @CreateDateColumn({ name: 'created_at', type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
   public createdAt: Date;

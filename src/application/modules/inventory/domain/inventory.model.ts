@@ -11,6 +11,7 @@ export class Inventory {
   @AutoMap() public maxStock?: number;
   @AutoMap() public averageCost?: number;
   @AutoMap() public binLocation?: string;
+  @AutoMap() public quantityUnpublished: number;
   @AutoMap(() => Date) public createdAt?: Date;
   @AutoMap(() => Date) public updatedAt?: Date;
 }
