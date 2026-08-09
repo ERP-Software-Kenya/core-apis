@@ -6,13 +6,13 @@ import { USER_REPO } from '../../../../constants';
 import { User } from '../../../users/domain';
 import { IUserRepo } from '../../../users';
 import { SyncUserCommand } from './sync-user.command';
-import { IMailService, MAIL_SERVICE } from '../../../../../common/mail';
+import { AuthMailService } from '../../mail';
 
 @CommandHandlerStrict(SyncUserCommand)
 export class SyncUserCommandHandler implements ICommandHandler<SyncUserCommand, User> {
   constructor(
     @Inject(USER_REPO) private readonly userRepo: IUserRepo,
-    @Inject(MAIL_SERVICE) private readonly mailService: IMailService,
+    private readonly mailService: AuthMailService,
     @InjectPinoLogger(SyncUserCommandHandler.name) private readonly logger: PinoLogger,
   ) {}
 

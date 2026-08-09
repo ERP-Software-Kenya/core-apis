@@ -1,4 +1,4 @@
-import { Inject, Injectable, OnApplicationBootstrap } from '@nestjs/common';
+import { Injectable, OnApplicationBootstrap } from '@nestjs/common';
 import { InjectPinoLogger, PinoLogger } from 'nestjs-pino';
 import * as nodemailer from 'nodemailer';
 import type { Transporter } from 'nodemailer';
@@ -7,17 +7,22 @@ import { IMailService } from './i-mail.service';
 import { MailMessage } from './domain';
 import { MailOptions } from './options';
 import { MailSendException } from './exceptions';
-import { EMAIL_TEMPLATE_REPO, IEmailTemplateRepo } from '../../application/modules/mail-templates';
+
+export interface EmailTemplateData {
+  subject: string;
+  htmlBody: string;
+}
 
 @Injectable()
-export class MailService implements IMailService, OnApplicationBootstrap {
+export abstract class MailService implements IMailService, OnApplicationBootstrap {
   private transporter: Transporter;
 
   constructor(
-    private readonly options: MailOptions,
-    @Inject(EMAIL_TEMPLATE_REPO) private readonly templateRepo: IEmailTemplateRepo,
-    @InjectPinoLogger(MailService.name) private readonly logger: PinoLogger,
+    protected readonly options: MailOptions,
+    @InjectPinoLogger(MailService.name) protected readonly logger: PinoLogger,
   ) {}
+
+  protected abstract findTemplateAsync(slug: string): Promise<EmailTemplateData | null>;
 
   public onApplicationBootstrap(): void {
     this.transporter = nodemailer.createTransport({
@@ -70,7 +75,7 @@ export class MailService implements IMailService, OnApplicationBootstrap {
   ): Promise<void> {
     this.logger.info({ to, templateSlug }, 'Sending templated email');
 
-    const template = await this.templateRepo.findBySlugAsync(templateSlug);
+    const template = await this.findTemplateAsync(templateSlug);
     if (!template) {
       throw new MailSendException(`Email template "${templateSlug}" not found`);
     }

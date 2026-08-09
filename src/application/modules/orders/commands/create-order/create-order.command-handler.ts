@@ -6,7 +6,7 @@ import { CUSTOMER_REPO, ORDER_REPO } from '../../../../constants';
 import { Order } from '../../domain';
 import { IOrderRepo } from '../..';
 import { CreateOrderCommand } from './create-order.command';
-import { IMailService, MAIL_SERVICE } from '../../../../../common/mail';
+import { OrdersMailService } from '../../mail';
 import { IPushNotificationService, PUSH_NOTIFICATION_SERVICE } from '../../../../../common/push-notification';
 
 @CommandHandlerStrict(CreateOrderCommand)
@@ -14,7 +14,7 @@ export class CreateOrderCommandHandler implements ICommandHandler<CreateOrderCom
   constructor(
     @Inject(ORDER_REPO) private readonly repo: IOrderRepo,
     @Inject(CUSTOMER_REPO) private readonly customerRepo: { getAsync: (id: string) => Promise<{ email?: string; name?: string } | null> },
-    @Inject(MAIL_SERVICE) private readonly mailService: IMailService,
+    private readonly mailService: OrdersMailService,
     @Inject(PUSH_NOTIFICATION_SERVICE) private readonly pushService: IPushNotificationService,
     @InjectPinoLogger(CreateOrderCommandHandler.name) private readonly logger: PinoLogger,
   ) {}

@@ -1,8 +1,8 @@
-import { Body, Controller, HttpCode, HttpStatus, Inject, Post, UseGuards } from '@nestjs/common';
+import { Body, Controller, HttpCode, HttpStatus, Post, UseGuards } from '@nestjs/common';
 import { ApiBearerAuth, ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { InjectPinoLogger, PinoLogger } from 'nestjs-pino';
 import { ClerkAuthGuard } from '../../../common';
-import { MAIL_SERVICE, IMailService } from '../../../common/mail';
+import { AppMailService } from '../../../common/mail';
 import { SendTestMailRequest } from './models';
 
 @ApiBearerAuth()
@@ -11,7 +11,7 @@ import { SendTestMailRequest } from './models';
 @Controller({ path: 'mail', version: '1' })
 export class MailController {
   constructor(
-    @Inject(MAIL_SERVICE) private readonly mailService: IMailService,
+    private readonly mailService: AppMailService,
     @InjectPinoLogger(MailController.name) private readonly logger: PinoLogger,
   ) {}
 

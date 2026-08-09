@@ -10,7 +10,7 @@ import { IBillRepo } from '../../i-bill.repo';
 import { IInventoryRepo } from '../../../inventory/i-inventory.repo';
 import { EBillStatus } from '../../../../../infrastructure/persistence/entities/bill.entity';
 import { TransitionBillStatusCommand } from './transition-bill-status.command';
-import { IMailService, MAIL_SERVICE } from '../../../../../common/mail';
+import { BillsMailService } from '../../mail';
 import { IPushNotificationService, PUSH_NOTIFICATION_SERVICE } from '../../../../../common/push-notification';
 import { ICustomerRepo } from '../../../customers/i-customer.repo';
 import { CustomerFilter } from '../../../customers/domain';
@@ -29,7 +29,7 @@ export class TransitionBillStatusCommandHandler implements ICommandHandler<Trans
     @Inject(BILL_ITEM_REPO) private readonly itemRepo: IBaseRepo<BillItem, string, PageableFilter<BillItem>, Filter<BillItem>>,
     @Inject(INVENTORY_REPO) private readonly inventoryRepo: IInventoryRepo,
     @Inject(CUSTOMER_REPO) private readonly customerRepo: IBaseRepo<unknown, string, PageableFilter<CustomerFilter>, Filter<CustomerFilter>>,
-    @Inject(MAIL_SERVICE) private readonly mailService: IMailService,
+    private readonly mailService: BillsMailService,
     @Inject(PUSH_NOTIFICATION_SERVICE) private readonly pushService: IPushNotificationService,
     @InjectDataSource() private readonly dataSource: DataSource,
     @InjectPinoLogger(TransitionBillStatusCommandHandler.name) private readonly logger: PinoLogger,

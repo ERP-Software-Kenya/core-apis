@@ -3,6 +3,7 @@ import { Params } from 'nestjs-pino';
 import { IDbOptions } from '../common';
 import { IApiOptions } from './i-api.options';
 import { IClerkOptions } from './i-clerk.options';
+import { IMailOptions } from './i-mail.options';
 
 export interface ICoreApiConfig {
   logger: Params;
@@ -10,4 +11,5 @@ export interface ICoreApiConfig {
   api: IApiOptions;
   database: IDbOptions;
   clerk: IClerkOptions;
+  mail: IMailOptions;
 }
