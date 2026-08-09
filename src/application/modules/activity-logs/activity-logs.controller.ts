@@ -7,7 +7,7 @@ import { CqrsMediator } from '../../../common';
 import { CreateActivityLogCommand } from './commands';
 import { ActivityLog } from './domain';
 import { CreateActivityLogRequest, ActivityLogResponse } from './models';
-import { GetActivityLogQuery } from './queries';
+import { GetActivityLogQuery, ListActivityLogsQuery } from './queries';
 
 @ApiBearerAuth()
 @ApiTags('ActivityLogs')
@@ -18,6 +18,15 @@ export class ActivityLogsController {
     @InjectMapper() protected readonly mapper: Mapper,
     @InjectPinoLogger(ActivityLogsController.name) protected readonly logger: PinoLogger,
   ) {}
+
+  @ApiOperation({ summary: 'List all activity logs' })
+  @ApiOkResponse({ type: [ActivityLogResponse] })
+  @HttpCode(HttpStatus.OK)
+  @Get('list')
+  public async list(): Promise<ActivityLogResponse[]> {
+    const query = new ListActivityLogsQuery();
+    return this.mediator.execute<ListActivityLogsQuery, ActivityLogResponse[]>(query);
+  }
 
   @ApiOperation({ summary: 'Get activity log by ID' })
   @ApiOkResponse({ type: ActivityLogResponse })
