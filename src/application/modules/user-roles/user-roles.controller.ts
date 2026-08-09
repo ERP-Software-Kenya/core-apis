@@ -7,7 +7,7 @@ import { CqrsMediator } from '../../../common';
 import { CreateUserRoleCommand } from './commands';
 import { UserRole } from './domain';
 import { CreateUserRoleRequest, UserRoleResponse } from './models';
-import { GetUserRoleQuery } from './queries';
+import { GetUserRoleQuery, ListUserRolesQuery } from './queries';
 
 @ApiBearerAuth()
 @ApiTags('UserRoles')
@@ -18,6 +18,15 @@ export class UserRolesController {
     @InjectMapper() protected readonly mapper: Mapper,
     @InjectPinoLogger(UserRolesController.name) protected readonly logger: PinoLogger,
   ) {}
+
+  @ApiOperation({ summary: 'List all user-role assignments' })
+  @ApiOkResponse({ type: [UserRoleResponse] })
+  @HttpCode(HttpStatus.OK)
+  @Get('list')
+  public async list(): Promise<UserRoleResponse[]> {
+    const query = new ListUserRolesQuery();
+    return this.mediator.execute<ListUserRolesQuery, UserRoleResponse[]>(query);
+  }
 
   @ApiOperation({ summary: 'Get user role by ID' })
   @ApiOkResponse({ type: UserRoleResponse })

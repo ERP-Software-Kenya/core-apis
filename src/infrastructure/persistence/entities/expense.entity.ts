@@ -3,6 +3,7 @@ import { Column, CreateDateColumn, DeleteDateColumn, Entity, JoinColumn, ManyToO
 import { CORE_SCHEMA, ECoreTableName } from './e-core-table-name';
 import { OrganizationEntity } from './organization.entity';
 import { LocationEntity } from './location.entity';
+import { EExpenseStatus } from '../../e-expense-status';
 
 const PK_NAME = 'PK_' + ECoreTableName.Expenses;
 
@@ -35,6 +36,14 @@ export class ExpenseEntity {
   @AutoMap()
   @Column({ type: 'text', nullable: true })
   public description?: string;
+
+  @AutoMap(() => String)
+  @Column({ type: 'varchar', length: 20, default: EExpenseStatus.Pending })
+  public status: EExpenseStatus;
+
+  @AutoMap()
+  @Column({ name: 'submitted_by', type: 'varchar', length: 255, nullable: true })
+  public submittedBy?: string;
 
   @AutoMap(() => Date)
   @CreateDateColumn({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })

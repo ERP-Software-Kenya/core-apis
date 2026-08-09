@@ -1,4 +1,15 @@
+import { EInvitationStatus } from '../../infrastructure/e-invitation-status';
+
 export const CLERK_SERVICE = 'IClerkService';
+
+export interface ClerkInvitationData {
+  id: string;
+  emailAddress: string;
+  status: EInvitationStatus;
+  roles?: string[];
+  createdAt: number;
+  updatedAt: number;
+}
 
 export interface ClerkUserData {
   clerkUserId: string;
@@ -25,6 +36,8 @@ export interface IClerkService {
   getUserRolesAsync(clerkUserId: string): Promise<string[]>;
   updateUserRolesAsync(clerkUserId: string, roles: string[]): Promise<void>;
   inviteUserAsync(params: { email: string; roles?: string[]; redirectUrl?: string }): Promise<void>;
+  listInvitationsAsync(params?: { status?: EInvitationStatus }): Promise<ClerkInvitationData[]>;
+  revokeInvitationAsync(invitationId: string): Promise<void>;
   deleteClerkUserAsync(clerkUserId: string): Promise<void>;
   banClerkUserAsync(clerkUserId: string): Promise<void>;
   unbanClerkUserAsync(clerkUserId: string): Promise<void>;

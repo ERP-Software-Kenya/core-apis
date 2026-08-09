@@ -1,6 +1,6 @@
 import { Mapper } from '@automapper/core';
 import { InjectMapper } from '@automapper/nestjs';
-import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Post, Put, Query, UseGuards } from '@nestjs/common';
+import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Post, Put, Query, UseGuards, ParseEnumPipe } from '@nestjs/common';
 import { ApiBearerAuth, ApiCreatedResponse, ApiNoContentResponse, ApiOkResponse, ApiOperation, ApiParam, ApiTags } from '@nestjs/swagger';
 import { InjectPinoLogger, PinoLogger } from 'nestjs-pino';
 import { ClerkAuthGuard, CqrsMediator, Roles, RolesGuard } from '../../../common';
@@ -12,6 +12,7 @@ import {
   DeleteUserCommand,
   InviteUserCommand,
   RemoveUserFromOrgCommand,
+  RevokeInvitationCommand,
   UnbanUserCommand,
   UpdateUserRolesCommand,
 } from './commands';
@@ -25,6 +26,7 @@ import {
   UpdateUserRolesRequest,
 } from './models';
 import {
+  ClerkInvitationResponse,
   ClerkUserListResponse,
   ClerkUserRolesResponse,
   UserResponse,
@@ -32,9 +34,11 @@ import {
 import {
   GetUserQuery,
   GetUserRolesQuery,
+  ListInvitationsQuery,
   ListUsersQuery,
   SearchUsersQuery,
 } from './queries';
+import { EInvitationStatus } from '../../../infrastructure/e-invitation-status';
 
 @ApiBearerAuth()
 @ApiTags('Users')
@@ -123,6 +127,32 @@ export class UsersController {
   public async invite(@Body() body: InviteUserRequest): Promise<void> {
     const command = this.mapper.map(body, InviteUserRequest, InviteUserCommand);
     await this.mediator.execute<InviteUserCommand, void>(command);
+  }
+
+  @ApiOperation({ summary: 'List Clerk invitations (optionally filtered by status)' })
+  @ApiOkResponse({ type: [ClerkInvitationResponse] })
+  @HttpCode(HttpStatus.OK)
+  @UseGuards(RolesGuard)
+  @Roles(ERole.OrgAdmin, ERole.SuperAdmin)
+  @Get('clerk/invitations')
+  public async listInvitations(
+    @Query('status', new ParseEnumPipe(EInvitationStatus, { optional: true })) status?: EInvitationStatus,
+  ): Promise<ClerkInvitationResponse[]> {
+    const query    = new ListInvitationsQuery();
+    query.status   = status;
+    return this.mediator.execute<ListInvitationsQuery, ClerkInvitationResponse[]>(query);
+  }
+
+  @ApiOperation({ summary: 'Revoke a pending Clerk invitation' })
+  @ApiNoContentResponse()
+  @HttpCode(HttpStatus.NO_CONTENT)
+  @UseGuards(RolesGuard)
+  @Roles(ERole.OrgAdmin, ERole.SuperAdmin)
+  @Delete('clerk/invitations/:invitationId')
+  public async revokeInvitation(@Param('invitationId') invitationId: string): Promise<void> {
+    const command             = new RevokeInvitationCommand();
+    command.invitationId      = invitationId;
+    await this.mediator.execute<RevokeInvitationCommand, void>(command);
   }
 
   @ApiOperation({ summary: 'Update Clerk roles for a user' })
