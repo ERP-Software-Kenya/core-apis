@@ -1,12 +1,20 @@
 import { AutomapperProfile, InjectMapper } from '@automapper/nestjs';
 import { createMap, Mapper, MappingProfile } from '@automapper/core';
 import { Injectable } from '@nestjs/common';
-import { CreateVehicleRequest, UpdateVehicleRequest, SearchVehiclesRequest, ListVehiclesRequest, VehicleResponse } from '../models';
-import { Vehicle } from '../domain';
+import {
+  CreateVehicleRequest, UpdateVehicleRequest, SearchVehiclesRequest, ListVehiclesRequest,
+  VehicleResponse, VehicleTypeResponse, VehicleBrandResponse, FuelTypeResponse,
+  ListVehicleTypesRequest, ListVehicleBrandsRequest, ListFuelTypesRequest,
+} from '../models';
+import { Vehicle, VehicleType, VehicleBrand, FuelType } from '../domain';
 import { CreateVehicleCommand, UpdateVehicleCommand } from '../commands';
-import { SearchVehiclesQuery } from '../queries/search-vehicles/search-vehicles.query';
-import { ListVehiclesQuery } from '../queries/list-vehicles/list-vehicles.query';
-import { VehicleEntity } from '../../../../infrastructure/persistence/entities';
+import {
+  SearchVehiclesQuery, ListVehiclesQuery,
+  ListVehicleTypesQuery, ListVehicleBrandsQuery, ListFuelTypesQuery,
+} from '../queries';
+import {
+  VehicleEntity, VehicleTypeEntity, VehicleBrandEntity, FuelTypeEntity,
+} from '../../../../infrastructure/persistence/entities';
 
 @Injectable()
 export class VehicleProfile extends AutomapperProfile {
@@ -24,6 +32,15 @@ export class VehicleProfile extends AutomapperProfile {
       createMap(mapper, SearchVehiclesRequest, SearchVehiclesQuery);
       createMap(mapper, ListVehiclesRequest, ListVehiclesQuery);
       createMap(mapper, Vehicle, VehicleResponse);
+      createMap(mapper, VehicleTypeEntity, VehicleType);
+      createMap(mapper, VehicleType, VehicleTypeResponse);
+      createMap(mapper, VehicleBrandEntity, VehicleBrand);
+      createMap(mapper, VehicleBrand, VehicleBrandResponse);
+      createMap(mapper, FuelTypeEntity, FuelType);
+      createMap(mapper, FuelType, FuelTypeResponse);
+      createMap(mapper, ListVehicleTypesRequest, ListVehicleTypesQuery);
+      createMap(mapper, ListVehicleBrandsRequest, ListVehicleBrandsQuery);
+      createMap(mapper, ListFuelTypesRequest, ListFuelTypesQuery);
     };
   }
 }

@@ -1,12 +1,13 @@
 import { Mapper } from '@automapper/core';
 import { InjectMapper } from '@automapper/nestjs';
-import { Body, Controller, HttpCode, HttpStatus, Post, UseGuards } from '@nestjs/common';
-import { ApiBearerAuth, ApiCreatedResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
+import { Body, Controller, Get, HttpCode, HttpStatus, Post, Query, UseGuards } from '@nestjs/common';
+import { ApiBearerAuth, ApiCreatedResponse, ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { InjectPinoLogger, PinoLogger } from 'nestjs-pino';
 import { AuthenticatedUser, ClerkAuthGuard, CqrsMediator, CurrentUser } from '../../../common';
-import { CreateMaintenanceRequest, MaintenanceResponse } from './models';
+import { CreateMaintenanceRequest, MaintenanceResponse, MaintenanceTypeResponse, ListMaintenanceTypesRequest } from './models';
 import { CreateMaintenanceCommand } from './commands';
-import { Maintenance } from './domain';
+import { ListMaintenanceTypesQuery } from './queries';
+import { Maintenance, MaintenanceType } from './domain';
 
 const FALLBACK_ORG_ID = '00000000-0000-4000-8000-000000000001';
 
@@ -34,5 +35,15 @@ export class MaintenanceController {
     command.createdBy       = user?.dbUserId;
     const result            = await this.mediator.execute<CreateMaintenanceCommand, Maintenance>(command);
     return this.mapper.map(result, Maintenance, MaintenanceResponse);
+  }
+
+  @ApiOperation({ summary: 'List all maintenance types' })
+  @ApiOkResponse({ type: [MaintenanceTypeResponse] })
+  @HttpCode(HttpStatus.OK)
+  @Get('maintenance-types/list')
+  public async listMaintenanceTypes(@Query() filter?: ListMaintenanceTypesRequest): Promise<MaintenanceTypeResponse[]> {
+    const query  = this.mapper.map(filter, ListMaintenanceTypesRequest, ListMaintenanceTypesQuery);
+    const result = await this.mediator.execute<ListMaintenanceTypesQuery, MaintenanceType[]>(query);
+    return this.mapper.mapArray(result, MaintenanceType, MaintenanceTypeResponse);
   }
 }
