@@ -2,7 +2,8 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { createClerkClient } from '@clerk/backend';
 import { ICoreApiConfig } from '../../configuration';
-import { ClerkUserData, ClerkUserListData, IClerkService } from './i-clerk.service';
+import { EInvitationStatus } from '../../infrastructure/e-invitation-status';
+import { ClerkInvitationData, ClerkUserData, ClerkUserListData, IClerkService } from './i-clerk.service';
 
 @Injectable()
 export class ClerkService implements IClerkService {
@@ -70,6 +71,28 @@ export class ClerkService implements IClerkService {
       publicMetadata: params.roles?.length ? { roles: params.roles } : undefined,
       ignoreExisting: true,
     });
+  }
+
+  public async listInvitationsAsync(params?: { status?: EInvitationStatus }): Promise<ClerkInvitationData[]> {
+    const result = await this.client.invitations.getInvitationList({
+      status: params?.status,
+    });
+    return result.data.map((inv) => {
+      const meta  = inv.publicMetadata as Record<string, unknown>;
+      const roles = Array.isArray(meta['roles']) ? (meta['roles'] as string[]) : undefined;
+      return {
+        id:           inv.id,
+        emailAddress: inv.emailAddress,
+        status:       inv.status as EInvitationStatus,
+        roles,
+        createdAt:    inv.createdAt,
+        updatedAt:    inv.updatedAt,
+      };
+    });
+  }
+
+  public async revokeInvitationAsync(invitationId: string): Promise<void> {
+    await this.client.invitations.revokeInvitation(invitationId);
   }
 
   public async deleteClerkUserAsync(clerkUserId: string): Promise<void> {
