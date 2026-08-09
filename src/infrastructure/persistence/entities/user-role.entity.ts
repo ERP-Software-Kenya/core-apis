@@ -29,9 +29,10 @@ export class UserRoleEntity {
   @Column({ type: 'uuid' })
   public roleId: string;
 
-  /** Optional scope — null means org-wide, non-null scopes role to a specific location */
+  /** Optional scope — null means org-wide, non-null scopes role to a specific store.
+   *  DB column was renamed location_id → store_id by migration 1786301965722. */
   @AutoMap()
-  @Column({ name: 'location_id', type: 'uuid', nullable: true })
+  @Column({ name: 'store_id', type: 'uuid', nullable: true })
   public locationId?: string;
 
   @AutoMap(() => Date)
@@ -65,7 +66,7 @@ export class UserRoleEntity {
   @AutoMap(() => LocationEntity)
   @ManyToOne(() => LocationEntity, { nullable: true })
   @JoinColumn({
-    name: 'location_id',
+    name: 'store_id',
     referencedColumnName: 'id',
     foreignKeyConstraintName: `FK__${ECoreTableName.UserRoles}__${ECoreTableName.Locations}`,
   })
