@@ -8,7 +8,7 @@ import {
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { CORE_SCHEMA, ECoreTableName } from './e-core-table-name';
-import { StoreEntity } from './store.entity';
+import { LocationEntity } from './location.entity';
 import { ProductEntity } from './product.entity';
 import { SupplierEntity } from './supplier.entity';
 
@@ -21,8 +21,8 @@ export class StockEntryEntity {
   public id: string;
 
   @AutoMap()
-  @Column({ name: 'store_id', type: 'uuid' })
-  public storeId: string;
+  @Column({ name: 'location_id', type: 'uuid' })
+  public locationId: string;
 
   @AutoMap()
   @Column({ name: 'product_id', type: 'uuid' })
@@ -58,14 +58,14 @@ export class StockEntryEntity {
 
   // ─── Relations ──────────────────────────────────────────────────────────────
 
-  @AutoMap(() => StoreEntity)
-  @ManyToOne(() => StoreEntity)
+  @AutoMap(() => LocationEntity)
+  @ManyToOne(() => LocationEntity)
   @JoinColumn({
-    name: 'store_id',
+    name: 'location_id',
     referencedColumnName: 'id',
-    foreignKeyConstraintName: `FK__${ECoreTableName.StockEntries}__${ECoreTableName.Stores}`,
+    foreignKeyConstraintName: `FK__${ECoreTableName.StockEntries}__${ECoreTableName.Locations}`,
   })
-  public store: StoreEntity;
+  public location: LocationEntity;
 
   @AutoMap(() => ProductEntity)
   @ManyToOne(() => ProductEntity)

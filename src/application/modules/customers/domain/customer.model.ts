@@ -11,4 +11,5 @@ export class Customer {
   @AutoMap() public creditBalance: number;
   @AutoMap(() => Date) public createdAt: Date;
   @AutoMap(() => Date) public updatedAt?: Date;
+  @AutoMap(() => Date) public deletedAt?: Date;
 }

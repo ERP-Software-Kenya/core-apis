@@ -36,5 +36,6 @@ export class Bill {
   @AutoMap(() => Date) public billedAt?: Date;
   @AutoMap(() => Date) public createdAt: Date;
   @AutoMap(() => Date) public updatedAt?: Date;
+  @AutoMap(() => Date) public deletedAt?: Date;
   @AutoMap(() => [BillItem]) public items?: BillItem[];
 }

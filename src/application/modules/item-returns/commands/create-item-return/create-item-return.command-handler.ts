@@ -15,7 +15,7 @@ export class CreateItemReturnCommandHandler implements ICommandHandler<CreateIte
   public async execute(command: CreateItemReturnCommand): Promise<ItemReturn> {
     this.logger.info(`Executing Command "${CreateItemReturnCommand.name}"`);
     const itemReturn = new ItemReturn();
-    itemReturn.storeId = command.storeId;
+    itemReturn.locationId = command.locationId;
     itemReturn.orderId = command.orderId;
     itemReturn.supplierId = command.supplierId;
     itemReturn.returnType = command.returnType;

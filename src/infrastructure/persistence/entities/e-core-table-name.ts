@@ -23,6 +23,8 @@ export enum ECoreTableName {
   Suppliers             = 'suppliers',
   Inventory             = 'inventory',
   StockMovements        = 'stock_movements',
+  UnpublishedStock      = 'unpublished_stock',
+  UnpublishedStockMovements = 'unpublished_stock_movements',
   StockEntries          = 'stock_entries',
   StockTransfers        = 'stock_transfers',
   StockTransferItems    = 'stock_transfer_items',
@@ -49,4 +51,39 @@ export enum ECoreTableName {
   ProductLogs           = 'product_logs',
   Platforms             = 'platforms',
   PlatformConfigurations = 'platform_configurations',
+
+  // ─── Reference / Lookup tables ───────────────────────────────────────────────
+  Countries             = 'ref_countries',
+  States                = 'ref_states',
+  Cities                = 'ref_cities',
+  Currencies            = 'ref_currencies',
+  Languages             = 'ref_languages',
+
+  // ─── Vehicle & Transportation ─────────────────────────────────────────────────
+  Vehicles              = 'vehicles',
+  VehicleTypes          = 'vehicle_types',
+  VehicleBrands         = 'vehicle_brands',
+  FuelTypes             = 'fuel_types',
+  Drivers               = 'drivers',
+  VehicleDriverAssignments = 'vehicle_driver_assignments',
+  VehicleLocations      = 'vehicle_locations',
+  Trips                 = 'trips',
+  TripCheckpoints       = 'trip_checkpoints',
+  TripGoods             = 'trip_goods',
+  TripEvents            = 'trip_events',
+  FuelTransactions      = 'fuel_transactions',
+  Maintenance           = 'maintenance',
+  MaintenanceTypes      = 'maintenance_types',
+  MaintenanceParts      = 'maintenance_parts',
+  VehicleExpenses       = 'vehicle_expenses',
+  VehicleDocuments      = 'vehicle_documents',
+  DriverDocuments       = 'driver_documents',
+  VehicleInsurance      = 'vehicle_insurance',
+  TransportationOrders  = 'transportation_orders',
+  TransportationOrderItems = 'transportation_order_items',
+  GpsDevices            = 'gps_devices',
+  Alerts                = 'alerts',
+
+  // ─── Communication ────────────────────────────────────────────────────────────
+  EmailTemplates        = 'email_templates',
 }

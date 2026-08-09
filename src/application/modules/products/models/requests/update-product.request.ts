@@ -1,6 +1,6 @@
 import { AutoMap } from '@automapper/classes';
 import { ApiPropertyOptional } from '@nestjs/swagger';
-import { IsEnum, IsNumber, IsOptional, IsString, IsUUID, Min } from 'class-validator';
+import { IsBoolean, IsEnum, IsNumber, IsOptional, IsString, IsUUID, Min } from 'class-validator';
 import { EProductUnit } from '../../../../../infrastructure';
 
 export class UpdateProductRequest {
@@ -81,4 +81,10 @@ export class UpdateProductRequest {
   @Min(0)
   @AutoMap()
   public reorderPoint?: number;
+
+  @ApiPropertyOptional()
+  @IsOptional()
+  @IsBoolean()
+  @AutoMap()
+  public isActive?: boolean;
 }

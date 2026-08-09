@@ -34,7 +34,7 @@ export class StockMovementRepo
 
   public async listByInventoryAsync(inventoryId: string): Promise<StockMovement[]> {
     const entities = await this.internalRepo.find({
-      where: { inventoryId, isUnpublishedEntry: false },
+      where: { inventoryId },
       order: { createdAt: 'DESC' },
     });
     return this.mapper.mapArray(entities, StockMovementEntity, StockMovement);

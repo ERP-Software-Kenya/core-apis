@@ -3,8 +3,11 @@ import { Filter, PageableFilter } from '../../../common';
 import { Category } from './domain';
 
 export interface CategoryFilter {
-  search?: string;
+  name?: string;
   isActive?: boolean;
+  parentId?: string | null;
+  organizationId?: string;
+  hasParent?: boolean;
 }
 export const CATEGORY_REPO = 'CATEGORY_REPO';
 

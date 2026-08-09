@@ -1,7 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 
 export class CreateItemReturnRequest {
-  @ApiProperty() public storeId: string;
+  @ApiProperty() public locationId: string;
   @ApiProperty({ required: false }) public orderId?: string;
   @ApiProperty({ required: false }) public supplierId?: string;
   @ApiProperty() public returnType: string;
@@ -15,13 +15,13 @@ export class UpdateItemReturnRequest {
 }
 
 export class SearchItemReturnsRequest {
-  @ApiProperty({ required: false }) public storeId?: string;
+  @ApiProperty({ required: false }) public locationId?: string;
   @ApiProperty({ required: false }) public status?: string;
   @ApiProperty({ required: false, default: 1 }) public $page?: number;
   @ApiProperty({ required: false, default: 10 }) public $perPage?: number;
 }
 
 export class ListItemReturnsRequest {
-  @ApiProperty({ required: false }) public storeId?: string;
+  @ApiProperty({ required: false }) public locationId?: string;
   @ApiProperty({ required: false }) public status?: string;
 }

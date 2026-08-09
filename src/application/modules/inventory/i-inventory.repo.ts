@@ -17,8 +17,6 @@ export interface IInventoryRepo extends IBaseRepo<Inventory, string, PageableFil
   adjustStockAsync(id: string, absoluteQty: number, unitCost: number | undefined, manager: EntityManager): Promise<Inventory>;
   reserveStockAsync(id: string, quantity: number, manager: EntityManager): Promise<Inventory>;
   releaseReservationAsync(id: string, quantity: number, manager: EntityManager): Promise<Inventory>;
-  addUnpublishedStockAsync(id: string, quantity: number, unitCost: number | undefined, manager: EntityManager): Promise<Inventory>;
-  publishStockAsync(id: string, quantity: number, manager: EntityManager): Promise<Inventory>;
   deductStockAsync(id: string, quantity: number, manager: EntityManager): Promise<Inventory>;
   deductUnpublishedStockAsync(id: string, quantity: number, manager: EntityManager): Promise<Inventory>;
   findByOrgLocationProductAsync(

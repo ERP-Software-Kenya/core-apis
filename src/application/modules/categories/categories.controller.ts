@@ -1,18 +1,20 @@
 import { Mapper } from '@automapper/core';
 import { InjectMapper } from '@automapper/nestjs';
-import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Post, Put, Query } from '@nestjs/common';
+import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Post, Put, Query, UseGuards } from '@nestjs/common';
 import { ApiBearerAuth, ApiCreatedResponse, ApiOkResponse, ApiOperation, ApiParam, ApiTags } from '@nestjs/swagger';
 import { InjectPinoLogger, PinoLogger } from 'nestjs-pino';
-import { CqrsMediator } from '../../../common';
-import { IPageable } from '../../../common';
+import { AuthenticatedUser, ClerkAuthGuard, CqrsMediator, CurrentUser, IPageable, Roles, RolesGuard } from '../../../common';
+import { ERole } from '../../../infrastructure';
 import { CreateCategoryCommand, DeleteCategoryCommand, UpdateCategoryCommand } from './commands';
 import { Category } from './domain';
-import { CreateCategoryRequest, SearchCategoriesRequest, ListCategoriesRequest, CategoryResponse, CategorysPagedResponse, UpdateCategoryRequest } from './models';
-import { GetCategoryQuery, ListCategoriesQuery, SearchCategoriesQuery } from './queries';
+import { CreateCategoryRequest, SearchCategoriesRequest, ListCategoriesRequest, ListParentCategoriesRequest, CategoryResponse, CategorysPagedResponse, UpdateCategoryRequest } from './models';
+import { GetCategoryQuery, ListCategoriesQuery, ListParentCategoriesQuery, SearchCategoriesQuery } from './queries';
 
 @ApiBearerAuth()
 @ApiTags('Categories')
 @Controller({ path: 'categories', version: '1' })
+@UseGuards(ClerkAuthGuard, RolesGuard)
+@Roles(ERole.OrgAdmin, ERole.SuperAdmin)
 export class CategoriesController {
   constructor(
     protected readonly mediator: CqrsMediator,
@@ -24,8 +26,12 @@ export class CategoriesController {
   @ApiOkResponse({ type: CategorysPagedResponse })
   @HttpCode(HttpStatus.OK)
   @Get()
-  public async search(@Query() filter?: SearchCategoriesRequest): Promise<CategorysPagedResponse> {
+  public async search(
+    @CurrentUser() user: AuthenticatedUser,
+    @Query() filter?: SearchCategoriesRequest,
+  ): Promise<CategorysPagedResponse> {
     const query = this.mapper.map(filter, SearchCategoriesRequest, SearchCategoriesQuery);
+    query.organizationId = user.organizationId;
     const result = await this.mediator.execute<SearchCategoriesQuery, IPageable<Category>>(query);
     return {
       ...result,
@@ -37,9 +43,27 @@ export class CategoriesController {
   @ApiOkResponse({ type: [CategoryResponse] })
   @HttpCode(HttpStatus.OK)
   @Get('list')
-  public async list(@Query() filter?: ListCategoriesRequest): Promise<CategoryResponse[]> {
+  public async list(
+    @CurrentUser() user: AuthenticatedUser,
+    @Query() filter?: ListCategoriesRequest,
+  ): Promise<CategoryResponse[]> {
     const query = this.mapper.map(filter, ListCategoriesRequest, ListCategoriesQuery);
+    query.organizationId = user.organizationId;
     const result = await this.mediator.execute<ListCategoriesQuery, Category[]>(query);
+    return this.mapper.mapArray(result, Category, CategoryResponse);
+  }
+
+  @ApiOperation({ summary: 'List all root (parent) categories — use to populate parent selector when creating sub-categories' })
+  @ApiOkResponse({ type: [CategoryResponse] })
+  @HttpCode(HttpStatus.OK)
+  @Get('parents')
+  public async listParents(
+    @CurrentUser() user: AuthenticatedUser,
+    @Query() filter?: ListParentCategoriesRequest,
+  ): Promise<CategoryResponse[]> {
+    const query  = this.mapper.map(filter, ListParentCategoriesRequest, ListParentCategoriesQuery);
+    query.organizationId = user.organizationId;
+    const result = await this.mediator.execute<ListParentCategoriesQuery, Category[]>(query);
     return this.mapper.mapArray(result, Category, CategoryResponse);
   }
 
@@ -59,9 +83,13 @@ export class CategoriesController {
   @ApiCreatedResponse({ type: CategoryResponse })
   @HttpCode(HttpStatus.CREATED)
   @Post()
-  public async create(@Body() body: CreateCategoryRequest): Promise<CategoryResponse> {
+  public async create(
+    @CurrentUser() user: AuthenticatedUser,
+    @Body() body: CreateCategoryRequest,
+  ): Promise<CategoryResponse> {
     const command = this.mapper.map(body, CreateCategoryRequest, CreateCategoryCommand);
-    const result  = await this.mediator.execute<CreateCategoryCommand, Category>(command);
+    command.organizationId = user.organizationId;
+    const result = await this.mediator.execute<CreateCategoryCommand, Category>(command);
     return this.mapper.map(result, Category, CategoryResponse);
   }
 

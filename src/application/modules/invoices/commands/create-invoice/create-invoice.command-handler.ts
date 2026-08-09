@@ -20,6 +20,6 @@ export class CreateInvoiceCommandHandler implements ICommandHandler<CreateInvoic
       ...command,
       invoiceNumber: `INV-${Date.now()}-${Math.floor(Math.random() * 1000)}`,
     };
-    return this.repo.createAsync(invoiceData as any);
+    return this.repo.createAsync(invoiceData as never);
   }
 }

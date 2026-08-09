@@ -22,4 +22,8 @@ export class CustomerRepo extends BaseRepo<CustomerEntity, Customer, string, Pag
   public override get idColumnName(): keyof CustomerEntity {
     return 'id';
   }
+
+  public override get softDeleteEnabled(): boolean {
+    return true;
+  }
 }

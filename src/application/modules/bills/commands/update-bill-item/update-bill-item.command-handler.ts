@@ -25,8 +25,7 @@ export class UpdateBillItemCommandHandler implements ICommandHandler<UpdateBillI
       throw new NotFoundException(`Bill ${command.billId} not found`);
     }
 
-    // Look the item up through the bill so an item from another bill can't be patched.
-    const item = (bill.items ?? []).find((i) => i.id === command.itemId);
+    const item = (bill.items ?? []).find((it) => it.id === command.itemId);
     if (!item) {
       throw new NotFoundException(`Item ${command.itemId} not found on bill ${command.billId}`);
     }

@@ -29,7 +29,6 @@ export class UpdateBillCommandHandler implements ICommandHandler<UpdateBillComma
       }
     }
 
-    // Items are untouched here — saving them back would pointlessly re-cascade.
     await this.repo.updateAsync({ ...bill, items: undefined });
     return this.repo.getAsync(command.id);
   }

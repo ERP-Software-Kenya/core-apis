@@ -3,7 +3,7 @@ import { InjectMapper } from '@automapper/nestjs';
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { InjectPinoLogger, PinoLogger } from 'nestjs-pino';
-import { Repository } from 'typeorm';
+import { FindManyOptions, IsNull, Not, Repository } from 'typeorm';
 import { BaseRepo } from '../../../common';
 import { Filter, PageableFilter } from '../../../common';
 import { CategoryEntity } from '../entities';
@@ -22,5 +22,20 @@ export class CategoryRepo extends BaseRepo<CategoryEntity, Category, string, Pag
 
   public override get idColumnName(): keyof CategoryEntity {
     return 'id';
+  }
+
+  public override get specialFilterFields(): (keyof PageableFilter<CategoryFilter>)[] {
+    return [...super.specialFilterFields, 'hasParent'];
+  }
+
+  protected override modifyFindOption(
+    findOpts: FindManyOptions<CategoryEntity>,
+    filterObj: Filter<CategoryFilter> | PageableFilter<CategoryFilter>,
+  ): void {
+    if (filterObj.hasParent === true) {
+      (findOpts.where as Record<string, unknown>).parentId = Not(IsNull());
+    } else if (filterObj.hasParent === false) {
+      (findOpts.where as Record<string, unknown>).parentId = IsNull();
+    }
   }
 }

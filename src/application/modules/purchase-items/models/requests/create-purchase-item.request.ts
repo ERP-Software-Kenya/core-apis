@@ -5,6 +5,6 @@ import { IsNotEmpty, IsNumber, IsUUID } from 'class-validator';
 export class CreatePurchaseItemRequest {
   @ApiProperty() @IsNotEmpty() @IsUUID() @AutoMap() public purchaseOrderId: string;
   @ApiProperty() @IsNotEmpty() @IsUUID() @AutoMap() public productId: string;
-  @ApiProperty() @IsNotEmpty() @IsNumber() @AutoMap() public quantity: number;
-  @ApiProperty() @IsNotEmpty() @IsNumber() @AutoMap() public unitPrice: number;
+  @ApiProperty() @IsNotEmpty() @IsNumber() @AutoMap() public quantityOrdered: number;
+  @ApiProperty() @IsNotEmpty() @IsNumber() @AutoMap() public unitCost: number;
 }

@@ -1,7 +1,7 @@
 import { AutoMap } from '@automapper/classes';
 import { Column, CreateDateColumn, DeleteDateColumn, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
 import { CORE_SCHEMA, ECoreTableName } from './e-core-table-name';
-import { StoreEntity } from './store.entity';
+import { LocationEntity } from './location.entity';
 import { CustomerEntity } from './customer.entity';
 import { OrderItemEntity } from './order-item.entity';
 
@@ -18,8 +18,8 @@ export class OrderEntity {
   public orderNumber: string;
 
   @AutoMap()
-  @Column({ name: 'store_id', type: 'uuid' })
-  public storeId: string;
+  @Column({ name: 'location_id', type: 'uuid' })
+  public locationId: string;
 
   @AutoMap()
   @Column({ name: 'customer_id', type: 'uuid' })
@@ -57,14 +57,14 @@ export class OrderEntity {
   @DeleteDateColumn({ name: 'deleted_at', type: 'timestamp', nullable: true })
   public deletedAt?: Date;
 
-  @AutoMap(() => StoreEntity)
-  @ManyToOne(() => StoreEntity)
+  @AutoMap(() => LocationEntity)
+  @ManyToOne(() => LocationEntity)
   @JoinColumn({
-    name: 'store_id',
+    name: 'location_id',
     referencedColumnName: 'id',
-    foreignKeyConstraintName: `FK__${ECoreTableName.Orders}__${ECoreTableName.Stores}`,
+    foreignKeyConstraintName: `FK__${ECoreTableName.Orders}__${ECoreTableName.Locations}`,
   })
-  public store: StoreEntity;
+  public location: LocationEntity;
 
   @AutoMap(() => CustomerEntity)
   @ManyToOne(() => CustomerEntity)

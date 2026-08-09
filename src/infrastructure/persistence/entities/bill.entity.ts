@@ -2,6 +2,7 @@ import { AutoMap } from '@automapper/classes';
 import {
   Column,
   CreateDateColumn,
+  DeleteDateColumn,
   Entity,
   Index,
   JoinColumn,
@@ -171,6 +172,10 @@ export class BillEntity {
   @AutoMap(() => Date)
   @UpdateDateColumn({ name: 'updated_at', type: 'timestamp', nullable: true, onUpdate: 'CURRENT_TIMESTAMP' })
   public updatedAt?: Date;
+
+  @AutoMap(() => Date)
+  @DeleteDateColumn({ name: 'deleted_at', type: 'timestamp', nullable: true })
+  public deletedAt?: Date;
 
   // ─── Relations ────────────────────────────────────────────────────────────────
 

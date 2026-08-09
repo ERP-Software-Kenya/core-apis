@@ -41,4 +41,7 @@ export class UpdateProductCommand extends CommandBase {
 
   @AutoMap()
   public reorderPoint?: number;
+
+  @AutoMap()
+  public isActive?: boolean;
 }

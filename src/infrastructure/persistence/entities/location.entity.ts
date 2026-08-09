@@ -54,6 +54,10 @@ export class LocationEntity {
 
   @AutoMap()
   @Column({ type: 'varchar', length: 100, nullable: true })
+  public state?: string;
+
+  @AutoMap()
+  @Column({ type: 'varchar', length: 100, nullable: true })
   public country?: string;
 
   @AutoMap()

@@ -29,10 +29,8 @@ import { GetBillQuery, ListBillsQuery, SearchBillsQuery } from './queries';
 
 @ApiBearerAuth()
 @ApiTags('Bills')
-@Controller({ path: 'bills', version: '1' })
-// No @Roles(): any authenticated, onboarded user may operate the till.
-// Task 8 layers the black-sale-specific role gate on top of this.
 @UseGuards(ClerkAuthGuard, RolesGuard)
+@Controller({ path: 'bills', version: '1' })
 export class BillsController {
   constructor(
     protected readonly mediator: CqrsMediator,
@@ -51,13 +49,10 @@ export class BillsController {
     const query = this.mapper.map(filter ?? new SearchBillsRequest(), SearchBillsRequest, SearchBillsQuery);
     query.organizationId = user.organizationId;
     const result = await this.mediator.execute<SearchBillsQuery, IPageable<Bill>>(query);
-    return {
-      ...result,
-      items: this.mapper.mapArray(result.items, Bill, BillResponse),
-    };
+    return { ...result, items: this.mapper.mapArray(result.items, Bill, BillResponse) };
   }
 
-  @ApiOperation({ summary: 'List all bills' })
+  @ApiOperation({ summary: 'List bills (flat)' })
   @ApiOkResponse({ type: [BillResponse] })
   @HttpCode(HttpStatus.OK)
   @Get('list')
@@ -78,7 +73,7 @@ export class BillsController {
   @Get(':id')
   public async getById(@Param('id') id: string): Promise<BillResponse> {
     const query = new GetBillQuery();
-    query.id = id;
+    query.id    = id;
     const result = await this.mediator.execute<GetBillQuery, Bill>(query);
     return this.mapper.map(result, Bill, BillResponse);
   }
@@ -92,10 +87,10 @@ export class BillsController {
     @Body() body: CreateBillRequest,
   ): Promise<BillResponse> {
     const command = this.mapper.map(body, CreateBillRequest, CreateBillCommand);
-    command.organizationId  = user.organizationId;
-    command.createdById     = user.dbUserId;
+    command.organizationId   = user.organizationId;
+    command.createdById      = user.dbUserId;
     command.performedByRoles = user?.roles ?? [];
-    command.commissionPct   = body.commissionPct;
+    command.commissionPct    = body.commissionPct;
     const result = await this.mediator.execute<CreateBillCommand, Bill>(command);
     return this.mapper.map(result, Bill, BillResponse);
   }

@@ -23,13 +23,13 @@ export class RemoveBillItemCommandHandler implements ICommandHandler<RemoveBillI
     }
 
     const items = bill.items ?? [];
-    if (!items.some((i) => i.id === command.itemId)) {
+    if (!items.some((it) => it.id === command.itemId)) {
       throw new NotFoundException(`Item ${command.itemId} not found on bill ${command.billId}`);
     }
 
     await this.itemRepo.deleteAsync(command.itemId);
 
-    bill.items = items.filter((i) => i.id !== command.itemId);
+    bill.items = items.filter((it) => it.id !== command.itemId);
     applyBillTotals(bill);
     await this.repo.updateAsync({ ...bill, items: undefined });
     return true;

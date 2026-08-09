@@ -7,6 +7,10 @@ export class ListProductsQuery extends QueryBase implements Filter<ProductFilter
 
   @AutoMap() public categoryId?: string;
 
+  @AutoMap() public isActive?: boolean;
+
+  @AutoMap() public organizationId?: string;
+
   @AutoMap(() => Array) public $ids?: string[];
 
   @AutoMap() public $orderBy?: string;
