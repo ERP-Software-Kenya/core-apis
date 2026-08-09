@@ -6,6 +6,10 @@ import { RefStatesSeed } from './ref-states.seed';
 import { RefCitiesSeed } from './ref-cities.seed';
 import { RefCurrenciesSeed } from './ref-currencies.seed';
 import { RefLanguagesSeed } from './ref-languages.seed';
+import { FuelTypesSeed } from './fuel-types.seed';
+import { MaintenanceTypesSeed } from './maintenance-types.seed';
+import { VehicleBrandsSeed } from './vehicle-brands.seed';
+import { VehicleTypesSeed } from './vehicle-types.seed';
 
 /**
  * Orchestrates all seeds in strict dependency order.
@@ -23,6 +27,10 @@ export class SeedingService {
     private readonly refCitiesSeed: RefCitiesSeed,
     private readonly refCurrenciesSeed: RefCurrenciesSeed,
     private readonly refLanguagesSeed: RefLanguagesSeed,
+    private readonly maintenanceTypesSeed: MaintenanceTypesSeed,
+    private readonly fuelTypesSeed: FuelTypesSeed,
+    private readonly vehicleBrandsSeed: VehicleBrandsSeed,
+    private readonly vehicleTypesSeed: VehicleTypesSeed
   ) {}
 
   public async runAsync(): Promise<void> {
@@ -32,6 +40,10 @@ export class SeedingService {
     await this.refCountriesSeed.runAsync();
     await this.refStatesSeed.runAsync();
     await this.refCitiesSeed.runAsync();
+    await this.fuelTypesSeed.runAsync();
+    await this.maintenanceTypesSeed.runAsync();
+    await this.vehicleBrandsSeed.runAsync();
+    await this.vehicleTypesSeed.runAsync();
     await this.rolesSeed.runAsync();
     this.logger.info('All seeds applied successfully');
   }
