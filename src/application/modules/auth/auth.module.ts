@@ -1,4 +1,5 @@
 import { Module } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import { CqrsModule } from '@nestjs/cqrs';
 import { PassportModule } from '@nestjs/passport';
 import { TypeOrmModule } from '@nestjs/typeorm';
@@ -7,6 +8,8 @@ import { AuthCommandHandlers } from './commands';
 import { AuthQueryHandlers } from './queries';
 import { AuthProfile } from './mapper';
 import { ClerkJwtStrategy, ClerkService, RolesGuard, CLERK_STRATEGY } from '../../../common';
+import { MailOptions } from '../../../common/mail';
+import { ICoreApiConfig } from '../../../configuration';
 import {
   UserEntity,
   UserRoleEntity,
@@ -14,12 +17,12 @@ import {
   RoleEntity,
   OrganizationEntity,
 } from '../../../infrastructure/persistence/entities';
+import { AuthMailService } from './mail';
 
 @Module({
   imports: [
     CqrsModule,
     PassportModule.register({ defaultStrategy: CLERK_STRATEGY }),
-    // Register entities so ClerkJwtStrategy can inject TypeORM repositories
     TypeOrmModule.forFeature([
       UserEntity,
       UserRoleEntity,
@@ -30,6 +33,15 @@ import {
   ],
   controllers: [AuthController],
   providers: [
+    {
+      provide:    MailOptions,
+      useFactory: (config: ConfigService<ICoreApiConfig>): MailOptions => {
+        const cfg = config.get<ICoreApiConfig['mail']>('mail');
+        return new MailOptions(cfg.host, cfg.port, cfg.secure, cfg.user, cfg.password, cfg.from);
+      },
+      inject: [ConfigService],
+    },
+    AuthMailService,
     ClerkJwtStrategy,
     ClerkService,
     RolesGuard,

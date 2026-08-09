@@ -47,6 +47,14 @@ export const configFactory = (): ICoreApiConfig => {
       jwksUrl: process.env.CLERK_JWKS_URL || '',
       webhookSecret: process.env.CLERK_WEBHOOK_SECRET || '',
     },
+    mail: {
+      host:     process.env.MAIL_HOST     || 'smtp.gmail.com',
+      port:     parseInt(process.env.MAIL_PORT || '587', 10),
+      secure:   process.env.MAIL_SECURE   === 'true',
+      user:     process.env.MAIL_USER     || '',
+      password: process.env.MAIL_PASSWORD || '',
+      from:     process.env.MAIL_FROM     || 'noreply@erp.local',
+    },
   };
 };
 
