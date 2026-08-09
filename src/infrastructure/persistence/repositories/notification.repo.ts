@@ -3,7 +3,7 @@ import { InjectMapper } from '@automapper/nestjs';
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { InjectPinoLogger, PinoLogger } from 'nestjs-pino';
-import { Repository } from 'typeorm';
+import { IsNull, Repository } from 'typeorm';
 import { BaseRepo, Filter, PageableFilter } from '../../../common';
 import { NotificationEntity } from '../entities';
 import { Notification } from '../../../application/modules/notifications/domain';
@@ -21,5 +21,13 @@ export class NotificationRepo extends BaseRepo<NotificationEntity, Notification,
 
   public override get idColumnName(): keyof NotificationEntity {
     return 'id';
+  }
+
+  public async countUnreadAsync(userId: string): Promise<number> {
+    return this.internalRepo.count({ where: { userId, readAt: IsNull() } });
+  }
+
+  public async markAllReadAsync(userId: string): Promise<void> {
+    await this.internalRepo.update({ userId, readAt: IsNull() }, { readAt: new Date() });
   }
 }

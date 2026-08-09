@@ -70,3 +70,6 @@ export const TRANSPORTATION_ORDER_REPO     = 'TRANSPORTATION_ORDER_REPO';
 export const TRANSPORTATION_ORDER_ITEM_REPO = 'TRANSPORTATION_ORDER_ITEM_REPO';
 export const GPS_DEVICE_REPO               = 'GPS_DEVICE_REPO';
 export const ALERT_REPO                    = 'ALERT_REPO';
+
+// ─── Communication ────────────────────────────────────────────────────────────
+export const EMAIL_TEMPLATE_REPO           = 'IEmailTemplateRepo';

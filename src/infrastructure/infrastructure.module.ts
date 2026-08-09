@@ -55,6 +55,7 @@ import {
   MaintenanceTypeRepo,
   VehicleExpenseRepo,
   PageAccessRepo,
+  EmailTemplateRepo,
 } from './persistence';
 
 import {
@@ -105,6 +106,7 @@ import {
   MAINTENANCE_TYPE_REPO,
   VEHICLE_EXPENSE_REPO,
   PAGE_ACCESS_REPO,
+  EMAIL_TEMPLATE_REPO,
 } from '../application/constants';
 
 @Module({})
@@ -179,6 +181,7 @@ export class InfrastructureModule {
         { provide: MAINTENANCE_TYPE_REPO, useClass: MaintenanceTypeRepo },
         { provide: VEHICLE_EXPENSE_REPO, useClass: VehicleExpenseRepo },
         { provide: PAGE_ACCESS_REPO, useClass: PageAccessRepo },
+        { provide: EMAIL_TEMPLATE_REPO, useClass: EmailTemplateRepo },
       ],
       exports: [
         EntityMapperProfile,
@@ -229,6 +232,7 @@ export class InfrastructureModule {
         MAINTENANCE_TYPE_REPO,
         VEHICLE_EXPENSE_REPO,
         PAGE_ACCESS_REPO,
+        EMAIL_TEMPLATE_REPO,
       ],
     };
   }

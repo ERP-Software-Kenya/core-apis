@@ -45,3 +45,4 @@ export * from './fuel-transaction.repo';
 export * from './maintenance.repo';
 export * from './maintenance-type.repo';
 export * from './vehicle-expense.repo';
+export * from './email-template.repo';

@@ -1,7 +1,8 @@
 import { Mapper } from '@automapper/core';
 import { InjectMapper } from '@automapper/nestjs';
-import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Patch, Post, Put, Query, UseGuards } from '@nestjs/common';
-import { ApiBearerAuth, ApiCreatedResponse, ApiOkResponse, ApiOperation, ApiParam, ApiTags } from '@nestjs/swagger';
+import { Body, Controller, Delete, Get, Header, HttpCode, HttpStatus, Param, Patch, Post, Put, Query, Res, UseGuards } from '@nestjs/common';
+import type { Response } from 'express';
+import { ApiBearerAuth, ApiCreatedResponse, ApiOkResponse, ApiOperation, ApiParam, ApiProduces, ApiTags } from '@nestjs/swagger';
 import { InjectPinoLogger, PinoLogger } from 'nestjs-pino';
 import { AuthenticatedUser, ClerkAuthGuard, CqrsMediator, CurrentUser, IPageable } from '../../../common';
 
@@ -28,7 +29,8 @@ import {
   BillResponse,
   BillsPagedResponse,
 } from './models';
-import { GetBillQuery, ListBillsQuery, SearchBillsQuery } from './queries';
+import { GetBillQuery, ListBillsQuery, SearchBillsQuery, ExportBillQuery } from './queries';
+import { PdfDocument } from '../../../common/pdf-export';
 
 @ApiBearerAuth()
 @ApiTags('Bills')
@@ -168,5 +170,23 @@ export class BillsController {
     command.billId   = id;
     const result     = await this.mediator.execute<TransitionBillStatusCommand, Bill>(command);
     return this.mapper.map(result, Bill, BillResponse);
+  }
+
+  @ApiOperation({ summary: 'Export bill as PDF' })
+  @ApiProduces('application/pdf')
+  @ApiParam({ name: 'id', description: 'Bill UUID' })
+  @HttpCode(HttpStatus.OK)
+  @Header('Content-Type', 'application/pdf')
+  @Get(':id/export')
+  public async exportPdf(
+    @Param('id') id: string,
+    @Res() res: Response,
+  ): Promise<void> {
+    const query  = new ExportBillQuery();
+    query.id     = id;
+    const doc: PdfDocument = await this.mediator.execute<ExportBillQuery, PdfDocument>(query);
+    res.setHeader('Content-Disposition', `attachment; filename="${doc.filename}"`);
+    res.setHeader('Content-Length', doc.sizeBytes);
+    res.end(doc.buffer);
   }
 }

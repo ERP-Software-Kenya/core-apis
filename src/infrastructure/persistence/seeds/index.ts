@@ -16,6 +16,7 @@ export * from './vehicle-types.seed';
 export * from './vehicle-brands.seed';
 export * from './fuel-types.seed';
 export * from './maintenance-types.seed';
+export * from './email-templates.seed';
 
 import { SeedingService } from "./seeding.service";
 import { RolesSeed } from "./roles.seed";
@@ -28,6 +29,7 @@ import { VehicleTypesSeed } from './vehicle-types.seed';
 import { VehicleBrandsSeed } from './vehicle-brands.seed';
 import { FuelTypesSeed } from './fuel-types.seed';
 import { MaintenanceTypesSeed } from './maintenance-types.seed';
+import { EmailTemplatesSeed } from './email-templates.seed';
 
 export default [
   SeedingService,
@@ -41,4 +43,5 @@ export default [
   VehicleBrandsSeed,
   FuelTypesSeed,
   MaintenanceTypesSeed,
+  EmailTemplatesSeed,
 ];
