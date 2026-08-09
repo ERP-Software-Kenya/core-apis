@@ -37,6 +37,9 @@ import {
   ProductSupplierRepo,
   LocationRepo,
   ProductLogRepo,
+  CustomerCreditTransactionRepo,
+  CreditApprovalRequestRepo,
+  CommissionPayableRepo,
   UnpublishedStockRepo,
   UnpublishedStockMovementRepo,
   CountryRepo,
@@ -55,6 +58,7 @@ import {
   MaintenanceTypeRepo,
   VehicleExpenseRepo,
   PageAccessRepo,
+  EmailTemplateRepo,
 } from './persistence';
 
 import {
@@ -87,6 +91,9 @@ import {
   PRODUCT_SUPPLIER_REPO,
   LOCATION_REPO,
   PRODUCT_LOG_REPO,
+  CUSTOMER_CREDIT_TRANSACTION_REPO,
+  CREDIT_APPROVAL_REQUEST_REPO,
+  COMMISSION_PAYABLE_REPO,
   UNPUBLISHED_STOCK_REPO,
   UNPUBLISHED_STOCK_MOVEMENT_REPO,
   COUNTRY_REPO,
@@ -105,6 +112,7 @@ import {
   MAINTENANCE_TYPE_REPO,
   VEHICLE_EXPENSE_REPO,
   PAGE_ACCESS_REPO,
+  EMAIL_TEMPLATE_REPO,
 } from '../application/constants';
 
 @Module({})
@@ -161,6 +169,9 @@ export class InfrastructureModule {
         { provide: PRODUCT_SUPPLIER_REPO, useClass: ProductSupplierRepo },
         { provide: LOCATION_REPO, useClass: LocationRepo },
         { provide: PRODUCT_LOG_REPO, useClass: ProductLogRepo },
+        { provide: CUSTOMER_CREDIT_TRANSACTION_REPO, useClass: CustomerCreditTransactionRepo },
+        { provide: CREDIT_APPROVAL_REQUEST_REPO, useClass: CreditApprovalRequestRepo },
+        { provide: COMMISSION_PAYABLE_REPO, useClass: CommissionPayableRepo },
         { provide: UNPUBLISHED_STOCK_REPO, useClass: UnpublishedStockRepo },
         { provide: UNPUBLISHED_STOCK_MOVEMENT_REPO, useClass: UnpublishedStockMovementRepo },
         { provide: COUNTRY_REPO, useClass: CountryRepo },
@@ -179,6 +190,7 @@ export class InfrastructureModule {
         { provide: MAINTENANCE_TYPE_REPO, useClass: MaintenanceTypeRepo },
         { provide: VEHICLE_EXPENSE_REPO, useClass: VehicleExpenseRepo },
         { provide: PAGE_ACCESS_REPO, useClass: PageAccessRepo },
+        { provide: EMAIL_TEMPLATE_REPO, useClass: EmailTemplateRepo },
       ],
       exports: [
         EntityMapperProfile,
@@ -211,6 +223,9 @@ export class InfrastructureModule {
         PRODUCT_SUPPLIER_REPO,
         LOCATION_REPO,
         PRODUCT_LOG_REPO,
+        CUSTOMER_CREDIT_TRANSACTION_REPO,
+        CREDIT_APPROVAL_REQUEST_REPO,
+        COMMISSION_PAYABLE_REPO,
         UNPUBLISHED_STOCK_REPO,
         UNPUBLISHED_STOCK_MOVEMENT_REPO,
         COUNTRY_REPO,
@@ -229,6 +244,7 @@ export class InfrastructureModule {
         MAINTENANCE_TYPE_REPO,
         VEHICLE_EXPENSE_REPO,
         PAGE_ACCESS_REPO,
+        EMAIL_TEMPLATE_REPO,
       ],
     };
   }

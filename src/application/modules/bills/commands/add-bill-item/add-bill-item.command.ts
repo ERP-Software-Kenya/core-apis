@@ -2,7 +2,7 @@ import { AutoMap } from '@automapper/classes';
 import { CommandBase } from '../../../../../common';
 
 export class AddBillItemCommand extends CommandBase {
-  public billId: string;
+  @AutoMap() public billId: string;
   @AutoMap() public productId: string;
   @AutoMap() public variantId?: string;
   @AutoMap() public quantity: number;

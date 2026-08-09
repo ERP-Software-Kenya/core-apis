@@ -87,6 +87,28 @@ export class InventoryRepo
     return this.mapper.map(entity, InventoryEntity, Inventory);
   }
 
+  public async deductUnpublishedStockAsync(id: string, quantity: number, manager: EntityManager): Promise<Inventory> {
+    const entity = await manager.findOneOrFail(InventoryEntity, { where: { id } });
+    const unpublished = Number(entity.quantityUnpublished);
+    if (quantity > unpublished) {
+      throw new BadRequestException(`Insufficient black stock. Available: ${unpublished}`);
+    }
+    manager.merge(InventoryEntity, entity, { quantityUnpublished: unpublished - quantity });
+    await manager.save(InventoryEntity, entity);
+    return this.mapper.map(entity, InventoryEntity, Inventory);
+  }
+
+  public async findByOrgLocationProductAsync(
+    organizationId: string,
+    locationId: string,
+    productId: string,
+    manager?: EntityManager,
+  ): Promise<Inventory | null> {
+    const repo = manager ? manager.getRepository(InventoryEntity) : this.internalRepo;
+    const entity = await repo.findOne({ where: { organizationId, locationId, productId } });
+    return entity ? this.mapper.map(entity, InventoryEntity, Inventory) : null;
+  }
+
   public async getLowStockAsync(organizationId: string): Promise<Inventory[]> {
     const entities = await this.internalRepo
       .createQueryBuilder('inv')

@@ -6,6 +6,7 @@ import { RefStatesSeed } from './ref-states.seed';
 import { RefCitiesSeed } from './ref-cities.seed';
 import { RefCurrenciesSeed } from './ref-currencies.seed';
 import { RefLanguagesSeed } from './ref-languages.seed';
+import { EmailTemplatesSeed } from './email-templates.seed';
 import { FuelTypesSeed } from './fuel-types.seed';
 import { MaintenanceTypesSeed } from './maintenance-types.seed';
 import { VehicleBrandsSeed } from './vehicle-brands.seed';
@@ -27,6 +28,7 @@ export class SeedingService {
     private readonly refCitiesSeed: RefCitiesSeed,
     private readonly refCurrenciesSeed: RefCurrenciesSeed,
     private readonly refLanguagesSeed: RefLanguagesSeed,
+    private readonly emailTemplatesSeed: EmailTemplatesSeed,
     private readonly maintenanceTypesSeed: MaintenanceTypesSeed,
     private readonly fuelTypesSeed: FuelTypesSeed,
     private readonly vehicleBrandsSeed: VehicleBrandsSeed,
@@ -45,6 +47,7 @@ export class SeedingService {
     await this.vehicleBrandsSeed.runAsync();
     await this.vehicleTypesSeed.runAsync();
     await this.rolesSeed.runAsync();
+    await this.emailTemplatesSeed.runAsync();
     this.logger.info('All seeds applied successfully');
   }
 }

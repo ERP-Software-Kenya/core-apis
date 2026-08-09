@@ -1,17 +1,17 @@
 import { Mapper } from '@automapper/core';
 import { InjectMapper } from '@automapper/nestjs';
-import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Post, Put, Query } from '@nestjs/common';
+import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Post, Put, Query, UseGuards } from '@nestjs/common';
 import { ApiBearerAuth, ApiCreatedResponse, ApiOkResponse, ApiOperation, ApiParam, ApiTags } from '@nestjs/swagger';
 import { InjectPinoLogger, PinoLogger } from 'nestjs-pino';
-import { CqrsMediator } from '../../../common';
-import { IPageable } from '../../../common';
-import { CreateNotificationCommand, DeleteNotificationCommand, UpdateNotificationCommand } from './commands';
+import { AuthenticatedUser, ClerkAuthGuard, CqrsMediator, CurrentUser, IPageable } from '../../../common';
+import { CreateNotificationCommand, DeleteNotificationCommand, MarkAllNotificationsReadCommand, UpdateNotificationCommand } from './commands';
 import { Notification } from './domain';
 import { CreateNotificationRequest, SearchNotificationsRequest, ListNotificationsRequest, NotificationResponse, NotificationsPagedResponse, UpdateNotificationRequest } from './models';
-import { GetNotificationQuery, ListNotificationsQuery, SearchNotificationsQuery } from './queries';
+import { GetNotificationQuery, GetUnreadNotificationCountQuery, ListNotificationsQuery, SearchNotificationsQuery } from './queries';
 
 @ApiBearerAuth()
 @ApiTags('Notifications')
+@UseGuards(ClerkAuthGuard)
 @Controller({ path: 'notifications', version: '1' })
 export class NotificationsController {
   constructor(
@@ -19,6 +19,28 @@ export class NotificationsController {
     @InjectMapper() protected readonly mapper: Mapper,
     @InjectPinoLogger(NotificationsController.name) protected readonly logger: PinoLogger,
   ) {}
+
+  @ApiOperation({ summary: 'Unread notification count for the current user' })
+  @ApiOkResponse({ schema: { type: 'object', properties: { count: { type: 'number' } } } })
+  @HttpCode(HttpStatus.OK)
+  @Get('unread-count')
+  public async getUnreadCount(@CurrentUser() user: AuthenticatedUser): Promise<{ count: number }> {
+    const query = new GetUnreadNotificationCountQuery();
+    query.userId = user.dbUserId ?? '';
+    const count = await this.mediator.execute<GetUnreadNotificationCountQuery, number>(query);
+    return { count };
+  }
+
+  @ApiOperation({ summary: 'Mark all notifications as read for the current user' })
+  @ApiOkResponse({ schema: { type: 'object', properties: { ok: { type: 'boolean' } } } })
+  @HttpCode(HttpStatus.OK)
+  @Put('mark-all-read')
+  public async markAllRead(@CurrentUser() user: AuthenticatedUser): Promise<{ ok: boolean }> {
+    const command = new MarkAllNotificationsReadCommand();
+    command.userId = user.dbUserId ?? '';
+    await this.mediator.execute<MarkAllNotificationsReadCommand, void>(command);
+    return { ok: true };
+  }
 
   @ApiOperation({ summary: 'Search notifications (paginated)' })
   @ApiOkResponse({ type: NotificationsPagedResponse })
@@ -65,7 +87,7 @@ export class NotificationsController {
     return this.mapper.map(result, Notification, NotificationResponse);
   }
 
-  @ApiOperation({ summary: 'Update a notification' })
+  @ApiOperation({ summary: 'Update a notification (e.g. mark as read by setting readAt)' })
   @ApiOkResponse({ type: NotificationResponse })
   @ApiParam({ name: 'id', description: 'Notification UUID' })
   @HttpCode(HttpStatus.OK)

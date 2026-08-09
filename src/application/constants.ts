@@ -35,8 +35,11 @@ export const USER_ADDRESS_REPO            = 'USER_ADDRESS_REPO';
 export const PERMISSION_REPO              = 'PERMISSION_REPO';
 export const ROLE_PERMISSION_REPO         = 'ROLE_PERMISSION_REPO';
 export const STOCK_ENTRY_REPO             = 'STOCK_ENTRY_REPO';
-export const PRODUCT_IMAGE_REPO                = 'PRODUCT_IMAGE_REPO';
-export const PRODUCT_SUPPLIER_REPO             = 'PRODUCT_SUPPLIER_REPO';
+export const PRODUCT_IMAGE_REPO           = 'PRODUCT_IMAGE_REPO';
+export const PRODUCT_SUPPLIER_REPO        = 'PRODUCT_SUPPLIER_REPO';
+export const CUSTOMER_CREDIT_TRANSACTION_REPO = 'CUSTOMER_CREDIT_TRANSACTION_REPO';
+export const CREDIT_APPROVAL_REQUEST_REPO     = 'CREDIT_APPROVAL_REQUEST_REPO';
+export const COMMISSION_PAYABLE_REPO          = 'COMMISSION_PAYABLE_REPO';
 export const UNPUBLISHED_STOCK_REPO            = 'UNPUBLISHED_STOCK_REPO';
 export const UNPUBLISHED_STOCK_MOVEMENT_REPO   = 'UNPUBLISHED_STOCK_MOVEMENT_REPO';
 export const COUNTRY_REPO                      = 'COUNTRY_REPO';
@@ -70,3 +73,6 @@ export const TRANSPORTATION_ORDER_REPO     = 'TRANSPORTATION_ORDER_REPO';
 export const TRANSPORTATION_ORDER_ITEM_REPO = 'TRANSPORTATION_ORDER_ITEM_REPO';
 export const GPS_DEVICE_REPO               = 'GPS_DEVICE_REPO';
 export const ALERT_REPO                    = 'ALERT_REPO';
+
+// ─── Communication ────────────────────────────────────────────────────────────
+export const EMAIL_TEMPLATE_REPO           = 'IEmailTemplateRepo';

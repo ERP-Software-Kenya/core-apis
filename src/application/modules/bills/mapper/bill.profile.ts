@@ -4,23 +4,21 @@ import { Injectable } from '@nestjs/common';
 import { BillEntity, BillItemEntity } from '../../../../infrastructure/persistence/entities';
 import { Bill, BillItem } from '../domain';
 import {
-  CreateBillRequest,
-  UpdateBillRequest,
-  SearchBillsRequest,
-  ListBillsRequest,
-  CreateBillItemRequest,
-  UpdateBillItemRequest,
-  TransitionBillStatusRequest,
-  BillResponse,
   BillItemResponse,
+  BillResponse,
+  CreateBillItemRequest,
+  CreateBillRequest,
+  ListBillsRequest,
+  SearchBillsRequest,
+  TransitionBillStatusRequest,
+  UpdateBillItemRequest,
+  UpdateBillRequest,
 } from '../models';
-import { CreateBillCommand } from '../commands/create-bill';
-import { UpdateBillCommand } from '../commands/update-bill';
+import { CreateBillCommand, CreateBillItemCommand, UpdateBillCommand } from '../commands';
 import { AddBillItemCommand } from '../commands/add-bill-item';
 import { UpdateBillItemCommand } from '../commands/update-bill-item';
 import { TransitionBillStatusCommand } from '../commands/transition-bill-status';
-import { SearchBillsQuery } from '../queries/search-bills/search-bills.query';
-import { ListBillsQuery } from '../queries/list-bills/list-bills.query';
+import { ListBillsQuery, SearchBillsQuery } from '../queries';
 
 @Injectable()
 export class BillProfile extends AutomapperProfile {
@@ -28,27 +26,24 @@ export class BillProfile extends AutomapperProfile {
 
   public get profile() {
     return (mapper: Mapper) => {
-      // Entity ↔ Domain
-      createMap(mapper, BillEntity, Bill);
-      createMap(mapper, Bill, BillEntity);
       createMap(mapper, BillItemEntity, BillItem);
       createMap(mapper, BillItem, BillItemEntity);
+      createMap(mapper, BillEntity, Bill);
+      createMap(mapper, Bill, BillEntity);
 
-      // Domain → Response
-      createMap(mapper, Bill, BillResponse);
       createMap(mapper, BillItem, BillItemResponse);
+      createMap(mapper, Bill, BillResponse);
 
-      // Command → Domain (for handlers)
-      createMap(mapper, CreateBillCommand, Bill, forMember((d) => d.items, ignore()));
+      createMap(mapper, CreateBillItemRequest, CreateBillItemCommand);
+      createMap(mapper, CreateBillRequest, CreateBillCommand);
+      createMap(mapper, CreateBillItemCommand, BillItem);
+      createMap(mapper, CreateBillCommand, Bill, forMember((dd) => dd.items, ignore()));
+
+      createMap(mapper, UpdateBillRequest, UpdateBillCommand);
       createMap(mapper, UpdateBillCommand, Bill);
       createMap(mapper, AddBillItemCommand, BillItem);
-      createMap(mapper, UpdateBillItemCommand, BillItem);
-
-      // Request → Command (controller layer)
-      createMap(mapper, CreateBillRequest, CreateBillCommand);
-      createMap(mapper, CreateBillItemRequest, AddBillItemCommand);
-      createMap(mapper, UpdateBillRequest, UpdateBillCommand);
       createMap(mapper, UpdateBillItemRequest, UpdateBillItemCommand);
+      createMap(mapper, UpdateBillItemCommand, BillItem);
       createMap(mapper, TransitionBillStatusRequest, TransitionBillStatusCommand);
       createMap(mapper, SearchBillsRequest, SearchBillsQuery);
       createMap(mapper, ListBillsRequest, ListBillsQuery);

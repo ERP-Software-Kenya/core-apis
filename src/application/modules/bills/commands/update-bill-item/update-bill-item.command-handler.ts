@@ -1,44 +1,45 @@
-import { BadRequestException, Inject, NotFoundException } from '@nestjs/common';
+import { Inject, NotFoundException } from '@nestjs/common';
 import { ICommandHandler } from '@nestjs/cqrs';
 import { InjectPinoLogger, PinoLogger } from 'nestjs-pino';
-import { CommandHandlerStrict, IBaseRepo, Filter, PageableFilter } from '../../../../../common';
+import { CommandHandlerStrict } from '../../../../../common';
 import { BILL_ITEM_REPO, BILL_REPO } from '../../../../constants';
-import { Bill, BillItem } from '../../domain';
-import { IBillRepo } from '../../i-bill.repo';
-import { EBillStatus } from '../../../../../infrastructure/persistence/entities/bill.entity';
+import { Bill } from '../../domain';
+import { applyBillTotals, computeBillItemTotals } from '../../helpers';
+import { IBillItemRepo, IBillRepo } from '../..';
 import { UpdateBillItemCommand } from './update-bill-item.command';
+
+const ITEM_FIELDS = ['productId', 'variantId', 'quantity', 'unitPrice', 'taxRate', 'discountAmount'] as const;
 
 @CommandHandlerStrict(UpdateBillItemCommand)
 export class UpdateBillItemCommandHandler implements ICommandHandler<UpdateBillItemCommand, Bill> {
   constructor(
-    @Inject(BILL_REPO) private readonly billRepo: IBillRepo,
-    @Inject(BILL_ITEM_REPO) private readonly itemRepo: IBaseRepo<BillItem, string, PageableFilter<BillItem>, Filter<BillItem>>,
+    @Inject(BILL_REPO) private readonly repo: IBillRepo,
+    @Inject(BILL_ITEM_REPO) private readonly itemRepo: IBillItemRepo,
     @InjectPinoLogger(UpdateBillItemCommandHandler.name) private readonly logger: PinoLogger,
   ) {}
 
   public async execute(command: UpdateBillItemCommand): Promise<Bill> {
-    this.logger.info(`Executing ${UpdateBillItemCommand.name} itemId=${command.itemId}`);
-    const bill = await this.billRepo.getAsync(command.billId);
-    if (!bill) throw new NotFoundException(`Bill ${command.billId} not found`);
-    if (bill.status !== EBillStatus.INITIATED) {
-      throw new BadRequestException(`Cannot update items on bill in ${bill.status} status`);
+    this.logger.info(`Executing ${UpdateBillItemCommand.name}`);
+    const bill = await this.repo.getAsync(command.billId);
+    if (!bill) {
+      throw new NotFoundException(`Bill ${command.billId} not found`);
     }
-    const item = await this.itemRepo.getAsync(command.itemId);
-    if (!item) throw new NotFoundException(`Bill item ${command.itemId} not found`);
 
-    if (command.quantity       !== undefined) item.quantity       = Number(command.quantity);
-    if (command.unitPrice      !== undefined) item.unitPrice      = Number(command.unitPrice);
-    if (command.taxRate        !== undefined) item.taxRate        = Number(command.taxRate);
-    if (command.discountAmount !== undefined) item.discountAmount = Number(command.discountAmount);
+    const item = (bill.items ?? []).find((it) => it.id === command.itemId);
+    if (!item) {
+      throw new NotFoundException(`Item ${command.itemId} not found on bill ${command.billId}`);
+    }
 
-    item.taxAmount = (item.quantity * item.unitPrice * item.taxRate) / 100;
-    item.lineTotal = item.quantity * item.unitPrice + item.taxAmount - item.discountAmount;
+    for (const field of ITEM_FIELDS) {
+      if (command[field] !== undefined) {
+        Object.assign(item, { [field]: command[field] });
+      }
+    }
+    computeBillItemTotals(item);
     await this.itemRepo.updateAsync(item);
 
-    const allItems   = await this.itemRepo.allAsync({ billId: command.billId } as Filter<BillItem>);
-    bill.subtotal    = allItems.reduce((s, it) => s + Number(it.quantity) * Number(it.unitPrice), 0);
-    bill.taxAmount   = allItems.reduce((s, it) => s + Number(it.taxAmount), 0);
-    bill.totalAmount = bill.subtotal + bill.taxAmount - Number(bill.discountAmount);
-    return this.billRepo.updateAsync(bill);
+    applyBillTotals(bill);
+    await this.repo.updateAsync({ ...bill, items: undefined });
+    return this.repo.getAsync(bill.id);
   }
 }

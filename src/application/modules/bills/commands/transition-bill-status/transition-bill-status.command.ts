@@ -1,9 +1,11 @@
 import { AutoMap } from '@automapper/classes';
 import { CommandBase } from '../../../../../common';
-import { EBillStatus, EPaymentMethod } from '../../../../../infrastructure/persistence/entities/bill.entity';
+import { EBillStatus, EPaymentMethod } from '../../../../../infrastructure/persistence/entities';
 
 export class TransitionBillStatusCommand extends CommandBase {
-  public billId: string;
-  @AutoMap() public status: EBillStatus;
-  @AutoMap() public paymentMethod?: EPaymentMethod;
+  @AutoMap() public id: string;
+  @AutoMap(() => String) public status: EBillStatus;
+  @AutoMap(() => String) public paymentMethod?: EPaymentMethod;
+  /** Set by the controller from AuthenticatedUser.dbUserId. */
+  public performedById: string;
 }

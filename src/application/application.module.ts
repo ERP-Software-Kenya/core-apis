@@ -22,6 +22,7 @@ import { StockMovementsModule } from './modules/stock-movements';
 import { PurchaseItemsModule } from './modules/purchase-items';
 import { ActivityLogsModule } from './modules/activity-logs';
 import { BillsModule } from './modules/bills';
+import { CreditApprovalsModule } from './modules/credit-approvals';
 import { PaymentTransactionsModule } from './modules/payment-transactions';
 import { ItemReturnsModule } from './modules/item-returns';
 import { NotificationsModule } from './modules/notifications';
@@ -39,6 +40,7 @@ import { TripsModule } from './modules/trips';
 import { VehicleExpensesModule } from './modules/vehicle-expenses';
 
 import { CqrsMediator, CommonModule } from '../common';
+import { MailTemplatesModule } from './modules/mail-templates';
 
 
 @Module({})
@@ -70,6 +72,7 @@ export class ApplicationModule {
         PurchaseItemsModule,
         ActivityLogsModule,
         BillsModule,
+        CreditApprovalsModule,
         PaymentTransactionsModule,
         ItemReturnsModule,
         NotificationsModule,
@@ -86,6 +89,7 @@ export class ApplicationModule {
         TripsModule,
         VehicleExpensesModule,
         CommonModule,
+        MailTemplatesModule,
       ],
       controllers: [],
       providers: [CqrsMediator],

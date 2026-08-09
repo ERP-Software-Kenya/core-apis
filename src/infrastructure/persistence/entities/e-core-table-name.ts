@@ -37,6 +37,9 @@ export enum ECoreTableName {
   Invoices              = 'invoices',
   Bills                 = 'bills',
   BillItems             = 'bill_items',
+  CustomerCreditTransactions = 'customer_credit_transactions',
+  CreditApprovalRequests     = 'credit_approval_requests',
+  CommissionPayables         = 'commission_payables',
   PaymentTransactions   = 'payment_transactions',
   Expenses              = 'expenses',
   ItemReturns           = 'item_returns',
@@ -80,4 +83,7 @@ export enum ECoreTableName {
   TransportationOrderItems = 'transportation_order_items',
   GpsDevices            = 'gps_devices',
   Alerts                = 'alerts',
+
+  // ─── Communication ────────────────────────────────────────────────────────────
+  EmailTemplates        = 'email_templates',
 }

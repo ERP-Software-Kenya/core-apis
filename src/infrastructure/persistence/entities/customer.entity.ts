@@ -1,6 +1,7 @@
 import { AutoMap } from '@automapper/classes';
 import { Column, CreateDateColumn, DeleteDateColumn, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
 import { CORE_SCHEMA, ECoreTableName } from './e-core-table-name';
+import { numericTransformer } from './numeric.transformer';
 import { OrganizationEntity } from './organization.entity';
 
 const PK_NAME = 'PK_' + ECoreTableName.Customers;
@@ -30,6 +31,14 @@ export class CustomerEntity {
   @AutoMap()
   @Column({ type: 'varchar', length: 50, nullable: true })
   public gstin?: string;
+
+  @AutoMap()
+  @Column({ name: 'credit_limit', type: 'decimal', precision: 18, scale: 4, nullable: true, transformer: numericTransformer })
+  public creditLimit?: number;
+
+  @AutoMap()
+  @Column({ name: 'credit_balance', type: 'decimal', precision: 18, scale: 4, default: 0, transformer: numericTransformer })
+  public creditBalance: number;
 
   @AutoMap(() => Date)
   @CreateDateColumn({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })

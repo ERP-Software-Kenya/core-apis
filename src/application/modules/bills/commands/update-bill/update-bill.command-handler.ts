@@ -1,34 +1,35 @@
-import { BadRequestException, Inject, NotFoundException } from '@nestjs/common';
+import { Inject, NotFoundException } from '@nestjs/common';
 import { ICommandHandler } from '@nestjs/cqrs';
-import { Mapper } from '@automapper/core';
-import { InjectMapper } from '@automapper/nestjs';
 import { InjectPinoLogger, PinoLogger } from 'nestjs-pino';
 import { CommandHandlerStrict } from '../../../../../common';
 import { BILL_REPO } from '../../../../constants';
 import { Bill } from '../../domain';
-import { IBillRepo } from '../../i-bill.repo';
-import { EBillStatus } from '../../../../../infrastructure/persistence/entities/bill.entity';
+import { IBillRepo } from '../..';
 import { UpdateBillCommand } from './update-bill.command';
+
+const HEADER_FIELDS = ['locationId', 'customerId', 'walkInName', 'walkInPhone', 'walkInGstin', 'notes'] as const;
 
 @CommandHandlerStrict(UpdateBillCommand)
 export class UpdateBillCommandHandler implements ICommandHandler<UpdateBillCommand, Bill> {
   constructor(
     @Inject(BILL_REPO) private readonly repo: IBillRepo,
-    @InjectMapper() private readonly mapper: Mapper,
     @InjectPinoLogger(UpdateBillCommandHandler.name) private readonly logger: PinoLogger,
   ) {}
 
   public async execute(command: UpdateBillCommand): Promise<Bill> {
-    this.logger.info(`Executing ${UpdateBillCommand.name} id=${command.id}`);
+    this.logger.info(`Executing ${UpdateBillCommand.name}`);
     const bill = await this.repo.getAsync(command.id);
-    if (!bill) throw new NotFoundException(`Bill ${command.id} not found`);
-    if (bill.status !== EBillStatus.INITIATED) {
-      throw new BadRequestException(`Cannot update bill in ${bill.status} status`);
+    if (!bill) {
+      throw new NotFoundException(`Bill ${command.id} not found`);
     }
-    const patch  = this.mapper.map(command, UpdateBillCommand, Bill);
-    const merged = Object.assign(bill, Object.fromEntries(
-      Object.entries(patch as object).filter(([, val]) => val !== undefined),
-    ));
-    return this.repo.updateAsync(merged);
+
+    for (const field of HEADER_FIELDS) {
+      if (command[field] !== undefined) {
+        Object.assign(bill, { [field]: command[field] ?? null });
+      }
+    }
+
+    await this.repo.updateAsync({ ...bill, items: undefined });
+    return this.repo.getAsync(command.id);
   }
 }
