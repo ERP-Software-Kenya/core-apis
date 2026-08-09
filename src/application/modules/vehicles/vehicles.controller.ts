@@ -4,9 +4,16 @@ import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Post, Put, 
 import { ApiBearerAuth, ApiCreatedResponse, ApiOkResponse, ApiOperation, ApiParam, ApiTags } from '@nestjs/swagger';
 import { InjectPinoLogger, PinoLogger } from 'nestjs-pino';
 import { AuthenticatedUser, ClerkAuthGuard, CqrsMediator, CurrentUser, IPageable } from '../../../common';
-import { GetVehicleQuery, SearchVehiclesQuery, ListVehiclesQuery } from './queries';
-import { CreateVehicleRequest, UpdateVehicleRequest, SearchVehiclesRequest, ListVehiclesRequest, VehicleResponse, VehiclesPagedResponse } from './models';
-import { Vehicle } from './domain';
+import {
+  GetVehicleQuery, SearchVehiclesQuery, ListVehiclesQuery,
+  ListVehicleTypesQuery, ListVehicleBrandsQuery, ListFuelTypesQuery,
+} from './queries';
+import {
+  CreateVehicleRequest, UpdateVehicleRequest, SearchVehiclesRequest, ListVehiclesRequest,
+  VehicleResponse, VehiclesPagedResponse, VehicleTypeResponse, VehicleBrandResponse, FuelTypeResponse,
+  ListVehicleTypesRequest, ListVehicleBrandsRequest, ListFuelTypesRequest,
+} from './models';
+import { Vehicle, VehicleType, VehicleBrand, FuelType } from './domain';
 import { CreateVehicleCommand, DeleteVehicleCommand, UpdateVehicleCommand } from './commands';
 
 const FALLBACK_ORG_ID = '00000000-0000-4000-8000-000000000001';
@@ -88,5 +95,35 @@ export class VehiclesController {
   public async delete(@Param('id') id: string): Promise<boolean> {
     const command = new DeleteVehicleCommand(id);
     return this.mediator.execute<DeleteVehicleCommand, boolean>(command);
+  }
+
+  @ApiOperation({ summary: 'List all vehicle types' })
+  @ApiOkResponse({ type: [VehicleTypeResponse] })
+  @HttpCode(HttpStatus.OK)
+  @Get('vehicle-types/list')
+  public async listVehicleTypes(@Query() filter?: ListVehicleTypesRequest): Promise<VehicleTypeResponse[]> {
+    const query  = this.mapper.map(filter, ListVehicleTypesRequest, ListVehicleTypesQuery);
+    const result = await this.mediator.execute<ListVehicleTypesQuery, VehicleType[]>(query);
+    return this.mapper.mapArray(result, VehicleType, VehicleTypeResponse);
+  }
+
+  @ApiOperation({ summary: 'List all vehicle brands' })
+  @ApiOkResponse({ type: [VehicleBrandResponse] })
+  @HttpCode(HttpStatus.OK)
+  @Get('vehicle-brands/list')
+  public async listVehicleBrands(@Query() filter?: ListVehicleBrandsRequest): Promise<VehicleBrandResponse[]> {
+    const query  = this.mapper.map(filter, ListVehicleBrandsRequest, ListVehicleBrandsQuery);
+    const result = await this.mediator.execute<ListVehicleBrandsQuery, VehicleBrand[]>(query);
+    return this.mapper.mapArray(result, VehicleBrand, VehicleBrandResponse);
+  }
+
+  @ApiOperation({ summary: 'List all fuel types' })
+  @ApiOkResponse({ type: [FuelTypeResponse] })
+  @HttpCode(HttpStatus.OK)
+  @Get('fuel-types/list')
+  public async listFuelTypes(@Query() filter?: ListFuelTypesRequest): Promise<FuelTypeResponse[]> {
+    const query  = this.mapper.map(filter, ListFuelTypesRequest, ListFuelTypesQuery);
+    const result = await this.mediator.execute<ListFuelTypesQuery, FuelType[]>(query);
+    return this.mapper.mapArray(result, FuelType, FuelTypeResponse);
   }
 }

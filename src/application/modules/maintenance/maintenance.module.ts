@@ -2,6 +2,7 @@ import { Module } from '@nestjs/common';
 import { CqrsModule } from '@nestjs/cqrs';
 import { MaintenanceController } from './maintenance.controller';
 import { MaintenanceCommandHandlers } from './commands';
+import { MaintenanceQueryHandlers } from './queries';
 import { MaintenanceProfile } from './mapper';
 
 @Module({
@@ -9,6 +10,7 @@ import { MaintenanceProfile } from './mapper';
   controllers: [MaintenanceController],
   providers:   [
     ...MaintenanceCommandHandlers,
+    ...MaintenanceQueryHandlers,
     MaintenanceProfile,
   ],
 })

@@ -1,10 +1,11 @@
 import { AutomapperProfile, InjectMapper } from '@automapper/nestjs';
 import { createMap, Mapper, MappingProfile } from '@automapper/core';
 import { Injectable } from '@nestjs/common';
-import { CreateMaintenanceRequest, MaintenanceResponse } from '../models';
-import { Maintenance } from '../domain';
+import { CreateMaintenanceRequest, MaintenanceResponse, MaintenanceTypeResponse, ListMaintenanceTypesRequest } from '../models';
+import { Maintenance, MaintenanceType } from '../domain';
 import { CreateMaintenanceCommand } from '../commands';
-import { MaintenanceEntity } from '../../../../infrastructure/persistence/entities';
+import { MaintenanceEntity, MaintenanceTypeEntity } from '../../../../infrastructure/persistence/entities';
+import { ListMaintenanceTypesQuery } from '../queries';
 
 @Injectable()
 export class MaintenanceProfile extends AutomapperProfile {
@@ -19,6 +20,9 @@ export class MaintenanceProfile extends AutomapperProfile {
       createMap(mapper, CreateMaintenanceCommand, Maintenance);
       createMap(mapper, CreateMaintenanceRequest, Maintenance);
       createMap(mapper, Maintenance, MaintenanceResponse);
+      createMap(mapper, MaintenanceTypeEntity, MaintenanceType);
+      createMap(mapper, MaintenanceType, MaintenanceTypeResponse);
+      createMap(mapper, ListMaintenanceTypesRequest, ListMaintenanceTypesQuery);
     };
   }
 }
