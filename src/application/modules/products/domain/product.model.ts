@@ -16,6 +16,9 @@ export class Product {
 
   @AutoMap()
   public name?: string;
+  
+  @AutoMap()
+  public imageUrl?: string;
 
   @AutoMap()
   public sku?: string;

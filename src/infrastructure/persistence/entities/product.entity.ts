@@ -101,6 +101,10 @@ export class ProductEntity {
   public reorderPoint: number;
 
   @AutoMap()
+  @Column({ type: 'text', nullable: true })
+  public imageUrl?: string;
+
+  @AutoMap()
   @Column({ type: 'boolean', default: true })
   public isActive: boolean;
 

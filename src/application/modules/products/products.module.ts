@@ -9,7 +9,7 @@ import { ProductProfile } from './mapper';
 import { ProductFeatureOptions } from './options';
 import { ProductFilterNormalizer } from './helpers';
 import { ProductImageStorage } from './storage';
-import { R2StorageOptions } from '../../../common';
+import { R2StorageOptions } from '../../../common/file-storage/options';
 
 @Module({
   imports:     [CqrsModule, SharedModule],

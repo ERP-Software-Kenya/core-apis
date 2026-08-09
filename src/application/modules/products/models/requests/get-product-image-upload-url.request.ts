@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsEnum } from 'class-validator';
-import { EAttachmentMimeType } from '../../../../../common';
+import { EAttachmentMimeType } from '../../../../../common/types';
 
 const IMAGE_MIME_TYPES = [
   EAttachmentMimeType.ImageJpeg,

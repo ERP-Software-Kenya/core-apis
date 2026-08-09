@@ -22,6 +22,10 @@ export class ProductResponse {
   @ApiPropertyOptional()
   @AutoMap()
   public name?: string;
+  
+  @ApiPropertyOptional()
+  @AutoMap()
+  public imageUrl?: string;
 
   @ApiPropertyOptional()
   @AutoMap()
