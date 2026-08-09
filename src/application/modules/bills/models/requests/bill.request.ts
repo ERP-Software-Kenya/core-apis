@@ -1,24 +1,57 @@
-import { ApiProperty } from '@nestjs/swagger';
+import { AutoMap } from '@automapper/classes';
+import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
+import { Type } from 'class-transformer';
+import { IsArray, IsEnum, IsInt, IsOptional, IsString, IsUUID, Min, ValidateNested } from 'class-validator';
+import { EBillStatus, EPaymentMethod } from '../../../../../infrastructure/persistence/entities';
+import { CreateBillItemRequest } from './bill-item.request';
 
 export class CreateBillRequest {
-  @ApiProperty() public orgId: string;
-  @ApiProperty() public billNumber: string;
-  @ApiProperty() public amount: number;
-  @ApiProperty({ default: 'UNPAID' }) public status?: string;
+  @ApiProperty() @IsUUID() @AutoMap() public locationId: string;
+  @ApiPropertyOptional() @IsOptional() @IsUUID() @AutoMap() public customerId?: string;
+  @ApiPropertyOptional() @IsOptional() @IsString() @AutoMap() public walkInName?: string;
+  @ApiPropertyOptional() @IsOptional() @IsString() @AutoMap() public walkInPhone?: string;
+  @ApiPropertyOptional() @IsOptional() @IsString() @AutoMap() public walkInGstin?: string;
+  @ApiPropertyOptional() @IsOptional() @IsString() @AutoMap() public notes?: string;
+
+  // Empty is legal: the Bills screen creates the header first, then adds lines
+  // via POST :id/items. The POS terminal sends the full basket up front.
+  @ApiProperty({ type: [CreateBillItemRequest] })
+  @IsOptional()
+  @IsArray()
+  @ValidateNested({ each: true })
+  @Type(() => CreateBillItemRequest)
+  @AutoMap(() => [CreateBillItemRequest])
+  public items: CreateBillItemRequest[];
 }
 
+/** Header-only patch. Nulls are meaningful — they clear the field. */
 export class UpdateBillRequest {
-  @ApiProperty({ required: false }) public status?: string;
-  @ApiProperty({ required: false }) public amount?: number;
+  @ApiPropertyOptional() @IsOptional() @IsUUID() @AutoMap() public locationId?: string;
+  @ApiPropertyOptional({ nullable: true }) @IsOptional() @AutoMap() public customerId?: string | null;
+  @ApiPropertyOptional({ nullable: true }) @IsOptional() @AutoMap() public walkInName?: string | null;
+  @ApiPropertyOptional({ nullable: true }) @IsOptional() @AutoMap() public walkInPhone?: string | null;
+  @ApiPropertyOptional({ nullable: true }) @IsOptional() @AutoMap() public walkInGstin?: string | null;
+  @ApiPropertyOptional({ nullable: true }) @IsOptional() @AutoMap() public notes?: string | null;
 }
 
-export class SearchBillsRequest {
-  @ApiProperty({ required: false }) public orgId?: string;
-  @ApiProperty({ required: false }) public status?: string;
-  @ApiProperty({ required: false, default: 1 }) public $page?: number;
-  @ApiProperty({ required: false, default: 20 }) public $perPage?: number;
+export class TransitionBillStatusRequest {
+  @ApiProperty({ enum: EBillStatus }) @IsEnum(EBillStatus) @AutoMap() public status: EBillStatus;
+  @ApiPropertyOptional({ enum: EPaymentMethod }) @IsOptional() @IsEnum(EPaymentMethod) @AutoMap() public paymentMethod?: EPaymentMethod;
 }
 
 export class ListBillsRequest {
-  @ApiProperty({ required: false }) public orgId?: string;
+  @ApiPropertyOptional() @IsOptional() @IsUUID() @AutoMap() public locationId?: string;
+  @ApiPropertyOptional() @IsOptional() @IsUUID() @AutoMap() public customerId?: string;
+  @ApiPropertyOptional() @IsOptional() @IsUUID() @AutoMap() public createdById?: string;
+  @ApiPropertyOptional() @IsOptional() @IsString() @AutoMap() public billNumber?: string;
+  @ApiPropertyOptional({ enum: EBillStatus }) @IsOptional() @IsEnum(EBillStatus) @AutoMap() public status?: EBillStatus;
+  @ApiPropertyOptional({ enum: EPaymentMethod }) @IsOptional() @IsEnum(EPaymentMethod) @AutoMap() public paymentMethod?: EPaymentMethod;
+  @ApiPropertyOptional() @IsOptional() @IsString() @AutoMap() public $orderBy?: string;
+  @ApiPropertyOptional() @IsOptional() @IsString() @AutoMap() public $order?: string;
+}
+
+export class SearchBillsRequest extends ListBillsRequest {
+  // @Type(() => Number) is required: query params arrive as strings and @IsInt would 400 without it.
+  @ApiPropertyOptional({ default: 1 }) @IsOptional() @Type(() => Number) @IsInt() @Min(1) @AutoMap() public $page?: number;
+  @ApiPropertyOptional({ default: 20 }) @IsOptional() @Type(() => Number) @IsInt() @Min(1) @AutoMap() public $perPage?: number;
 }

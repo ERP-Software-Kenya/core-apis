@@ -18,6 +18,7 @@ export const PURCHASE_ITEM_REPO   = 'PURCHASE_ITEM_REPO';
 export const ACTIVITY_LOG_REPO    = 'ACTIVITY_LOG_REPO';
 
 export const BILL_REPO                    = 'BILL_REPO';
+export const BILL_ITEM_REPO               = 'BILL_ITEM_REPO';
 export const ITEM_RETURN_REPO             = 'ITEM_RETURN_REPO';
 export const NOTIFICATION_REPO           = 'NOTIFICATION_REPO';
 export const REPORT_GENERATION_LOG_REPO   = 'REPORT_GENERATION_LOG_REPO';

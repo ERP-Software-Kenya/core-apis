@@ -1,18 +1,38 @@
 import { Mapper } from '@automapper/core';
 import { InjectMapper } from '@automapper/nestjs';
-import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Post, Put, Query } from '@nestjs/common';
+import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Patch, Post, Put, Query, UseGuards } from '@nestjs/common';
 import { ApiBearerAuth, ApiCreatedResponse, ApiOkResponse, ApiOperation, ApiParam, ApiTags } from '@nestjs/swagger';
 import { InjectPinoLogger, PinoLogger } from 'nestjs-pino';
-import { CqrsMediator } from '../../../common';
-import { IPageable } from '../../../common';
-import { CreateBillCommand, DeleteBillCommand, UpdateBillCommand } from './commands';
+import { AuthenticatedUser, ClerkAuthGuard, CqrsMediator, CurrentUser, IPageable, RolesGuard } from '../../../common';
+import {
+  AddBillItemCommand,
+  CreateBillCommand,
+  DeleteBillCommand,
+  RemoveBillItemCommand,
+  TransitionBillStatusCommand,
+  UpdateBillCommand,
+  UpdateBillItemCommand,
+} from './commands';
 import { Bill } from './domain';
-import { CreateBillRequest, SearchBillsRequest, ListBillsRequest, BillResponse, BillsPagedResponse, UpdateBillRequest } from './models';
+import {
+  BillResponse,
+  BillsPagedResponse,
+  CreateBillItemRequest,
+  CreateBillRequest,
+  ListBillsRequest,
+  SearchBillsRequest,
+  TransitionBillStatusRequest,
+  UpdateBillItemRequest,
+  UpdateBillRequest,
+} from './models';
 import { GetBillQuery, ListBillsQuery, SearchBillsQuery } from './queries';
 
 @ApiBearerAuth()
 @ApiTags('Bills')
 @Controller({ path: 'bills', version: '1' })
+// No @Roles(): any authenticated, onboarded user may operate the till.
+// Task 8 layers the black-sale-specific role gate on top of this.
+@UseGuards(ClerkAuthGuard, RolesGuard)
 export class BillsController {
   constructor(
     protected readonly mediator: CqrsMediator,
@@ -24,8 +44,12 @@ export class BillsController {
   @ApiOkResponse({ type: BillsPagedResponse })
   @HttpCode(HttpStatus.OK)
   @Get()
-  public async search(@Query() filter?: SearchBillsRequest): Promise<BillsPagedResponse> {
-    const query = this.mapper.map(filter, SearchBillsRequest, SearchBillsQuery);
+  public async search(
+    @CurrentUser() user: AuthenticatedUser,
+    @Query() filter?: SearchBillsRequest,
+  ): Promise<BillsPagedResponse> {
+    const query = this.mapper.map(filter ?? new SearchBillsRequest(), SearchBillsRequest, SearchBillsQuery);
+    query.organizationId = user.organizationId;
     const result = await this.mediator.execute<SearchBillsQuery, IPageable<Bill>>(query);
     return {
       ...result,
@@ -37,13 +61,17 @@ export class BillsController {
   @ApiOkResponse({ type: [BillResponse] })
   @HttpCode(HttpStatus.OK)
   @Get('list')
-  public async list(@Query() filter?: ListBillsRequest): Promise<BillResponse[]> {
-    const query = this.mapper.map(filter, ListBillsRequest, ListBillsQuery);
+  public async list(
+    @CurrentUser() user: AuthenticatedUser,
+    @Query() filter?: ListBillsRequest,
+  ): Promise<BillResponse[]> {
+    const query = this.mapper.map(filter ?? new ListBillsRequest(), ListBillsRequest, ListBillsQuery);
+    query.organizationId = user.organizationId;
     const result = await this.mediator.execute<ListBillsQuery, Bill[]>(query);
     return this.mapper.mapArray(result, Bill, BillResponse);
   }
 
-  @ApiOperation({ summary: 'Get bill by ID' })
+  @ApiOperation({ summary: 'Get bill by ID (includes items)' })
   @ApiOkResponse({ type: BillResponse })
   @ApiParam({ name: 'id', description: 'Bill UUID' })
   @HttpCode(HttpStatus.OK)
@@ -55,17 +83,22 @@ export class BillsController {
     return this.mapper.map(result, Bill, BillResponse);
   }
 
-  @ApiOperation({ summary: 'Create a new bill' })
+  @ApiOperation({ summary: 'Create a new bill with its items' })
   @ApiCreatedResponse({ type: BillResponse })
   @HttpCode(HttpStatus.CREATED)
   @Post()
-  public async create(@Body() body: CreateBillRequest): Promise<BillResponse> {
+  public async create(
+    @CurrentUser() user: AuthenticatedUser,
+    @Body() body: CreateBillRequest,
+  ): Promise<BillResponse> {
     const command = this.mapper.map(body, CreateBillRequest, CreateBillCommand);
-    const result  = await this.mediator.execute<CreateBillCommand, Bill>(command);
+    command.organizationId = user.organizationId;
+    command.createdById    = user.dbUserId;
+    const result = await this.mediator.execute<CreateBillCommand, Bill>(command);
     return this.mapper.map(result, Bill, BillResponse);
   }
 
-  @ApiOperation({ summary: 'Update a bill' })
+  @ApiOperation({ summary: 'Update a bill header' })
   @ApiOkResponse({ type: BillResponse })
   @ApiParam({ name: 'id', description: 'Bill UUID' })
   @HttpCode(HttpStatus.OK)
@@ -77,7 +110,7 @@ export class BillsController {
     return this.mapper.map(result, Bill, BillResponse);
   }
 
-  @ApiOperation({ summary: 'Delete a bill' })
+  @ApiOperation({ summary: 'Delete a bill (its items cascade)' })
   @ApiOkResponse({ type: Boolean })
   @ApiParam({ name: 'id', description: 'Bill UUID' })
   @HttpCode(HttpStatus.OK)
@@ -86,5 +119,77 @@ export class BillsController {
     const command = new DeleteBillCommand();
     command.id    = id;
     return this.mediator.execute<DeleteBillCommand, boolean>(command);
+  }
+
+  @ApiOperation({ summary: 'Move a bill to another status' })
+  @ApiOkResponse({ type: BillResponse })
+  @ApiParam({ name: 'id', description: 'Bill UUID' })
+  @HttpCode(HttpStatus.OK)
+  @Patch(':id/status')
+  public async transitionStatus(
+    @Param('id') id: string,
+    @Body() body: TransitionBillStatusRequest,
+  ): Promise<BillResponse> {
+    const command         = new TransitionBillStatusCommand();
+    command.id            = id;
+    command.status        = body.status;
+    command.paymentMethod = body.paymentMethod;
+    const result = await this.mediator.execute<TransitionBillStatusCommand, Bill>(command);
+    return this.mapper.map(result, Bill, BillResponse);
+  }
+
+  @ApiOperation({ summary: 'Add an item to a bill' })
+  @ApiCreatedResponse({ type: BillResponse })
+  @ApiParam({ name: 'id', description: 'Bill UUID' })
+  @HttpCode(HttpStatus.CREATED)
+  @Post(':id/items')
+  public async addItem(@Param('id') id: string, @Body() body: CreateBillItemRequest): Promise<BillResponse> {
+    const command          = new AddBillItemCommand();
+    command.billId         = id;
+    command.productId      = body.productId;
+    command.variantId      = body.variantId;
+    command.quantity       = body.quantity;
+    command.unitPrice      = body.unitPrice;
+    command.taxRate        = body.taxRate;
+    command.discountAmount = body.discountAmount;
+    const result = await this.mediator.execute<AddBillItemCommand, Bill>(command);
+    return this.mapper.map(result, Bill, BillResponse);
+  }
+
+  @ApiOperation({ summary: 'Update a single item on a bill' })
+  @ApiOkResponse({ type: BillResponse })
+  @ApiParam({ name: 'id', description: 'Bill UUID' })
+  @ApiParam({ name: 'itemId', description: 'Bill item UUID' })
+  @HttpCode(HttpStatus.OK)
+  @Put(':id/items/:itemId')
+  public async updateItem(
+    @Param('id') id: string,
+    @Param('itemId') itemId: string,
+    @Body() body: UpdateBillItemRequest,
+  ): Promise<BillResponse> {
+    const command          = new UpdateBillItemCommand();
+    command.billId         = id;
+    command.itemId         = itemId;
+    command.productId      = body.productId;
+    command.variantId      = body.variantId;
+    command.quantity       = body.quantity;
+    command.unitPrice      = body.unitPrice;
+    command.taxRate        = body.taxRate;
+    command.discountAmount = body.discountAmount;
+    const result = await this.mediator.execute<UpdateBillItemCommand, Bill>(command);
+    return this.mapper.map(result, Bill, BillResponse);
+  }
+
+  @ApiOperation({ summary: 'Remove an item from a bill' })
+  @ApiOkResponse({ type: Boolean })
+  @ApiParam({ name: 'id', description: 'Bill UUID' })
+  @ApiParam({ name: 'itemId', description: 'Bill item UUID' })
+  @HttpCode(HttpStatus.OK)
+  @Delete(':id/items/:itemId')
+  public async removeItem(@Param('id') id: string, @Param('itemId') itemId: string): Promise<boolean> {
+    const command  = new RemoveBillItemCommand();
+    command.billId = id;
+    command.itemId = itemId;
+    return this.mediator.execute<RemoveBillItemCommand, boolean>(command);
   }
 }
