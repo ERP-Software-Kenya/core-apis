@@ -10,6 +10,8 @@ import { GetTopCustomersHandler } from './queries/get-top-customers/get-top-cust
 import { GetPurchaseSummaryHandler } from './queries/get-purchase-summary/get-purchase-summary.handler';
 import { GetPurchaseTrendHandler } from './queries/get-purchase-trend/get-purchase-trend.handler';
 import { GetTopSuppliersHandler } from './queries/get-top-suppliers/get-top-suppliers.handler';
+import { GetInventorySummaryHandler } from './queries/get-inventory-summary/get-inventory-summary.handler';
+import { GetStockByLocationHandler } from './queries/get-stock-by-location/get-stock-by-location.handler';
 
 @Module({
   imports: [CqrsModule],
@@ -24,6 +26,8 @@ import { GetTopSuppliersHandler } from './queries/get-top-suppliers/get-top-supp
     GetPurchaseSummaryHandler,
     GetPurchaseTrendHandler,
     GetTopSuppliersHandler,
+    GetInventorySummaryHandler,
+    GetStockByLocationHandler,
   ],
 })
 export class AnalyticsModule {}
