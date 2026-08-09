@@ -80,4 +80,7 @@ export enum ECoreTableName {
   TransportationOrderItems = 'transportation_order_items',
   GpsDevices            = 'gps_devices',
   Alerts                = 'alerts',
+
+  // ─── Communication ────────────────────────────────────────────────────────────
+  EmailTemplates        = 'email_templates',
 }

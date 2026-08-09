@@ -39,6 +39,7 @@ import { TripsModule } from './modules/trips';
 import { VehicleExpensesModule } from './modules/vehicle-expenses';
 
 import { CqrsMediator, CommonModule } from '../common';
+import { MailTemplatesModule } from './modules/mail-templates';
 
 
 @Module({})
@@ -86,6 +87,7 @@ export class ApplicationModule {
         TripsModule,
         VehicleExpensesModule,
         CommonModule,
+        MailTemplatesModule,
       ],
       controllers: [],
       providers: [CqrsMediator],

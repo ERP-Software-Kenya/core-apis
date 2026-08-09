@@ -71,6 +71,7 @@ import { TransportationOrderEntity } from './transportation-order.entity';
 import { TransportationOrderItemEntity } from './transportation-order-item.entity';
 import { GpsDeviceEntity } from './gps-device.entity';
 import { AlertEntity } from './alert.entity';
+import { EmailTemplateEntity } from './email-template.entity';
 
 export * from './location.entity';
 export * from './product-log.entity';
@@ -145,6 +146,7 @@ export * from './transportation-order.entity';
 export * from './transportation-order-item.entity';
 export * from './gps-device.entity';
 export * from './alert.entity';
+export * from './email-template.entity';
 
 export default [
   LocationEntity,
@@ -219,4 +221,5 @@ export default [
   TransportationOrderItemEntity,
   GpsDeviceEntity,
   AlertEntity,
+  EmailTemplateEntity,
 ];

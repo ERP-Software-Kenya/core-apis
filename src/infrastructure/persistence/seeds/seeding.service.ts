@@ -6,6 +6,7 @@ import { RefStatesSeed } from './ref-states.seed';
 import { RefCitiesSeed } from './ref-cities.seed';
 import { RefCurrenciesSeed } from './ref-currencies.seed';
 import { RefLanguagesSeed } from './ref-languages.seed';
+import { EmailTemplatesSeed } from './email-templates.seed';
 
 /**
  * Orchestrates all seeds in strict dependency order.
@@ -23,6 +24,7 @@ export class SeedingService {
     private readonly refCitiesSeed: RefCitiesSeed,
     private readonly refCurrenciesSeed: RefCurrenciesSeed,
     private readonly refLanguagesSeed: RefLanguagesSeed,
+    private readonly emailTemplatesSeed: EmailTemplatesSeed,
   ) {}
 
   public async runAsync(): Promise<void> {
@@ -33,6 +35,7 @@ export class SeedingService {
     await this.refStatesSeed.runAsync();
     await this.refCitiesSeed.runAsync();
     await this.rolesSeed.runAsync();
+    await this.emailTemplatesSeed.runAsync();
     this.logger.info('All seeds applied successfully');
   }
 }
