@@ -1,5 +1,11 @@
 import { AutoMap } from '@automapper/classes';
 import { CommandBase } from '../../../../../common';
+import {
+  ECustomerType,
+  EPaymentTiming,
+  ESaleType,
+} from '../../../../../infrastructure/persistence/entities';
+import { ERole } from '../../../../../infrastructure/persistence/entities/role.entity';
 
 export class CreateBillItemCommand {
   @AutoMap() public productId: string;
@@ -21,5 +27,15 @@ export class CreateBillCommand extends CommandBase {
   @AutoMap() public walkInPhone?: string;
   @AutoMap() public walkInGstin?: string;
   @AutoMap() public notes?: string;
+  @AutoMap(() => String) public saleType?: ESaleType;
+  @AutoMap(() => String) public customerType?: ECustomerType;
+  @AutoMap(() => String) public paymentTiming?: EPaymentTiming;
+  @AutoMap() public partialAmount?: number;
+  @AutoMap() public facilitatorUserId?: string;
+  @AutoMap() public facilitatorName?: string;
+  /** Handler-only input — not persisted on Bill. */
+  public commissionPct?: number;
+  /** Set by the controller from AuthenticatedUser.roles. */
+  public performedByRoles: ERole[] = [];
   @AutoMap(() => [CreateBillItemCommand]) public items: CreateBillItemCommand[];
 }

@@ -20,6 +20,13 @@ export interface IInventoryRepo extends IBaseRepo<Inventory, string, PageableFil
   addUnpublishedStockAsync(id: string, quantity: number, unitCost: number | undefined, manager: EntityManager): Promise<Inventory>;
   publishStockAsync(id: string, quantity: number, manager: EntityManager): Promise<Inventory>;
   deductStockAsync(id: string, quantity: number, manager: EntityManager): Promise<Inventory>;
+  deductUnpublishedStockAsync(id: string, quantity: number, manager: EntityManager): Promise<Inventory>;
+  findByOrgLocationProductAsync(
+    organizationId: string,
+    locationId: string,
+    productId: string,
+    manager?: EntityManager,
+  ): Promise<Inventory | null>;
   getLowStockAsync(organizationId: string): Promise<Inventory[]>;
   getValuationAsync(organizationId: string): Promise<Inventory[]>;
 }

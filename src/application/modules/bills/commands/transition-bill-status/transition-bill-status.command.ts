@@ -6,4 +6,6 @@ export class TransitionBillStatusCommand extends CommandBase {
   @AutoMap() public id: string;
   @AutoMap(() => String) public status: EBillStatus;
   @AutoMap(() => String) public paymentMethod?: EPaymentMethod;
+  /** Set by the controller from AuthenticatedUser.dbUserId. */
+  public performedById: string;
 }

@@ -1,5 +1,6 @@
 import { Module } from '@nestjs/common';
 import { CqrsModule } from '@nestjs/cqrs';
+import { SharedModule } from '../../shared';
 import { BillsController } from './bills.controller';
 import { BillCommandHandlers } from './commands';
 import { BillQueryHandlers } from './queries';
@@ -8,7 +9,7 @@ import { BillFeatureOptions } from './options/bill-feature.options';
 import { BillFilterNormalizer } from './helpers/bill-filter.normalizer';
 
 @Module({
-  imports: [CqrsModule],
+  imports: [CqrsModule, SharedModule],
   controllers: [BillsController],
   providers: [
     ...BillCommandHandlers,

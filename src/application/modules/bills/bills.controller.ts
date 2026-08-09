@@ -92,8 +92,10 @@ export class BillsController {
     @Body() body: CreateBillRequest,
   ): Promise<BillResponse> {
     const command = this.mapper.map(body, CreateBillRequest, CreateBillCommand);
-    command.organizationId = user.organizationId;
-    command.createdById    = user.dbUserId;
+    command.organizationId  = user.organizationId;
+    command.createdById     = user.dbUserId;
+    command.performedByRoles = user?.roles ?? [];
+    command.commissionPct   = body.commissionPct;
     const result = await this.mediator.execute<CreateBillCommand, Bill>(command);
     return this.mapper.map(result, Bill, BillResponse);
   }
@@ -128,12 +130,14 @@ export class BillsController {
   @Patch(':id/status')
   public async transitionStatus(
     @Param('id') id: string,
+    @CurrentUser() user: AuthenticatedUser,
     @Body() body: TransitionBillStatusRequest,
   ): Promise<BillResponse> {
-    const command         = new TransitionBillStatusCommand();
-    command.id            = id;
-    command.status        = body.status;
-    command.paymentMethod = body.paymentMethod;
+    const command          = new TransitionBillStatusCommand();
+    command.id             = id;
+    command.status         = body.status;
+    command.paymentMethod  = body.paymentMethod;
+    command.performedById  = user.dbUserId;
     const result = await this.mediator.execute<TransitionBillStatusCommand, Bill>(command);
     return this.mapper.map(result, Bill, BillResponse);
   }

@@ -1,8 +1,14 @@
 import { AutoMap } from '@automapper/classes';
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { Type } from 'class-transformer';
-import { IsArray, IsEnum, IsInt, IsOptional, IsString, IsUUID, Min, ValidateNested } from 'class-validator';
-import { EBillStatus, EPaymentMethod } from '../../../../../infrastructure/persistence/entities';
+import { IsArray, IsEnum, IsInt, IsNumber, IsOptional, IsString, IsUUID, Min, ValidateNested } from 'class-validator';
+import {
+  EBillStatus,
+  ECustomerType,
+  EPaymentMethod,
+  EPaymentTiming,
+  ESaleType,
+} from '../../../../../infrastructure/persistence/entities';
 import { CreateBillItemRequest } from './bill-item.request';
 
 export class CreateBillRequest {
@@ -12,6 +18,14 @@ export class CreateBillRequest {
   @ApiPropertyOptional() @IsOptional() @IsString() @AutoMap() public walkInPhone?: string;
   @ApiPropertyOptional() @IsOptional() @IsString() @AutoMap() public walkInGstin?: string;
   @ApiPropertyOptional() @IsOptional() @IsString() @AutoMap() public notes?: string;
+  @ApiPropertyOptional({ enum: ESaleType, default: ESaleType.Normal }) @IsOptional() @IsEnum(ESaleType) @AutoMap(() => String) public saleType?: ESaleType;
+  @ApiPropertyOptional({ enum: ECustomerType }) @IsOptional() @IsEnum(ECustomerType) @AutoMap(() => String) public customerType?: ECustomerType;
+  @ApiPropertyOptional({ enum: EPaymentTiming }) @IsOptional() @IsEnum(EPaymentTiming) @AutoMap(() => String) public paymentTiming?: EPaymentTiming;
+  @ApiPropertyOptional() @IsOptional() @IsNumber() @AutoMap() public partialAmount?: number;
+  @ApiPropertyOptional() @IsOptional() @IsUUID() @AutoMap() public facilitatorUserId?: string;
+  @ApiPropertyOptional() @IsOptional() @IsString() @AutoMap() public facilitatorName?: string;
+  @ApiPropertyOptional({ description: 'Commission % of the black markup, e.g. 30 = 30%. Only used when saleType=black and a facilitator is set.' })
+  @IsOptional() @IsNumber() public commissionPct?: number;
 
   // Empty is legal: the Bills screen creates the header first, then adds lines
   // via POST :id/items. The POS terminal sends the full basket up front.

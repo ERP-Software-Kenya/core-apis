@@ -6,4 +6,5 @@ export class CreateCustomerCommand extends CommandBase {
   @AutoMap() public email?: string;
   @AutoMap() public phone?: string;
   @AutoMap() public gstin?: string;
+  @AutoMap() public creditLimit?: number;
 }

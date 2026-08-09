@@ -1,6 +1,12 @@
 import { AutoMap } from '@automapper/classes';
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
-import { EBillStatus, EPaymentMethod } from '../../../../../infrastructure/persistence/entities';
+import {
+  EBillStatus,
+  ECustomerType,
+  EPaymentMethod,
+  EPaymentTiming,
+  ESaleType,
+} from '../../../../../infrastructure/persistence/entities';
 
 export class BillItemResponse {
   @ApiProperty() @AutoMap() public id: string;
@@ -27,6 +33,14 @@ export class BillResponse {
   @ApiPropertyOptional({ nullable: true }) @AutoMap() public walkInGstin?: string;
   @ApiProperty({ enum: EBillStatus }) @AutoMap(() => String) public status: EBillStatus;
   @ApiPropertyOptional({ enum: EPaymentMethod, nullable: true }) @AutoMap(() => String) public paymentMethod?: EPaymentMethod;
+  @ApiProperty({ enum: ESaleType }) @AutoMap(() => String) public saleType: ESaleType;
+  @ApiPropertyOptional({ enum: ECustomerType }) @AutoMap(() => String) public customerType?: ECustomerType;
+  @ApiPropertyOptional({ enum: EPaymentTiming }) @AutoMap(() => String) public paymentTiming?: EPaymentTiming;
+  @ApiPropertyOptional() @AutoMap() public partialAmount?: number;
+  @ApiProperty() @AutoMap() public blackAmount: number;
+  @ApiPropertyOptional() @AutoMap() public facilitatorUserId?: string;
+  @ApiPropertyOptional() @AutoMap() public facilitatorName?: string;
+  @ApiProperty() @AutoMap() public commissionAmount: number;
   @ApiProperty() @AutoMap() public subtotal: number;
   @ApiProperty() @AutoMap() public taxAmount: number;
   @ApiProperty() @AutoMap() public discountAmount: number;

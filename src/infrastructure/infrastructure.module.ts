@@ -38,6 +38,9 @@ import {
   ProductSupplierRepo,
   LocationRepo,
   ProductLogRepo,
+  CustomerCreditTransactionRepo,
+  CreditApprovalRequestRepo,
+  CommissionPayableRepo,
 } from './persistence';
 
 import {
@@ -71,6 +74,9 @@ import {
   PRODUCT_SUPPLIER_REPO,
   LOCATION_REPO,
   PRODUCT_LOG_REPO,
+  CUSTOMER_CREDIT_TRANSACTION_REPO,
+  CREDIT_APPROVAL_REQUEST_REPO,
+  COMMISSION_PAYABLE_REPO,
 } from '../application/constants';
 
 @Module({})
@@ -128,6 +134,9 @@ export class InfrastructureModule {
         { provide: PRODUCT_SUPPLIER_REPO, useClass: ProductSupplierRepo },
         { provide: LOCATION_REPO, useClass: LocationRepo },
         { provide: PRODUCT_LOG_REPO, useClass: ProductLogRepo },
+        { provide: CUSTOMER_CREDIT_TRANSACTION_REPO, useClass: CustomerCreditTransactionRepo },
+        { provide: CREDIT_APPROVAL_REQUEST_REPO, useClass: CreditApprovalRequestRepo },
+        { provide: COMMISSION_PAYABLE_REPO, useClass: CommissionPayableRepo },
       ],
       exports: [
         EntityMapperProfile,
@@ -161,6 +170,9 @@ export class InfrastructureModule {
         PRODUCT_SUPPLIER_REPO,
         LOCATION_REPO,
         PRODUCT_LOG_REPO,
+        CUSTOMER_CREDIT_TRANSACTION_REPO,
+        CREDIT_APPROVAL_REQUEST_REPO,
+        COMMISSION_PAYABLE_REPO,
       ],
     };
   }

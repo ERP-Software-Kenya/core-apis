@@ -28,3 +28,6 @@ export * from './user.repo';
 export * from './org-member.repo';
 export * from './product-image.repo';
 export * from './product-supplier.repo';
+export * from './customer-credit-transaction.repo';
+export * from './credit-approval-request.repo';
+export * from './commission-payable.repo';

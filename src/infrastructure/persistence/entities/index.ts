@@ -42,6 +42,9 @@ import { RolePermissionEntity } from './role-permission.entity';
 import { PlatformEntity } from './platform.entity';
 import { PlatformConfigurationEntity } from './platform-configuration.entity';
 import { OrgMemberEntity } from './org-member.entity';
+import { CustomerCreditTransactionEntity } from './customer-credit-transaction.entity';
+import { CreditApprovalRequestEntity } from './credit-approval-request.entity';
+import { CommissionPayableEntity } from './commission-payable.entity';
 
 export * from './location.entity';
 export * from './product-log.entity';
@@ -89,6 +92,9 @@ export * from './role-permission.entity';
 export * from './platform.entity';
 export * from './platform-configuration.entity';
 export * from './org-member.entity';
+export * from './customer-credit-transaction.entity';
+export * from './credit-approval-request.entity';
+export * from './commission-payable.entity';
 
 export default [
   LocationEntity,
@@ -135,4 +141,7 @@ export default [
   PlatformEntity,
   PlatformConfigurationEntity,
   OrgMemberEntity,
+  CustomerCreditTransactionEntity,
+  CreditApprovalRequestEntity,
+  CommissionPayableEntity,
 ];

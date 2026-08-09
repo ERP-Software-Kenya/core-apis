@@ -37,6 +37,26 @@ export enum EPaymentMethod {
   Credit     = 'CREDIT',
 }
 
+export enum ESaleType {
+  Normal = 'normal',
+  Credit = 'credit',
+  Black  = 'black',
+}
+
+export enum ECustomerType {
+  Regular     = 'regular',
+  New         = 'new',
+  Shop        = 'shop',
+  BigCustomer = 'big_customer',
+}
+
+export enum EPaymentTiming {
+  BeforeDelivery = 'before_delivery',
+  AfterDelivery  = 'after_delivery',
+  Half           = 'half',
+  Cod            = 'cod',
+}
+
 @Index(`IX__${ECoreTableName.Bills}__org_location_status`, ['organizationId', 'locationId', 'status'])
 @Entity({ schema: CORE_SCHEMA, name: ECoreTableName.Bills })
 export class BillEntity {
@@ -85,6 +105,38 @@ export class BillEntity {
   @AutoMap(() => String)
   @Column({ name: 'payment_method', type: 'enum', enum: EPaymentMethod, nullable: true })
   public paymentMethod?: EPaymentMethod;
+
+  @AutoMap(() => String)
+  @Column({ name: 'sale_type', type: 'enum', enum: ESaleType, default: ESaleType.Normal })
+  public saleType: ESaleType;
+
+  @AutoMap(() => String)
+  @Column({ name: 'customer_type', type: 'enum', enum: ECustomerType, nullable: true })
+  public customerType?: ECustomerType;
+
+  @AutoMap(() => String)
+  @Column({ name: 'payment_timing', type: 'enum', enum: EPaymentTiming, nullable: true })
+  public paymentTiming?: EPaymentTiming;
+
+  @AutoMap()
+  @Column({ name: 'partial_amount', type: 'decimal', precision: 18, scale: 4, nullable: true, transformer: numericTransformer })
+  public partialAmount?: number;
+
+  @AutoMap()
+  @Column({ name: 'black_amount', type: 'decimal', precision: 18, scale: 4, default: 0, transformer: numericTransformer })
+  public blackAmount: number;
+
+  @AutoMap()
+  @Column({ name: 'facilitator_user_id', type: 'uuid', nullable: true })
+  public facilitatorUserId?: string;
+
+  @AutoMap()
+  @Column({ name: 'facilitator_name', type: 'varchar', length: 255, nullable: true })
+  public facilitatorName?: string;
+
+  @AutoMap()
+  @Column({ name: 'commission_amount', type: 'decimal', precision: 18, scale: 4, default: 0, transformer: numericTransformer })
+  public commissionAmount: number;
 
   /** Sum of quantity x unitPrice across items, before discount and tax. */
   @AutoMap()

@@ -4,6 +4,7 @@ import { InjectPinoLogger, PinoLogger } from 'nestjs-pino';
 import { CommandHandlerStrict } from '../../../../../common';
 import { EBillStatus } from '../../../../../infrastructure/persistence/entities';
 import { BILL_REPO } from '../../../../constants';
+import { BillCompletionService } from '../../../../shared/services/bill-completion.service';
 import { Bill } from '../../domain';
 import { IBillRepo } from '../..';
 import { TransitionBillStatusCommand } from './transition-bill-status.command';
@@ -20,6 +21,7 @@ const ALLOWED_FROM: Record<EBillStatus, EBillStatus[]> = {
 export class TransitionBillStatusCommandHandler implements ICommandHandler<TransitionBillStatusCommand, Bill> {
   constructor(
     @Inject(BILL_REPO) private readonly repo: IBillRepo,
+    private readonly completionService: BillCompletionService,
     @InjectPinoLogger(TransitionBillStatusCommandHandler.name) private readonly logger: PinoLogger,
   ) {}
 
@@ -34,12 +36,13 @@ export class TransitionBillStatusCommandHandler implements ICommandHandler<Trans
       throw new BadRequestException(`Cannot move bill from ${bill.status} to ${command.status}`);
     }
 
+    if (command.status === EBillStatus.Completed) {
+      return this.completionService.completeBill(bill.id, command.performedById, false);
+    }
+
     bill.status = command.status;
     if (command.paymentMethod) {
       bill.paymentMethod = command.paymentMethod;
-    }
-    if (command.status === EBillStatus.Completed && !bill.billedAt) {
-      bill.billedAt = new Date();
     }
 
     await this.repo.updateAsync({ ...bill, items: undefined });

@@ -1,4 +1,4 @@
-import { EBillStatus, EPaymentMethod } from '../../../../infrastructure/persistence/entities';
+import { EBillStatus, EPaymentMethod, ESaleType } from '../../../../infrastructure/persistence/entities';
 
 export interface BillFilter {
   organizationId?: string;
@@ -8,6 +8,7 @@ export interface BillFilter {
   billNumber?: string;
   status?: EBillStatus;
   paymentMethod?: EPaymentMethod;
+  saleType?: ESaleType;
 }
 
 export interface BillItemFilter {
