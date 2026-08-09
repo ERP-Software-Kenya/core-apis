@@ -1,3 +1,7 @@
 export * from './get-role';
-import { GetRoleQueryHandler } from './get-role';
-export const RoleQueryHandlers = [GetRoleQueryHandler];
+export * from './list-roles';
+
+import { GetRoleQueryHandler }   from './get-role';
+import { ListRolesQueryHandler } from './list-roles';
+
+export const RoleQueryHandlers = [GetRoleQueryHandler, ListRolesQueryHandler];

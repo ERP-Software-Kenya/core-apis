@@ -9,4 +9,5 @@ export class CreateExpenseRequest {
   @ApiProperty() @IsNotEmpty() @IsNumber() @AutoMap() public amount: number;
   @ApiProperty() @IsNotEmpty() @IsDateString() @AutoMap() public expenseDate: Date;
   @ApiPropertyOptional() @IsOptional() @IsString() @AutoMap() public description?: string;
+  @ApiPropertyOptional() @IsOptional() @IsString() @AutoMap() public submittedBy?: string;
 }

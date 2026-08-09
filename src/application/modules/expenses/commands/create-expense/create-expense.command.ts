@@ -8,4 +8,5 @@ export class CreateExpenseCommand extends CommandBase {
   @AutoMap() public amount: number;
   @AutoMap() public expenseDate: Date;
   @AutoMap() public description?: string;
+  @AutoMap() public submittedBy?: string;
 }
