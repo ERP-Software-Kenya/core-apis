@@ -27,6 +27,7 @@ import {
 } from './models';
 import {
   ClerkInvitationResponse,
+  ClerkOrganizationResponse,
   ClerkUserListResponse,
   ClerkUserRolesResponse,
   UserResponse,
@@ -35,6 +36,7 @@ import {
   GetUserQuery,
   GetUserRolesQuery,
   ListInvitationsQuery,
+  ListOrganizationsQuery,
   ListUsersQuery,
   SearchUsersQuery,
 } from './queries';
@@ -104,6 +106,17 @@ export class UsersController {
     const query         = new GetUserRolesQuery();
     query.clerkUserId   = clerkUserId;
     return this.mediator.execute<GetUserRolesQuery, ClerkUserRolesResponse>(query);
+  }
+
+  @ApiOperation({ summary: 'List Clerk organizations' })
+  @ApiOkResponse({ type: [ClerkOrganizationResponse] })
+  @HttpCode(HttpStatus.OK)
+  @UseGuards(RolesGuard)
+  @Roles(ERole.OrgAdmin, ERole.SuperAdmin)
+  @Get('clerk/organizations')
+  public async listOrganizations(): Promise<ClerkOrganizationResponse[]> {
+    const query = new ListOrganizationsQuery();
+    return this.mediator.execute<ListOrganizationsQuery, ClerkOrganizationResponse[]>(query);
   }
 
   // ─── Commands ─────────────────────────────────────────────────────────────

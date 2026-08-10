@@ -3,3 +3,4 @@ export * from './clerk-user.response';
 export * from './clerk-user-list.response';
 export * from './clerk-user-roles.response';
 export * from './clerk-invitation.response';
+export * from './clerk-organization.response';

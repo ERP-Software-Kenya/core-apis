@@ -3,7 +3,7 @@ import { ConfigService } from '@nestjs/config';
 import { createClerkClient } from '@clerk/backend';
 import { ICoreApiConfig } from '../../configuration';
 import { EInvitationStatus } from '../../infrastructure/e-invitation-status';
-import { ClerkInvitationData, ClerkUserData, ClerkUserListData, IClerkService } from './i-clerk.service';
+import { ClerkInvitationData, ClerkOrganizationData, ClerkUserData, ClerkUserListData, IClerkService } from './i-clerk.service';
 
 @Injectable()
 export class ClerkService implements IClerkService {
@@ -78,7 +78,7 @@ export class ClerkService implements IClerkService {
       status: params?.status,
     });
     return result.data.map((inv) => {
-      const meta  = inv.publicMetadata as Record<string, unknown>;
+      const meta  = inv.publicMetadata;
       const roles = Array.isArray(meta['roles']) ? (meta['roles'] as string[]) : undefined;
       return {
         id:           inv.id,
@@ -120,6 +120,15 @@ export class ClerkService implements IClerkService {
       organizationId: params.organizationId,
       userId:         params.clerkUserId,
     });
+  }
+
+  public async listOrganizationsAsync(): Promise<ClerkOrganizationData[]> {
+    const result = await this.client.organizations.getOrganizationList({ limit: 100 });
+    return result.data.map((org) => ({
+      organizationId: org.id,
+      name:           org.name,
+      slug:           org.slug,
+    }));
   }
 
   private mapUser(user: Awaited<ReturnType<(typeof this.client.users)['getUser']>>): ClerkUserData {
