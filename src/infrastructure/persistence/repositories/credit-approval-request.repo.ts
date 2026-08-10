@@ -4,7 +4,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { InjectPinoLogger, PinoLogger } from 'nestjs-pino';
 import { Repository } from 'typeorm';
-import { BaseRepo, Filter, PageableFilter } from '../../../common';
+import { BaseRepo, DbException, Filter, PageableFilter } from '../../../common';
 import { CreditApprovalRequestEntity } from '../entities';
 import { CreditApprovalRequest } from '../../../application/modules/credit-approvals/domain';
 import {
@@ -33,5 +33,17 @@ export class CreditApprovalRequestRepo
 
   public override get idColumnName(): keyof CreditApprovalRequestEntity {
     return 'id';
+  }
+
+  /** Pending-approvals list renders bill number and customer name — pull both in one join. */
+  public override async allAsync(filterObj?: Filter<CreditApprovalRequestFilter>): Promise<CreditApprovalRequest[]> {
+    try {
+      const opts = this.createFilterOpts(filterObj);
+      const es = await this.internalRepo.find({ ...opts, relations: { bill: { customer: true } } });
+      return this.mapToModelArray(es);
+    } catch (ex) {
+      this.logger.error(ex);
+      throw new DbException(ex);
+    }
   }
 }

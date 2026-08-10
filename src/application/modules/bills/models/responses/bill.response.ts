@@ -7,6 +7,7 @@ import {
   EPaymentTiming,
   ESaleType,
 } from '../../../../../infrastructure/persistence/entities';
+import { CustomerResponse } from '../../../customers/models';
 import { BillItemResponse } from './bill-item.response';
 
 export class BillResponse {
@@ -15,6 +16,7 @@ export class BillResponse {
   @ApiProperty() @AutoMap() public organizationId: string;
   @ApiProperty() @AutoMap() public locationId: string;
   @ApiPropertyOptional({ nullable: true }) @AutoMap() public customerId?: string;
+  @ApiPropertyOptional({ type: () => CustomerResponse, nullable: true }) @AutoMap(() => CustomerResponse) public customer?: CustomerResponse;
   @ApiProperty() @AutoMap() public createdById?: string;
   @ApiPropertyOptional({ nullable: true }) @AutoMap() public walkInName?: string;
   @ApiPropertyOptional({ nullable: true }) @AutoMap() public walkInPhone?: string;
