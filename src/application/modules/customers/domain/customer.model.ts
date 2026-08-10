@@ -1,4 +1,5 @@
 import { AutoMap } from '@automapper/classes';
+import { ECustomerType } from '../../../../infrastructure/persistence/entities';
 
 export class Customer {
   @AutoMap() public id: string;
@@ -9,6 +10,7 @@ export class Customer {
   @AutoMap() public gstin?: string;
   @AutoMap() public creditLimit?: number;
   @AutoMap() public creditBalance: number;
+  @AutoMap(() => String) public customerType?: ECustomerType;
   @AutoMap(() => Date) public createdAt: Date;
   @AutoMap(() => Date) public updatedAt?: Date;
   @AutoMap(() => Date) public deletedAt?: Date;

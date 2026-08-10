@@ -6,6 +6,7 @@ import {
   EPaymentTiming,
   ESaleType,
 } from '../../../../infrastructure/persistence/entities';
+import { Customer } from '../../customers/domain';
 import { BillItem } from './bill-item.model';
 
 export class Bill {
@@ -14,6 +15,7 @@ export class Bill {
   @AutoMap() public organizationId: string;
   @AutoMap() public locationId: string;
   @AutoMap() public customerId?: string;
+  @AutoMap(() => Customer) public customer?: Customer;
   @AutoMap() public createdById?: string;
   @AutoMap() public walkInName?: string;
   @AutoMap() public walkInPhone?: string;

@@ -1,6 +1,7 @@
 import { AutoMap } from '@automapper/classes';
 import { Column, CreateDateColumn, DeleteDateColumn, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
 import { CORE_SCHEMA, ECoreTableName } from './e-core-table-name';
+import { ECustomerType } from './e-customer-type';
 import { numericTransformer } from './numeric.transformer';
 import { OrganizationEntity } from './organization.entity';
 
@@ -39,6 +40,10 @@ export class CustomerEntity {
   @AutoMap()
   @Column({ name: 'credit_balance', type: 'decimal', precision: 18, scale: 4, default: 0, transformer: numericTransformer })
   public creditBalance: number;
+
+  @AutoMap(() => String)
+  @Column({ name: 'customer_type', type: 'enum', enum: ECustomerType, nullable: true })
+  public customerType?: ECustomerType;
 
   @AutoMap(() => Date)
   @CreateDateColumn({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })

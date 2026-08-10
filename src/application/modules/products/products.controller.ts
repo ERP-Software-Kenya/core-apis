@@ -8,8 +8,8 @@ import { ClerkAuthGuard, CqrsMediator, CurrentUser, IPageable, Roles, RolesGuard
 import { ERole } from '../../../infrastructure';
 import { AddProductImageCommand, CreateProductCommand, DeleteProductCommand, LinkProductSupplierCommand, UnlinkProductSupplierCommand, UpdateProductCommand, UpdateProductSupplierCommand } from './commands';
 import { Product, ProductSupplier } from './domain';
-import { CreateProductRequest, GetProductImageUploadUrlRequest, LinkProductSupplierRequest, ListProductsRequest, ProductImageResponse, ProductImageUploadUrlResponse, ProductResponse, ProductSupplierResponse, ProductsPagedResponse, SearchProductsRequest, UpdateProductRequest, UpdateProductSupplierRequest } from './models';
-import { GetProductQuery, GetProductImageUploadUrlQuery, ListProductImagesQuery, ListProductSuppliersQuery, ListProductsQuery, SearchProductsQuery } from './queries';
+import { CreateProductRequest, GetNextSkuRequest, GetProductImageUploadUrlRequest, LinkProductSupplierRequest, ListProductsRequest, NextSkuResponse, ProductImageResponse, ProductImageUploadUrlResponse, ProductResponse, ProductSupplierResponse, ProductsPagedResponse, SearchProductsRequest, UpdateProductRequest, UpdateProductSupplierRequest } from './models';
+import { GetNextSkuQuery, GetProductQuery, GetProductImageUploadUrlQuery, ListProductImagesQuery, ListProductSuppliersQuery, ListProductsQuery, SearchProductsQuery } from './queries';
 
 @ApiBearerAuth()
 @ApiTags('Products')
@@ -52,6 +52,20 @@ export class ProductsController {
     query.organizationId = user.organizationId;
     const result = await this.mediator.execute<ListProductsQuery, Product[]>(query);
     return this.mapper.mapArray(result, Product, ProductResponse);
+  }
+
+  @ApiOperation({ summary: 'Preview the next auto-generated SKU for a product name' })
+  @ApiOkResponse({ type: NextSkuResponse })
+  @HttpCode(HttpStatus.OK)
+  @Get('next-sku')
+  public async getNextSku(
+    @CurrentUser() user: AuthenticatedUser,
+    @Query() queryParams: GetNextSkuRequest,
+  ): Promise<NextSkuResponse> {
+    const query = new GetNextSkuQuery();
+    query.name = queryParams.name;
+    query.organizationId = user.organizationId;
+    return this.mediator.execute<GetNextSkuQuery, NextSkuResponse>(query);
   }
 
   @ApiOperation({ summary: 'Get product by ID' })

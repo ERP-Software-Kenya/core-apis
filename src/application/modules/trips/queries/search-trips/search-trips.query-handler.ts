@@ -16,7 +16,7 @@ export class SearchTripsHandler implements IQueryHandler<SearchTripsQuery, IPage
 
   public async execute(query: SearchTripsQuery): Promise<IPageable<Trip>> {
     this.logger.info(`Executing Query "${SearchTripsQuery.name}"`);
-    const filter = this.filterNormalizer.pageableNormalize(query as any);
+    const filter = this.filterNormalizer.pageableNormalize(query);
     return this.repo.pagedAsync(filter as any);
   }
 }

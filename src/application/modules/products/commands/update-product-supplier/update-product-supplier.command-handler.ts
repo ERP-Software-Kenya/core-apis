@@ -19,11 +19,11 @@ export class UpdateProductSupplierCommandHandler implements ICommandHandler<Upda
   public async execute(command: UpdateProductSupplierCommand): Promise<ProductSupplier> {
     this.logger.info(`Updating supplier ${command.supplierId} link for product ${command.productId}`);
 
-    const existing = await this.repo.findOneAsync({ productId: command.productId, supplierId: command.supplierId } as Partial<ProductSupplier>);
+    const existing = await this.repo.findOneAsync({ productId: command.productId, supplierId: command.supplierId });
     if (!existing) throw new NotFoundException(`Supplier ${command.supplierId} is not linked to product ${command.productId}`);
 
     if (command.isDefault) {
-      const allLinks = await this.repo.allAsync({ productId: command.productId } as Partial<ProductSupplier>);
+      const allLinks = await this.repo.allAsync({ productId: command.productId });
       for (const link of allLinks.filter((ln) => ln.isDefault && ln.id !== existing.id)) {
         link.isDefault = false;
         await this.repo.updateAsync(link);

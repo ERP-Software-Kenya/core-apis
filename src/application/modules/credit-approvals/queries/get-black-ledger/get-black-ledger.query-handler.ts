@@ -29,10 +29,10 @@ export class GetBlackLedgerQueryHandler implements IQueryHandler<GetBlackLedgerQ
       this.billRepo.allAsync({
         organizationId: query.organizationId,
         saleType: ESaleType.Black,
-      } as Filter<BillFilter>),
+      }),
       this.commissionRepo.allAsync({
         organizationId: query.organizationId,
-      } as Filter<CommissionPayableFilter>),
+      }),
     ]);
     return { bills, commissions };
   }

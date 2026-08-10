@@ -28,6 +28,12 @@ export interface ClerkUserListData {
   totalCount: number;
 }
 
+export interface ClerkOrganizationData {
+  organizationId: string;
+  name: string;
+  slug: string;
+}
+
 export interface IClerkService {
   getTokenForUser(userId: string): Promise<string>;
   listUsersAsync(params?: { limit?: number; offset?: number; organizationId?: string }): Promise<ClerkUserListData>;
@@ -43,4 +49,5 @@ export interface IClerkService {
   unbanClerkUserAsync(clerkUserId: string): Promise<void>;
   assignToOrganizationAsync(params: { clerkUserId: string; organizationId: string; role: string }): Promise<void>;
   removeFromOrganizationAsync(params: { clerkUserId: string; organizationId: string }): Promise<void>;
+  listOrganizationsAsync(): Promise<ClerkOrganizationData[]>;
 }

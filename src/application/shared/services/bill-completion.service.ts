@@ -63,7 +63,7 @@ export class BillCompletionService {
   public async completeBill(billId: string, performedById: string, creditOverrideApproved = false): Promise<Bill> {
     const bill = await this.billRepo.getAsync(billId);
     if (!bill) throw new NotFoundException(`Bill ${billId} not found`);
-    const items = (bill.items?.length ? bill.items : await this.itemRepo.allAsync({ billId } as Filter<BillItem>)) ?? [];
+    const items = (bill.items?.length ? bill.items : await this.itemRepo.allAsync({ billId })) ?? [];
 
     if (bill.saleType === ESaleType.Credit && !creditOverrideApproved) {
       await this.enforceCreditLimit(bill, performedById);
@@ -112,7 +112,7 @@ export class BillCompletionService {
   }
 
   private async applyCredit(bill: Bill, performedById: string): Promise<void> {
-    const customer = await this.customerRepo.getAsync(bill.customerId as string);
+    const customer = await this.customerRepo.getAsync(bill.customerId);
     if (!customer) throw new NotFoundException(`Customer ${bill.customerId} not found`);
     const before = Number(customer.creditBalance);
     const after = before + Number(bill.totalAmount);

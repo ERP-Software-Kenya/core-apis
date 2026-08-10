@@ -9,6 +9,7 @@ import { Product } from '../../domain';
 import { IProductRepo } from '../..';
 import { EProductLogAction } from 'src/application/shared/enums/e-product-log-action.enum';
 import { ProductActivityLogger, ProductLogEntry } from 'src/application/shared';
+import { generateSku } from '../../helpers';
 import { CreateProductCommand } from './create-product.command';
 
 @CommandHandlerStrict(CreateProductCommand)
@@ -23,6 +24,10 @@ export class CreateProductCommandHandler implements ICommandHandler<CreateProduc
   public async execute(command: CreateProductCommand): Promise<Product> {
     this.logger.info(`Executing ${CreateProductCommand.name}`);
     const product = this.mapper.map(command, CreateProductCommand, Product);
+    if (!product.sku) {
+      const count = await this.repo.countAsync({ organizationId: command.organizationId });
+      product.sku = generateSku(command.name ?? '', count + 1);
+    }
     const created = await this.repo.createAsync(product);
     const entry   = Object.assign(new ProductLogEntry(), {
       action:         EProductLogAction.ProductCreated,

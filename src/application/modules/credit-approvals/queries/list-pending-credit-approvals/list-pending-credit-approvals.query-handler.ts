@@ -22,6 +22,6 @@ export class ListPendingCreditApprovalsQueryHandler
     return this.repo.allAsync({
       organizationId: query.organizationId,
       status: ECreditApprovalStatus.Pending,
-    } as Filter<CreditApprovalRequestFilter>);
+    });
   }
 }

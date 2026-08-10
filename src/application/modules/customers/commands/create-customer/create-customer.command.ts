@@ -1,5 +1,6 @@
 import { AutoMap } from '@automapper/classes';
 import { CommandBase } from '../../../../../common';
+import { ECustomerType } from '../../../../../infrastructure/persistence/entities';
 
 export class CreateCustomerCommand extends CommandBase {
   @AutoMap() public organizationId: string;
@@ -8,4 +9,5 @@ export class CreateCustomerCommand extends CommandBase {
   @AutoMap() public phone?: string;
   @AutoMap() public gstin?: string;
   @AutoMap() public creditLimit?: number;
+  @AutoMap(() => String) public customerType?: ECustomerType;
 }

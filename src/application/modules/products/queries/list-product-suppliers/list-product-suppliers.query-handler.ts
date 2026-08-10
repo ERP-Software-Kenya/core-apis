@@ -18,6 +18,6 @@ export class ListProductSuppliersQueryHandler implements IQueryHandler<ListProdu
 
   public async execute(query: ListProductSuppliersQuery): Promise<ProductSupplier[]> {
     this.logger.info(`Listing suppliers for product ${query.productId}`);
-    return this.repo.allAsync({ productId: query.productId } as Partial<ProductSupplier>);
+    return this.repo.allAsync({ productId: query.productId });
   }
 }
