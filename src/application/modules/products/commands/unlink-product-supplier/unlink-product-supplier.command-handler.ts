@@ -15,7 +15,7 @@ export class UnlinkProductSupplierCommandHandler implements ICommandHandler<Unli
 
   public async execute(command: UnlinkProductSupplierCommand): Promise<boolean> {
     this.logger.info(`Unlinking supplier ${command.supplierId} from product ${command.productId}`);
-    const existing = await this.repo.findOneAsync({ productId: command.productId, supplierId: command.supplierId } as Partial<ProductSupplier>);
+    const existing = await this.repo.findOneAsync({ productId: command.productId, supplierId: command.supplierId });
     if (!existing) throw new NotFoundException(`Supplier ${command.supplierId} is not linked to product ${command.productId}`);
     await this.repo.deleteAsync(existing.id);
     return true;

@@ -19,6 +19,6 @@ export class SearchCustomersQueryHandler implements IQueryHandler<SearchCustomer
     query.$page    = query.$page    ?? 1;
     query.$perPage = query.$perPage ?? 20;
     query.$orderBy = query.$orderBy ?? 'createdAt';
-    return this.repo.pagedAsync(query as unknown as PageableFilter<CustomerFilter>);
+    return this.repo.pagedAsync(query);
   }
 }

@@ -1,5 +1,6 @@
 import { AutoMap } from '@automapper/classes';
 import { CommandBase } from '../../../../../common';
+import { ECustomerType } from '../../../../../infrastructure/persistence/entities';
 
 export class UpdateCustomerCommand extends CommandBase {
   public id: string;
@@ -7,4 +8,5 @@ export class UpdateCustomerCommand extends CommandBase {
   @AutoMap() public email?: string;
   @AutoMap() public phone?: string;
   @AutoMap() public gstin?: string;
+  @AutoMap(() => String) public customerType?: ECustomerType;
 }

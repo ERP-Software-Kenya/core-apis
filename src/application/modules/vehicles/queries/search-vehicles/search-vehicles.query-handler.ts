@@ -16,8 +16,8 @@ export class SearchVehiclesHandler implements IQueryHandler<SearchVehiclesQuery,
 
   public async execute(query: SearchVehiclesQuery): Promise<IPageable<Vehicle>> {
     this.logger.info(`Executing Query "${SearchVehiclesQuery.name}"`);
-    const filter = this.filterNormalizer.pageableNormalize(query as any);
-    return this.repo.pagedAsync(filter as any);
+    const filter = this.filterNormalizer.pageableNormalize(query);
+    return this.repo.pagedAsync(filter);
   }
 }
 

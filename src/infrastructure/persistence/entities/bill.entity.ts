@@ -12,6 +12,7 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 import { CORE_SCHEMA, ECoreTableName } from './e-core-table-name';
+import { ECustomerType } from './e-customer-type';
 import { numericTransformer } from './numeric.transformer';
 import { OrganizationEntity } from './organization.entity';
 import { LocationEntity } from './location.entity';
@@ -42,13 +43,6 @@ export enum ESaleType {
   Normal = 'normal',
   Credit = 'credit',
   Black  = 'black',
-}
-
-export enum ECustomerType {
-  Regular     = 'regular',
-  New         = 'new',
-  Shop        = 'shop',
-  BigCustomer = 'big_customer',
 }
 
 export enum EPaymentTiming {

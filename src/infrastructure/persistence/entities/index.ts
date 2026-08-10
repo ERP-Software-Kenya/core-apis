@@ -81,6 +81,7 @@ export * from './product-log.entity';
 export * from './activity-log.entity';
 export * from './category.entity';
 export * from './e-core-table-name';
+export * from './e-customer-type';
 export * from './inventory.entity';
 export * from './organization.entity';
 export * from './product.entity';

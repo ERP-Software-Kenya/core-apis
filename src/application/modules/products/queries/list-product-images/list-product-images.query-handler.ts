@@ -21,7 +21,7 @@ export class ListProductImagesQueryHandler implements IQueryHandler<ListProductI
 
   public async execute(query: ListProductImagesQuery): Promise<ProductImageResponse[]> {
     this.logger.info(`Listing images for product ${query.productId}`);
-    const images = await this.imageRepo.allAsync({ productId: query.productId } as Partial<ProductImage>);
+    const images = await this.imageRepo.allAsync({ productId: query.productId });
     return Promise.all(
       images.map(async (img) => {
         const response = this.mapper.map(img, ProductImage, ProductImageResponse);

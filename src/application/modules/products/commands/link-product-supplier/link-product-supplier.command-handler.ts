@@ -20,7 +20,7 @@ export class LinkProductSupplierCommandHandler implements ICommandHandler<LinkPr
     this.logger.info(`Linking supplier ${command.supplierId} to product ${command.productId}`);
 
     if (command.isDefault) {
-      const existing = await this.repo.allAsync({ productId: command.productId } as Partial<ProductSupplier>);
+      const existing = await this.repo.allAsync({ productId: command.productId });
       for (const link of existing.filter((ln) => ln.isDefault)) {
         link.isDefault = false;
         await this.repo.updateAsync(link);

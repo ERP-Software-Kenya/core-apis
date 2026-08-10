@@ -38,7 +38,7 @@ export class BillRepo
   public override async getAsync(pk: string): Promise<Bill> {
     try {
       const entity = await this.internalRepo.findOne({
-        where: { id: pk } as never,
+        where: { id: pk },
         relations: { items: true },
         order: { items: { createdAt: 'ASC' } },
       });

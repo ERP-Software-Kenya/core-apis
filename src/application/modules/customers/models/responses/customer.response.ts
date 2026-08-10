@@ -1,5 +1,6 @@
 import { AutoMap } from '@automapper/classes';
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
+import { ECustomerType } from '../../../../../infrastructure/persistence/entities';
 
 export class CustomerResponse {
   @ApiProperty() @AutoMap() public id: string;
@@ -10,6 +11,7 @@ export class CustomerResponse {
   @ApiPropertyOptional() @AutoMap() public gstin?: string;
   @ApiPropertyOptional() @AutoMap() public creditLimit?: number;
   @ApiProperty() @AutoMap() public creditBalance: number;
+  @ApiPropertyOptional({ enum: ECustomerType }) @AutoMap(() => String) public customerType?: ECustomerType;
   @ApiProperty() @AutoMap(() => Date) public createdAt: Date;
   @ApiPropertyOptional() @AutoMap(() => Date) public updatedAt?: Date;
 }
