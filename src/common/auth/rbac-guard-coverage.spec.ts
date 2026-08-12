@@ -139,3 +139,100 @@ describe('payment-transactions controller', () => {
     expect(hasMethodGuard(decorators, 'RolesGuard')).toBe(false);
   });
 });
+
+describe('platform-configurations controller', () => {
+  const source = () => readController('platform-configurations/platform-configurations.controller.ts');
+
+  it('requires Clerk authentication on the whole controller', () => {
+    expect(hasClassGuard(source(), 'ClerkAuthGuard')).toBe(true);
+  });
+
+  it('restricts creating a platform configuration to platform tier', () => {
+    const decorators = methodDecorators(source(), 'create');
+    expect(hasMethodGuard(decorators, 'RolesGuard')).toBe(true);
+    expect(methodRoles(decorators)).toEqual(['ERole.SuperAdmin']);
+  });
+});
+
+describe('expenses controller', () => {
+  const source = () => readController('expenses/expenses.controller.ts');
+
+  it('requires Clerk authentication on the whole controller', () => {
+    expect(hasClassGuard(source(), 'ClerkAuthGuard')).toBe(true);
+  });
+
+  it('restricts approving/rejecting an expense to manager tier', () => {
+    const decorators = methodDecorators(source(), 'updateStatus');
+    expect(hasMethodGuard(decorators, 'RolesGuard')).toBe(true);
+    expect(methodRoles(decorators)).toEqual([
+      'ERole.StoreManager',
+      'ERole.OrgManager',
+      'ERole.OrgAdmin',
+      'ERole.SuperAdmin',
+    ]);
+  });
+
+  it('leaves submitting an expense unrestricted beyond authentication', () => {
+    const decorators = methodDecorators(source(), 'create');
+    expect(hasMethodGuard(decorators, 'RolesGuard')).toBe(false);
+  });
+});
+
+describe('item-returns controller', () => {
+  const source = () => readController('item-returns/item-returns.controller.ts');
+
+  it('requires Clerk authentication on the whole controller', () => {
+    expect(hasClassGuard(source(), 'ClerkAuthGuard')).toBe(true);
+  });
+
+  it('restricts deleting an item return to manager tier', () => {
+    const decorators = methodDecorators(source(), 'delete');
+    expect(hasMethodGuard(decorators, 'RolesGuard')).toBe(true);
+    expect(methodRoles(decorators)).toEqual([
+      'ERole.StoreManager',
+      'ERole.OrgManager',
+      'ERole.OrgAdmin',
+      'ERole.SuperAdmin',
+    ]);
+  });
+});
+
+describe('report-generation-logs controller', () => {
+  const source = () => readController('report-generation-logs/report-generation-logs.controller.ts');
+
+  it('requires Clerk authentication on the whole controller', () => {
+    expect(hasClassGuard(source(), 'ClerkAuthGuard')).toBe(true);
+  });
+
+  it('restricts deleting a report generation log to manager tier', () => {
+    const decorators = methodDecorators(source(), 'delete');
+    expect(hasMethodGuard(decorators, 'RolesGuard')).toBe(true);
+    expect(methodRoles(decorators)).toEqual([
+      'ERole.StoreManager',
+      'ERole.OrgManager',
+      'ERole.OrgAdmin',
+      'ERole.SuperAdmin',
+    ]);
+  });
+});
+
+describe('purchase-items controller', () => {
+  it('requires Clerk authentication on the whole controller', () => {
+    const source = readController('purchase-items/purchase-items.controller.ts');
+    expect(hasClassGuard(source, 'ClerkAuthGuard')).toBe(true);
+  });
+});
+
+describe('activity-logs controller', () => {
+  it('requires Clerk authentication on the whole controller', () => {
+    const source = readController('activity-logs/activity-logs.controller.ts');
+    expect(hasClassGuard(source, 'ClerkAuthGuard')).toBe(true);
+  });
+});
+
+describe('orders controller', () => {
+  it('requires Clerk authentication on the whole controller', () => {
+    const source = readController('orders/orders.controller.ts');
+    expect(hasClassGuard(source, 'ClerkAuthGuard')).toBe(true);
+  });
+});

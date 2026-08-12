@@ -1,10 +1,11 @@
 import { Mapper } from '@automapper/core';
 import { InjectMapper } from '@automapper/nestjs';
-import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Post, Put, Query } from '@nestjs/common';
+import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Post, Put, Query, UseGuards } from '@nestjs/common';
 import { ApiBearerAuth, ApiCreatedResponse, ApiOkResponse, ApiOperation, ApiParam, ApiTags } from '@nestjs/swagger';
 import { InjectPinoLogger, PinoLogger } from 'nestjs-pino';
-import { CqrsMediator } from '../../../common';
+import { ClerkAuthGuard, CqrsMediator, RolesGuard, Roles } from '../../../common';
 import { IPageable } from '../../../common';
+import { ERole } from '../../../infrastructure';
 import { CreateReportLogCommand, DeleteReportLogCommand, UpdateReportLogCommand } from './commands';
 import { ReportGenerationLog } from './domain';
 import { CreateReportLogRequest, SearchReportLogsRequest, ListReportLogsRequest, ReportGenerationLogResponse, ReportGenerationLogsPagedResponse, UpdateReportLogRequest } from './models';
@@ -12,6 +13,7 @@ import { GetReportLogQuery, ListReportLogsQuery, SearchReportLogsQuery } from '.
 
 @ApiBearerAuth()
 @ApiTags('Report Generation Logs')
+@UseGuards(ClerkAuthGuard)
 @Controller({ path: 'report-generation-logs', version: '1' })
 export class ReportGenerationLogsController {
   constructor(
@@ -81,6 +83,8 @@ export class ReportGenerationLogsController {
   @ApiOkResponse({ type: Boolean })
   @ApiParam({ name: 'id', description: 'Report Log UUID' })
   @HttpCode(HttpStatus.OK)
+  @UseGuards(RolesGuard)
+  @Roles(ERole.StoreManager, ERole.OrgManager, ERole.OrgAdmin, ERole.SuperAdmin)
   @Delete(':id')
   public async delete(@Param('id') id: string): Promise<boolean> {
     const command = new DeleteReportLogCommand();

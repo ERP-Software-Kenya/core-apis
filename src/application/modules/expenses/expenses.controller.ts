@@ -1,10 +1,11 @@
 import { Mapper } from '@automapper/core';
 import { InjectMapper } from '@automapper/nestjs';
-import { Body, Controller, Get, HttpCode, HttpStatus, Param, Patch, Post, Query } from '@nestjs/common';
+import { Body, Controller, Get, HttpCode, HttpStatus, Param, Patch, Post, Query, UseGuards } from '@nestjs/common';
 import { ApiBearerAuth, ApiCreatedResponse, ApiOkResponse, ApiOperation, ApiParam, ApiTags } from '@nestjs/swagger';
 import { InjectPinoLogger, PinoLogger } from 'nestjs-pino';
 import { ParseEnumPipe } from '@nestjs/common';
-import { CqrsMediator } from '../../../common';
+import { ClerkAuthGuard, CqrsMediator, RolesGuard, Roles } from '../../../common';
+import { ERole } from '../../../infrastructure';
 import { CreateExpenseCommand, UpdateExpenseStatusCommand } from './commands';
 import { Expense } from './domain';
 import { CreateExpenseRequest, ExpenseResponse, UpdateExpenseStatusRequest } from './models';
@@ -13,6 +14,7 @@ import { EExpenseStatus } from '../../../infrastructure/e-expense-status';
 
 @ApiBearerAuth()
 @ApiTags('Expenses')
+@UseGuards(ClerkAuthGuard)
 @Controller({ path: 'expenses', version: '1' })
 export class ExpensesController {
   constructor(
@@ -37,6 +39,8 @@ export class ExpensesController {
   @ApiOkResponse({ type: ExpenseResponse })
   @ApiParam({ name: 'id', description: 'Expense UUID' })
   @HttpCode(HttpStatus.OK)
+  @UseGuards(RolesGuard)
+  @Roles(ERole.StoreManager, ERole.OrgManager, ERole.OrgAdmin, ERole.SuperAdmin)
   @Patch(':id/status')
   public async updateStatus(
     @Param('id') id: string,
