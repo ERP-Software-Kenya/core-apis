@@ -217,22 +217,25 @@ describe('report-generation-logs controller', () => {
 });
 
 describe('purchase-items controller', () => {
+  const source = () => readController('purchase-items/purchase-items.controller.ts');
+
   it('requires Clerk authentication on the whole controller', () => {
-    const source = readController('purchase-items/purchase-items.controller.ts');
-    expect(hasClassGuard(source, 'ClerkAuthGuard')).toBe(true);
+    expect(hasClassGuard(source(), 'ClerkAuthGuard')).toBe(true);
   });
 });
 
 describe('activity-logs controller', () => {
+  const source = () => readController('activity-logs/activity-logs.controller.ts');
+
   it('requires Clerk authentication on the whole controller', () => {
-    const source = readController('activity-logs/activity-logs.controller.ts');
-    expect(hasClassGuard(source, 'ClerkAuthGuard')).toBe(true);
+    expect(hasClassGuard(source(), 'ClerkAuthGuard')).toBe(true);
   });
 });
 
 describe('orders controller', () => {
+  const source = () => readController('orders/orders.controller.ts');
+
   it('requires Clerk authentication on the whole controller', () => {
-    const source = readController('orders/orders.controller.ts');
-    expect(hasClassGuard(source, 'ClerkAuthGuard')).toBe(true);
+    expect(hasClassGuard(source(), 'ClerkAuthGuard')).toBe(true);
   });
 });
