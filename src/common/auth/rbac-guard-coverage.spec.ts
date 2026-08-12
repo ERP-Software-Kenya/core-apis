@@ -4,6 +4,11 @@ import { join } from 'path';
 
 const MODULES_ROOT = join(__dirname, '../../application/modules');
 
+// Guard/role list extraction below uses `[^)]*`, which breaks if a @UseGuards(...) or @Roles(...)
+// argument is itself a call (e.g. `AuthGuard('jwt')`). Every controller in this plan uses bare
+// guard classes and ERole.X identifiers only (see plan's Role tiers section), so this is fine for
+// this plan's scope — but it will misreport silently if that convention changes later.
+
 function readController(relativePath: string): string {
   return readFileSync(join(MODULES_ROOT, relativePath), 'utf8');
 }
@@ -17,12 +22,7 @@ function hasClassGuard(source: string, guard: string): boolean {
   }
   const decorators = blockMatch[1];
 
-  // Check if both @Controller and @UseGuards exist in the block
-  if (!decorators.includes('@Controller(') && !decorators.includes('@UseGuards(')) {
-    return false;
-  }
-
-  // Extract guards from @UseGuards
+  // Extract guards from @UseGuards. Absence of @UseGuards falls through here (guardsMatch is null).
   const guardsMatch = decorators.match(/@UseGuards\(([^)]*)\)/);
   if (!guardsMatch) {
     return false;
