@@ -3,7 +3,7 @@ import { InjectMapper } from '@automapper/nestjs';
 import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Post, Put, Query, UseGuards } from '@nestjs/common';
 import { ApiBearerAuth, ApiCreatedResponse, ApiOkResponse, ApiOperation, ApiParam, ApiTags } from '@nestjs/swagger';
 import { InjectPinoLogger, PinoLogger } from 'nestjs-pino';
-import { AuthenticatedUser, ClerkAuthGuard, CqrsMediator, CurrentUser, IPageable } from '../../../common';
+import { AuthenticatedUser, ClerkAuthGuard, CqrsMediator, CurrentUser, IPageable, RolesGuard, Roles, requireOrganizationId } from '../../../common';
 import {
   GetVehicleQuery, SearchVehiclesQuery, ListVehiclesQuery,
   ListVehicleTypesQuery, ListVehicleBrandsQuery, ListFuelTypesQuery,
@@ -15,8 +15,7 @@ import {
 } from './models';
 import { Vehicle, VehicleType, VehicleBrand, FuelType } from './domain';
 import { CreateVehicleCommand, DeleteVehicleCommand, UpdateVehicleCommand } from './commands';
-
-const FALLBACK_ORG_ID = '00000000-0000-4000-8000-000000000001';
+import { ERole } from '../../../infrastructure';
 
 @ApiBearerAuth()
 @ApiTags('Vehicles')
@@ -70,7 +69,7 @@ export class VehiclesController {
     @CurrentUser() user?: AuthenticatedUser,
   ): Promise<VehicleResponse> {
     const command       = this.mapper.map(body, CreateVehicleRequest, CreateVehicleCommand);
-    command.companyId   = user?.organizationId ?? FALLBACK_ORG_ID;
+    command.companyId   = requireOrganizationId(user);
     const result        = await this.mediator.execute<CreateVehicleCommand, Vehicle>(command);
     return this.mapper.map(result, Vehicle, VehicleResponse);
   }
@@ -91,6 +90,8 @@ export class VehiclesController {
   @ApiOkResponse({ type: Boolean })
   @ApiParam({ name: 'id', description: 'Vehicle UUID' })
   @HttpCode(HttpStatus.OK)
+  @UseGuards(RolesGuard)
+  @Roles(ERole.StoreManager, ERole.OrgManager, ERole.OrgAdmin, ERole.SuperAdmin)
   @Delete(':id')
   public async delete(@Param('id') id: string): Promise<boolean> {
     const command = new DeleteVehicleCommand(id);
