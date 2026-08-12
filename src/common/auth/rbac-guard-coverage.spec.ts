@@ -106,3 +106,36 @@ describe('roles controller', () => {
     expect(methodRoles(decorators)).toEqual(['ERole.SuperAdmin']);
   });
 });
+
+describe('organizations controller', () => {
+  const source = () => readController('organizations/organizations.controller.ts');
+
+  it('requires Clerk authentication on the whole controller', () => {
+    expect(hasClassGuard(source(), 'ClerkAuthGuard')).toBe(true);
+  });
+
+  it.each(['create', 'update', 'delete'])('restricts %s to platform tier', (method) => {
+    const decorators = methodDecorators(source(), method);
+    expect(hasMethodGuard(decorators, 'RolesGuard')).toBe(true);
+    expect(methodRoles(decorators)).toEqual(['ERole.SuperAdmin']);
+  });
+});
+
+describe('payment-transactions controller', () => {
+  const source = () => readController('payment-transactions/payment-transactions.controller.ts');
+
+  it('requires Clerk authentication on the whole controller', () => {
+    expect(hasClassGuard(source(), 'ClerkAuthGuard')).toBe(true);
+  });
+
+  it.each(['update', 'delete'])('restricts %s to org-admin tier', (method) => {
+    const decorators = methodDecorators(source(), method);
+    expect(hasMethodGuard(decorators, 'RolesGuard')).toBe(true);
+    expect(methodRoles(decorators)).toEqual(['ERole.OrgAdmin', 'ERole.SuperAdmin']);
+  });
+
+  it('leaves create unrestricted beyond authentication (routine POS write)', () => {
+    const decorators = methodDecorators(source(), 'create');
+    expect(hasMethodGuard(decorators, 'RolesGuard')).toBe(false);
+  });
+});

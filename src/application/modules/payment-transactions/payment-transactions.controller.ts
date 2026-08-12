@@ -1,10 +1,11 @@
 import { Mapper } from '@automapper/core';
 import { InjectMapper } from '@automapper/nestjs';
-import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Post, Put, Query } from '@nestjs/common';
+import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Post, Put, Query, UseGuards } from '@nestjs/common';
 import { ApiBearerAuth, ApiCreatedResponse, ApiOkResponse, ApiOperation, ApiParam, ApiTags } from '@nestjs/swagger';
 import { InjectPinoLogger, PinoLogger } from 'nestjs-pino';
-import { CqrsMediator } from '../../../common';
+import { ClerkAuthGuard, CqrsMediator, RolesGuard, Roles } from '../../../common';
 import { IPageable } from '../../../common';
+import { ERole } from '../../../infrastructure';
 import { CreatePaymentTransactionCommand, DeletePaymentTransactionCommand, UpdatePaymentTransactionCommand } from './commands';
 import { PaymentTransaction } from './domain';
 import { CreatePaymentTransactionRequest, SearchPaymentTransactionsRequest, ListPaymentTransactionsRequest, PaymentTransactionResponse, PaymentTransactionsPagedResponse, UpdatePaymentTransactionRequest } from './models';
@@ -12,6 +13,7 @@ import { GetPaymentTransactionQuery, ListPaymentTransactionsQuery, SearchPayment
 
 @ApiBearerAuth()
 @ApiTags('Payment Transactions')
+@UseGuards(ClerkAuthGuard)
 @Controller({ path: 'payment-transactions', version: '1' })
 export class PaymentTransactionsController {
   constructor(
@@ -69,6 +71,8 @@ export class PaymentTransactionsController {
   @ApiOkResponse({ type: PaymentTransactionResponse })
   @ApiParam({ name: 'id', description: 'Payment Transaction UUID' })
   @HttpCode(HttpStatus.OK)
+  @UseGuards(RolesGuard)
+  @Roles(ERole.OrgAdmin, ERole.SuperAdmin)
   @Put(':id')
   public async update(@Param('id') id: string, @Body() body: UpdatePaymentTransactionRequest): Promise<PaymentTransactionResponse> {
     const command = this.mapper.map(body, UpdatePaymentTransactionRequest, UpdatePaymentTransactionCommand);
@@ -81,6 +85,8 @@ export class PaymentTransactionsController {
   @ApiOkResponse({ type: Boolean })
   @ApiParam({ name: 'id', description: 'Payment Transaction UUID' })
   @HttpCode(HttpStatus.OK)
+  @UseGuards(RolesGuard)
+  @Roles(ERole.OrgAdmin, ERole.SuperAdmin)
   @Delete(':id')
   public async delete(@Param('id') id: string): Promise<boolean> {
     const command = new DeletePaymentTransactionCommand();
