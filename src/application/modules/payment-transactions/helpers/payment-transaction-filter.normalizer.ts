@@ -8,11 +8,6 @@ export class PaymentTransactionFilterNormalizer implements IFilterNormalizer<Pay
   constructor(public options: PaymentTransactionFeatureOptions) {}
 
   public normalize(filter: Filter<PaymentTransactionFilter>): Filter<PaymentTransactionFilter> {
-    const row = filter as Filter<PaymentTransactionFilter> & { organizationId?: string };
-    if (row.orgId) {
-      row.organizationId = row.orgId;
-      delete row.orgId;
-    }
     filter.$orderBy = filter.$orderBy ?? this.options.orderBy;
     filter.$order = filter.$order ?? this.options.order;
     return filter;
