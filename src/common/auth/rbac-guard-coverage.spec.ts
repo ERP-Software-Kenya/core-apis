@@ -78,3 +78,31 @@ describe('rbac guard coverage checker (proving against already-guarded controlle
     expect(hasClassGuard(source, 'RolesGuard')).toBe(false);
   });
 });
+
+describe('user-roles controller', () => {
+  const source = () => readController('user-roles/user-roles.controller.ts');
+
+  it('requires Clerk authentication on the whole controller', () => {
+    expect(hasClassGuard(source(), 'ClerkAuthGuard')).toBe(true);
+  });
+
+  it('restricts assigning a role to a user to org-admin tier', () => {
+    const decorators = methodDecorators(source(), 'create');
+    expect(hasMethodGuard(decorators, 'RolesGuard')).toBe(true);
+    expect(methodRoles(decorators)).toEqual(['ERole.OrgAdmin', 'ERole.SuperAdmin']);
+  });
+});
+
+describe('roles controller', () => {
+  const source = () => readController('roles/roles.controller.ts');
+
+  it('requires Clerk authentication on the whole controller', () => {
+    expect(hasClassGuard(source(), 'ClerkAuthGuard')).toBe(true);
+  });
+
+  it('restricts defining a new role to platform tier', () => {
+    const decorators = methodDecorators(source(), 'create');
+    expect(hasMethodGuard(decorators, 'RolesGuard')).toBe(true);
+    expect(methodRoles(decorators)).toEqual(['ERole.SuperAdmin']);
+  });
+});
