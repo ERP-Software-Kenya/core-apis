@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { PassportStrategy } from '@nestjs/passport';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -54,6 +54,10 @@ export class ClerkJwtStrategy extends PassportStrategy(Strategy, CLERK_STRATEGY)
       await this.enrichFromClerk(authUser, payload.sub);
     }
 
+    if (!authUser.email) {
+      throw new UnauthorizedException('Unable to resolve an email address for this Clerk account');
+    }
+
     const dbUser = await this.userRepo.findOne({ where: { clerkUserId: payload.sub } });
     if (dbUser) {
       authUser.dbUserId = dbUser.id;
@@ -77,7 +81,12 @@ export class ClerkJwtStrategy extends PassportStrategy(Strategy, CLERK_STRATEGY)
 
   private async enrichFromClerk(authUser: AuthenticatedUser, clerkUserId: string): Promise<void> {
     const clerkUser = await this.clerkClient.users.getUser(clerkUserId);
-    const primary = clerkUser.emailAddresses.find((ea) => ea.id === clerkUser.primaryEmailAddressId);
+    // Password sign-in JWTs carry no email claim, so we look it up here. Clerk only
+    // requires a *primary* email for OAuth accounts — password accounts can have an
+    // attached, sign-in-capable email that isn't marked primary, so fall back to it.
+    const primary =
+      clerkUser.emailAddresses.find((ea) => ea.id === clerkUser.primaryEmailAddressId) ??
+      clerkUser.emailAddresses[0];
     authUser.email = primary?.emailAddress;
     authUser.firstName = clerkUser.firstName ?? undefined;
     authUser.lastName = clerkUser.lastName ?? undefined;

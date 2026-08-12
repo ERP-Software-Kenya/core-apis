@@ -262,3 +262,11 @@ describe('destructive-endpoint role elevation (already-authenticated controllers
     expect(hasMethodGuard(decorators, 'RolesGuard')).toBe(false);
   });
 });
+
+describe('invoices controller', () => {
+  it('requires Clerk authentication and carries the RolesGuard chain', () => {
+    const source = readController('invoices/invoices.controller.ts');
+    expect(hasClassGuard(source, 'ClerkAuthGuard')).toBe(true);
+    expect(hasClassGuard(source, 'RolesGuard')).toBe(true);
+  });
+});
