@@ -1,9 +1,9 @@
 import { Mapper } from '@automapper/core';
 import { InjectMapper } from '@automapper/nestjs';
-import { Body, Controller, Get, HttpCode, HttpStatus, Param, Post } from '@nestjs/common';
+import { Body, Controller, Get, HttpCode, HttpStatus, Param, Post, UseGuards } from '@nestjs/common';
 import { ApiBearerAuth, ApiCreatedResponse, ApiOkResponse, ApiOperation, ApiParam, ApiTags } from '@nestjs/swagger';
 import { InjectPinoLogger, PinoLogger } from 'nestjs-pino';
-import { CqrsMediator } from '../../../common';
+import { ClerkAuthGuard, CqrsMediator } from '../../../common';
 import { CreateActivityLogCommand } from './commands';
 import { ActivityLog } from './domain';
 import { CreateActivityLogRequest, ActivityLogResponse } from './models';
@@ -11,6 +11,7 @@ import { GetActivityLogQuery, ListActivityLogsQuery } from './queries';
 
 @ApiBearerAuth()
 @ApiTags('ActivityLogs')
+@UseGuards(ClerkAuthGuard)
 @Controller({ path: 'activity-logs', version: '1' })
 export class ActivityLogsController {
   constructor(
