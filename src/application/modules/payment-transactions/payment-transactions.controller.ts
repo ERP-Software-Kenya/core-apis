@@ -3,7 +3,7 @@ import { InjectMapper } from '@automapper/nestjs';
 import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Post, Put, Query, UseGuards } from '@nestjs/common';
 import { ApiBearerAuth, ApiCreatedResponse, ApiOkResponse, ApiOperation, ApiParam, ApiTags } from '@nestjs/swagger';
 import { InjectPinoLogger, PinoLogger } from 'nestjs-pino';
-import { ClerkAuthGuard, CqrsMediator, RolesGuard, Roles } from '../../../common';
+import { ClerkAuthGuard, CqrsMediator, RolesGuard, Roles, AuthenticatedUser, CurrentUser, requireOrganizationId } from '../../../common';
 import { IPageable } from '../../../common';
 import { ERole } from '../../../infrastructure';
 import { CreatePaymentTransactionCommand, DeletePaymentTransactionCommand, UpdatePaymentTransactionCommand } from './commands';
@@ -26,8 +26,14 @@ export class PaymentTransactionsController {
   @ApiOkResponse({ type: PaymentTransactionsPagedResponse })
   @HttpCode(HttpStatus.OK)
   @Get()
-  public async search(@Query() filter?: SearchPaymentTransactionsRequest): Promise<PaymentTransactionsPagedResponse> {
-    const query = this.mapper.map(filter, SearchPaymentTransactionsRequest, SearchPaymentTransactionsQuery);
+  public async search(
+    @Query() filter?: SearchPaymentTransactionsRequest,
+    @CurrentUser() user?: AuthenticatedUser,
+  ): Promise<PaymentTransactionsPagedResponse> {
+    const query = filter
+      ? this.mapper.map(filter, SearchPaymentTransactionsRequest, SearchPaymentTransactionsQuery)
+      : new SearchPaymentTransactionsQuery();
+    query.orgId = requireOrganizationId(user);
     const result = await this.mediator.execute<SearchPaymentTransactionsQuery, IPageable<PaymentTransaction>>(query);
     return {
       ...result,
@@ -39,8 +45,14 @@ export class PaymentTransactionsController {
   @ApiOkResponse({ type: [PaymentTransactionResponse] })
   @HttpCode(HttpStatus.OK)
   @Get('list')
-  public async list(@Query() filter?: ListPaymentTransactionsRequest): Promise<PaymentTransactionResponse[]> {
-    const query = this.mapper.map(filter, ListPaymentTransactionsRequest, ListPaymentTransactionsQuery);
+  public async list(
+    @Query() filter?: ListPaymentTransactionsRequest,
+    @CurrentUser() user?: AuthenticatedUser,
+  ): Promise<PaymentTransactionResponse[]> {
+    const query = filter
+      ? this.mapper.map(filter, ListPaymentTransactionsRequest, ListPaymentTransactionsQuery)
+      : new ListPaymentTransactionsQuery();
+    query.orgId = requireOrganizationId(user);
     const result = await this.mediator.execute<ListPaymentTransactionsQuery, PaymentTransaction[]>(query);
     return this.mapper.mapArray(result, PaymentTransaction, PaymentTransactionResponse);
   }
@@ -61,8 +73,12 @@ export class PaymentTransactionsController {
   @ApiCreatedResponse({ type: PaymentTransactionResponse })
   @HttpCode(HttpStatus.CREATED)
   @Post()
-  public async create(@Body() body: CreatePaymentTransactionRequest): Promise<PaymentTransactionResponse> {
+  public async create(
+    @Body() body: CreatePaymentTransactionRequest,
+    @CurrentUser() user?: AuthenticatedUser,
+  ): Promise<PaymentTransactionResponse> {
     const command = this.mapper.map(body, CreatePaymentTransactionRequest, CreatePaymentTransactionCommand);
+    command.orgId = requireOrganizationId(user);
     const result  = await this.mediator.execute<CreatePaymentTransactionCommand, PaymentTransaction>(command);
     return this.mapper.map(result, PaymentTransaction, PaymentTransactionResponse);
   }

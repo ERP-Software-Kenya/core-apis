@@ -1,7 +1,7 @@
 import { Controller, Get, Query, UseGuards } from '@nestjs/common';
 import { ApiBearerAuth, ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { InjectPinoLogger, PinoLogger } from 'nestjs-pino';
-import { AuthenticatedUser, ClerkAuthGuard, CqrsMediator, CurrentUser } from '../../../common';
+import { AuthenticatedUser, ClerkAuthGuard, CqrsMediator, CurrentUser, requireOrganizationId } from '../../../common';
 import { GetFleetSummaryKpisQuery } from './queries/get-fleet-summary/get-fleet-summary.query';
 import { GetFinancialKpisQuery } from './queries/get-financial-kpis/get-financial-kpis.query';
 import { GetSalesSummaryQuery } from './queries/get-sales-summary/get-sales-summary.query';
@@ -26,8 +26,6 @@ import {
   InventorySummaryResponse,
   StockByLocationPointResponse,
 } from './models';
-
-const FALLBACK_ORG_ID = '00000000-0000-4000-8000-000000000001';
 
 @ApiBearerAuth()
 @ApiTags('Analytics')
@@ -58,7 +56,7 @@ export class AnalyticsController {
   @Get('sales-summary')
   public async getSalesSummary(@CurrentUser() user?: AuthenticatedUser): Promise<SalesSummaryResponse> {
     const query = new GetSalesSummaryQuery();
-    query.organizationId = user?.organizationId ?? FALLBACK_ORG_ID;
+    query.organizationId = requireOrganizationId(user);
     return this.mediator.execute<GetSalesSummaryQuery, SalesSummaryResponse>(query);
   }
 
@@ -70,7 +68,7 @@ export class AnalyticsController {
     @CurrentUser() user?: AuthenticatedUser,
   ): Promise<RevenueTrendPointResponse[]> {
     const query = new GetRevenueTrendQuery();
-    query.organizationId = user?.organizationId ?? FALLBACK_ORG_ID;
+    query.organizationId = requireOrganizationId(user);
     query.months = rawMonths ? Math.max(1, Math.min(24, parseInt(rawMonths, 10))) : 6;
     return this.mediator.execute<GetRevenueTrendQuery, RevenueTrendPointResponse[]>(query);
   }
@@ -83,7 +81,7 @@ export class AnalyticsController {
     @CurrentUser() user?: AuthenticatedUser,
   ): Promise<TopProductResponse[]> {
     const query = new GetTopProductsQuery();
-    query.organizationId = user?.organizationId ?? FALLBACK_ORG_ID;
+    query.organizationId = requireOrganizationId(user);
     query.limit = rawLimit ? Math.max(1, Math.min(50, parseInt(rawLimit, 10))) : 10;
     return this.mediator.execute<GetTopProductsQuery, TopProductResponse[]>(query);
   }
@@ -96,7 +94,7 @@ export class AnalyticsController {
     @CurrentUser() user?: AuthenticatedUser,
   ): Promise<TopCustomerResponse[]> {
     const query = new GetTopCustomersQuery();
-    query.organizationId = user?.organizationId ?? FALLBACK_ORG_ID;
+    query.organizationId = requireOrganizationId(user);
     query.limit = rawLimit ? Math.max(1, Math.min(50, parseInt(rawLimit, 10))) : 10;
     return this.mediator.execute<GetTopCustomersQuery, TopCustomerResponse[]>(query);
   }
@@ -106,7 +104,7 @@ export class AnalyticsController {
   @Get('purchase-summary')
   public async getPurchaseSummary(@CurrentUser() user?: AuthenticatedUser): Promise<PurchaseSummaryResponse> {
     const query = new GetPurchaseSummaryQuery();
-    query.organizationId = user?.organizationId ?? FALLBACK_ORG_ID;
+    query.organizationId = requireOrganizationId(user);
     return this.mediator.execute<GetPurchaseSummaryQuery, PurchaseSummaryResponse>(query);
   }
 
@@ -118,7 +116,7 @@ export class AnalyticsController {
     @CurrentUser() user?: AuthenticatedUser,
   ): Promise<PurchaseTrendPointResponse[]> {
     const query = new GetPurchaseTrendQuery();
-    query.organizationId = user?.organizationId ?? FALLBACK_ORG_ID;
+    query.organizationId = requireOrganizationId(user);
     query.months = rawMonths ? Math.max(1, Math.min(24, parseInt(rawMonths, 10))) : 6;
     return this.mediator.execute<GetPurchaseTrendQuery, PurchaseTrendPointResponse[]>(query);
   }
@@ -131,7 +129,7 @@ export class AnalyticsController {
     @CurrentUser() user?: AuthenticatedUser,
   ): Promise<TopSupplierResponse[]> {
     const query = new GetTopSuppliersQuery();
-    query.organizationId = user?.organizationId ?? FALLBACK_ORG_ID;
+    query.organizationId = requireOrganizationId(user);
     query.limit = rawLimit ? Math.max(1, Math.min(50, parseInt(rawLimit, 10))) : 10;
     return this.mediator.execute<GetTopSuppliersQuery, TopSupplierResponse[]>(query);
   }
@@ -141,7 +139,7 @@ export class AnalyticsController {
   @Get('inventory-summary')
   public async getInventorySummary(@CurrentUser() user?: AuthenticatedUser): Promise<InventorySummaryResponse> {
     const query = new GetInventorySummaryQuery();
-    query.organizationId = user?.organizationId ?? FALLBACK_ORG_ID;
+    query.organizationId = requireOrganizationId(user);
     return this.mediator.execute<GetInventorySummaryQuery, InventorySummaryResponse>(query);
   }
 
@@ -150,7 +148,7 @@ export class AnalyticsController {
   @Get('stock-by-location')
   public async getStockByLocation(@CurrentUser() user?: AuthenticatedUser): Promise<StockByLocationPointResponse[]> {
     const query = new GetStockByLocationQuery();
-    query.organizationId = user?.organizationId ?? FALLBACK_ORG_ID;
+    query.organizationId = requireOrganizationId(user);
     return this.mediator.execute<GetStockByLocationQuery, StockByLocationPointResponse[]>(query);
   }
 }

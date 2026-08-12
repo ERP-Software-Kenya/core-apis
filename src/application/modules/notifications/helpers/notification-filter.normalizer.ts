@@ -8,6 +8,11 @@ export class NotificationFilterNormalizer implements IFilterNormalizer<Notificat
   constructor(public options: NotificationFeatureOptions) {}
 
   public normalize(filter: Filter<NotificationFilter>): Filter<NotificationFilter> {
+    const row = filter as Filter<NotificationFilter> & { organizationId?: string };
+    if (row.orgId) {
+      row.organizationId = row.orgId;
+      delete row.orgId;
+    }
     filter.$orderBy = filter.$orderBy ?? this.options.orderBy;
     filter.$order = filter.$order ?? this.options.order;
     return filter;

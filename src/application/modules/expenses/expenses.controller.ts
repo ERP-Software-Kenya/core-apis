@@ -4,7 +4,7 @@ import { Body, Controller, Get, HttpCode, HttpStatus, Param, Patch, Post, Query,
 import { ApiBearerAuth, ApiCreatedResponse, ApiOkResponse, ApiOperation, ApiParam, ApiTags } from '@nestjs/swagger';
 import { InjectPinoLogger, PinoLogger } from 'nestjs-pino';
 import { ParseEnumPipe } from '@nestjs/common';
-import { ClerkAuthGuard, CqrsMediator, RolesGuard, Roles } from '../../../common';
+import { ClerkAuthGuard, CqrsMediator, RolesGuard, Roles, AuthenticatedUser, CurrentUser, requireOrganizationId } from '../../../common';
 import { ERole } from '../../../infrastructure';
 import { CreateExpenseCommand, UpdateExpenseStatusCommand } from './commands';
 import { Expense } from './domain';
@@ -29,9 +29,11 @@ export class ExpensesController {
   @Get('list')
   public async list(
     @Query('status', new ParseEnumPipe(EExpenseStatus, { optional: true })) status?: EExpenseStatus,
+    @CurrentUser() user?: AuthenticatedUser,
   ): Promise<ExpenseResponse[]> {
     const query = new ListExpensesQuery();
     query.status = status;
+    query.organizationId = requireOrganizationId(user);
     return this.mediator.execute<ListExpensesQuery, ExpenseResponse[]>(query);
   }
 
@@ -69,8 +71,12 @@ export class ExpensesController {
   @ApiCreatedResponse({ type: ExpenseResponse })
   @HttpCode(HttpStatus.CREATED)
   @Post()
-  public async create(@Body() body: CreateExpenseRequest): Promise<ExpenseResponse> {
+  public async create(
+    @Body() body: CreateExpenseRequest,
+    @CurrentUser() user?: AuthenticatedUser,
+  ): Promise<ExpenseResponse> {
     const command = this.mapper.map(body, CreateExpenseRequest, CreateExpenseCommand);
+    command.organizationId = requireOrganizationId(user);
     const result  = await this.mediator.execute<CreateExpenseCommand, Expense>(command);
     return this.mapper.map(result, Expense, ExpenseResponse);
   }

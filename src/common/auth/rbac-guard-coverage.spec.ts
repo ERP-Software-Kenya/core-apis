@@ -310,3 +310,42 @@ describe('invoices controller', () => {
     expect(hasClassGuard(source, 'RolesGuard')).toBe(true);
   });
 });
+
+describe('slice A auth kill-switches', () => {
+  it('gates POST /auth/token behind a non-production env check', () => {
+    const source = readController('auth/auth.controller.ts');
+    const decorators = methodDecorators(source, 'getToken');
+    expect(decorators).toContain('AllowAnonymous');
+    expect(source).toMatch(/isDev\(\)/);
+    expect(source).toMatch(/ForbiddenException\('Token minting is disabled outside development'\)/);
+  });
+
+  it('restricts mail send-raw and test to SuperAdmin', () => {
+    const source = readController('mail-templates/mail.controller.ts');
+    expect(hasClassGuard(source, 'ClerkAuthGuard')).toBe(true);
+    expect(hasClassGuard(source, 'RolesGuard')).toBe(true);
+    expect(source).toMatch(/@Roles\(ERole\.SuperAdmin\)/);
+  });
+
+  it('does not write FALLBACK_ORG_ID on create paths', () => {
+    const files = [
+      'customers/customers.controller.ts',
+      'vehicles/vehicles.controller.ts',
+      'drivers/drivers.controller.ts',
+      'trips/trips.controller.ts',
+      'vehicle-expenses/vehicle-expenses.controller.ts',
+      'maintenance/maintenance.controller.ts',
+      'analytics/analytics.controller.ts',
+    ];
+    for (const file of files) {
+      expect(readController(file)).not.toContain('FALLBACK_ORG_ID');
+    }
+  });
+
+  it('restricts users#create to org admin tier', () => {
+    const source = readController('users/users.controller.ts');
+    const decorators = methodDecorators(source, 'create');
+    expect(hasMethodGuard(decorators, 'RolesGuard')).toBe(true);
+    expect(methodRoles(decorators)).toEqual(['ERole.OrgAdmin', 'ERole.SuperAdmin']);
+  });
+});

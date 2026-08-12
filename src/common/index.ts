@@ -83,6 +83,7 @@ export * from './db';
 export * from './cqrs';
 export * from './exceptions';
 export * from './filtering';
+export * from './filters';
 export * from './interceptors';
 export * from './auth';
 export * from './tools';
