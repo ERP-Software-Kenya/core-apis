@@ -1,8 +1,9 @@
 // src/common/auth/rbac-guard-coverage.spec.ts
-import { readFileSync } from 'fs';
+import { readFileSync, readdirSync } from 'fs';
 import { join } from 'path';
 
 const MODULES_ROOT = join(__dirname, '../../application/modules');
+const EXPECTED_UNGUARDED = new Set<string>();
 
 // Guard/role list extraction below uses `[^)]*`, which breaks if a @UseGuards(...) or @Roles(...)
 // argument is itself a call (e.g. `AuthGuard('jwt')`). Every controller in this plan uses bare
@@ -57,6 +58,45 @@ function methodRoles(decorators: string): string[] {
   }
   return match[1].split(',').map((entry) => entry.trim()).filter((entry) => entry.length > 0);
 }
+
+describe('controller authentication coverage', () => {
+  it('requires ClerkAuthGuard on every controller class', () => {
+    const controllers = readdirSync(MODULES_ROOT, { recursive: true, encoding: 'utf8' })
+      .filter((relativePath) => relativePath.endsWith('.controller.ts'));
+    const unguarded = controllers.filter(
+      (relativePath) => !hasClassGuard(readController(relativePath), 'ClerkAuthGuard'),
+    );
+
+    expect(unguarded).toEqual([...EXPECTED_UNGUARDED]);
+  });
+});
+
+describe('common-utility controller', () => {
+  const source = () => readController('common-utility/common-utility.controller.ts');
+
+  it('requires Clerk authentication on the whole controller', () => {
+    expect(hasClassGuard(source(), 'ClerkAuthGuard')).toBe(true);
+  });
+
+  it('restricts page-access updates to platform tier', () => {
+    const decorators = methodDecorators(source(), 'updatePageAccess');
+    expect(hasMethodGuard(decorators, 'RolesGuard')).toBe(true);
+    expect(methodRoles(decorators)).toEqual(['ERole.SuperAdmin']);
+  });
+
+  it('leaves page-access reads unrestricted beyond authentication', () => {
+    const decorators = methodDecorators(source(), 'getPageAccess');
+    expect(hasMethodGuard(decorators, 'RolesGuard')).toBe(false);
+  });
+});
+
+describe('Clerk JWT email fallback', () => {
+  it('uses a verified email instead of the first attached address', () => {
+    const source = readFileSync(join(__dirname, 'strategies/clerk-jwt.strategy.ts'), 'utf8');
+    expect(source).toContain("verification?.status === 'verified'");
+    expect(source).not.toContain('emailAddresses[0]');
+  });
+});
 
 describe('rbac guard coverage checker (proving against already-guarded controllers)', () => {
   it('detects the class-level guard chain on BillsController', () => {

@@ -83,11 +83,12 @@ export class ClerkJwtStrategy extends PassportStrategy(Strategy, CLERK_STRATEGY)
     const clerkUser = await this.clerkClient.users.getUser(clerkUserId);
     // Password sign-in JWTs carry no email claim, so we look it up here. Clerk only
     // requires a *primary* email for OAuth accounts — password accounts can have an
-    // attached, sign-in-capable email that isn't marked primary, so fall back to it.
-    const primary =
-      clerkUser.emailAddresses.find((ea) => ea.id === clerkUser.primaryEmailAddressId) ??
-      clerkUser.emailAddresses[0];
-    authUser.email = primary?.emailAddress;
+    // attached, verified email that isn't marked primary, so fall back to that.
+    const emails = clerkUser.emailAddresses;
+    const chosen =
+      emails.find((ea) => ea.id === clerkUser.primaryEmailAddressId) ??
+      emails.find((ea) => ea.verification?.status === 'verified');
+    authUser.email = chosen?.emailAddress;
     authUser.firstName = clerkUser.firstName ?? undefined;
     authUser.lastName = clerkUser.lastName ?? undefined;
     authUser.imageUrl = clerkUser.imageUrl ?? undefined;
