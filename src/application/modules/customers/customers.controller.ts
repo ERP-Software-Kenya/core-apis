@@ -3,11 +3,12 @@ import { InjectMapper } from '@automapper/nestjs';
 import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Patch, Post, Query, UseGuards } from '@nestjs/common';
 import { ApiBearerAuth, ApiCreatedResponse, ApiOkResponse, ApiOperation, ApiParam, ApiTags } from '@nestjs/swagger';
 import { InjectPinoLogger, PinoLogger } from 'nestjs-pino';
-import { AuthenticatedUser, ClerkAuthGuard, CqrsMediator, CurrentUser, IPageable } from '../../../common';
+import { AuthenticatedUser, ClerkAuthGuard, CqrsMediator, CurrentUser, IPageable, RolesGuard, Roles } from '../../../common';
 import { CreateCustomerCommand, DeleteCustomerCommand, UpdateCustomerCommand } from './commands';
 import { Customer } from './domain';
 import { CreateCustomerRequest, CustomerResponse, SearchCustomersRequest, UpdateCustomerRequest } from './models';
 import { GetCustomerQuery, SearchCustomersQuery } from './queries';
+import { ERole } from '../../../infrastructure';
 
 const FALLBACK_ORG_ID = '00000000-0000-4000-8000-000000000001';
 
@@ -82,6 +83,8 @@ export class CustomersController {
   @ApiOkResponse({ type: Boolean })
   @ApiParam({ name: 'id', description: 'Customer UUID' })
   @HttpCode(HttpStatus.OK)
+  @UseGuards(RolesGuard)
+  @Roles(ERole.StoreManager, ERole.OrgManager, ERole.OrgAdmin, ERole.SuperAdmin)
   @Delete(':id')
   public async delete(@Param('id') id: string): Promise<boolean> {
     const command = new DeleteCustomerCommand();

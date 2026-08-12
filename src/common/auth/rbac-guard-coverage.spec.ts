@@ -239,3 +239,26 @@ describe('orders controller', () => {
     expect(hasClassGuard(source(), 'ClerkAuthGuard')).toBe(true);
   });
 });
+
+describe('destructive-endpoint role elevation (already-authenticated controllers)', () => {
+  const managerTier = ['ERole.StoreManager', 'ERole.OrgManager', 'ERole.OrgAdmin', 'ERole.SuperAdmin'];
+
+  it.each([
+    ['customers/customers.controller.ts', 'delete'],
+    ['drivers/drivers.controller.ts', 'delete'],
+    ['trips/trips.controller.ts', 'delete'],
+    ['vehicle-expenses/vehicle-expenses.controller.ts', 'delete'],
+    ['vehicles/vehicles.controller.ts', 'delete'],
+  ])('restricts %s#%s to manager tier', (relativePath, method) => {
+    const source = readController(relativePath);
+    const decorators = methodDecorators(source, method);
+    expect(hasMethodGuard(decorators, 'RolesGuard')).toBe(true);
+    expect(methodRoles(decorators)).toEqual(managerTier);
+  });
+
+  it('leaves notifications#delete unrestricted (self-service resource, no ownership check to key off yet)', () => {
+    const source = readController('notifications/notifications.controller.ts');
+    const decorators = methodDecorators(source, 'delete');
+    expect(hasMethodGuard(decorators, 'RolesGuard')).toBe(false);
+  });
+});
