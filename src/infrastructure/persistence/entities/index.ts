@@ -75,6 +75,8 @@ import { TransportationOrderItemEntity } from './transportation-order-item.entit
 import { GpsDeviceEntity } from './gps-device.entity';
 import { AlertEntity } from './alert.entity';
 import { EmailTemplateEntity } from './email-template.entity';
+import { QuickChargeEntity } from './quick-charge.entity';
+import { CustomerTypeRuleEntity } from './customer-type-rule.entity';
 
 export * from './location.entity';
 export * from './product-log.entity';
@@ -155,6 +157,8 @@ export * from './transportation-order-item.entity';
 export * from './gps-device.entity';
 export * from './alert.entity';
 export * from './email-template.entity';
+export * from './quick-charge.entity';
+export * from './customer-type-rule.entity';
 
 export default [
   LocationEntity,
@@ -233,4 +237,6 @@ export default [
   GpsDeviceEntity,
   AlertEntity,
   EmailTemplateEntity,
+  QuickChargeEntity,
+  CustomerTypeRuleEntity,
 ];
