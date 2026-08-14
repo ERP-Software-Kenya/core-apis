@@ -49,3 +49,5 @@ export * from './maintenance.repo';
 export * from './maintenance-type.repo';
 export * from './vehicle-expense.repo';
 export * from './email-template.repo';
+export * from './quick-charge.repo';
+export * from './customer-type-rule.repo';

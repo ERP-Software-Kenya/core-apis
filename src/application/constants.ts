@@ -76,3 +76,5 @@ export const ALERT_REPO                    = 'ALERT_REPO';
 
 // ─── Communication ────────────────────────────────────────────────────────────
 export const EMAIL_TEMPLATE_REPO           = 'IEmailTemplateRepo';
+export const QUICK_CHARGE_REPO             = 'QUICK_CHARGE_REPO';
+export const CUSTOMER_TYPE_RULE_REPO       = 'CUSTOMER_TYPE_RULE_REPO';
