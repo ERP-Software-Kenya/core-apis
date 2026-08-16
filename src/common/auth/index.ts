@@ -5,5 +5,6 @@ export * from './decorators';
 export * from './strategies';
 export * from './types';
 export * from './require-organization-id';
+export * from './location-access.util';
 export * from './i-clerk.service';
 export * from './clerk.service';

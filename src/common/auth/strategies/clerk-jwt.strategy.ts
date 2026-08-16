@@ -44,6 +44,8 @@ export class ClerkJwtStrategy extends PassportStrategy(Strategy, CLERK_STRATEGY)
     authUser.clerkOrgId = payload.o?.id;
     authUser.clerkOrgRole = payload.o?.rol;
     authUser.roles = [];
+    authUser.locationIds = [];
+    authUser.hasOrgWideAccess = false;
 
     if (payload.email) {
       authUser.email = payload.email;
@@ -74,6 +76,10 @@ export class ClerkJwtStrategy extends PassportStrategy(Strategy, CLERK_STRATEGY)
       const systemRoles = userRoles.map((ur) => ur.role?.name).filter(Boolean);
       const orgRoles = orgMembers.map((om) => om.role?.name).filter(Boolean);
       authUser.roles = [...new Set([...systemRoles, ...orgRoles])];
+      // Org memberships carry no location concept, so any membership grants org-wide access;
+      // a user_roles row with locationId null does the same. Only non-null rows scope access.
+      authUser.locationIds = [...new Set(userRoles.filter((ur) => ur.locationId).map((ur) => ur.locationId))];
+      authUser.hasOrgWideAccess = orgMembers.length > 0 || userRoles.some((ur) => !ur.locationId);
     }
 
     return authUser;
