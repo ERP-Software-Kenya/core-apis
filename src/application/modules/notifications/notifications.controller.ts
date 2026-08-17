@@ -3,7 +3,7 @@ import { InjectMapper } from '@automapper/nestjs';
 import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Post, Put, Query, UseGuards } from '@nestjs/common';
 import { ApiBearerAuth, ApiCreatedResponse, ApiOkResponse, ApiOperation, ApiParam, ApiTags } from '@nestjs/swagger';
 import { InjectPinoLogger, PinoLogger } from 'nestjs-pino';
-import { AuthenticatedUser, ClerkAuthGuard, CqrsMediator, CurrentUser, IPageable } from '../../../common';
+import { AuthenticatedUser, CentrifugalService, ClerkAuthGuard, CqrsMediator, CurrentUser, IPageable } from '../../../common';
 import { CreateNotificationCommand, DeleteNotificationCommand, MarkAllNotificationsReadCommand, UpdateNotificationCommand } from './commands';
 import { Notification } from './domain';
 import { CreateNotificationRequest, SearchNotificationsRequest, ListNotificationsRequest, NotificationResponse, NotificationsPagedResponse, UpdateNotificationRequest } from './models';
@@ -18,6 +18,7 @@ export class NotificationsController {
     protected readonly mediator: CqrsMediator,
     @InjectMapper() protected readonly mapper: Mapper,
     @InjectPinoLogger(NotificationsController.name) protected readonly logger: PinoLogger,
+    protected readonly centrifugal: CentrifugalService,
   ) {}
 
   @ApiOperation({ summary: 'Unread notification count for the current user' })
@@ -63,6 +64,21 @@ export class NotificationsController {
     const query = this.mapper.map(filter, ListNotificationsRequest, ListNotificationsQuery);
     const result = await this.mediator.execute<ListNotificationsQuery, Notification[]>(query);
     return this.mapper.mapArray(result, Notification, NotificationResponse);
+  }
+
+  @ApiOperation({ summary: 'Issue a Centrifugo connection token for the current user' })
+  @ApiOkResponse({ schema: { type: 'object', properties: { token: { type: 'string' } } } })
+  @HttpCode(HttpStatus.OK)
+  @Get('centrifugo-token')
+  public getCentrifugoToken(@CurrentUser() user: AuthenticatedUser): { token: string } {
+    const userId  = user.dbUserId ?? '';
+    const channels = [`user_${userId}`];
+    if (user.organizationId) channels.push(`org_${user.organizationId}`);
+    const token = this.centrifugal.generateClientToken(
+      { id: userId, channels },
+      { expiresIn: 3600 },
+    );
+    return { token };
   }
 
   @ApiOperation({ summary: 'Get notification by ID' })
