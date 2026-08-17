@@ -3,13 +3,12 @@ import { InjectMapper } from '@automapper/nestjs';
 import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Post, Put, Query, UseGuards } from '@nestjs/common';
 import { ApiBearerAuth, ApiCreatedResponse, ApiOkResponse, ApiOperation, ApiParam, ApiTags } from '@nestjs/swagger';
 import { InjectPinoLogger, PinoLogger } from 'nestjs-pino';
-import { AuthenticatedUser, ClerkAuthGuard, CqrsMediator, CurrentUser, IPageable } from '../../../common';
+import { AuthenticatedUser, ClerkAuthGuard, CqrsMediator, CurrentUser, IPageable, RolesGuard, Roles, requireOrganizationId } from '../../../common';
 import { CreateDriverRequest, UpdateDriverRequest, SearchDriversRequest, ListDriversRequest, DriverResponse, DriversPagedResponse } from './models';
 import { Driver } from './domain';
 import { GetDriverQuery, SearchDriversQuery, ListDriversQuery } from './queries';
 import { CreateDriverCommand, UpdateDriverCommand, DeleteDriverCommand } from './commands';
-
-const FALLBACK_ORG_ID = '00000000-0000-4000-8000-000000000001';
+import { ERole } from '../../../infrastructure';
 
 @ApiBearerAuth()
 @ApiTags('Drivers')
@@ -63,7 +62,7 @@ export class DriversController {
     @CurrentUser() user?: AuthenticatedUser,
   ): Promise<DriverResponse> {
     const command             = this.mapper.map(body, CreateDriverRequest, CreateDriverCommand);
-    command.organizationId    = user?.organizationId ?? FALLBACK_ORG_ID;
+    command.organizationId    = requireOrganizationId(user);
     const result              = await this.mediator.execute<CreateDriverCommand, Driver>(command);
     return this.mapper.map(result, Driver, DriverResponse);
   }
@@ -84,6 +83,8 @@ export class DriversController {
   @ApiOkResponse({ type: Boolean })
   @ApiParam({ name: 'id', description: 'Driver UUID' })
   @HttpCode(HttpStatus.OK)
+  @UseGuards(RolesGuard)
+  @Roles(ERole.StoreManager, ERole.OrgManager, ERole.OrgAdmin, ERole.SuperAdmin)
   @Delete(':id')
   public async delete(@Param('id') id: string): Promise<boolean> {
     const command = new DeleteDriverCommand();

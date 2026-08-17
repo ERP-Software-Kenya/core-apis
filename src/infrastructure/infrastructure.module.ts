@@ -59,6 +59,8 @@ import {
   VehicleExpenseRepo,
   PageAccessRepo,
   EmailTemplateRepo,
+  QuickChargeRepo,
+  CustomerTypeRuleRepo,
 } from './persistence';
 
 import {
@@ -113,6 +115,8 @@ import {
   VEHICLE_EXPENSE_REPO,
   PAGE_ACCESS_REPO,
   EMAIL_TEMPLATE_REPO,
+  QUICK_CHARGE_REPO,
+  CUSTOMER_TYPE_RULE_REPO,
 } from '../application/constants';
 
 @Module({})
@@ -191,6 +195,8 @@ export class InfrastructureModule {
         { provide: VEHICLE_EXPENSE_REPO, useClass: VehicleExpenseRepo },
         { provide: PAGE_ACCESS_REPO, useClass: PageAccessRepo },
         { provide: EMAIL_TEMPLATE_REPO, useClass: EmailTemplateRepo },
+        { provide: QUICK_CHARGE_REPO, useClass: QuickChargeRepo },
+        { provide: CUSTOMER_TYPE_RULE_REPO, useClass: CustomerTypeRuleRepo },
       ],
       exports: [
         EntityMapperProfile,
@@ -245,6 +251,8 @@ export class InfrastructureModule {
         VEHICLE_EXPENSE_REPO,
         PAGE_ACCESS_REPO,
         EMAIL_TEMPLATE_REPO,
+        QUICK_CHARGE_REPO,
+        CUSTOMER_TYPE_RULE_REPO,
       ],
     };
   }

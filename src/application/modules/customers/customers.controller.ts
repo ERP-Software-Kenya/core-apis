@@ -3,13 +3,12 @@ import { InjectMapper } from '@automapper/nestjs';
 import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Patch, Post, Query, UseGuards } from '@nestjs/common';
 import { ApiBearerAuth, ApiCreatedResponse, ApiOkResponse, ApiOperation, ApiParam, ApiTags } from '@nestjs/swagger';
 import { InjectPinoLogger, PinoLogger } from 'nestjs-pino';
-import { AuthenticatedUser, ClerkAuthGuard, CqrsMediator, CurrentUser, IPageable } from '../../../common';
+import { AuthenticatedUser, ClerkAuthGuard, CqrsMediator, CurrentUser, IPageable, RolesGuard, Roles, requireOrganizationId } from '../../../common';
 import { CreateCustomerCommand, DeleteCustomerCommand, UpdateCustomerCommand } from './commands';
 import { Customer } from './domain';
 import { CreateCustomerRequest, CustomerResponse, SearchCustomersRequest, UpdateCustomerRequest } from './models';
 import { GetCustomerQuery, SearchCustomersQuery } from './queries';
-
-const FALLBACK_ORG_ID = '00000000-0000-4000-8000-000000000001';
+import { ERole } from '../../../infrastructure';
 
 class CustomersPagedResponse {
   public items: CustomerResponse[];
@@ -61,7 +60,7 @@ export class CustomersController {
     @CurrentUser() user?: AuthenticatedUser,
   ): Promise<CustomerResponse> {
     const command = this.mapper.map(body, CreateCustomerRequest, CreateCustomerCommand);
-    command.organizationId = user?.organizationId ?? FALLBACK_ORG_ID;
+    command.organizationId = requireOrganizationId(user);
     const result  = await this.mediator.execute<CreateCustomerCommand, Customer>(command);
     return this.mapper.map(result, Customer, CustomerResponse);
   }
@@ -82,6 +81,8 @@ export class CustomersController {
   @ApiOkResponse({ type: Boolean })
   @ApiParam({ name: 'id', description: 'Customer UUID' })
   @HttpCode(HttpStatus.OK)
+  @UseGuards(RolesGuard)
+  @Roles(ERole.StoreManager, ERole.OrgManager, ERole.OrgAdmin, ERole.SuperAdmin)
   @Delete(':id')
   public async delete(@Param('id') id: string): Promise<boolean> {
     const command = new DeleteCustomerCommand();

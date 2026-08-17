@@ -1,4 +1,4 @@
-import { Body, Controller, Get, HttpCode, HttpStatus, Post, UseGuards } from '@nestjs/common';
+import { Body, Controller, ForbiddenException, Get, HttpCode, HttpStatus, Post, UseGuards } from '@nestjs/common';
 import {
   ApiBearerAuth,
   ApiCreatedResponse,
@@ -15,6 +15,9 @@ import {
   ClerkAuthGuard,
   CqrsMediator,
   CurrentUser,
+  isDev,
+  isLocal,
+  isTest,
   Roles,
   RolesGuard,
 } from '../../../common';
@@ -59,6 +62,9 @@ export class AuthController {
   @AllowAnonymous()
   @Post('token')
   public async getToken(@Body() body: GetTokenRequest): Promise<TokenResponse> {
+    if (!isDev() && !isLocal() && !isTest()) {
+      throw new ForbiddenException('Token minting is disabled outside development');
+    }
     const query   = new GetTokenQuery();
     query.userId  = body.userId;
     const token = await this.mediator.execute<GetTokenQuery, string>(query);
