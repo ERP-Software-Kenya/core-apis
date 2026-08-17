@@ -3,7 +3,7 @@ import { InjectMapper } from '@automapper/nestjs';
 import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Post, Put, Query, UseGuards } from '@nestjs/common';
 import { ApiBearerAuth, ApiCreatedResponse, ApiOkResponse, ApiOperation, ApiParam, ApiTags } from '@nestjs/swagger';
 import { InjectPinoLogger, PinoLogger } from 'nestjs-pino';
-import { AuthenticatedUser, ClerkAuthGuard, CqrsMediator, CurrentUser, IPageable } from '../../../common';
+import { AuthenticatedUser, CentrifugalService, ClerkAuthGuard, CqrsMediator, CurrentUser, IPageable } from '../../../common';
 import { CreateNotificationCommand, DeleteNotificationCommand, MarkAllNotificationsReadCommand, UpdateNotificationCommand } from './commands';
 import { Notification } from './domain';
 import { CreateNotificationRequest, SearchNotificationsRequest, ListNotificationsRequest, NotificationResponse, NotificationsPagedResponse, UpdateNotificationRequest } from './models';
