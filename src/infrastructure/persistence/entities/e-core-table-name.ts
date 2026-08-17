@@ -39,6 +39,8 @@ export enum ECoreTableName {
   BillItems             = 'bill_items',
   CustomerCreditTransactions = 'customer_credit_transactions',
   CreditApprovalRequests     = 'credit_approval_requests',
+  QuickCharges               = 'quick_charges',
+  CustomerTypeRules          = 'customer_type_rules',
   CommissionPayables         = 'commission_payables',
   PaymentTransactions   = 'payment_transactions',
   Expenses              = 'expenses',

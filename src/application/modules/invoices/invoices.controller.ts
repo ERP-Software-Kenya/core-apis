@@ -1,9 +1,9 @@
 import { Mapper } from '@automapper/core';
 import { InjectMapper } from '@automapper/nestjs';
-import { Body, Controller, Get, HttpCode, HttpStatus, Param, Post } from '@nestjs/common';
+import { Body, Controller, Get, HttpCode, HttpStatus, Param, Post, UseGuards } from '@nestjs/common';
 import { ApiBearerAuth, ApiCreatedResponse, ApiOkResponse, ApiOperation, ApiParam, ApiTags } from '@nestjs/swagger';
 import { InjectPinoLogger, PinoLogger } from 'nestjs-pino';
-import { CqrsMediator } from '../../../common';
+import { ClerkAuthGuard, CqrsMediator, RolesGuard } from '../../../common';
 import { CreateInvoiceCommand } from './commands';
 import { Invoice } from './domain';
 import { CreateInvoiceRequest, InvoiceResponse } from './models';
@@ -11,6 +11,7 @@ import { GetInvoiceQuery } from './queries';
 
 @ApiBearerAuth()
 @ApiTags('Invoices')
+@UseGuards(ClerkAuthGuard, RolesGuard)
 @Controller({ path: 'invoices', version: '1' })
 export class InvoicesController {
   constructor(
