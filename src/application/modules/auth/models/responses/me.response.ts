@@ -44,8 +44,3 @@ export class OnboardOrganizationResponse {
   @ApiProperty() public membershipId: string;
   @ApiProperty() public role: string;
 }
-
-export class InviteMemberResponse {
-  @ApiProperty() public membershipId: string;
-  @ApiProperty() public status: string;
-}

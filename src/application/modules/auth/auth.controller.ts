@@ -20,23 +20,17 @@ import {
   isDev,
   isLocal,
   isTest,
-  Roles,
-  RolesGuard,
 } from '../../../common';
-import { ERole } from '../../../infrastructure';
 import { SyncUserCommand } from './commands/sync-user';
 import { OnboardOrganizationCommand, OnboardOrganizationResult } from './commands/onboard-organization';
-import { InviteMemberCommand } from './commands/invite-member';
 import { GetMeQuery, MeResult } from './queries/get-me';
 import { GetTokenQuery } from './queries/get-token';
 import {
   GetTokenRequest,
-  InviteMemberRequest,
   OnboardOrganizationRequest,
   MeResponse,
   SyncUserResponse,
   OnboardOrganizationResponse,
-  InviteMemberResponse,
   TokenResponse,
   OrganizationSummary,
   MembershipSummary,
@@ -153,31 +147,6 @@ export class AuthController {
       membershipId: result.membership.id,
       role: result.roleName,
     };
-  }
-
-  // ── POST /auth/invite ────────────────────────────────────────────────────────
-  @ApiOperation({
-    summary: 'Invite a member to your organization',
-    description: 'OrgAdmin or SuperAdmin only. The invitee must have already signed up via Clerk.',
-  })
-  @ApiCreatedResponse({ type: InviteMemberResponse })
-  @HttpCode(HttpStatus.CREATED)
-  @UseGuards(RolesGuard)
-  @Roles(ERole.OrgAdmin, ERole.SuperAdmin)
-  @Post('invite')
-  public async inviteMember(
-    @CurrentUser() currentUser: AuthenticatedUser,
-    @Body() body: InviteMemberRequest,
-  ): Promise<InviteMemberResponse> {
-    const command = new InviteMemberCommand();
-    command.organizationId = currentUser.organizationId;
-    command.invitedByUserId = currentUser.dbUserId;
-    command.email = body.email;
-    command.roleId = body.roleId;
-
-    const membership = await this.mediator.execute<InviteMemberCommand, any>(command);
-
-    return { membershipId: membership.id, status: membership.status };
   }
 
   // ── GET /auth/me ─────────────────────────────────────────────────────────────
