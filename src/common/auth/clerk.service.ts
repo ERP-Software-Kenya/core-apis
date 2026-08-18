@@ -3,7 +3,7 @@ import { ConfigService } from '@nestjs/config';
 import { createClerkClient } from '@clerk/backend';
 import { ICoreApiConfig } from '../../configuration';
 import { EInvitationStatus } from '../../infrastructure/e-invitation-status';
-import { ClerkInvitationData, ClerkOrganizationData, ClerkUserData, ClerkUserListData, IClerkService } from './i-clerk.service';
+import { ClerkInvitationData, ClerkOrganizationData, ClerkUserData, ClerkUserListData, IClerkService, InviteMetadata } from './i-clerk.service';
 
 @Injectable()
 export class ClerkService implements IClerkService {
@@ -64,11 +64,20 @@ export class ClerkService implements IClerkService {
     });
   }
 
-  public async inviteUserAsync(params: { email: string; roles?: string[]; redirectUrl?: string }): Promise<void> {
+  public async inviteUserAsync(params: { email: string; roles?: string[]; redirectUrl?: string; organizationId?: string; roleId?: string; locationId?: string }): Promise<void> {
+    const publicMetadata: Record<string, unknown> = {};
+    if (params.roles?.length) publicMetadata['roles'] = params.roles;
+    if (params.organizationId && params.roleId) {
+      publicMetadata['invite'] = {
+        organizationId: params.organizationId,
+        roleId:         params.roleId,
+        locationId:     params.locationId,
+      };
+    }
     await this.client.invitations.createInvitation({
       emailAddress:   params.email,
       redirectUrl:    params.redirectUrl,
-      publicMetadata: params.roles?.length ? { roles: params.roles } : undefined,
+      publicMetadata: Object.keys(publicMetadata).length ? publicMetadata : undefined,
       ignoreExisting: true,
     });
   }
@@ -129,6 +138,14 @@ export class ClerkService implements IClerkService {
       name:           org.name,
       slug:           org.slug,
     }));
+  }
+
+  public async getInviteMetadataAsync(clerkUserId: string): Promise<InviteMetadata | undefined> {
+    const user = await this.client.users.getUser(clerkUserId);
+    const meta = user.publicMetadata as Record<string, unknown>;
+    const invite = meta['invite'] as Partial<InviteMetadata> | undefined;
+    if (!invite?.organizationId || !invite?.roleId) return undefined;
+    return { organizationId: invite.organizationId, roleId: invite.roleId, locationId: invite.locationId };
   }
 
   private mapUser(user: Awaited<ReturnType<(typeof this.client.users)['getUser']>>): ClerkUserData {
