@@ -66,7 +66,9 @@ export class LocationsController {
     query.id     = id;
     const result = await this.mediator.execute<GetLocationQuery, Location>(query);
     if (!result) throw new LocationNotFoundException(id);
-    if (result.organizationId !== user.organizationId) throw new LocationNotOwnedByOrgException();
+    if (!user.roles?.includes(ERole.SuperAdmin) && result.organizationId !== user.organizationId) {
+      throw new LocationNotOwnedByOrgException();
+    }
     assertLocationAccess(user, result.id);
     return this.mapper.map(result, Location, LocationResponse);
   }
@@ -95,7 +97,9 @@ export class LocationsController {
   public async update(@Param('id') id: string, @Body() body: UpdateLocationRequest, @CurrentUser() user: AuthenticatedUser): Promise<LocationResponse> {
     const existing = await this.mediator.execute<GetLocationQuery, Location>(Object.assign(new GetLocationQuery(), { id }));
     if (!existing) throw new LocationNotFoundException(id);
-    if (existing.organizationId !== user.organizationId) throw new LocationNotOwnedByOrgException();
+    if (!user.roles?.includes(ERole.SuperAdmin) && existing.organizationId !== user.organizationId) {
+      throw new LocationNotOwnedByOrgException();
+    }
     assertLocationAccess(user, existing.id);
     const command = this.mapper.map(body, UpdateLocationRequest, UpdateLocationCommand);
     command.id    = id;
@@ -112,7 +116,9 @@ export class LocationsController {
   public async delete(@Param('id') id: string, @CurrentUser() user: AuthenticatedUser): Promise<boolean> {
     const existing = await this.mediator.execute<GetLocationQuery, Location>(Object.assign(new GetLocationQuery(), { id }));
     if (!existing) throw new LocationNotFoundException(id);
-    if (existing.organizationId !== user.organizationId) throw new LocationNotOwnedByOrgException();
+    if (!user.roles?.includes(ERole.SuperAdmin) && existing.organizationId !== user.organizationId) {
+      throw new LocationNotOwnedByOrgException();
+    }
     assertLocationAccess(user, existing.id);
     const command = new DeleteLocationCommand();
     command.id    = id;
@@ -135,7 +141,9 @@ export class LocationsController {
   ): Promise<LocationResponse> {
     const existing = await this.mediator.execute<GetLocationQuery, Location>(Object.assign(new GetLocationQuery(), { id }));
     if (!existing) throw new LocationNotFoundException(id);
-    if (existing.organizationId !== user.organizationId) throw new LocationNotOwnedByOrgException();
+    if (!user.roles?.includes(ERole.SuperAdmin) && existing.organizationId !== user.organizationId) {
+      throw new LocationNotOwnedByOrgException();
+    }
     assertLocationAccess(user, existing.id);
     const command           = new UploadLocationImageCommand();
     command.locationId      = id;
@@ -154,7 +162,9 @@ export class LocationsController {
   public async removeImage(@Param('id') id: string, @CurrentUser() user: AuthenticatedUser): Promise<boolean> {
     const existing = await this.mediator.execute<GetLocationQuery, Location>(Object.assign(new GetLocationQuery(), { id }));
     if (!existing) throw new LocationNotFoundException(id);
-    if (existing.organizationId !== user.organizationId) throw new LocationNotOwnedByOrgException();
+    if (!user.roles?.includes(ERole.SuperAdmin) && existing.organizationId !== user.organizationId) {
+      throw new LocationNotOwnedByOrgException();
+    }
     assertLocationAccess(user, existing.id);
     const command      = new RemoveLocationImageCommand();
     command.locationId = id;

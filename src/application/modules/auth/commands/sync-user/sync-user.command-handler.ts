@@ -2,11 +2,13 @@ import { Inject } from '@nestjs/common';
 import { ICommandHandler } from '@nestjs/cqrs';
 import { InjectPinoLogger, PinoLogger } from 'nestjs-pino';
 import { CommandHandlerStrict } from '../../../../../common';
-import { USER_REPO, USER_ROLE_REPO } from '../../../../constants';
+import { USER_REPO, USER_ROLE_REPO, ORG_MEMBER_REPO } from '../../../../constants';
 import { User } from '../../../users/domain';
 import { IUserRepo } from '../../../users';
 import { UserRole } from '../../../user-roles/domain';
 import { IUserRoleRepo } from '../../../user-roles';
+import { IOrgMemberRepo } from '../../i-org-member.repo';
+import { OrgMember } from '../../domain';
 import { SyncUserCommand } from './sync-user.command';
 import { AuthMailService } from '../../mail';
 
@@ -15,6 +17,7 @@ export class SyncUserCommandHandler implements ICommandHandler<SyncUserCommand, 
   constructor(
     @Inject(USER_REPO) private readonly userRepo: IUserRepo,
     @Inject(USER_ROLE_REPO) private readonly userRoleRepo: IUserRoleRepo,
+    @Inject(ORG_MEMBER_REPO) private readonly orgMemberRepo: IOrgMemberRepo,
     private readonly mailService: AuthMailService,
     @InjectPinoLogger(SyncUserCommandHandler.name) private readonly logger: PinoLogger,
   ) {}
@@ -42,6 +45,13 @@ export class SyncUserCommandHandler implements ICommandHandler<SyncUserCommand, 
       userRole.roleId = command.roleId;
       userRole.locationId = command.locationId;
       await this.userRoleRepo.createAsync(userRole);
+      await this.orgMemberRepo.createAsync({
+        organizationId: command.organizationId,
+        userId: user.id,
+        roleId: command.roleId,
+        status: 'active',
+        joinedAt: new Date(),
+      } as unknown as OrgMember);
     }
 
     if (isNewUser && command.email) {

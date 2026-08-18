@@ -3,7 +3,7 @@ import { InjectMapper } from '@automapper/nestjs';
 import { Body, Controller, Get, HttpCode, HttpStatus, Param, Post, Put, UseGuards } from '@nestjs/common';
 import { ApiBearerAuth, ApiCreatedResponse, ApiOkResponse, ApiOperation, ApiParam, ApiTags } from '@nestjs/swagger';
 import { InjectPinoLogger, PinoLogger } from 'nestjs-pino';
-import { ClerkAuthGuard, CqrsMediator, RolesGuard, Roles } from '../../../common';
+import { ClerkAuthGuard, CqrsMediator, RolesGuard, Roles, AuthenticatedUser, CurrentUser } from '../../../common';
 import { ERole } from '../../../infrastructure';
 import { CreateUserRoleCommand, UpdateUserRoleCommand } from './commands';
 import { UserRole } from './domain';
@@ -48,8 +48,10 @@ export class UserRolesController {
   @UseGuards(RolesGuard)
   @Roles(ERole.OrgAdmin, ERole.SuperAdmin)
   @Post()
-  public async create(@Body() body: CreateUserRoleRequest): Promise<UserRoleResponse> {
+  public async create(@CurrentUser() currentUser: AuthenticatedUser, @Body() body: CreateUserRoleRequest): Promise<UserRoleResponse> {
     const command = this.mapper.map(body, CreateUserRoleRequest, CreateUserRoleCommand);
+    command.organizationId = currentUser.organizationId;
+    command.callerIsSuperAdmin = currentUser.roles?.includes(ERole.SuperAdmin) ?? false;
     const result  = await this.mediator.execute<CreateUserRoleCommand, UserRole>(command);
     return this.mapper.map(result, UserRole, UserRoleResponse);
   }
@@ -61,9 +63,11 @@ export class UserRolesController {
   @UseGuards(RolesGuard)
   @Roles(ERole.OrgAdmin, ERole.SuperAdmin)
   @Put(':id')
-  public async update(@Param('id') id: string, @Body() body: UpdateUserRoleRequest): Promise<UserRoleResponse> {
+  public async update(@CurrentUser() currentUser: AuthenticatedUser, @Param('id') id: string, @Body() body: UpdateUserRoleRequest): Promise<UserRoleResponse> {
     const command = this.mapper.map(body, UpdateUserRoleRequest, UpdateUserRoleCommand);
     command.id    = id;
+    command.organizationId = currentUser.organizationId;
+    command.callerIsSuperAdmin = currentUser.roles?.includes(ERole.SuperAdmin) ?? false;
     const result  = await this.mediator.execute<UpdateUserRoleCommand, UserRole>(command);
     return this.mapper.map(result, UserRole, UserRoleResponse);
   }

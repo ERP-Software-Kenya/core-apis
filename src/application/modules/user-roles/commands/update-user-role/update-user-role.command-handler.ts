@@ -2,11 +2,13 @@ import { Inject } from '@nestjs/common';
 import { ICommandHandler } from '@nestjs/cqrs';
 import { InjectPinoLogger, PinoLogger } from 'nestjs-pino';
 import { CommandHandlerStrict, LocationAccessDeniedException, LocationNotFoundException, UserNotFoundException, UserRoleNotFoundException } from '../../../../../common';
-import { LOCATION_REPO, USER_REPO, USER_ROLE_REPO } from '../../../../constants';
+import { LOCATION_REPO, ROLE_REPO, USER_REPO, USER_ROLE_REPO } from '../../../../constants';
 import { ILocationRepo } from '../../../locations';
+import { IRoleRepo } from '../../../roles';
 import { IUserRepo } from '../../../users';
 import { UserRole } from '../../domain';
 import { IUserRoleRepo } from '../..';
+import { assertRoleGrant } from '../../assert-role-grant';
 import { UpdateUserRoleCommand } from './update-user-role.command';
 
 @CommandHandlerStrict(UpdateUserRoleCommand)
@@ -14,6 +16,7 @@ export class UpdateUserRoleCommandHandler implements ICommandHandler<UpdateUserR
   constructor(
     @Inject(USER_ROLE_REPO) private readonly repo: IUserRoleRepo,
     @Inject(USER_REPO) private readonly userRepo: IUserRepo,
+    @Inject(ROLE_REPO) private readonly roleRepo: IRoleRepo,
     @Inject(LOCATION_REPO) private readonly locationRepo: ILocationRepo,
     @InjectPinoLogger(UpdateUserRoleCommandHandler.name) private readonly logger: PinoLogger,
   ) {}
@@ -23,6 +26,13 @@ export class UpdateUserRoleCommandHandler implements ICommandHandler<UpdateUserR
 
     const existing = await this.repo.getAsync(command.id);
     if (!existing) throw new UserRoleNotFoundException(command.id);
+
+    await assertRoleGrant(this.userRepo, this.roleRepo, {
+      userId: existing.userId,
+      roleId: command.roleId ?? existing.roleId,
+      organizationId: command.organizationId,
+      callerIsSuperAdmin: command.callerIsSuperAdmin,
+    });
 
     if (command.locationId) {
       await this.assertLocationBelongsToUsersOrg(existing.userId, command.locationId);
