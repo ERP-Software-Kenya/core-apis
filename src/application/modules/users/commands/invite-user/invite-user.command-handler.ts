@@ -20,6 +20,10 @@ export class InviteUserCommandHandler implements ICommandHandler<InviteUserComma
   public async execute(command: InviteUserCommand): Promise<void> {
     this.logger.info(`Executing ${InviteUserCommand.name} email=${command.email}`);
 
+    if (!command.organizationId) {
+      throw new InviteRoleNotAllowedException(undefined, 'Select an organization to invite this user into.');
+    }
+
     const role = await this.roleRepo.getAsync(command.roleId);
     if (!role || role.name === (ERole.SuperAdmin as string)) {
       throw new InviteRoleNotAllowedException();

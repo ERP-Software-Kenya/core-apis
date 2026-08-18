@@ -11,6 +11,7 @@ import { ICoreApiConfig } from '../../../configuration';
 import { UserEntity, UserRoleEntity, OrgMemberEntity } from '../../../infrastructure/persistence/entities';
 import { CLERK_STRATEGY } from '../constants';
 import { AuthenticatedUser, ClerkJwtPayload } from '../types';
+import { computeHasOrgWideAccess } from '../org-wide-access';
 
 @Injectable()
 export class ClerkJwtStrategy extends PassportStrategy(Strategy, CLERK_STRATEGY) {
@@ -79,7 +80,7 @@ export class ClerkJwtStrategy extends PassportStrategy(Strategy, CLERK_STRATEGY)
       // Org memberships carry no location concept, so any membership grants org-wide access;
       // a user_roles row with locationId null does the same. Only non-null rows scope access.
       authUser.locationIds = [...new Set(userRoles.filter((ur) => ur.locationId).map((ur) => ur.locationId))];
-      authUser.hasOrgWideAccess = orgMembers.length > 0 || userRoles.some((ur) => !ur.locationId);
+      authUser.hasOrgWideAccess = computeHasOrgWideAccess(userRoles, orgMembers.length);
     }
 
     return authUser;

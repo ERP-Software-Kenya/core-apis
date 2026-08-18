@@ -1,4 +1,4 @@
-import { Body, Controller, ForbiddenException, Get, HttpCode, HttpStatus, Inject, Post, UseGuards } from '@nestjs/common';
+import { Body, Controller, ForbiddenException, Get, HttpCode, HttpStatus, Post, UseGuards } from '@nestjs/common';
 import {
   ApiBearerAuth,
   ApiCreatedResponse,
@@ -13,10 +13,8 @@ import {
   AllowAnonymous,
   AuthenticatedUser,
   ClerkAuthGuard,
-  CLERK_SERVICE,
   CqrsMediator,
   CurrentUser,
-  IClerkService,
   isDev,
   isLocal,
   isTest,
@@ -46,7 +44,6 @@ export class AuthController {
     protected readonly mediator: CqrsMediator,
     @InjectMapper() protected readonly mapper: Mapper,
     @InjectPinoLogger(AuthController.name) protected readonly logger: PinoLogger,
-    @Inject(CLERK_SERVICE) private readonly clerkService: IClerkService,
   ) {}
 
   // ── POST /auth/token (dev only) ─────────────────────────────────────────────
@@ -85,15 +82,6 @@ export class AuthController {
     command.lastName = currentUser.lastName;
     command.imageUrl = currentUser.imageUrl;
 
-    if (!currentUser.isOnboarded) {
-      const invite = await this.clerkService.getInviteMetadataAsync(currentUser.clerkUserId);
-      if (invite) {
-        command.organizationId = invite.organizationId;
-        command.roleId = invite.roleId;
-        command.locationId = invite.locationId;
-      }
-    }
-
     const user = await this.mediator.execute<SyncUserCommand, User>(command);
 
     return {
@@ -120,7 +108,7 @@ export class AuthController {
     @CurrentUser() currentUser: AuthenticatedUser,
     @Body() body: OnboardOrganizationRequest,
   ): Promise<OnboardOrganizationResponse> {
-    if (!currentUser.isOnboarded) {
+    if (!currentUser.organizationId) {
       const syncCmd = new SyncUserCommand();
       syncCmd.clerkUserId = currentUser.clerkUserId;
       syncCmd.email = currentUser.email;
@@ -129,6 +117,7 @@ export class AuthController {
       syncCmd.imageUrl = currentUser.imageUrl;
       const syncedUser = await this.mediator.execute<SyncUserCommand, User>(syncCmd);
       currentUser.dbUserId = syncedUser.id;
+      currentUser.organizationId = syncedUser.organizationId;
     }
 
     const command = new OnboardOrganizationCommand();

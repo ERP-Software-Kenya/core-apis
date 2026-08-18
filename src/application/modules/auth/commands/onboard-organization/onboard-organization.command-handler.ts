@@ -3,7 +3,7 @@ import { ICommandHandler } from '@nestjs/cqrs';
 import { InjectPinoLogger, PinoLogger } from 'nestjs-pino';
 import { DataSource } from 'typeorm';
 import { InjectDataSource } from '@nestjs/typeorm';
-import { CommandHandlerStrict } from '../../../../../common';
+import { CommandHandlerStrict, OrganizationNotFoundException } from '../../../../../common';
 import { ORGANIZATION_REPO, ROLE_REPO, USER_REPO, ORG_MEMBER_REPO } from '../../../../constants';
 import { Organization } from '../../../organizations/domain';
 import { IOrganizationRepo } from '../../../organizations';
@@ -36,6 +36,19 @@ export class OnboardOrganizationCommandHandler
 
   public async execute(command: OnboardOrganizationCommand): Promise<OnboardOrganizationResult> {
     this.logger.info({ dbUserId: command.dbUserId }, 'Onboarding organization');
+
+    const existingUser = await this.userRepo.getAsync(command.dbUserId);
+    if (existingUser?.organizationId) {
+      const organization = await this.orgRepo.getAsync(existingUser.organizationId);
+      if (!organization) throw new OrganizationNotFoundException(existingUser.organizationId);
+      const membership = await this.orgMemberRepo.findByUserAndOrgAsync(existingUser.id, existingUser.organizationId);
+      if (!membership) {
+        throw new OrganizationNotFoundException(existingUser.organizationId);
+      }
+      const roles = await this.roleRepo.allAsync();
+      const roleName = roles.find((r) => r.id === membership.roleId)?.name ?? '';
+      return { organization, membership, roleName };
+    }
 
     const completedSteps: string[] = [];
 

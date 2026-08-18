@@ -4,6 +4,7 @@ import { Body, Controller, Delete, ForbiddenException, Get, HttpCode, HttpStatus
 import { ApiBearerAuth, ApiCreatedResponse, ApiNoContentResponse, ApiOkResponse, ApiOperation, ApiParam, ApiTags } from '@nestjs/swagger';
 import { InjectPinoLogger, PinoLogger } from 'nestjs-pino';
 import { ClerkAuthGuard, CqrsMediator, Roles, RolesGuard, AuthenticatedUser, CurrentUser } from '../../../common';
+import { resolveInviteOrganizationId } from './commands/invite-user/resolve-invite-org';
 import { ERole } from '../../../infrastructure';
 import {
   AssignUserToOrgCommand,
@@ -155,7 +156,11 @@ export class UsersController {
   @Post('clerk/invite')
   public async invite(@CurrentUser() currentUser: AuthenticatedUser, @Body() body: InviteUserRequest): Promise<void> {
     const command = this.mapper.map(body, InviteUserRequest, InviteUserCommand);
-    command.organizationId = currentUser.organizationId;
+    command.organizationId = resolveInviteOrganizationId({
+      callerIsSuperAdmin: currentUser.roles?.includes(ERole.SuperAdmin) ?? false,
+      callerOrganizationId: currentUser.organizationId,
+      requestedOrganizationId: body.organizationId,
+    });
     await this.mediator.execute<InviteUserCommand, void>(command);
   }
 

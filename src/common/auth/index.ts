@@ -7,4 +7,6 @@ export * from './types';
 export * from './require-organization-id';
 export * from './location-access.util';
 export * from './i-clerk.service';
+export * from './invite-metadata';
+export * from './org-wide-access';
 export * from './clerk.service';
