@@ -153,8 +153,9 @@ export class UsersController {
   @UseGuards(RolesGuard)
   @Roles(ERole.OrgAdmin, ERole.SuperAdmin)
   @Post('clerk/invite')
-  public async invite(@Body() body: InviteUserRequest): Promise<void> {
+  public async invite(@CurrentUser() currentUser: AuthenticatedUser, @Body() body: InviteUserRequest): Promise<void> {
     const command = this.mapper.map(body, InviteUserRequest, InviteUserCommand);
+    command.organizationId = currentUser.organizationId;
     await this.mediator.execute<InviteUserCommand, void>(command);
   }
 
