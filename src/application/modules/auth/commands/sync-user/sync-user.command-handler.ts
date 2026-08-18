@@ -2,9 +2,11 @@ import { Inject } from '@nestjs/common';
 import { ICommandHandler } from '@nestjs/cqrs';
 import { InjectPinoLogger, PinoLogger } from 'nestjs-pino';
 import { CommandHandlerStrict } from '../../../../../common';
-import { USER_REPO } from '../../../../constants';
+import { USER_REPO, USER_ROLE_REPO } from '../../../../constants';
 import { User } from '../../../users/domain';
 import { IUserRepo } from '../../../users';
+import { UserRole } from '../../../user-roles/domain';
+import { IUserRoleRepo } from '../../../user-roles';
 import { SyncUserCommand } from './sync-user.command';
 import { AuthMailService } from '../../mail';
 
@@ -12,6 +14,7 @@ import { AuthMailService } from '../../mail';
 export class SyncUserCommandHandler implements ICommandHandler<SyncUserCommand, User> {
   constructor(
     @Inject(USER_REPO) private readonly userRepo: IUserRepo,
+    @Inject(USER_ROLE_REPO) private readonly userRoleRepo: IUserRoleRepo,
     private readonly mailService: AuthMailService,
     @InjectPinoLogger(SyncUserCommandHandler.name) private readonly logger: PinoLogger,
   ) {}
@@ -19,7 +22,7 @@ export class SyncUserCommandHandler implements ICommandHandler<SyncUserCommand, 
   public async execute(command: SyncUserCommand): Promise<User> {
     this.logger.info({ clerkUserId: command.clerkUserId }, 'Syncing Clerk user to DB');
 
-    const user = await this.userRepo.upsertByClerkIdAsync(command.clerkUserId, {
+    let user = await this.userRepo.upsertByClerkIdAsync(command.clerkUserId, {
       email:     command.email,
       firstName: command.firstName,
       lastName:  command.lastName,
@@ -30,6 +33,16 @@ export class SyncUserCommandHandler implements ICommandHandler<SyncUserCommand, 
     const isNewUser = !user.updatedAt || Math.abs(
       new Date(user.updatedAt).getTime() - new Date(user.createdAt).getTime(),
     ) < 10_000;
+
+    if (!user.organizationId && command.organizationId && command.roleId) {
+      this.logger.info({ userId: user.id, organizationId: command.organizationId }, 'Applying invite: linking org and role');
+      user = await this.userRepo.updateAsync({ ...user, organizationId: command.organizationId });
+      const userRole = new UserRole();
+      userRole.userId = user.id;
+      userRole.roleId = command.roleId;
+      userRole.locationId = command.locationId;
+      await this.userRoleRepo.createAsync(userRole);
+    }
 
     if (isNewUser && command.email) {
       this.mailService.sendTemplatedAsync(command.email, 'welcome', {

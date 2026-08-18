@@ -1,4 +1,4 @@
-import { Body, Controller, ForbiddenException, Get, HttpCode, HttpStatus, Post, UseGuards } from '@nestjs/common';
+import { Body, Controller, ForbiddenException, Get, HttpCode, HttpStatus, Inject, Post, UseGuards } from '@nestjs/common';
 import {
   ApiBearerAuth,
   ApiCreatedResponse,
@@ -13,8 +13,10 @@ import {
   AllowAnonymous,
   AuthenticatedUser,
   ClerkAuthGuard,
+  CLERK_SERVICE,
   CqrsMediator,
   CurrentUser,
+  IClerkService,
   isDev,
   isLocal,
   isTest,
@@ -50,6 +52,7 @@ export class AuthController {
     protected readonly mediator: CqrsMediator,
     @InjectMapper() protected readonly mapper: Mapper,
     @InjectPinoLogger(AuthController.name) protected readonly logger: PinoLogger,
+    @Inject(CLERK_SERVICE) private readonly clerkService: IClerkService,
   ) {}
 
   // ── POST /auth/token (dev only) ─────────────────────────────────────────────
@@ -87,6 +90,15 @@ export class AuthController {
     command.firstName = currentUser.firstName;
     command.lastName = currentUser.lastName;
     command.imageUrl = currentUser.imageUrl;
+
+    if (!currentUser.isOnboarded) {
+      const invite = await this.clerkService.getInviteMetadataAsync(currentUser.clerkUserId);
+      if (invite) {
+        command.organizationId = invite.organizationId;
+        command.roleId = invite.roleId;
+        command.locationId = invite.locationId;
+      }
+    }
 
     const user = await this.mediator.execute<SyncUserCommand, User>(command);
 
