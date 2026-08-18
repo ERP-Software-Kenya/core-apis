@@ -1,7 +1,7 @@
 import { Inject } from '@nestjs/common';
 import { ICommandHandler } from '@nestjs/cqrs';
 import { InjectPinoLogger, PinoLogger } from 'nestjs-pino';
-import { CommandHandlerStrict, LocationAccessDeniedException, LocationNotFoundException, UserNotFoundException } from '../../../../../common';
+import { CommandHandlerStrict, LocationAccessDeniedException, LocationNotFoundException, UserNotFoundException, UserRoleNotFoundException } from '../../../../../common';
 import { LOCATION_REPO, USER_REPO, USER_ROLE_REPO } from '../../../../constants';
 import { ILocationRepo } from '../../../locations';
 import { IUserRepo } from '../../../users';
@@ -22,7 +22,7 @@ export class UpdateUserRoleCommandHandler implements ICommandHandler<UpdateUserR
     this.logger.info(`Executing ${UpdateUserRoleCommand.name}`);
 
     const existing = await this.repo.getAsync(command.id);
-    if (!existing) throw new UserNotFoundException(command.id);
+    if (!existing) throw new UserRoleNotFoundException(command.id);
 
     if (command.locationId) {
       await this.assertLocationBelongsToUsersOrg(existing.userId, command.locationId);
@@ -32,7 +32,10 @@ export class UpdateUserRoleCommandHandler implements ICommandHandler<UpdateUserR
     updated.id = existing.id;
     updated.userId = existing.userId;
     updated.roleId = command.roleId ?? existing.roleId;
-    updated.locationId = 'locationId' in command ? command.locationId : existing.locationId;
+    // updateAsync (base.repo.ts) skips undefined-valued columns on save: omitted locationId leaves it
+    // unchanged, an explicit null clears it. Do not add a default here — that's what implements
+    // the endpoint's "omit = unchanged, null = clear" contract.
+    updated.locationId = command.locationId;
     return this.repo.updateAsync(updated);
   }
 

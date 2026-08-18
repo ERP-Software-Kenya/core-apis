@@ -15,4 +15,5 @@ export * from './beneficiary';
 export * from './inventory';
 export * from './locations';
 export * from './organizations';
+export * from './user-roles';
 export * from './users';
