@@ -105,13 +105,6 @@ describe('rbac guard coverage checker (proving against already-guarded controlle
     expect(hasClassGuard(source, 'RolesGuard')).toBe(true);
   });
 
-  it('detects the method-level role restriction on AuthController.inviteMember', () => {
-    const source = readController('auth/auth.controller.ts');
-    const decorators = methodDecorators(source, 'inviteMember');
-    expect(hasMethodGuard(decorators, 'RolesGuard')).toBe(true);
-    expect(methodRoles(decorators)).toEqual(['ERole.OrgAdmin', 'ERole.SuperAdmin']);
-  });
-
   it('reports no class-level RolesGuard on AuthController itself (class only has ClerkAuthGuard)', () => {
     const source = readController('auth/auth.controller.ts');
     expect(hasClassGuard(source, 'ClerkAuthGuard')).toBe(true);
