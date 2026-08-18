@@ -7,7 +7,7 @@ import { AuthController } from './auth.controller';
 import { AuthCommandHandlers } from './commands';
 import { AuthQueryHandlers } from './queries';
 import { AuthProfile } from './mapper';
-import { ClerkJwtStrategy, ClerkService, RolesGuard, CLERK_STRATEGY } from '../../../common';
+import { ClerkJwtStrategy, ClerkService, RolesGuard, CLERK_STRATEGY, CLERK_SERVICE } from '../../../common';
 import { MailOptions } from '../../../common/mail';
 import { ICoreApiConfig } from '../../../configuration';
 import {
@@ -44,6 +44,7 @@ import { AuthMailService } from './mail';
     AuthMailService,
     ClerkJwtStrategy,
     ClerkService,
+    { provide: CLERK_SERVICE, useExisting: ClerkService },
     RolesGuard,
     AuthProfile,
     ...AuthCommandHandlers,
