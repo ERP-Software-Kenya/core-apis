@@ -64,7 +64,7 @@ export class StockTransferRequestsController {
     return this.mapper.mapArray(results, StockTransferRequest, StockTransferRequestResponse);
   }
 
-  @ApiOperation({ summary: 'List all OPEN requests across the org (excluding caller's store), with canFulfill flag' })
+  @ApiOperation({ summary: "List all OPEN requests across the org (excluding caller's store), with canFulfill flag" })
   @ApiOkResponse({ type: [StockTransferRequestResponse] })
   @ApiQuery({ name: 'locationId', description: 'The viewer store location UUID (used for stock check)' })
   @HttpCode(HttpStatus.OK)

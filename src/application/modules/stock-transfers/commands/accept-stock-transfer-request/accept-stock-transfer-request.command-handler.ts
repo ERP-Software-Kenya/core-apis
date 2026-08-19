@@ -67,7 +67,7 @@ export class AcceptStockTransferRequestCommandHandler implements ICommandHandler
     request.acceptedByUserId      = command.acceptingUserId;
     request.acceptedAt            = new Date();
     request.fulfillmentTransferId = savedTransfer.id;
-    const updated = await this.repo.updateAsync(request.id, request);
+    const updated = await this.repo.updateAsync(request);
 
     await this.notifyRequestingStoreAsync(command, request);
 

@@ -49,13 +49,17 @@ export class ClaimStockTransferRequestCommandHandler implements ICommandHandler<
     });
 
     if (request.fulfillmentTransferId) {
-      await this.transferRepo.updateAsync(request.fulfillmentTransferId, { status: EStockTransferStatus.Completed } as never);
+      const transfer = await this.transferRepo.getAsync(request.fulfillmentTransferId);
+      if (transfer) {
+        transfer.status = EStockTransferStatus.Completed;
+        await this.transferRepo.updateAsync(transfer);
+      }
     }
 
     const now             = new Date();
     request.status        = EStockTransferRequestStatus.Completed;
     request.claimedAt     = now;
-    const updated = await this.repo.updateAsync(request.id, request);
+    const updated = await this.repo.updateAsync(request);
 
     await this.notifyAcceptingStoreAsync(command, request);
 
