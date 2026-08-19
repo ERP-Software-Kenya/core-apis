@@ -26,6 +26,6 @@ export class CancelStockTransferRequestCommandHandler implements ICommandHandler
     request.status              = EStockTransferRequestStatus.Cancelled;
     request.cancelledByUserId   = command.cancelledByUserId;
     request.cancelledAt         = new Date();
-    return this.repo.updateAsync(request.id, request);
+    return this.repo.updateAsync(request);
   }
 }

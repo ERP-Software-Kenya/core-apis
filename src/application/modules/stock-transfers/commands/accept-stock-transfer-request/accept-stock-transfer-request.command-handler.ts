@@ -2,7 +2,8 @@ import { BadRequestException, Inject } from '@nestjs/common';
 import { ICommandHandler } from '@nestjs/cqrs';
 import { InjectPinoLogger, PinoLogger } from 'nestjs-pino';
 import { randomUUID } from 'crypto';
-import { CommandHandlerStrict, PUSH_NOTIFICATION_SERVICE, IPushNotificationService } from '../../../../../common';
+import { CommandHandlerStrict } from '../../../../../common';
+import { PUSH_NOTIFICATION_SERVICE, IPushNotificationService } from '../../../../../common/push-notification';
 import { EStockTransferRequestStatus } from '../../../../shared/enums/e-stock-transfer-request-status';
 import { EStockTransferStatus } from '../../../../shared/enums/e-stock-transfer-status';
 import { StockOrchestrationService } from '../../../../shared/services/stock-orchestration.service';
@@ -67,7 +68,7 @@ export class AcceptStockTransferRequestCommandHandler implements ICommandHandler
     request.acceptedByUserId      = command.acceptingUserId;
     request.acceptedAt            = new Date();
     request.fulfillmentTransferId = savedTransfer.id;
-    const updated = await this.repo.updateAsync(request.id, request);
+    const updated = await this.repo.updateAsync(request);
 
     await this.notifyRequestingStoreAsync(command, request);
 

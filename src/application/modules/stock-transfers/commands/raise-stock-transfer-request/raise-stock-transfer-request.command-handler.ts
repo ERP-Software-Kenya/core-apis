@@ -1,7 +1,8 @@
 import { Inject } from '@nestjs/common';
 import { ICommandHandler } from '@nestjs/cqrs';
 import { InjectPinoLogger, PinoLogger } from 'nestjs-pino';
-import { CommandHandlerStrict, PUSH_NOTIFICATION_SERVICE, IPushNotificationService } from '../../../../../common';
+import { CommandHandlerStrict } from '../../../../../common';
+import { PUSH_NOTIFICATION_SERVICE, IPushNotificationService } from '../../../../../common/push-notification';
 import { EStockTransferRequestStatus } from '../../../../shared/enums/e-stock-transfer-request-status';
 import { STOCK_TRANSFER_REQUEST_REPO } from '../../../../constants';
 import { StockTransferRequest } from '../../domain';

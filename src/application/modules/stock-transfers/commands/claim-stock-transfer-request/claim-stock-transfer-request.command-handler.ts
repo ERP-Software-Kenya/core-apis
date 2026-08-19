@@ -1,7 +1,8 @@
 import { BadRequestException, Inject } from '@nestjs/common';
 import { ICommandHandler } from '@nestjs/cqrs';
 import { InjectPinoLogger, PinoLogger } from 'nestjs-pino';
-import { CommandHandlerStrict, PUSH_NOTIFICATION_SERVICE, IPushNotificationService } from '../../../../../common';
+import { CommandHandlerStrict } from '../../../../../common';
+import { PUSH_NOTIFICATION_SERVICE, IPushNotificationService } from '../../../../../common/push-notification';
 import { EStockTransferRequestStatus } from '../../../../shared/enums/e-stock-transfer-request-status';
 import { EStockTransferStatus } from '../../../../shared/enums/e-stock-transfer-status';
 import { StockOrchestrationService } from '../../../../shared/services/stock-orchestration.service';
@@ -49,13 +50,15 @@ export class ClaimStockTransferRequestCommandHandler implements ICommandHandler<
     });
 
     if (request.fulfillmentTransferId) {
-      await this.transferRepo.updateAsync(request.fulfillmentTransferId, { status: EStockTransferStatus.Completed } as never);
+      const transfer = await this.transferRepo.getAsync(request.fulfillmentTransferId);
+      transfer.status = EStockTransferStatus.Completed;
+      await this.transferRepo.updateAsync(transfer);
     }
 
     const now             = new Date();
     request.status        = EStockTransferRequestStatus.Completed;
     request.claimedAt     = now;
-    const updated = await this.repo.updateAsync(request.id, request);
+    const updated = await this.repo.updateAsync(request);
 
     await this.notifyAcceptingStoreAsync(command, request);
 
