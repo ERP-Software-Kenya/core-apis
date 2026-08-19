@@ -19,6 +19,9 @@ export class CancelStockTransferRequestCommandHandler implements ICommandHandler
     this.logger.info("Executing Command 'CancelStockTransferRequestCommand'");
 
     const request = await this.repo.getAsync(command.requestId);
+    if (request.organizationId !== command.organizationId) {
+      throw new BadRequestException(`Request ${command.requestId} not found`);
+    }
     if (request.status !== EStockTransferRequestStatus.Open) {
       throw new BadRequestException(`Only OPEN requests can be cancelled. Current status: ${request.status}`);
     }

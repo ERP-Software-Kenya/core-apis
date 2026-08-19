@@ -2,17 +2,17 @@ import { Controller, Get, Query, UseGuards } from '@nestjs/common';
 import { ApiBearerAuth, ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { InjectPinoLogger, PinoLogger } from 'nestjs-pino';
 import { AuthenticatedUser, ClerkAuthGuard, CqrsMediator, CurrentUser, requireOrganizationId } from '../../../common';
-import { GetFleetSummaryKpisQuery } from './queries/get-fleet-summary/get-fleet-summary.query';
-import { GetFinancialKpisQuery } from './queries/get-financial-kpis/get-financial-kpis.query';
-import { GetSalesSummaryQuery } from './queries/get-sales-summary/get-sales-summary.query';
-import { GetRevenueTrendQuery } from './queries/get-revenue-trend/get-revenue-trend.query';
-import { GetTopProductsQuery } from './queries/get-top-products/get-top-products.query';
-import { GetTopCustomersQuery } from './queries/get-top-customers/get-top-customers.query';
-import { GetPurchaseSummaryQuery } from './queries/get-purchase-summary/get-purchase-summary.query';
-import { GetPurchaseTrendQuery } from './queries/get-purchase-trend/get-purchase-trend.query';
-import { GetTopSuppliersQuery } from './queries/get-top-suppliers/get-top-suppliers.query';
-import { GetInventorySummaryQuery } from './queries/get-inventory-summary/get-inventory-summary.query';
-import { GetStockByLocationQuery } from './queries/get-stock-by-location/get-stock-by-location.query';
+import { GetFleetSummaryKpisQuery } from './queries/get-fleet-summary';
+import { GetFinancialKpisQuery } from './queries/get-financial-kpis';
+import { GetSalesSummaryQuery } from './queries/get-sales-summary';
+import { GetRevenueTrendQuery } from './queries/get-revenue-trend';
+import { GetTopProductsQuery } from './queries/get-top-products';
+import { GetTopCustomersQuery } from './queries/get-top-customers';
+import { GetPurchaseSummaryQuery } from './queries/get-purchase-summary';
+import { GetPurchaseTrendQuery } from './queries/get-purchase-trend';
+import { GetTopSuppliersQuery } from './queries/get-top-suppliers';
+import { GetInventorySummaryQuery } from './queries/get-inventory-summary';
+import { GetStockByLocationQuery } from './queries/get-stock-by-location';
 import {
   FleetSummaryResponse,
   FinancialKpisResponse,
@@ -40,15 +40,19 @@ export class AnalyticsController {
   @ApiOperation({ summary: 'Get fleet summary KPIs' })
   @ApiOkResponse({ type: FleetSummaryResponse })
   @Get('fleet-summary')
-  public async getFleetSummary(): Promise<FleetSummaryResponse> {
-    return this.mediator.execute<GetFleetSummaryKpisQuery, FleetSummaryResponse>(new GetFleetSummaryKpisQuery());
+  public async getFleetSummary(@CurrentUser() user?: AuthenticatedUser): Promise<FleetSummaryResponse> {
+    const query = new GetFleetSummaryKpisQuery();
+    query.organizationId = requireOrganizationId(user);
+    return this.mediator.execute<GetFleetSummaryKpisQuery, FleetSummaryResponse>(query);
   }
 
   @ApiOperation({ summary: 'Get financial KPIs' })
   @ApiOkResponse({ type: FinancialKpisResponse })
   @Get('financials')
-  public async getFinancialKpis(): Promise<FinancialKpisResponse> {
-    return this.mediator.execute<GetFinancialKpisQuery, FinancialKpisResponse>(new GetFinancialKpisQuery());
+  public async getFinancialKpis(@CurrentUser() user?: AuthenticatedUser): Promise<FinancialKpisResponse> {
+    const query = new GetFinancialKpisQuery();
+    query.organizationId = requireOrganizationId(user);
+    return this.mediator.execute<GetFinancialKpisQuery, FinancialKpisResponse>(query);
   }
 
   @ApiOperation({ summary: 'Get sales summary KPIs' })

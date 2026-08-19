@@ -28,6 +28,9 @@ export class AcceptStockTransferRequestCommandHandler implements ICommandHandler
     this.logger.info("Executing Command 'AcceptStockTransferRequestCommand'");
 
     const request = await this.repo.getAsync(command.requestId);
+    if (request.organizationId !== command.organizationId) {
+      throw new BadRequestException(`Request ${command.requestId} not found`);
+    }
     if (request.status !== EStockTransferRequestStatus.Open) {
       throw new BadRequestException(`Request ${command.requestId} is not OPEN`);
     }

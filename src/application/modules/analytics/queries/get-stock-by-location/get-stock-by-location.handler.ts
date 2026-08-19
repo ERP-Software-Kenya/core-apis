@@ -4,7 +4,7 @@ import { InjectDataSource } from '@nestjs/typeorm';
 import { DataSource } from 'typeorm';
 import { QueryHandlerStrict } from 'src/common';
 import { GetStockByLocationQuery } from './get-stock-by-location.query';
-import { StockByLocationPointResponse } from '../../models/responses/stock-by-location-point.response';
+import { StockByLocationPointResponse } from '../../models';
 
 interface RawStockByLocation {
   locationId: string;

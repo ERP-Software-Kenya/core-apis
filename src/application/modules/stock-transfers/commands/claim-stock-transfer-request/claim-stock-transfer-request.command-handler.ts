@@ -27,6 +27,9 @@ export class ClaimStockTransferRequestCommandHandler implements ICommandHandler<
     this.logger.info("Executing Command 'ClaimStockTransferRequestCommand'");
 
     const request = await this.repo.getAsync(command.requestId);
+    if (request.organizationId !== command.organizationId) {
+      throw new BadRequestException(`Request ${command.requestId} not found`);
+    }
     if (request.status !== EStockTransferRequestStatus.Accepted) {
       throw new BadRequestException(`Request ${command.requestId} is not in ACCEPTED state`);
     }

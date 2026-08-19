@@ -8,7 +8,7 @@ import { AuthCommandHandlers } from './commands';
 import { AuthQueryHandlers } from './queries';
 import { AuthProfile } from './mapper';
 import { ClerkJwtStrategy, ClerkService, RolesGuard, CLERK_STRATEGY, CLERK_SERVICE } from '../../../common';
-import { MailOptions } from '../../../common/mail';
+import { MailOptions } from '../../../common';
 import { ICoreApiConfig } from '../../../configuration';
 import {
   UserEntity,

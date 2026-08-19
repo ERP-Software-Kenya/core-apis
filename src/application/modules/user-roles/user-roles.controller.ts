@@ -3,12 +3,14 @@ import { InjectMapper } from '@automapper/nestjs';
 import { Body, Controller, Get, HttpCode, HttpStatus, Param, Post, Put, UseGuards } from '@nestjs/common';
 import { ApiBearerAuth, ApiCreatedResponse, ApiOkResponse, ApiOperation, ApiParam, ApiTags } from '@nestjs/swagger';
 import { InjectPinoLogger, PinoLogger } from 'nestjs-pino';
-import { ClerkAuthGuard, CqrsMediator, RolesGuard, Roles, AuthenticatedUser, CurrentUser } from '../../../common';
+import { ClerkAuthGuard, CqrsMediator, RolesGuard, Roles, AuthenticatedUser, CurrentUser, requireOrganizationId, assertOrgOwnership } from '../../../common';
 import { ERole } from '../../../infrastructure';
 import { CreateUserRoleCommand, UpdateUserRoleCommand } from './commands';
 import { UserRole } from './domain';
 import { CreateUserRoleRequest, UpdateUserRoleRequest, UserRoleResponse } from './models';
 import { GetUserRoleQuery, ListUserRolesQuery } from './queries';
+import { GetUserQuery } from '../users/queries';
+import { User } from '../users/domain';
 
 @ApiBearerAuth()
 @ApiTags('UserRoles')
@@ -25,8 +27,9 @@ export class UserRolesController {
   @ApiOkResponse({ type: [UserRoleResponse] })
   @HttpCode(HttpStatus.OK)
   @Get('list')
-  public async list(): Promise<UserRoleResponse[]> {
+  public async list(@CurrentUser() user: AuthenticatedUser): Promise<UserRoleResponse[]> {
     const query = new ListUserRolesQuery();
+    query.organizationId = requireOrganizationId(user);
     return this.mediator.execute<ListUserRolesQuery, UserRoleResponse[]>(query);
   }
 
@@ -35,10 +38,14 @@ export class UserRolesController {
   @ApiParam({ name: 'id', description: 'UserRole UUID' })
   @HttpCode(HttpStatus.OK)
   @Get(':id')
-  public async getById(@Param('id') id: string): Promise<UserRoleResponse> {
+  public async getById(@Param('id') id: string, @CurrentUser() user: AuthenticatedUser): Promise<UserRoleResponse> {
     const query = new GetUserRoleQuery();
     query.id = id;
     const result = await this.mediator.execute<GetUserRoleQuery, UserRole>(query);
+    const userQuery = new GetUserQuery();
+    userQuery.id = result.userId;
+    const targetUser = await this.mediator.execute<GetUserQuery, User>(userQuery);
+    assertOrgOwnership(user, targetUser.organizationId, 'user role assignment');
     return this.mapper.map(result, UserRole, UserRoleResponse);
   }
 

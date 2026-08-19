@@ -3,7 +3,7 @@ import { InjectMapper } from '@automapper/nestjs';
 import { Body, Controller, Get, HttpCode, HttpStatus, Param, Post, Put, Query, UseGuards } from '@nestjs/common';
 import { ApiBearerAuth, ApiCreatedResponse, ApiOkResponse, ApiOperation, ApiParam, ApiQuery, ApiTags } from '@nestjs/swagger';
 import { InjectPinoLogger, PinoLogger } from 'nestjs-pino';
-import { ClerkAuthGuard, CqrsMediator, CurrentUser, AuthenticatedUser, Roles, RolesGuard } from 'src/common';
+import { ClerkAuthGuard, CqrsMediator, CurrentUser, AuthenticatedUser, Roles, RolesGuard, assertOrgOwnership } from 'src/common';
 import { ERole } from 'src/infrastructure/persistence/entities/role.entity';
 import {
   AcceptStockTransferRequestCommand,
@@ -41,10 +41,11 @@ export class StockTransferRequestsController {
   @ApiParam({ name: 'id', description: 'StockTransferRequest UUID' })
   @HttpCode(HttpStatus.OK)
   @Get(':id')
-  public async getById(@Param('id') id: string): Promise<StockTransferRequestResponse> {
+  public async getById(@Param('id') id: string, @CurrentUser() user: AuthenticatedUser): Promise<StockTransferRequestResponse> {
     const query = new GetStockTransferRequestQuery();
     query.id    = id;
     const result = await this.mediator.execute<GetStockTransferRequestQuery, StockTransferRequest>(query);
+    assertOrgOwnership(user, result.organizationId, 'stock transfer request');
     return this.mapper.map(result, StockTransferRequest, StockTransferRequestResponse);
   }
 

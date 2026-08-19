@@ -4,7 +4,7 @@ import { InjectDataSource } from '@nestjs/typeorm';
 import { DataSource } from 'typeorm';
 import { QueryHandlerStrict } from 'src/common';
 import { GetInventorySummaryQuery } from './get-inventory-summary.query';
-import { InventorySummaryResponse } from '../../models/responses/inventory-summary.response';
+import { InventorySummaryResponse } from '../../models';
 
 interface RawInventorySummary {
   totalSkus: string;

@@ -4,7 +4,7 @@ import { InjectDataSource } from '@nestjs/typeorm';
 import { DataSource } from 'typeorm';
 import { QueryHandlerStrict } from 'src/common';
 import { GetPurchaseTrendQuery } from './get-purchase-trend.query';
-import { PurchaseTrendPointResponse } from '../../models/responses/purchase-trend-point.response';
+import { PurchaseTrendPointResponse } from '../../models';
 
 interface RawPurchaseTrendRow {
   month: string;

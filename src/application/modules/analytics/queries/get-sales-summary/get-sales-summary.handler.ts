@@ -4,7 +4,7 @@ import { InjectDataSource } from '@nestjs/typeorm';
 import { DataSource } from 'typeorm';
 import { QueryHandlerStrict } from 'src/common';
 import { GetSalesSummaryQuery } from './get-sales-summary.query';
-import { SalesSummaryResponse } from '../../models/responses/sales-summary.response';
+import { SalesSummaryResponse } from '../../models';
 
 interface RawSummary {
   revenueThisMonth: string;

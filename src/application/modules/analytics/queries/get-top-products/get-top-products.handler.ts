@@ -4,7 +4,7 @@ import { InjectDataSource } from '@nestjs/typeorm';
 import { DataSource } from 'typeorm';
 import { QueryHandlerStrict } from 'src/common';
 import { GetTopProductsQuery } from './get-top-products.query';
-import { TopProductResponse } from '../../models/responses/top-product.response';
+import { TopProductResponse } from '../../models';
 
 interface RawTopProduct {
   productId: string;

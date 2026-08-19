@@ -35,7 +35,7 @@ export class ListOpenStockTransferRequestsQueryHandler implements IQueryHandler<
         );
         const available   = inventory ? Number(inventory.quantityOnHand) - Number(inventory.quantityReserved) : 0;
         const canFulfill  = available >= Number(request.quantityRequested);
-        return Object.assign(request, { canFulfill, availableStock: available }) as StockTransferRequestWithFulfillability;
+        return Object.assign(request, { canFulfill, availableStock: available });
       }),
     );
 
