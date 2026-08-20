@@ -304,6 +304,30 @@ describe('invoices controller', () => {
   });
 });
 
+describe('stock-transfer-requests controller', () => {
+  const source = () => readController('stock-transfers/stock-transfer-requests.controller.ts');
+  const storeTier = ['ERole.OrgAdmin', 'ERole.SuperAdmin', 'ERole.StoreManager', 'ERole.StoreStaff'];
+
+  it('requires ClerkAuthGuard and RolesGuard on the whole controller', () => {
+    expect(hasClassGuard(source(), 'ClerkAuthGuard')).toBe(true);
+    expect(hasClassGuard(source(), 'RolesGuard')).toBe(true);
+  });
+
+  it('restricts the controller to store-capable roles', () => {
+    const match = source().match(/@Roles\(([^)]*)\)/);
+    expect(match).not.toBeNull();
+    const roles = match![1].split(',').map((entry) => entry.trim());
+    expect(roles).toEqual(storeTier);
+  });
+
+  it.each(['listMine', 'listOpen', 'getById', 'raise', 'accept', 'claim', 'cancel'])(
+    'exposes method %s',
+    (methodName) => {
+      expect(() => methodDecorators(source(), methodName)).not.toThrow();
+    },
+  );
+});
+
 describe('slice A auth kill-switches', () => {
   it('gates POST /auth/token behind a non-production env check', () => {
     const source = readController('auth/auth.controller.ts');

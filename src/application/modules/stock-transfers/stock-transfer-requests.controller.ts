@@ -36,19 +36,6 @@ export class StockTransferRequestsController {
     @InjectPinoLogger(StockTransferRequestsController.name) protected readonly logger: PinoLogger,
   ) {}
 
-  @ApiOperation({ summary: 'Get a stock transfer request by ID' })
-  @ApiOkResponse({ type: StockTransferRequestResponse })
-  @ApiParam({ name: 'id', description: 'StockTransferRequest UUID' })
-  @HttpCode(HttpStatus.OK)
-  @Get(':id')
-  public async getById(@Param('id') id: string, @CurrentUser() user: AuthenticatedUser): Promise<StockTransferRequestResponse> {
-    const query = new GetStockTransferRequestQuery();
-    query.id    = id;
-    const result = await this.mediator.execute<GetStockTransferRequestQuery, StockTransferRequest>(query);
-    assertOrgOwnership(user, result.organizationId, 'stock transfer request');
-    return this.mapper.map(result, StockTransferRequest, StockTransferRequestResponse);
-  }
-
   @ApiOperation({ summary: "List the current store's own stock transfer requests" })
   @ApiOkResponse({ type: [StockTransferRequestResponse] })
   @ApiQuery({ name: 'locationId', description: 'The requesting store location UUID' })
@@ -84,6 +71,18 @@ export class StockTransferRequestsController {
       response.availableStock = result.availableStock;
       return response;
     });
+  }
+
+  @ApiOperation({ summary: 'Get a stock transfer request by ID' })
+  @ApiOkResponse({ type: StockTransferRequestResponse })
+  @ApiParam({ name: 'id', description: 'StockTransferRequest UUID' })
+  @HttpCode(HttpStatus.OK)
+  @Get(':id')
+  public async getById(@Param('id') id: string): Promise<StockTransferRequestResponse> {
+    const query = new GetStockTransferRequestQuery();
+    query.id    = id;
+    const result = await this.mediator.execute<GetStockTransferRequestQuery, StockTransferRequest>(query);
+    return this.mapper.map(result, StockTransferRequest, StockTransferRequestResponse);
   }
 
   @ApiOperation({ summary: 'Raise a new stock transfer request' })
