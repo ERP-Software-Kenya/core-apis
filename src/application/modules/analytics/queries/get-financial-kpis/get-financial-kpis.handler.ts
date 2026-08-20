@@ -29,7 +29,8 @@ export class GetFinancialKpisHandler implements IQueryHandler<GetFinancialKpisQu
     const fuelTransactions = allFuel.filter(ft => orgVehicleIds.has(ft.vehicleId));
     const allMaint        = await this.maintenanceRepo.allAsync();
     const maintenances     = allMaint.filter(m => orgVehicleIds.has(m.vehicleId));
-    const expenses         = await this.expenseRepo.allAsync({ organizationId: query.organizationId });
+    const allExpenses      = await this.expenseRepo.allAsync();
+    const expenses         = allExpenses.filter(e => orgVehicleIds.has(e.vehicleId));
 
     const totalFuelCost        = fuelTransactions.reduce((acc, curr) => acc + Number(curr.totalCost), 0);
     const totalMaintenanceCost = maintenances.reduce((acc, curr) => acc + Number(curr.cost), 0);

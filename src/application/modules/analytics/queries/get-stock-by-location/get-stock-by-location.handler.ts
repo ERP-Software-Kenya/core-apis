@@ -26,8 +26,9 @@ const STOCK_BY_LOCATION_SQL = `
   FROM core.locations l
   LEFT JOIN core.inventory i ON i.location_id = l.id AND i.organization_id = $1
   WHERE l.organization_id = $1 AND l.deleted_at IS NULL
+    AND ($2::uuid IS NULL OR l.id = $2)
   GROUP BY l.id, l.name, l.type
-  ORDER BY COALESCE(SUM(i.quantity_on_hand), 0) DESC
+  ORDER BY COALESCE(SUM(i.quantity_on_hand * COALESCE(i.average_cost, 0)), 0) DESC
 `;
 
 @QueryHandlerStrict(GetStockByLocationQuery)
@@ -39,7 +40,10 @@ export class GetStockByLocationHandler implements IQueryHandler<GetStockByLocati
 
   public async execute(query: GetStockByLocationQuery): Promise<StockByLocationPointResponse[]> {
     this.logger.info(`Executing Query '${GetStockByLocationQuery.name}'`);
-    const rows = await this.dataSource.query<RawStockByLocation[]>(STOCK_BY_LOCATION_SQL, [query.organizationId]);
+    const rows = await this.dataSource.query<RawStockByLocation[]>(STOCK_BY_LOCATION_SQL, [
+      query.organizationId,
+      query.locationId ?? null,
+    ]);
     return rows.map((row) => ({
       locationId:   row.locationId,
       locationName: row.locationName,

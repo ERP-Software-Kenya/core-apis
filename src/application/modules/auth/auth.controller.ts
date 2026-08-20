@@ -160,6 +160,8 @@ export class AuthController {
         isOnboarded: false,
         organization: undefined,
         membership: undefined,
+        locationIds: [],
+        hasOrgWideAccess: false,
       };
     }
 
@@ -198,6 +200,17 @@ export class AuthController {
       isOnboarded: true,
       organization: orgSummary,
       membership: membershipSummary,
+      locationIds: currentUser.locationIds ?? [],
+      hasOrgWideAccess: currentUser.hasOrgWideAccess ?? false,
+      currencyCode: resolveCurrencyCode(result.organization?.country),
     };
   }
+}
+
+function resolveCurrencyCode(country?: string): string {
+  const c = (country ?? '').toLowerCase();
+  if (c.includes('kenya') || c === 'ke') return 'KES';
+  if (c.includes('india') || c === 'in') return 'INR';
+  if (c.includes('united states') || c === 'us' || c === 'usa') return 'USD';
+  return 'KES';
 }
