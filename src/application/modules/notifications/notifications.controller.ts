@@ -3,7 +3,7 @@ import { InjectMapper } from '@automapper/nestjs';
 import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Post, Put, Query, UseGuards } from '@nestjs/common';
 import { ApiBearerAuth, ApiCreatedResponse, ApiOkResponse, ApiOperation, ApiParam, ApiTags } from '@nestjs/swagger';
 import { InjectPinoLogger, PinoLogger } from 'nestjs-pino';
-import { AuthenticatedUser, CentrifugalService,ClerkAuthGuard, CqrsMediator, CurrentUser, IPageable, requireDbUserId, requireOrganizationId } from '../../../common';
+import { AuthenticatedUser, CentrifugalService, ClerkAuthGuard, CqrsMediator, CurrentUser, IPageable, ResourceNotOwnedByOrgException, requireDbUserId, requireOrganizationId } from '../../../common';
 import { CreateNotificationCommand, DeleteNotificationCommand, MarkAllNotificationsReadCommand, UpdateNotificationCommand } from './commands';
 import { Notification } from './domain';
 import { CreateNotificationRequest, SearchNotificationsRequest, ListNotificationsRequest, NotificationResponse, NotificationsPagedResponse, UpdateNotificationRequest } from './models';
@@ -100,10 +100,11 @@ export class NotificationsController {
   @ApiParam({ name: 'id', description: 'Notification UUID' })
   @HttpCode(HttpStatus.OK)
   @Get(':id')
-  public async getById(@Param('id') id: string): Promise<NotificationResponse> {
+  public async getById(@Param('id') id: string, @CurrentUser() user?: AuthenticatedUser): Promise<NotificationResponse> {
     const query = new GetNotificationQuery();
     query.id = id;
     const result = await this.mediator.execute<GetNotificationQuery, Notification>(query);
+    if (result.userId !== requireDbUserId(user)) throw new ResourceNotOwnedByOrgException('notification');
     return this.mapper.map(result, Notification, NotificationResponse);
   }
 
@@ -127,7 +128,9 @@ export class NotificationsController {
   @ApiParam({ name: 'id', description: 'Notification UUID' })
   @HttpCode(HttpStatus.OK)
   @Put(':id')
-  public async update(@Param('id') id: string, @Body() body: UpdateNotificationRequest): Promise<NotificationResponse> {
+  public async update(@Param('id') id: string, @Body() body: UpdateNotificationRequest, @CurrentUser() user?: AuthenticatedUser): Promise<NotificationResponse> {
+    const existing = await this.mediator.execute<GetNotificationQuery, Notification>(Object.assign(new GetNotificationQuery(), { id }));
+    if (existing.userId !== requireDbUserId(user)) throw new ResourceNotOwnedByOrgException('notification');
     const command = this.mapper.map(body, UpdateNotificationRequest, UpdateNotificationCommand);
     command.id    = id;
     const result  = await this.mediator.execute<UpdateNotificationCommand, Notification>(command);
@@ -139,7 +142,9 @@ export class NotificationsController {
   @ApiParam({ name: 'id', description: 'Notification UUID' })
   @HttpCode(HttpStatus.OK)
   @Delete(':id')
-  public async delete(@Param('id') id: string): Promise<boolean> {
+  public async delete(@Param('id') id: string, @CurrentUser() user?: AuthenticatedUser): Promise<boolean> {
+    const existing = await this.mediator.execute<GetNotificationQuery, Notification>(Object.assign(new GetNotificationQuery(), { id }));
+    if (existing.userId !== requireDbUserId(user)) throw new ResourceNotOwnedByOrgException('notification');
     const command = new DeleteNotificationCommand();
     command.id    = id;
     return this.mediator.execute<DeleteNotificationCommand, boolean>(command);
