@@ -61,8 +61,12 @@ export class CustomersController {
   @ApiOkResponse({ type: CustomersPagedResponse })
   @HttpCode(HttpStatus.OK)
   @Get()
-  public async search(@Query() filter?: SearchCustomersRequest): Promise<CustomersPagedResponse> {
+  public async search(
+    @CurrentUser() user: AuthenticatedUser,
+    @Query() filter?: SearchCustomersRequest,
+  ): Promise<CustomersPagedResponse> {
     const query  = this.mapper.map(filter, SearchCustomersRequest, SearchCustomersQuery);
+    query.organizationId = requireOrganizationId(user);
     const result = await this.mediator.execute<SearchCustomersQuery, IPageable<Customer>>(query);
     return { ...result, items: this.mapper.mapArray(result.items, Customer, CustomerResponse) };
   }

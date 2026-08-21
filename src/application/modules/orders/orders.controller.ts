@@ -46,8 +46,14 @@ export class OrdersController {
   @ApiCreatedResponse({ type: OrderResponse })
   @HttpCode(HttpStatus.CREATED)
   @Post()
-  public async create(@Body() body: CreateOrderRequest): Promise<OrderResponse> {
+  public async create(@Body() body: CreateOrderRequest, @CurrentUser() user: AuthenticatedUser): Promise<OrderResponse> {
     const command = this.mapper.map(body, CreateOrderRequest, CreateOrderCommand);
+
+    const locationQuery = new GetLocationQuery();
+    locationQuery.id = command.locationId;
+    const location = await this.mediator.execute<GetLocationQuery, Location>(locationQuery);
+    assertOrgOwnership(user, location.organizationId, 'order');
+
     const result  = await this.mediator.execute<CreateOrderCommand, Order>(command);
     return this.mapper.map(result, Order, OrderResponse);
   }

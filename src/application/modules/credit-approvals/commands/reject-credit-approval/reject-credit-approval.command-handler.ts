@@ -1,7 +1,7 @@
 import { BadRequestException, Inject, NotFoundException } from '@nestjs/common';
 import { ICommandHandler } from '@nestjs/cqrs';
 import { InjectPinoLogger, PinoLogger } from 'nestjs-pino';
-import { CommandHandlerStrict } from '../../../../../common';
+import { CommandHandlerStrict, ResourceNotOwnedByOrgException } from '../../../../../common';
 import { CREDIT_APPROVAL_REQUEST_REPO, BILL_REPO } from '../../../../constants';
 import { ECreditApprovalStatus } from '../../../../../infrastructure/persistence/entities/credit-approval-request.entity';
 import { EBillStatus } from '../../../../../infrastructure/persistence/entities/bill.entity';
@@ -24,6 +24,9 @@ export class RejectCreditApprovalCommandHandler
     this.logger.info(`Executing ${RejectCreditApprovalCommand.name} id=${command.id}`);
     const request = await this.repo.getAsync(command.id);
     if (!request) throw new NotFoundException(`CreditApprovalRequest ${command.id} not found`);
+    if (request.organizationId !== command.organizationId) {
+      throw new ResourceNotOwnedByOrgException('credit-approval-request');
+    }
     if (request.status !== ECreditApprovalStatus.Pending) {
       throw new BadRequestException(`Credit approval is already ${request.status}`);
     }

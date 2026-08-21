@@ -25,8 +25,9 @@ export class DriversController {
   @ApiOkResponse({ type: DriversPagedResponse })
   @HttpCode(HttpStatus.OK)
   @Get()
-  public async search(@Query() filter?: SearchDriversRequest): Promise<DriversPagedResponse> {
+  public async search(@Query() filter?: SearchDriversRequest, @CurrentUser() user?: AuthenticatedUser): Promise<DriversPagedResponse> {
     const query  = this.mapper.map(filter, SearchDriversRequest, SearchDriversQuery);
+    query.organizationId = requireOrganizationId(user);
     const result = await this.mediator.execute<SearchDriversQuery, IPageable<Driver>>(query);
     return { ...result, items: this.mapper.mapArray(result.items, Driver, DriverResponse) };
   }
@@ -35,8 +36,9 @@ export class DriversController {
   @ApiOkResponse({ type: [DriverResponse] })
   @HttpCode(HttpStatus.OK)
   @Get('list')
-  public async list(@Query() filter?: ListDriversRequest): Promise<DriverResponse[]> {
+  public async list(@Query() filter?: ListDriversRequest, @CurrentUser() user?: AuthenticatedUser): Promise<DriverResponse[]> {
     const query  = this.mapper.map(filter, ListDriversRequest, ListDriversQuery);
+    query.organizationId = requireOrganizationId(user);
     const result = await this.mediator.execute<ListDriversQuery, Driver[]>(query);
     return this.mapper.mapArray(result, Driver, DriverResponse);
   }
@@ -91,7 +93,11 @@ export class DriversController {
   @UseGuards(RolesGuard)
   @Roles(ERole.StoreManager, ERole.OrgManager, ERole.OrgAdmin, ERole.SuperAdmin)
   @Delete(':id')
-  public async delete(@Param('id') id: string): Promise<boolean> {
+  public async delete(@Param('id') id: string, @CurrentUser() user: AuthenticatedUser): Promise<boolean> {
+    const fetchQuery = new GetDriverQuery();
+    fetchQuery.id = id;
+    const existing = await this.mediator.execute<GetDriverQuery, Driver>(fetchQuery);
+    assertOrgOwnership(user, existing.organizationId, 'Driver');
     const command = new DeleteDriverCommand();
     command.id    = id;
     return this.mediator.execute<DeleteDriverCommand, boolean>(command);

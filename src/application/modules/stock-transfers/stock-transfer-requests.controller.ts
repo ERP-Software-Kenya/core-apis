@@ -78,10 +78,11 @@ export class StockTransferRequestsController {
   @ApiParam({ name: 'id', description: 'StockTransferRequest UUID' })
   @HttpCode(HttpStatus.OK)
   @Get(':id')
-  public async getById(@Param('id') id: string): Promise<StockTransferRequestResponse> {
+  public async getById(@Param('id') id: string, @CurrentUser() user: AuthenticatedUser): Promise<StockTransferRequestResponse> {
     const query = new GetStockTransferRequestQuery();
     query.id    = id;
     const result = await this.mediator.execute<GetStockTransferRequestQuery, StockTransferRequest>(query);
+    assertOrgOwnership(user, result.organizationId, 'stock-transfer-request');
     return this.mapper.map(result, StockTransferRequest, StockTransferRequestResponse);
   }
 
