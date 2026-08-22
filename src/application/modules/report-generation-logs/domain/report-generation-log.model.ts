@@ -15,6 +15,6 @@ export class ReportGenerationLog {
   @AutoMap() public status: string;
   @AutoMap() public fileUrl?: string;
   @AutoMap() public errorMessage?: string;
-  public reportData?: Record<string, unknown>;
+  @AutoMap() public reportData?: Record<string, unknown>;
   @AutoMap(() => Date) public createdAt: Date;
 }
