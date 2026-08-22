@@ -76,7 +76,7 @@ export class BillCompletionService {
       if (bill.saleType === ESaleType.Black) {
         await this.deductBlackStock(bill, items, performedById, manager);
       } else {
-        await this.deductOfficialStock(bill, items, manager);
+        await this.deductOfficialStock(bill, items, performedById, manager);
       }
     });
 
@@ -147,7 +147,7 @@ export class BillCompletionService {
     } as never);
   }
 
-  private async deductOfficialStock(bill: Bill, items: BillItem[], manager: EntityManager): Promise<void> {
+  private async deductOfficialStock(bill: Bill, items: BillItem[], performedById: string, manager: EntityManager): Promise<void> {
     for (const item of items) {
       const inv = await this.inventoryRepo.findByOrgLocationProductAsync(
         bill.organizationId,
@@ -156,7 +156,23 @@ export class BillCompletionService {
         manager,
       );
       if (!inv) throw new BadRequestException(`No inventory found for product ${item.productId} at this location`);
-      await this.inventoryRepo.deductStockAsync(inv.id, Number(item.quantity), manager);
+      const before = Number(inv.quantityOnHand);
+      const updated = await this.inventoryRepo.deductStockAsync(inv.id, Number(item.quantity), manager);
+      const movement = Object.assign(new StockMovementInput(), {
+        inventoryId: inv.id,
+        locationId: bill.locationId,
+        productId: item.productId,
+        performedById,
+        referenceId: bill.id,
+        referenceType: 'bill',
+        movementType: EMovementType.StockOut,
+        quantity: Number(item.quantity),
+        quantityBefore: before,
+        quantityAfter: Number(updated.quantityOnHand),
+        isUnpublishedEntry: false,
+        notes: `Sale ${bill.billNumber}`,
+      });
+      await this.movementRepo.createWithManagerAsync(movement, manager);
     }
   }
 
