@@ -1,0 +1,28 @@
+import { Inject, NotFoundException } from '@nestjs/common';
+import type { IQueryHandler } from '@nestjs/cqrs';
+import { InjectPinoLogger, PinoLogger } from 'nestjs-pino';
+import { QueryHandlerStrict, PDF_EXPORT_SERVICE, IPdfExportService, PdfDocument } from '../../../../../common';
+import { REPORT_GENERATION_LOG_REPO, IReportGenerationLogRepo } from '../../i-report-generation-log.repo';
+import { DownloadReportPdfQuery } from './download-report-pdf.query';
+
+@QueryHandlerStrict(DownloadReportPdfQuery)
+export class DownloadReportPdfQueryHandler implements IQueryHandler<DownloadReportPdfQuery, PdfDocument> {
+  constructor(
+    @Inject(REPORT_GENERATION_LOG_REPO) private readonly repo: IReportGenerationLogRepo,
+    @Inject(PDF_EXPORT_SERVICE) private readonly pdfService: IPdfExportService,
+    @InjectPinoLogger(DownloadReportPdfQueryHandler.name) private readonly logger: PinoLogger,
+  ) {}
+
+  public async execute(query: DownloadReportPdfQuery): Promise<PdfDocument> {
+    this.logger.info(`Executing Query "${DownloadReportPdfQuery.name}"`);
+
+    const log = await this.repo.getAsync(query.id);
+    if (!log) throw new NotFoundException(`Report log ${query.id} not found`);
+    if (log.status !== 'COMPLETED' || !log.reportData) {
+      throw new NotFoundException(`Report ${query.id} is not completed or has no data`);
+    }
+
+    const filename = `report-${log.reportName?.replace(/[^a-z0-9]/gi, '-').toLowerCase() ?? log.id}.pdf`;
+    return this.pdfService.generateFromTemplateAsync('report', log.reportData, filename);
+  }
+}
