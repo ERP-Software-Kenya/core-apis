@@ -4,7 +4,7 @@ import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Post, Put, 
 import { ApiBearerAuth, ApiCreatedResponse, ApiOkResponse, ApiOperation, ApiParam, ApiTags } from '@nestjs/swagger';
 import type { Response } from 'express';
 import { InjectPinoLogger, PinoLogger } from 'nestjs-pino';
-import { AuthenticatedUser, ClerkAuthGuard, CqrsMediator, CurrentUser, RolesGuard, Roles, assertOrgOwnership } from '../../../common';
+import { AuthenticatedUser, ClerkAuthGuard, CqrsMediator, CurrentUser, RolesGuard, Roles, assertOrgOwnership, requireOrganizationId } from '../../../common';
 import { IPageable, PdfDocument } from '../../../common';
 import { ERole } from '../../../infrastructure';
 import { CreateReportLogCommand, DeleteReportLogCommand, UpdateReportLogCommand, GenerateReportCommand } from './commands';
@@ -31,8 +31,12 @@ export class ReportGenerationLogsController {
   @ApiOkResponse({ type: ReportGenerationLogsPagedResponse })
   @HttpCode(HttpStatus.OK)
   @Get()
-  public async search(@Query() filter?: SearchReportLogsRequest): Promise<ReportGenerationLogsPagedResponse> {
+  public async search(
+    @CurrentUser() user: AuthenticatedUser,
+    @Query() filter?: SearchReportLogsRequest,
+  ): Promise<ReportGenerationLogsPagedResponse> {
     const query  = this.mapper.map(filter, SearchReportLogsRequest, SearchReportLogsQuery);
+    query.orgId  = requireOrganizationId(user);
     const result = await this.mediator.execute<SearchReportLogsQuery, IPageable<ReportGenerationLog>>(query);
     return {
       ...result,
@@ -44,8 +48,12 @@ export class ReportGenerationLogsController {
   @ApiOkResponse({ type: [ReportGenerationLogResponse] })
   @HttpCode(HttpStatus.OK)
   @Get('list')
-  public async list(@Query() filter?: ListReportLogsRequest): Promise<ReportGenerationLogResponse[]> {
+  public async list(
+    @CurrentUser() user: AuthenticatedUser,
+    @Query() filter?: ListReportLogsRequest,
+  ): Promise<ReportGenerationLogResponse[]> {
     const query  = this.mapper.map(filter, ListReportLogsRequest, ListReportLogsQuery);
+    query.orgId  = requireOrganizationId(user);
     const result = await this.mediator.execute<ListReportLogsQuery, ReportGenerationLog[]>(query);
     return this.mapper.mapArray(result, ReportGenerationLog, ReportGenerationLogResponse);
   }

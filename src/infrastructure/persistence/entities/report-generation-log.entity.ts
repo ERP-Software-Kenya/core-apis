@@ -22,7 +22,7 @@ export class ReportGenerationLogEntity {
 
   @AutoMap()
   @Column({ name: 'org_id', type: 'uuid' })
-  public organizationId: string;
+  public orgId: string;
 
   @AutoMap(() => String)
   @Column({ name: 'report_type', type: 'varchar', length: 100 })
