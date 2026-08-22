@@ -107,7 +107,9 @@ export class PaymentTransactionsController {
   @UseGuards(RolesGuard)
   @Roles(ERole.OrgAdmin, ERole.SuperAdmin)
   @Delete(':id')
-  public async delete(@Param('id') id: string): Promise<boolean> {
+  public async delete(@Param('id') id: string, @CurrentUser() user?: AuthenticatedUser): Promise<boolean> {
+    const existing = await this.mediator.execute<GetPaymentTransactionQuery, PaymentTransaction>(Object.assign(new GetPaymentTransactionQuery(), { id }));
+    assertOrgOwnership(user, existing.orgId, 'payment-transaction');
     const command = new DeletePaymentTransactionCommand();
     command.id    = id;
     return this.mediator.execute<DeletePaymentTransactionCommand, boolean>(command);

@@ -47,8 +47,9 @@ export class ActivityLogsController {
   @ApiCreatedResponse({ type: ActivityLogResponse })
   @HttpCode(HttpStatus.CREATED)
   @Post()
-  public async create(@Body() body: CreateActivityLogRequest): Promise<ActivityLogResponse> {
+  public async create(@Body() body: CreateActivityLogRequest, @CurrentUser() user?: AuthenticatedUser): Promise<ActivityLogResponse> {
     const command = this.mapper.map(body, CreateActivityLogRequest, CreateActivityLogCommand);
+    command.organizationId = requireOrganizationId(user);
     const result  = await this.mediator.execute<CreateActivityLogCommand, ActivityLog>(command);
     return this.mapper.map(result, ActivityLog, ActivityLogResponse);
   }

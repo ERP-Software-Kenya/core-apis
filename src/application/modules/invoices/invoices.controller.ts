@@ -50,8 +50,18 @@ export class InvoicesController {
   @ApiCreatedResponse({ type: InvoiceResponse })
   @HttpCode(HttpStatus.CREATED)
   @Post()
-  public async create(@Body() body: CreateInvoiceRequest): Promise<InvoiceResponse> {
+  public async create(@Body() body: CreateInvoiceRequest, @CurrentUser() user: AuthenticatedUser): Promise<InvoiceResponse> {
     const command = this.mapper.map(body, CreateInvoiceRequest, CreateInvoiceCommand);
+
+    const orderQuery = new GetOrderQuery();
+    orderQuery.id = command.orderId;
+    const order = await this.mediator.execute<GetOrderQuery, Order>(orderQuery);
+
+    const locationQuery = new GetLocationQuery();
+    locationQuery.id = order.locationId;
+    const location = await this.mediator.execute<GetLocationQuery, Location>(locationQuery);
+    assertOrgOwnership(user, location.organizationId, 'invoice');
+
     const result  = await this.mediator.execute<CreateInvoiceCommand, Invoice>(command);
     return this.mapper.map(result, Invoice, InvoiceResponse);
   }
