@@ -12,8 +12,9 @@ export const PRODUCT_REPO         = 'PRODUCT_REPO';
 export const SUPPLIER_REPO        = 'SUPPLIER_REPO';
 export const INVENTORY_REPO       = 'INVENTORY_REPO';
 export const STOCK_MOVEMENT_REPO  = 'STOCK_MOVEMENT_REPO';
-export const PURCHASE_ORDER_REPO  = 'PURCHASE_ORDER_REPO';
-export const PURCHASE_ITEM_REPO   = 'PURCHASE_ITEM_REPO';
+export const PURCHASE_ORDER_REPO            = 'PURCHASE_ORDER_REPO';
+export const PURCHASE_ITEM_REPO             = 'PURCHASE_ITEM_REPO';
+export const PURCHASE_ITEM_ALLOCATION_REPO  = 'PURCHASE_ITEM_ALLOCATION_REPO';
 export const ACTIVITY_LOG_REPO    = 'ACTIVITY_LOG_REPO';
 
 export const BILL_REPO                    = 'BILL_REPO';
