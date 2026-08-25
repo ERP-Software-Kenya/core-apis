@@ -1,7 +1,7 @@
 import { MigrationInterface, QueryRunner } from 'typeorm';
 
-export class AddCustomerAddressFields1788252500000 implements MigrationInterface {
-  name = 'AddCustomerAddressFields1788252500000';
+export class Migration1788252500000 implements MigrationInterface {
+  name = 'Migration1788252500000';
 
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.query(`ALTER TABLE "core"."customers" ADD "address" character varying(500)`);
