@@ -211,6 +211,25 @@ describe('expenses controller', () => {
   });
 });
 
+describe('credit-transactions controller', () => {
+  const source = () => readController('credit-approvals/credit-transactions.controller.ts');
+
+  it('requires ClerkAuthGuard and RolesGuard on the whole controller', () => {
+    expect(hasClassGuard(source(), 'ClerkAuthGuard')).toBe(true);
+    expect(hasClassGuard(source(), 'RolesGuard')).toBe(true);
+  });
+
+  it('restricts credit transaction search to manager tier', () => {
+    const decorators = methodDecorators(source(), 'search');
+    expect(methodRoles(decorators)).toEqual([
+      'ERole.StoreManager',
+      'ERole.OrgManager',
+      'ERole.OrgAdmin',
+      'ERole.SuperAdmin',
+    ]);
+  });
+});
+
 describe('item-returns controller', () => {
   const source = () => readController('item-returns/item-returns.controller.ts');
 
