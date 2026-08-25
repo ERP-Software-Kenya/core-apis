@@ -53,6 +53,16 @@ export class PurchaseItemEntity {
   @Column({ type: 'decimal', precision: 18, scale: 4, default: 0 })
   public totalCost: number;
 
+  /** Quantity expressed in packs; null when entered in raw units */
+  @AutoMap()
+  @Column({ name: 'pack_quantity', type: 'decimal', precision: 18, scale: 4, nullable: true })
+  public packQuantity?: number;
+
+  /** Product packSize snapshotted at time of PO for historical accuracy */
+  @AutoMap()
+  @Column({ name: 'pack_size_snapshot', type: 'integer', nullable: true })
+  public packSizeSnapshot?: number;
+
   @AutoMap(() => Date)
   @CreateDateColumn({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
   public createdAt: Date;
