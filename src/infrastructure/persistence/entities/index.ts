@@ -6,6 +6,7 @@ import { InventoryEntity } from './inventory.entity';
 import { OrganizationEntity } from './organization.entity';
 import { ProductEntity } from './product.entity';
 import { PurchaseItemEntity } from './purchase-item.entity';
+import { PurchaseItemAllocationEntity } from './purchase-item-allocation.entity';
 import { PurchaseOrderEntity } from './purchase-order.entity';
 import { RoleEntity } from './role.entity';
 import { StockMovementEntity } from './stock-movement.entity';
@@ -89,6 +90,7 @@ export * from './inventory.entity';
 export * from './organization.entity';
 export * from './product.entity';
 export * from './purchase-item.entity';
+export * from './purchase-item-allocation.entity';
 export * from './purchase-order.entity';
 export * from './role.entity';
 export * from './stock-movement.entity';
@@ -171,6 +173,7 @@ export default [
   OrganizationEntity,
   ProductEntity,
   PurchaseItemEntity,
+  PurchaseItemAllocationEntity,
   PurchaseOrderEntity,
   RoleEntity,
   StockMovementEntity,

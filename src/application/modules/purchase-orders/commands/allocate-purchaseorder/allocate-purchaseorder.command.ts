@@ -1,14 +1,15 @@
 import { CommandBase } from 'src/common';
 
-export class ReceiveItemInput {
+export class AllocationInput {
   public purchaseItemId: string;
-  public quantityReceived: number;
+  public locationId: string;
+  public quantity: number;
 }
 
-export class ReceivePurchaseOrderCommand extends CommandBase {
+export class AllocatePurchaseOrderCommand extends CommandBase {
   public purchaseOrderId: string;
   public organizationId: string;
-  public items: ReceiveItemInput[];
+  public allocations: AllocationInput[];
   public performedById?: string;
   public notes?: string;
 }

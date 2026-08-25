@@ -38,6 +38,11 @@ export class PurchaseItemEntity {
   @Column({ type: 'decimal', precision: 18, scale: 4, default: 0 })
   public quantityReceived: number;
 
+  /** Quantity allocated to specific locations so far */
+  @AutoMap()
+  @Column({ type: 'decimal', precision: 18, scale: 4, default: 0 })
+  public quantityAllocated: number;
+
   /** Agreed unit cost at time of order */
   @AutoMap()
   @Column({ type: 'decimal', precision: 18, scale: 4 })

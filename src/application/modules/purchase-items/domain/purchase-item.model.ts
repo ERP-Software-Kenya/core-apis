@@ -6,6 +6,7 @@ export class PurchaseItem {
   @AutoMap() public productId: string;
   @AutoMap() public quantityOrdered: number;
   @AutoMap() public quantityReceived: number;
+  @AutoMap() public quantityAllocated: number;
   @AutoMap() public unitCost: number;
   @AutoMap() public totalCost: number;
   @AutoMap(() => Date) public createdAt?: Date;

@@ -5,7 +5,6 @@ import { EPurchaseOrderStatus } from 'src/application/shared/enums';
 
 export interface PurchaseOrderFilter {
   organizationId?: string;
-  locationId?: string;
   supplierId?: string;
   status?: EPurchaseOrderStatus;
 }
