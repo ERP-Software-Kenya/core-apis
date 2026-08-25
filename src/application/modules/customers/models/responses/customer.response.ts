@@ -9,6 +9,9 @@ export class CustomerResponse {
   @ApiPropertyOptional() @AutoMap() public email?: string;
   @ApiPropertyOptional() @AutoMap() public phone?: string;
   @ApiPropertyOptional() @AutoMap() public gstin?: string;
+  @ApiPropertyOptional() @AutoMap() public address?: string;
+  @ApiPropertyOptional() @AutoMap() public pinCode?: string;
+  @ApiPropertyOptional() @AutoMap() public shopName?: string;
   @ApiPropertyOptional() @AutoMap() public creditLimit?: number;
   @ApiProperty() @AutoMap() public creditBalance: number;
   @ApiPropertyOptional({ enum: ECustomerType }) @AutoMap(() => String) public customerType?: ECustomerType;
