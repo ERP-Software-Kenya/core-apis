@@ -17,6 +17,7 @@ import { GetStockByLocationQuery } from './queries/get-stock-by-location';
 import { GetPaymentMixQuery } from './queries/get-payment-mix';
 import { GetStockValueByCategoryQuery } from './queries/get-stock-value-by-category';
 import { GetPurchaseByCategoryQuery } from './queries/get-purchase-by-category';
+import { GetSalesByCategoryQuery } from './queries/get-sales-by-category';
 import { GetPurchaseExceptionsQuery } from './queries/get-purchase-exceptions';
 import { GetProductDemandTiersQuery } from './queries/get-product-demand-tiers';
 import { GetFastMovingProductsQuery } from './queries/get-fast-moving-products';
@@ -106,6 +107,7 @@ export class AnalyticsController {
     query.from = ctx.from;
     query.to = ctx.to;
     query.locationId = ctx.locationId;
+    query.period = ctx.preset;
     return this.mediator.execute<GetSalesSummaryQuery, SalesSummaryResponse>(query);
   }
 
@@ -327,6 +329,29 @@ export class AnalyticsController {
     query.to = ctx.to;
     query.locationId = ctx.locationId;
     return this.mediator.execute<GetPurchaseByCategoryQuery, CategoryValuePointResponse[]>(query);
+  }
+
+  @ApiOperation({ summary: 'Sales revenue grouped by product category' })
+  @ApiOkResponse({ type: [CategoryValuePointResponse] })
+  @ApiQuery(PERIOD_QUERY[0])
+  @ApiQuery(PERIOD_QUERY[1])
+  @ApiQuery(PERIOD_QUERY[2])
+  @ApiQuery(PERIOD_QUERY[3])
+  @Get('sales-by-category')
+  public async getSalesByCategory(
+    @Query('period') period?: string,
+    @Query('from') from?: string,
+    @Query('to') to?: string,
+    @Query('locationId') locationId?: string,
+    @CurrentUser() user?: AuthenticatedUser,
+  ): Promise<CategoryValuePointResponse[]> {
+    const ctx = buildAnalyticsQueryContext(user!, { period, from, to, locationId });
+    const query = new GetSalesByCategoryQuery();
+    query.organizationId = ctx.organizationId;
+    query.from = ctx.from;
+    query.to = ctx.to;
+    query.locationId = ctx.locationId;
+    return this.mediator.execute<GetSalesByCategoryQuery, CategoryValuePointResponse[]>(query);
   }
 
   @ApiOperation({ summary: 'Purchase exception counts (pending POs, drafts awaiting approval)' })

@@ -1,6 +1,10 @@
 import { AuthenticatedUser } from '../../../common';
 import { resolveAnalyticsLocationId } from './analytics-scope.util';
-import { resolveAnalyticsPeriod, resolveMonthsRange } from './analytics-period.util';
+import {
+  type AnalyticsPeriodPreset,
+  resolveAnalyticsPeriod,
+  resolveMonthsRange,
+} from './analytics-period.util';
 
 export interface AnalyticsQueryContext {
   organizationId: string;
@@ -8,6 +12,7 @@ export interface AnalyticsQueryContext {
   from: Date;
   to: Date;
   trunc: 'hour' | 'day' | 'month';
+  preset: AnalyticsPeriodPreset;
 }
 
 export function buildAnalyticsQueryContext(
@@ -29,6 +34,7 @@ export function buildAnalyticsQueryContext(
       from: resolved.from,
       to: resolved.to,
       trunc: resolved.trunc,
+      preset: resolved.preset,
     };
   }
 
@@ -40,5 +46,6 @@ export function buildAnalyticsQueryContext(
     from: legacy.from,
     to: legacy.to,
     trunc: legacy.trunc,
+    preset: 'month',
   };
 }
