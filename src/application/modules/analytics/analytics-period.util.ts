@@ -83,3 +83,46 @@ export function periodLabelFromTrunc(trunc: AnalyticsTrunc): string {
   if (trunc === 'day') return 'YYYY-MM-DD';
   return 'YYYY-MM';
 }
+
+export interface PreviousAnalyticsPeriod {
+  from: Date;
+  to: Date;
+  label: string;
+}
+
+/** Equal-length window immediately before the current analytics period. */
+export function resolvePreviousAnalyticsPeriod(
+  preset: AnalyticsPeriodPreset,
+  from: Date,
+  to: Date,
+): PreviousAnalyticsPeriod {
+  if (preset === 'month') {
+    const prevEnd = new Date(from);
+    prevEnd.setMilliseconds(-1);
+    const prevFrom = new Date(prevEnd.getFullYear(), prevEnd.getMonth(), 1);
+    prevFrom.setHours(0, 0, 0, 0);
+    return { from: prevFrom, to: prevEnd, label: 'vs last month' };
+  }
+
+  if (preset === 'year') {
+    const prevEnd = new Date(from);
+    prevEnd.setMilliseconds(-1);
+    const prevFrom = new Date(prevEnd.getFullYear(), 0, 1);
+    prevFrom.setHours(0, 0, 0, 0);
+    return { from: prevFrom, to: prevEnd, label: 'vs last year' };
+  }
+
+  const durationMs = to.getTime() - from.getTime();
+  const prevTo = new Date(from.getTime() - 1);
+  const prevFrom = new Date(prevTo.getTime() - durationMs);
+  prevFrom.setHours(from.getHours(), from.getMinutes(), from.getSeconds(), from.getMilliseconds());
+
+  const label =
+    preset === 'today'
+      ? 'vs yesterday'
+      : preset === '7d'
+        ? 'vs last week'
+        : 'vs previous period';
+
+  return { from: prevFrom, to: prevTo, label };
+}

@@ -15,6 +15,7 @@ import { GetStockByLocationHandler } from './queries/get-stock-by-location';
 import { GetPaymentMixHandler } from './queries/get-payment-mix';
 import { GetStockValueByCategoryHandler } from './queries/get-stock-value-by-category';
 import { GetPurchaseByCategoryHandler } from './queries/get-purchase-by-category';
+import { GetSalesByCategoryHandler } from './queries/get-sales-by-category';
 import { GetPurchaseExceptionsHandler } from './queries/get-purchase-exceptions';
 import { GetProductDemandTiersHandler } from './queries/get-product-demand-tiers';
 import { GetFastMovingProductsHandler } from './queries/get-fast-moving-products';
@@ -44,6 +45,7 @@ import { GetStockDamageSummaryHandler } from './queries/get-stock-damage-summary
     GetPaymentMixHandler,
     GetStockValueByCategoryHandler,
     GetPurchaseByCategoryHandler,
+    GetSalesByCategoryHandler,
     GetPurchaseExceptionsHandler,
     GetProductDemandTiersHandler,
     GetFastMovingProductsHandler,

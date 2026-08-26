@@ -1,6 +1,7 @@
 export * from './financial-kpis.response';
 export * from './fleet-summary.response';
 export * from './sales-summary.response';
+export * from './sales-period-comparison.response';
 export * from './revenue-trend-point.response';
 export * from './top-product.response';
 export * from './top-customer.response';
