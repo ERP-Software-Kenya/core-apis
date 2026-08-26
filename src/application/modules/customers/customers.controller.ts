@@ -1,9 +1,10 @@
 import { Mapper } from '@automapper/core';
 import { InjectMapper } from '@automapper/nestjs';
-import { Body, Controller, Delete, ForbiddenException, Get, HttpCode, HttpStatus, Param, Patch, Post, Query, UseGuards } from '@nestjs/common';
+import { Body, Controller, Delete, ForbiddenException, Get, HttpCode, HttpStatus, Param, Patch, Post, Query, Res, UseGuards } from '@nestjs/common';
 import { ApiBearerAuth, ApiCreatedResponse, ApiOkResponse, ApiOperation, ApiParam, ApiQuery, ApiTags } from '@nestjs/swagger';
 import { InjectPinoLogger, PinoLogger } from 'nestjs-pino';
-import { AuthenticatedUser, ClerkAuthGuard, CqrsMediator, CurrentUser, IPageable, RolesGuard, Roles, requireDbUserId, requireOrganizationId, assertOrgOwnership } from '../../../common';
+import type { Response } from 'express';
+import { AuthenticatedUser, ClerkAuthGuard, CqrsMediator, CurrentUser, IPageable, PdfDocument, RolesGuard, Roles, requireDbUserId, requireOrganizationId, assertOrgOwnership } from '../../../common';
 import { CreateCreditTransactionCommand, CreateCustomerCommand, DeleteCustomerCommand, UpdateCustomerCommand } from './commands';
 import { Customer } from './domain';
 import {
@@ -14,7 +15,13 @@ import {
   SearchCustomersRequest,
   UpdateCustomerRequest,
 } from './models';
-import { GetCustomerQuery, ListCustomerBillsQuery, ListCustomerCreditTransactionsQuery, SearchCustomersQuery } from './queries';
+import {
+  ExportCustomerStatementQuery,
+  GetCustomerQuery,
+  ListCustomerBillsQuery,
+  ListCustomerCreditTransactionsQuery,
+  SearchCustomersQuery,
+} from './queries';
 import { ERole } from '../../../infrastructure';
 import { Bill } from '../bills/domain';
 import { BillResponse } from '../bills/models';
@@ -125,6 +132,30 @@ export class CustomersController {
     const command = new DeleteCustomerCommand();
     command.id    = id;
     return this.mediator.execute<DeleteCustomerCommand, boolean>(command);
+  }
+
+  @ApiOperation({ summary: 'Export customer creditor account statement as PDF' })
+  @ApiParam({ name: 'id', description: 'Customer UUID' })
+  @HttpCode(HttpStatus.OK)
+  @Get(':id/statement/pdf')
+  public async exportStatementPdf(
+    @Param('id') id: string,
+    @Res() res: Response,
+    @CurrentUser() user: AuthenticatedUser,
+  ): Promise<void> {
+    const customer = await this.mediator.execute<GetCustomerQuery, Customer>(
+      Object.assign(new GetCustomerQuery(), { id }),
+    );
+    assertOrgOwnership(user, customer.organizationId, 'Customer');
+    const query = new ExportCustomerStatementQuery();
+    query.customerId = id;
+    const doc: PdfDocument = await this.mediator.execute<ExportCustomerStatementQuery, PdfDocument>(query);
+    res.set({
+      'Content-Type':        'application/pdf',
+      'Content-Disposition': `attachment; filename="${doc.filename}"`,
+      'Content-Length':      String(doc.buffer.byteLength),
+    });
+    res.end(doc.buffer);
   }
 
   @ApiOperation({ summary: 'List bills for a customer' })
