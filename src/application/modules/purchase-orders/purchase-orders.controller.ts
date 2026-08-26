@@ -1,7 +1,8 @@
 import { Mapper } from '@automapper/core';
 import { InjectMapper } from '@automapper/nestjs';
-import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Post, Put, Query, UseGuards } from '@nestjs/common';
+import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Post, Put, Query, Res, UseGuards } from '@nestjs/common';
 import { ApiBearerAuth, ApiCreatedResponse, ApiOkResponse, ApiOperation, ApiParam, ApiTags } from '@nestjs/swagger';
+import type { Response } from 'express';
 import { InjectPinoLogger, PinoLogger } from 'nestjs-pino';
 import {
   AuthenticatedUser,
@@ -10,6 +11,7 @@ import {
   CurrentUser,
   IPageable,
   InventoryNotOwnedByOrgException,
+  PdfDocument,
   Roles,
   RolesGuard,
 } from '../../../common';
@@ -32,7 +34,7 @@ import {
   SearchPurchaseOrdersRequest,
   UpdatePurchaseOrderRequest,
 } from './models';
-import { GetPurchaseOrderQuery, ListPurchaseOrdersQuery, SearchPurchaseOrdersQuery } from './queries';
+import { ExportPurchaseOrderQuery, GetPurchaseOrderQuery, ListPurchaseOrdersQuery, SearchPurchaseOrdersQuery } from './queries';
 
 @ApiBearerAuth()
 @ApiTags('PurchaseOrders')
@@ -90,6 +92,30 @@ export class PurchaseOrdersController {
     const result = await this.mediator.execute<GetPurchaseOrderQuery, PurchaseOrder>(query);
     if (result.organizationId !== user.organizationId) throw new InventoryNotOwnedByOrgException();
     return this.mapper.map(result, PurchaseOrder, PurchaseOrderResponse);
+  }
+
+  @ApiOperation({ summary: 'Export purchase order as PDF' })
+  @ApiParam({ name: 'id', description: 'Purchase Order UUID' })
+  @HttpCode(HttpStatus.OK)
+  @Get(':id/pdf')
+  public async exportPdf(
+    @Param('id') id: string,
+    @Res() res: Response,
+    @CurrentUser() user: AuthenticatedUser,
+  ): Promise<void> {
+    const fetchQuery  = new GetPurchaseOrderQuery();
+    fetchQuery.id     = id;
+    const existing    = await this.mediator.execute<GetPurchaseOrderQuery, PurchaseOrder>(fetchQuery);
+    if (existing.organizationId !== user.organizationId) throw new InventoryNotOwnedByOrgException();
+    const query       = new ExportPurchaseOrderQuery();
+    query.id          = id;
+    const doc: PdfDocument = await this.mediator.execute<ExportPurchaseOrderQuery, PdfDocument>(query);
+    res.set({
+      'Content-Type':        'application/pdf',
+      'Content-Disposition': `attachment; filename="${doc.filename}"`,
+      'Content-Length':      String(doc.buffer.byteLength),
+    });
+    res.end(doc.buffer);
   }
 
   @ApiOperation({ summary: 'Create a new purchase order with line items' })
