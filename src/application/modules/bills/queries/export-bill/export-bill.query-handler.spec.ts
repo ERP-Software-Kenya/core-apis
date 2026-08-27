@@ -80,4 +80,44 @@ describe('ExportBillQueryHandler', () => {
     expect(context.orgMeta).toContain('a@acme.test');
     expect(pdfService.generateFromTemplateAsync.mock.calls[0][0]).toBe('bill');
   });
+
+  it('generates a PDF with fallback branding when the organization is missing', async () => {
+    const billRepo = {
+      getAsync: jest.fn().mockResolvedValue({
+        id: 'b1',
+        billNumber: 'BILL-1',
+        organizationId: 'org-1',
+        status: 'COMPLETED',
+        customerId: null,
+        locationId: 'loc-1',
+        createdById: 'u1',
+        items: [],
+        subtotal: 100,
+        taxAmount: 0,
+        discountAmount: 0,
+        totalAmount: 100,
+      }),
+    };
+    const organizationRepo = { getAsync: jest.fn().mockResolvedValue(null) };
+    const pdfService = {
+      generateFromTemplateAsync: jest.fn().mockResolvedValue({
+        buffer: Buffer.from('pdf'),
+        filename: 'bill-BILL-1.pdf',
+        contentType: 'application/pdf',
+      }),
+    };
+    const handler = new ExportBillQueryHandler(
+      billRepo as any,
+      organizationRepo as any,
+      pdfService as any,
+      { info: jest.fn() } as any,
+    );
+
+    await handler.execute(Object.assign(new ExportBillQuery(), { id: 'b1' }));
+
+    const context = pdfService.generateFromTemplateAsync.mock.calls[0][1];
+    expect(context.orgName).toBe('Organization');
+    expect(context.logoUrl).toBe('');
+    expect(pdfService.generateFromTemplateAsync).toHaveBeenCalledTimes(1);
+  });
 });

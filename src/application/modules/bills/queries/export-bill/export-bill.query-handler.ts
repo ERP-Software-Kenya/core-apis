@@ -30,18 +30,21 @@ export class ExportBillQueryHandler implements IQueryHandler<ExportBillQuery, Pd
     return this.pdfService.generateFromTemplateAsync('bill', context, filename);
   }
 
-  private buildContext(bill: Bill, organization: Organization): Record<string, unknown> {
-    const orgMeta = [organization.email, organization.phone, organization.country]
+  private buildContext(
+    bill: Bill,
+    organization: Organization | null | undefined,
+  ): Record<string, unknown> {
+    const orgMeta = [organization?.email, organization?.phone, organization?.country]
       .filter(Boolean)
       .join(' · ');
 
     return {
-      orgName: organization.name ?? 'Organization',
-      orgPhone: organization.phone ?? '',
-      orgAddress: organization.country ?? '',
-      orgEmail: organization.email ?? '',
+      orgName: organization?.name ?? 'Organization',
+      orgPhone: organization?.phone ?? '',
+      orgAddress: organization?.country ?? '',
+      orgEmail: organization?.email ?? '',
       orgMeta,
-      logoUrl: organization.logoUrl ?? '',
+      logoUrl: organization?.logoUrl ?? '',
       billNumber: bill.billNumber,
       status: bill.status,
       customerName: bill.walkInName ?? `Customer (${bill.customerId ?? 'Walk-in'})`,
@@ -72,7 +75,7 @@ export class ExportBillQueryHandler implements IQueryHandler<ExportBillQuery, Pd
       paymentMethod: bill.paymentMethod ?? '',
       notes: bill.notes ?? '',
       generatedAt: new Date().toLocaleString('en-IN'),
-      organizationName: organization.name ?? 'Organization',
+      organizationName: organization?.name ?? 'Organization',
     };
   }
 
