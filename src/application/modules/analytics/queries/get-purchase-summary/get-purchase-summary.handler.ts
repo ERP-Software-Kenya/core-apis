@@ -24,10 +24,7 @@ export class GetPurchaseSummaryHandler implements IQueryHandler<GetPurchaseSumma
     this.logger.info(`Executing Query '${GetPurchaseSummaryQuery.name}'`);
 
     const hasRange = query.from && query.to;
-    const dateClause = hasRange
-      ? `AND created_at >= $2 AND created_at <= $3`
-      : '';
-    const locParam = hasRange ? 4 : 2;
+    // POs have no location_id; location lives on purchase_item_allocations.
 
     const sql = `
       SELECT
@@ -37,12 +34,10 @@ export class GetPurchaseSummaryHandler implements IQueryHandler<GetPurchaseSumma
         COUNT(DISTINCT supplier_id) AS "supplierCount"
       FROM core.purchase_orders
       WHERE organization_id = $1
-        AND ($${locParam}::uuid IS NULL OR location_id = $${locParam})
     `;
 
     const params: unknown[] = [query.organizationId];
     if (hasRange) params.push(query.from, query.to);
-    params.push(query.locationId ?? null);
 
     const [summary] = await this.dataSource.query<RawPurchaseSummary[]>(sql, params);
     const spend = Number(summary.spendInPeriod);
