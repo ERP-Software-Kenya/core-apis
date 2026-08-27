@@ -105,6 +105,17 @@ export class BillCompletionService {
         this.logger.info({ billId: bill.id, customerId: customer.id }, 'credit-limit.skip-approval');
         return;
       }
+      const priorApproved = await this.creditApprovalRepo.allAsync({
+        billId: bill.id,
+        status: ECreditApprovalStatus.Approved,
+      });
+      if (priorApproved.length > 0) {
+        this.logger.info(
+          { billId: bill.id, approvalId: priorApproved[0].id },
+          'credit-limit.approved-override',
+        );
+        return;
+      }
       const approval = await this.creditApprovalRepo.createAsync({
         organizationId: bill.organizationId,
         customerId: bill.customerId,

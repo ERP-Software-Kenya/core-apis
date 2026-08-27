@@ -4,7 +4,6 @@ import { InjectPinoLogger, PinoLogger } from 'nestjs-pino';
 import { CommandHandlerStrict, ResourceNotOwnedByOrgException } from '../../../../../common';
 import { CREDIT_APPROVAL_REQUEST_REPO } from '../../../../constants';
 import { ECreditApprovalStatus } from '../../../../../infrastructure/persistence/entities/credit-approval-request.entity';
-import { BillCompletionService } from '../../../../shared/services/bill-completion.service';
 import { CreditApprovalRequest } from '../../domain';
 import { ICreditApprovalRequestRepo } from '../../i-credit-approval-request.repo';
 import { ApproveCreditApprovalCommand } from './approve-credit-approval.command';
@@ -15,7 +14,6 @@ export class ApproveCreditApprovalCommandHandler
 {
   constructor(
     @Inject(CREDIT_APPROVAL_REQUEST_REPO) private readonly repo: ICreditApprovalRequestRepo,
-    private readonly completionService: BillCompletionService,
     @InjectPinoLogger(ApproveCreditApprovalCommandHandler.name) private readonly logger: PinoLogger,
   ) {}
 
@@ -30,8 +28,7 @@ export class ApproveCreditApprovalCommandHandler
       throw new BadRequestException(`Credit approval is already ${request.status}`);
     }
 
-    await this.completionService.completeBill(request.billId, command.decidedById, true);
-
+    // Bill stays DRAFT — cashier completes via Complete Transaction after Continue on New Sale.
     request.status = ECreditApprovalStatus.Approved;
     request.decidedById = command.decidedById;
     request.decidedAt = new Date();

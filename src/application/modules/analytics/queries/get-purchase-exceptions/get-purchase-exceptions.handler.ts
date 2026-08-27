@@ -15,13 +15,13 @@ interface RawPriceRow {
   priceIncreased: string;
 }
 
+// POs have no location_id; location lives on purchase_item_allocations.
 const SQL = `
   SELECT
     COUNT(CASE WHEN status IN ('ordered', 'partially_received') THEN 1 END) AS pending,
     COUNT(CASE WHEN status = 'draft' THEN 1 END) AS "approvalPending"
   FROM core.purchase_orders
   WHERE organization_id = $1
-    AND ($2::uuid IS NULL OR location_id = $2)
 `;
 
 const PRICE_INCREASED_SQL = `
@@ -35,7 +35,6 @@ const PRICE_INCREASED_SQL = `
     JOIN core.purchase_orders po ON po.id = pi.purchase_order_id
     WHERE po.organization_id = $1
       AND po.status = 'received'
-      AND ($2::uuid IS NULL OR po.location_id = $2)
   )
   SELECT COUNT(*) AS "priceIncreased"
   FROM po_costs
@@ -54,8 +53,8 @@ export class GetPurchaseExceptionsHandler
   public async execute(query: GetPurchaseExceptionsQuery): Promise<PurchaseExceptionsResponse> {
     this.logger.info(`Executing Query '${GetPurchaseExceptionsQuery.name}'`);
     const [[row], [priceRow]] = await Promise.all([
-      this.dataSource.query<RawRow[]>(SQL, [query.organizationId, query.locationId ?? null]),
-      this.dataSource.query<RawPriceRow[]>(PRICE_INCREASED_SQL, [query.organizationId, query.locationId ?? null]),
+      this.dataSource.query<RawRow[]>(SQL, [query.organizationId]),
+      this.dataSource.query<RawPriceRow[]>(PRICE_INCREASED_SQL, [query.organizationId]),
     ]);
     return {
       pending: Number(row?.pending ?? 0),

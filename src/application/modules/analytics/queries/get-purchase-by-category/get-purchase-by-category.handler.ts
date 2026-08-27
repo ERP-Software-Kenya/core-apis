@@ -12,6 +12,7 @@ interface RawRow {
   value: string;
 }
 
+// POs have no location_id; location lives on purchase_item_allocations.
 const SQL = `
   SELECT
     c.id AS "categoryId",
@@ -25,7 +26,6 @@ const SQL = `
     AND po.status = 'received'
     AND po.created_at >= $2
     AND po.created_at <= $3
-    AND ($4::uuid IS NULL OR po.location_id = $4)
   GROUP BY c.id, c.name
   HAVING COALESCE(SUM(pi.total_cost), 0) > 0
   ORDER BY value DESC
@@ -46,7 +46,6 @@ export class GetPurchaseByCategoryHandler
       query.organizationId,
       query.from,
       query.to,
-      query.locationId ?? null,
     ]);
     return rows.map((row) => ({
       categoryId: row.categoryId ?? undefined,

@@ -14,6 +14,7 @@ interface RawRow {
   avgUnitCost: string;
 }
 
+// POs have no location_id; location lives on purchase_item_allocations.
 const SQL = `
   WITH product_suppliers AS (
     SELECT
@@ -27,7 +28,6 @@ const SQL = `
       AND po.status = 'received'
       AND po.created_at >= $2
       AND po.created_at <= $3
-      AND ($4::uuid IS NULL OR po.location_id = $4)
     GROUP BY pi.product_id, po.supplier_id
   ),
   multi_supplier_products AS (
@@ -49,7 +49,7 @@ const SQL = `
   ORDER BY (
     SELECT SUM(total_spend) FROM product_suppliers ps2 WHERE ps2.product_id = ps.product_id
   ) DESC, p.name, ps.avg_cost
-  LIMIT $5
+  LIMIT $4
 `;
 
 @QueryHandlerStrict(GetSupplierPriceComparisonQuery)
@@ -67,7 +67,6 @@ export class GetSupplierPriceComparisonHandler
       query.organizationId,
       query.from,
       query.to,
-      query.locationId ?? null,
       query.limit,
     ]);
     return rows.map((r) => ({

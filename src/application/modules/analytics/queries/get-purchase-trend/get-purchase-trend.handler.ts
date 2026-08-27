@@ -31,6 +31,7 @@ export class GetPurchaseTrendHandler implements IQueryHandler<GetPurchaseTrendQu
     const trunc = query.trunc ?? 'month';
     const labelExpr = formatExpr(trunc);
 
+    // POs have no location_id; location lives on purchase_item_allocations.
     const sql = `
       SELECT
         ${labelExpr} AS period,
@@ -41,7 +42,6 @@ export class GetPurchaseTrendHandler implements IQueryHandler<GetPurchaseTrendQu
         AND status = 'received'
         AND created_at >= $2
         AND created_at <= $3
-        AND ($4::uuid IS NULL OR location_id = $4)
       GROUP BY DATE_TRUNC('${trunc}', created_at)
       ORDER BY DATE_TRUNC('${trunc}', created_at)
     `;
@@ -50,7 +50,6 @@ export class GetPurchaseTrendHandler implements IQueryHandler<GetPurchaseTrendQu
       query.organizationId,
       query.from!,
       query.to!,
-      query.locationId ?? null,
     ]);
 
     return rows.map((row) => ({
