@@ -19,7 +19,7 @@ export function buildAnalyticsQueryContext(
   user: AuthenticatedUser,
   query: { period?: string; from?: string; to?: string; locationId?: string; months?: number },
 ): AnalyticsQueryContext {
-  const organizationId = user.organizationId!;
+  const organizationId = user.organizationId;
   const locationId = resolveAnalyticsLocationId(user, query.locationId);
 
   if (query.period || query.from || query.to) {

@@ -29,8 +29,8 @@ export class GetRevenueTrendHandler implements IQueryHandler<GetRevenueTrendQuer
     this.logger.info(`Executing Query '${GetRevenueTrendQuery.name}'`);
 
     const trunc = query.trunc ?? 'month';
-    const from = query.from!;
-    const to = query.to!;
+    const from = query.from;
+    const to = query.to;
     const labelExpr = formatExpr(trunc);
 
     const sql = `

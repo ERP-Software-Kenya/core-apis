@@ -42,6 +42,7 @@ export interface InviteMetadata {
 
 export interface IClerkService {
   getTokenForUser(userId: string): Promise<string>;
+  signInWithEmailPasswordAsync(email: string, password: string): Promise<string>;
   listUsersAsync(params?: { limit?: number; offset?: number; organizationId?: string }): Promise<ClerkUserListData>;
   searchUsersAsync(params: { query: string; limit?: number; offset?: number }): Promise<ClerkUserListData>;
   getClerkUserAsync(clerkUserId: string): Promise<ClerkUserData>;
