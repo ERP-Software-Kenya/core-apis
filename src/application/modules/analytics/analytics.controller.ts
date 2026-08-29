@@ -101,7 +101,7 @@ export class AnalyticsController {
     @Query('locationId') locationId?: string,
     @CurrentUser() user?: AuthenticatedUser,
   ): Promise<SalesSummaryResponse> {
-    const ctx = buildAnalyticsQueryContext(user!, { period, from, to, locationId });
+    const ctx = buildAnalyticsQueryContext(user, { period, from, to, locationId });
     const query = new GetSalesSummaryQuery();
     query.organizationId = ctx.organizationId;
     query.from = ctx.from;
@@ -128,7 +128,7 @@ export class AnalyticsController {
     @CurrentUser() user?: AuthenticatedUser,
   ): Promise<RevenueTrendPointResponse[]> {
     const months = rawMonths ? Math.max(1, Math.min(24, parseInt(rawMonths, 10))) : undefined;
-    const ctx = buildAnalyticsQueryContext(user!, { period, from, to, locationId, months });
+    const ctx = buildAnalyticsQueryContext(user, { period, from, to, locationId, months });
     const query = new GetRevenueTrendQuery();
     query.organizationId = ctx.organizationId;
     query.from = ctx.from;
@@ -154,7 +154,7 @@ export class AnalyticsController {
     @Query('locationId') locationId?: string,
     @CurrentUser() user?: AuthenticatedUser,
   ): Promise<TopProductResponse[]> {
-    const ctx = buildAnalyticsQueryContext(user!, { period, from, to, locationId });
+    const ctx = buildAnalyticsQueryContext(user, { period, from, to, locationId });
     const query = new GetTopProductsQuery();
     query.organizationId = ctx.organizationId;
     query.limit = rawLimit ? Math.max(1, Math.min(50, parseInt(rawLimit, 10))) : 10;
@@ -191,7 +191,7 @@ export class AnalyticsController {
     @Query('locationId') locationId?: string,
     @CurrentUser() user?: AuthenticatedUser,
   ): Promise<PurchaseSummaryResponse> {
-    const ctx = buildAnalyticsQueryContext(user!, { period, from, to, locationId });
+    const ctx = buildAnalyticsQueryContext(user, { period, from, to, locationId });
     const query = new GetPurchaseSummaryQuery();
     query.organizationId = ctx.organizationId;
     query.from = ctx.from;
@@ -217,7 +217,7 @@ export class AnalyticsController {
     @CurrentUser() user?: AuthenticatedUser,
   ): Promise<PurchaseTrendPointResponse[]> {
     const months = rawMonths ? Math.max(1, Math.min(24, parseInt(rawMonths, 10))) : undefined;
-    const ctx = buildAnalyticsQueryContext(user!, { period, from, to, locationId, months });
+    const ctx = buildAnalyticsQueryContext(user, { period, from, to, locationId, months });
     const query = new GetPurchaseTrendQuery();
     query.organizationId = ctx.organizationId;
     query.from = ctx.from;
@@ -248,7 +248,7 @@ export class AnalyticsController {
     @Query('locationId') locationId?: string,
     @CurrentUser() user?: AuthenticatedUser,
   ): Promise<InventorySummaryResponse> {
-    const ctx = buildAnalyticsQueryContext(user!, { locationId });
+    const ctx = buildAnalyticsQueryContext(user, { locationId });
     const query = new GetInventorySummaryQuery();
     query.organizationId = ctx.organizationId;
     query.locationId = ctx.locationId;
@@ -263,7 +263,7 @@ export class AnalyticsController {
     @Query('locationId') locationId?: string,
     @CurrentUser() user?: AuthenticatedUser,
   ): Promise<StockByLocationPointResponse[]> {
-    const ctx = buildAnalyticsQueryContext(user!, { locationId });
+    const ctx = buildAnalyticsQueryContext(user, { locationId });
     const query = new GetStockByLocationQuery();
     query.organizationId = ctx.organizationId;
     query.locationId = ctx.locationId;
@@ -284,7 +284,7 @@ export class AnalyticsController {
     @Query('locationId') locationId?: string,
     @CurrentUser() user?: AuthenticatedUser,
   ): Promise<PaymentMixPointResponse[]> {
-    const ctx = buildAnalyticsQueryContext(user!, { period, from, to, locationId });
+    const ctx = buildAnalyticsQueryContext(user, { period, from, to, locationId });
     const query = new GetPaymentMixQuery();
     query.organizationId = ctx.organizationId;
     query.from = ctx.from;
@@ -301,7 +301,7 @@ export class AnalyticsController {
     @Query('locationId') locationId?: string,
     @CurrentUser() user?: AuthenticatedUser,
   ): Promise<CategoryValuePointResponse[]> {
-    const ctx = buildAnalyticsQueryContext(user!, { locationId });
+    const ctx = buildAnalyticsQueryContext(user, { locationId });
     const query = new GetStockValueByCategoryQuery();
     query.organizationId = ctx.organizationId;
     query.locationId = ctx.locationId;
@@ -322,7 +322,7 @@ export class AnalyticsController {
     @Query('locationId') locationId?: string,
     @CurrentUser() user?: AuthenticatedUser,
   ): Promise<CategoryValuePointResponse[]> {
-    const ctx = buildAnalyticsQueryContext(user!, { period, from, to, locationId });
+    const ctx = buildAnalyticsQueryContext(user, { period, from, to, locationId });
     const query = new GetPurchaseByCategoryQuery();
     query.organizationId = ctx.organizationId;
     query.from = ctx.from;
@@ -362,7 +362,7 @@ export class AnalyticsController {
     @Query('locationId') locationId?: string,
     @CurrentUser() user?: AuthenticatedUser,
   ): Promise<PurchaseExceptionsResponse> {
-    const ctx = buildAnalyticsQueryContext(user!, { locationId });
+    const ctx = buildAnalyticsQueryContext(user, { locationId });
     const query = new GetPurchaseExceptionsQuery();
     query.organizationId = ctx.organizationId;
     query.locationId = ctx.locationId;
@@ -383,7 +383,7 @@ export class AnalyticsController {
     @Query('locationId') locationId?: string,
     @CurrentUser() user?: AuthenticatedUser,
   ): Promise<DemandTierPointResponse[]> {
-    const ctx = buildAnalyticsQueryContext(user!, { period, from, to, locationId });
+    const ctx = buildAnalyticsQueryContext(user, { period, from, to, locationId });
     const query = new GetProductDemandTiersQuery();
     query.organizationId = ctx.organizationId;
     query.from = ctx.from;
@@ -408,7 +408,7 @@ export class AnalyticsController {
     @Query('limit') rawLimit?: string,
     @CurrentUser() user?: AuthenticatedUser,
   ): Promise<ProductMarginRankResponse[]> {
-    const ctx = buildAnalyticsQueryContext(user!, { period, from, to, locationId });
+    const ctx = buildAnalyticsQueryContext(user, { period, from, to, locationId });
     const query = new GetTopMarginProductsQuery();
     query.organizationId = ctx.organizationId;
     query.from = ctx.from;
@@ -434,7 +434,7 @@ export class AnalyticsController {
     @Query('limit') rawLimit?: string,
     @CurrentUser() user?: AuthenticatedUser,
   ): Promise<ProductMarginRankResponse[]> {
-    const ctx = buildAnalyticsQueryContext(user!, { period, from, to, locationId });
+    const ctx = buildAnalyticsQueryContext(user, { period, from, to, locationId });
     const query = new GetCostlyProductsQuery();
     query.organizationId = ctx.organizationId;
     query.from = ctx.from;
@@ -460,7 +460,7 @@ export class AnalyticsController {
     @Query('limit') rawLimit?: string,
     @CurrentUser() user?: AuthenticatedUser,
   ): Promise<ProductMovementRankResponse[]> {
-    const ctx = buildAnalyticsQueryContext(user!, { period, from, to, locationId });
+    const ctx = buildAnalyticsQueryContext(user, { period, from, to, locationId });
     const query = new GetFastMovingProductsQuery();
     query.organizationId = ctx.organizationId;
     query.from = ctx.from;
@@ -482,7 +482,7 @@ export class AnalyticsController {
     @Query('staleDays') rawStaleDays?: string,
     @CurrentUser() user?: AuthenticatedUser,
   ): Promise<ProductMovementRankResponse[]> {
-    const ctx = buildAnalyticsQueryContext(user!, { locationId });
+    const ctx = buildAnalyticsQueryContext(user, { locationId });
     const query = new GetDeadStockQuery();
     query.organizationId = ctx.organizationId;
     query.locationId = ctx.locationId;
@@ -507,7 +507,7 @@ export class AnalyticsController {
     @Query('limit') rawLimit?: string,
     @CurrentUser() user?: AuthenticatedUser,
   ): Promise<SupplierPricePointResponse[]> {
-    const ctx = buildAnalyticsQueryContext(user!, { period, from, to, locationId });
+    const ctx = buildAnalyticsQueryContext(user, { period, from, to, locationId });
     const query = new GetSupplierPriceComparisonQuery();
     query.organizationId = ctx.organizationId;
     query.from = ctx.from;
@@ -527,7 +527,7 @@ export class AnalyticsController {
     @Query('staleDays') rawStaleDays?: string,
     @CurrentUser() user?: AuthenticatedUser,
   ): Promise<InventoryStatusResponse> {
-    const ctx = buildAnalyticsQueryContext(user!, { locationId });
+    const ctx = buildAnalyticsQueryContext(user, { locationId });
     const query = new GetInventoryStatusQuery();
     query.organizationId = ctx.organizationId;
     query.locationId = ctx.locationId;
@@ -551,7 +551,7 @@ export class AnalyticsController {
     @Query('staleDays') rawStaleDays?: string,
     @CurrentUser() user?: AuthenticatedUser,
   ): Promise<InventoryStatusTrendPointResponse[]> {
-    const ctx = buildAnalyticsQueryContext(user!, { period, from, to, locationId });
+    const ctx = buildAnalyticsQueryContext(user, { period, from, to, locationId });
     const query = new GetInventoryStatusTrendQuery();
     query.organizationId = ctx.organizationId;
     query.from = ctx.from;
@@ -578,7 +578,7 @@ export class AnalyticsController {
     @Query('limit') rawLimit?: string,
     @CurrentUser() user?: AuthenticatedUser,
   ): Promise<StockDamageSummaryResponse> {
-    const ctx = buildAnalyticsQueryContext(user!, { period, from, to, locationId });
+    const ctx = buildAnalyticsQueryContext(user, { period, from, to, locationId });
     const query = new GetStockDamageSummaryQuery();
     query.organizationId = ctx.organizationId;
     query.from = ctx.from;

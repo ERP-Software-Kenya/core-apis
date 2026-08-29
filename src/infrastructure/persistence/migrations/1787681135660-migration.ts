@@ -4,15 +4,15 @@ export class Migration1787681135660 implements MigrationInterface {
     name = 'Migration1787681135660'
 
     public async up(queryRunner: QueryRunner): Promise<void> {
-        await queryRunner.query(`ALTER TABLE "core"."customers" DROP COLUMN "shop_name"`);
-        await queryRunner.query(`ALTER TABLE "core"."customers" DROP COLUMN "address"`);
-        await queryRunner.query(`ALTER TABLE "core"."customers" DROP COLUMN "pin_code"`);
-        await queryRunner.query(`ALTER TABLE "core"."purchase_items" ADD "pack_quantity" numeric(18,4)`);
-        await queryRunner.query(`ALTER TABLE "core"."purchase_items" ADD "pack_size_snapshot" integer`);
-        await queryRunner.query(`ALTER TABLE "core"."products" ADD "manufacturer" character varying(255)`);
-        await queryRunner.query(`ALTER TABLE "core"."products" ADD "pack_size" integer`);
-        await queryRunner.query(`ALTER TABLE "core"."order_items" ADD "pack_quantity" numeric(18,4)`);
-        await queryRunner.query(`ALTER TABLE "core"."order_items" ADD "pack_size_snapshot" integer`);
+        await queryRunner.query(`ALTER TABLE "core"."customers" DROP COLUMN IF EXISTS "shop_name"`);
+        await queryRunner.query(`ALTER TABLE "core"."customers" DROP COLUMN IF EXISTS "address"`);
+        await queryRunner.query(`ALTER TABLE "core"."customers" DROP COLUMN IF EXISTS "pin_code"`);
+        await queryRunner.query(`ALTER TABLE "core"."purchase_items" ADD IF NOT EXISTS "pack_quantity" numeric(18,4)`);
+        await queryRunner.query(`ALTER TABLE "core"."purchase_items" ADD IF NOT EXISTS "pack_size_snapshot" integer`);
+        await queryRunner.query(`ALTER TABLE "core"."products" ADD IF NOT EXISTS "manufacturer" character varying(255)`);
+        await queryRunner.query(`ALTER TABLE "core"."products" ADD IF NOT EXISTS "pack_size" integer`);
+        await queryRunner.query(`ALTER TABLE "core"."order_items" ADD IF NOT EXISTS "pack_quantity" numeric(18,4)`);
+        await queryRunner.query(`ALTER TABLE "core"."order_items" ADD IF NOT EXISTS "pack_size_snapshot" integer`);
     }
 
     public async down(queryRunner: QueryRunner): Promise<void> {
