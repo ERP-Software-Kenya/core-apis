@@ -23,8 +23,10 @@ import { SyncUserCommand } from './commands/sync-user';
 import { OnboardOrganizationCommand, OnboardOrganizationResult } from './commands/onboard-organization';
 import { GetMeQuery, MeResult } from './queries/get-me';
 import { GetTokenQuery } from './queries/get-token';
+import { GetDevTokenQuery } from './queries/get-dev-token';
 import {
   GetTokenRequest,
+  GetDevTokenRequest,
   OnboardOrganizationRequest,
   MeResponse,
   SyncUserResponse,
@@ -62,6 +64,26 @@ export class AuthController {
     const query   = new GetTokenQuery();
     query.userId  = body.userId;
     const token = await this.mediator.execute<GetTokenQuery, string>(query);
+    return { token };
+  }
+
+  // ── POST /auth/dev-login (dev/local/test only) ──────────────────────────────
+  @ApiOperation({
+    summary: 'Sign in with email + password and get a JWT (development only)',
+    description: 'Creates a Clerk session for the user and returns a signed JWT. Disabled in production.',
+  })
+  @ApiCreatedResponse({ type: TokenResponse })
+  @HttpCode(HttpStatus.CREATED)
+  @AllowAnonymous()
+  @Post('dev-login')
+  public async devLogin(@Body() body: GetDevTokenRequest): Promise<TokenResponse> {
+    if (!isDev() && !isLocal() && !isTest()) {
+      throw new ForbiddenException('Dev login is disabled outside development');
+    }
+    const query    = new GetDevTokenQuery();
+    query.email    = body.email;
+    query.password = body.password;
+    const token = await this.mediator.execute<GetDevTokenQuery, string>(query);
     return { token };
   }
 

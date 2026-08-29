@@ -31,7 +31,7 @@ export class DownloadReportPdfQueryHandler implements IQueryHandler<DownloadRepo
       const rows = await this.dataSource.query(
         `SELECT report_data FROM core.report_generation_logs WHERE id = $1`,
         [query.id],
-      ) as Array<{ report_data: Record<string, unknown> | null }>;
+      );
       reportData = rows[0]?.report_data ?? undefined;
     }
 

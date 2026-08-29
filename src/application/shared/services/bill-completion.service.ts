@@ -12,6 +12,8 @@ import {
   CUSTOMER_TYPE_RULE_REPO,
   INVENTORY_REPO,
   STOCK_MOVEMENT_REPO,
+  UNPUBLISHED_STOCK_REPO,
+  UNPUBLISHED_STOCK_MOVEMENT_REPO,
 } from '../../constants';
 import { IBillItemRepo, IBillRepo } from '../../modules/bills';
 import { Bill, BillItem } from '../../modules/bills/domain';
@@ -25,13 +27,16 @@ import {
 } from '../../modules/credit-approvals';
 import { IInventoryRepo } from '../../modules/inventory';
 import { IStockMovementRepo } from '../../modules/stock-movements';
-import { StockMovementInput } from '../interfaces/i-stock-operation.interface';
+import { IUnpublishedStockRepo } from '../../modules/unpublished-stock/i-unpublished-stock.repo';
+import { IUnpublishedStockMovementRepo } from '../../modules/unpublished-stock/i-unpublished-stock-movement.repo';
+import { StockMovementInput, UnpublishedStockMovementInput } from '../interfaces/i-stock-operation.interface';
 import {
   EBillStatus,
   ECommissionStatus,
   ECreditApprovalStatus,
   ECreditTransactionType,
   EMovementType,
+  EUnpublishedMovementType,
   ESaleType,
 } from '../../../infrastructure/persistence/entities';
 
@@ -54,6 +59,8 @@ export class BillCompletionService {
     @Inject(BILL_ITEM_REPO) private readonly itemRepo: IBillItemRepo,
     @Inject(INVENTORY_REPO) private readonly inventoryRepo: IInventoryRepo,
     @Inject(STOCK_MOVEMENT_REPO) private readonly movementRepo: IStockMovementRepo,
+    @Inject(UNPUBLISHED_STOCK_REPO) private readonly unpublishedStockRepo: IUnpublishedStockRepo,
+    @Inject(UNPUBLISHED_STOCK_MOVEMENT_REPO) private readonly unpublishedMovementRepo: IUnpublishedStockMovementRepo,
     @Inject(CUSTOMER_REPO) private readonly customerRepo: ICustomerRepo,
     @Inject(CUSTOMER_TYPE_RULE_REPO) private readonly typeRuleRepo: ICustomerTypeRuleRepo,
     @Inject(CUSTOMER_CREDIT_TRANSACTION_REPO) private readonly creditTxnRepo: ICustomerCreditTransactionRepo,
@@ -194,32 +201,31 @@ export class BillCompletionService {
     manager: EntityManager,
   ): Promise<void> {
     for (const item of items) {
-      const inv = await this.inventoryRepo.findByOrgLocationProductAsync(
+      const unpublished = await this.unpublishedStockRepo.findByOrgLocationProductAsync(
         bill.organizationId,
         bill.locationId,
         item.productId,
         manager,
       );
-      if (!inv) {
+      if (!unpublished) {
         throw new BadRequestException(`No black stock for product ${item.productId} at this location — add black stock first`);
       }
-      const before = Number(inv.quantityUnpublished);
-      const updated = await this.inventoryRepo.deductUnpublishedStockAsync(inv.id, Number(item.quantity), manager);
-      const movement = Object.assign(new StockMovementInput(), {
-        inventoryId: inv.id,
-        locationId: bill.locationId,
-        productId: item.productId,
-        performedById,
-        referenceId: bill.id,
-        referenceType: 'bill',
-        movementType: EMovementType.StockOut,
-        quantity: Number(item.quantity),
-        quantityBefore: before,
-        quantityAfter: Number(updated.quantityUnpublished),
-        isUnpublishedEntry: true,
-        notes: `Black sale ${bill.billNumber}`,
-      });
-      await this.movementRepo.createWithManagerAsync(movement, manager);
+      const before  = Number(unpublished.quantityOnHand);
+      const updated = await this.unpublishedStockRepo.deductStockAsync(unpublished.id, Number(item.quantity), manager);
+      await this.unpublishedMovementRepo.createWithManagerAsync(
+        Object.assign(new UnpublishedStockMovementInput(), {
+          unpublishedStockId: unpublished.id,
+          locationId:         bill.locationId,
+          productId:          item.productId,
+          performedById,
+          movementType:       EUnpublishedMovementType.StockOut,
+          quantity:           Number(item.quantity),
+          quantityBefore:     before,
+          quantityAfter:      Number(updated.quantityOnHand),
+          notes:              `Black sale ${bill.billNumber}`,
+        }),
+        manager,
+      );
     }
   }
 
