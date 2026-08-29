@@ -90,4 +90,8 @@ export enum ECoreTableName {
 
   // ─── Communication ────────────────────────────────────────────────────────────
   EmailTemplates        = 'email_templates',
+
+  // ─── Field App ───────────────────────────────────────────────────────────────
+  TripStops             = 'trip_stops',
+  UserDeviceTokens      = 'user_device_tokens',
 }

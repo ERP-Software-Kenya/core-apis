@@ -79,6 +79,8 @@ import { AlertEntity } from './alert.entity';
 import { EmailTemplateEntity } from './email-template.entity';
 import { QuickChargeEntity } from './quick-charge.entity';
 import { CustomerTypeRuleEntity } from './customer-type-rule.entity';
+import { TripStopEntity } from './trip-stop.entity';
+import { UserDeviceTokenEntity } from './user-device-token.entity';
 
 export * from './location.entity';
 export * from './product-log.entity';
@@ -163,6 +165,8 @@ export * from './alert.entity';
 export * from './email-template.entity';
 export * from './quick-charge.entity';
 export * from './customer-type-rule.entity';
+export * from './trip-stop.entity';
+export * from './user-device-token.entity';
 
 export default [
   LocationEntity,
@@ -245,4 +249,6 @@ export default [
   EmailTemplateEntity,
   QuickChargeEntity,
   CustomerTypeRuleEntity,
+  TripStopEntity,
+  UserDeviceTokenEntity,
 ];

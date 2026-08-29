@@ -80,3 +80,7 @@ export const ALERT_REPO                    = 'ALERT_REPO';
 export const EMAIL_TEMPLATE_REPO           = 'IEmailTemplateRepo';
 export const QUICK_CHARGE_REPO             = 'QUICK_CHARGE_REPO';
 export const CUSTOMER_TYPE_RULE_REPO       = 'CUSTOMER_TYPE_RULE_REPO';
+
+// ─── Field App ───────────────────────────────────────────────────────────────
+export const TRIP_STOP_REPO                = 'TRIP_STOP_REPO';
+export const USER_DEVICE_TOKEN_REPO        = 'USER_DEVICE_TOKEN_REPO';

@@ -63,6 +63,8 @@ import {
   EmailTemplateRepo,
   QuickChargeRepo,
   CustomerTypeRuleRepo,
+  TripStopRepo,
+  UserDeviceTokenRepo,
 } from './persistence';
 
 import {
@@ -121,6 +123,8 @@ import {
   EMAIL_TEMPLATE_REPO,
   QUICK_CHARGE_REPO,
   CUSTOMER_TYPE_RULE_REPO,
+  TRIP_STOP_REPO,
+  USER_DEVICE_TOKEN_REPO,
 } from '../application/constants';
 
 @Module({})
@@ -203,6 +207,8 @@ export class InfrastructureModule {
         { provide: EMAIL_TEMPLATE_REPO, useClass: EmailTemplateRepo },
         { provide: QUICK_CHARGE_REPO, useClass: QuickChargeRepo },
         { provide: CUSTOMER_TYPE_RULE_REPO, useClass: CustomerTypeRuleRepo },
+        { provide: TRIP_STOP_REPO, useClass: TripStopRepo },
+        { provide: USER_DEVICE_TOKEN_REPO, useClass: UserDeviceTokenRepo },
       ],
       exports: [
         EntityMapperProfile,
@@ -261,6 +267,8 @@ export class InfrastructureModule {
         EMAIL_TEMPLATE_REPO,
         QUICK_CHARGE_REPO,
         CUSTOMER_TYPE_RULE_REPO,
+        TRIP_STOP_REPO,
+        USER_DEVICE_TOKEN_REPO,
       ],
     };
   }
