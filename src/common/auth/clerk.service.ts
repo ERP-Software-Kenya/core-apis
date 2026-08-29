@@ -15,6 +15,16 @@ export class ClerkService implements IClerkService {
     this.client = createClerkClient({ secretKey: clerkCfg.secretKey });
   }
 
+  public async signInWithEmailPasswordAsync(email: string, password: string): Promise<string> {
+    const users = await this.client.users.getUserList({ emailAddress: [email] });
+    if (!users.data.length) throw new NotFoundException(`No user found with email ${email}`);
+    const user = users.data[0];
+    await this.client.users.verifyPassword({ userId: user.id, password });
+    const session = await this.client.sessions.createSession({ userId: user.id });
+    const tokenResult = await this.client.sessions.getToken(session.id);
+    return tokenResult.jwt;
+  }
+
   public async getTokenForUser(userId: string): Promise<string> {
     const result = await this.client.sessions.getSessionList({ userId, status: 'active' });
     if (!result.data.length) {

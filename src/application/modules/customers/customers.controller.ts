@@ -173,7 +173,7 @@ export class CustomersController {
   ): Promise<BillsPagedResponse> {
     const customer = await this.mediator.execute<GetCustomerQuery, Customer>(Object.assign(new GetCustomerQuery(), { id }));
     assertOrgOwnership(user, customer.organizationId, 'Customer');
-    const isAdmin = user.roles?.some((r) => [ERole.OrgAdmin, ERole.OrgManager, ERole.SuperAdmin].includes(r as ERole));
+    const isAdmin = user.roles?.some((r) => [ERole.OrgAdmin, ERole.OrgManager, ERole.SuperAdmin].includes(r));
     const query = new ListCustomerBillsQuery();
     query.customerId     = id;
     query.organizationId = customer.organizationId;
@@ -219,7 +219,7 @@ export class CustomersController {
     @CurrentUser() user: AuthenticatedUser,
   ): Promise<CustomerResponse> {
     if (body.type === 'adjustment') {
-      const isAdmin = user.roles?.some((r) => ADMIN_ROLES.includes(r as ERole));
+      const isAdmin = user.roles?.some((r) => ADMIN_ROLES.includes(r));
       if (!isAdmin) throw new ForbiddenException('Only managers can create credit adjustments');
     }
     const customer = await this.mediator.execute<GetCustomerQuery, Customer>(Object.assign(new GetCustomerQuery(), { id }));
