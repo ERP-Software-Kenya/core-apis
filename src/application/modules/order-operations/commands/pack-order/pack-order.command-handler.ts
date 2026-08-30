@@ -1,41 +1,39 @@
 import { Inject } from '@nestjs/common';
 import { ICommandHandler } from '@nestjs/cqrs';
 import { InjectPinoLogger, PinoLogger } from 'nestjs-pino';
-import { DataSource } from 'typeorm';
 import { CommandHandlerStrict } from '../../../../../common';
-import { RpcBadRequestException } from '../../../../../common/exceptions/base/rpc-bad-request.exception';
 import { IPushNotificationService, PUSH_NOTIFICATION_SERVICE } from '../../../../../common';
-import { OrderEntity } from '../../../../../infrastructure/persistence/entities';
-import { EOrderStatus } from '../../../../shared/enums/e-order-status';
 import { CentrifugalService } from '../../../../../common/centrifugal';
+import { ORDER_REPO } from '../../../../../application/constants';
+import { IOrderRepo } from '../../../orders';
+import { Order } from '../../../orders/domain';
+import { EOrderStatus } from '../../../../shared/enums/e-order-status';
+import { OrderNotFoundException, OrderNotClaimedByUserException } from '../../exceptions';
 import { PackOrderCommand } from './pack-order.command';
 
 @CommandHandlerStrict(PackOrderCommand)
-export class PackOrderCommandHandler implements ICommandHandler<PackOrderCommand, OrderEntity> {
+export class PackOrderCommandHandler implements ICommandHandler<PackOrderCommand, Order> {
   public constructor(
-    private readonly dataSource: DataSource,
+    @Inject(ORDER_REPO) private readonly orderRepo: IOrderRepo,
     private readonly centrifugal: CentrifugalService,
     @Inject(PUSH_NOTIFICATION_SERVICE) private readonly pushService: IPushNotificationService,
     @InjectPinoLogger(PackOrderCommandHandler.name) private readonly logger: PinoLogger,
   ) {}
 
-  public async execute(command: PackOrderCommand): Promise<OrderEntity> {
+  public async execute(command: PackOrderCommand): Promise<Order> {
     this.logger.info(`Executing Command '${PackOrderCommand.name}' orderId=${command.orderId}`);
 
-    const orderRepo = this.dataSource.getRepository(OrderEntity);
-    const order = await orderRepo.findOneOrFail({ where: { id: command.orderId } });
+    const order = await this.orderRepo.getAsync(command.orderId);
+    if (!order) throw new OrderNotFoundException();
 
     if (order.claimedByUserId !== command.packerUserId) {
-      throw new RpcBadRequestException('Order was not claimed by this user');
+      throw new OrderNotClaimedByUserException();
     }
 
-    await orderRepo.update(command.orderId, {
-      status: EOrderStatus.Packed,
-      packedByUserId: command.packerUserId,
-      packedAt: new Date(),
-    });
-
-    const updated = await orderRepo.findOneOrFail({ where: { id: command.orderId } });
+    order.status = EOrderStatus.Packed;
+    order.packedByUserId = command.packerUserId;
+    order.packedAt = new Date();
+    const updated = await this.orderRepo.updateAsync(order);
 
     await this.pushService
       .broadcastToOrgAsync(

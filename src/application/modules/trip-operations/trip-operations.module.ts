@@ -5,6 +5,7 @@ import { TripOperationsController } from './trip-operations.controller';
 import { TripOperationCommandHandlers } from './commands';
 import { TripOperationQueryHandlers } from './queries';
 import { TripOperationsMailService } from './mail/trip-operations-mail.service';
+import { TripStopMapperProfile } from './mapper/trip-stop.mapper-profile';
 import { MailOptions } from '../../../common';
 import { ICoreApiConfig } from '../../../configuration';
 
@@ -21,6 +22,7 @@ import { ICoreApiConfig } from '../../../configuration';
       inject: [ConfigService],
     },
     TripOperationsMailService,
+    TripStopMapperProfile,
     ...TripOperationCommandHandlers,
     ...TripOperationQueryHandlers,
   ],

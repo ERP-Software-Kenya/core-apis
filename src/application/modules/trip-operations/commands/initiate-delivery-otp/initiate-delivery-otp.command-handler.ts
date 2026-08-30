@@ -1,13 +1,17 @@
+import { Inject } from '@nestjs/common';
 import { ICommandHandler } from '@nestjs/cqrs';
 import { InjectPinoLogger, PinoLogger } from 'nestjs-pino';
-import { DataSource } from 'typeorm';
 import * as bcrypt from 'bcrypt';
 import * as crypto from 'crypto';
 import { CommandHandlerStrict } from '../../../../../common';
-import { RpcBadRequestException } from '../../../../../common/exceptions/base/rpc-bad-request.exception';
-import { RpcNotFoundException } from '../../../../../common/exceptions/base/rpc-not-found.exception';
-import { TripStopEntity } from '../../../../../infrastructure/persistence/entities';
+import { TRIP_STOP_REPO } from '../../../../../application/constants';
+import { ITripStopRepo } from '../../repositories/i-trip-stop.repo';
 import { TripOperationsMailService } from '../../mail/trip-operations-mail.service';
+import {
+  TripStopNotFoundException,
+  OtpCooldownException,
+  CustomerEmailUnavailableException,
+} from '../../exceptions';
 import { InitiateDeliveryOtpCommand, InitiateDeliveryOtpResult } from './initiate-delivery-otp.command';
 
 const OTP_EXPIRY_MINUTES = 10;
@@ -25,7 +29,7 @@ function maskEmail(email: string): string {
 export class InitiateDeliveryOtpCommandHandler
   implements ICommandHandler<InitiateDeliveryOtpCommand, InitiateDeliveryOtpResult> {
   public constructor(
-    private readonly dataSource: DataSource,
+    @Inject(TRIP_STOP_REPO) private readonly stopRepo: ITripStopRepo,
     private readonly mailService: TripOperationsMailService,
     @InjectPinoLogger(InitiateDeliveryOtpCommandHandler.name) private readonly logger: PinoLogger,
   ) {}
@@ -33,34 +37,27 @@ export class InitiateDeliveryOtpCommandHandler
   public async execute(command: InitiateDeliveryOtpCommand): Promise<InitiateDeliveryOtpResult> {
     this.logger.info(`Executing Command '${InitiateDeliveryOtpCommand.name}' stopId=${command.stopId}`);
 
-    const stopRepo = this.dataSource.getRepository(TripStopEntity);
-    const stop = await stopRepo.findOne({
-      where: { id: command.stopId, tripId: command.tripId },
-      relations: ['order', 'order.customer'],
-    });
-
-    if (!stop) {
-      throw new RpcNotFoundException('Trip stop not found');
-    }
+    const stop = await this.stopRepo.findByTripAndStopAsync(command.tripId, command.stopId);
+    if (!stop) throw new TripStopNotFoundException();
 
     if (stop.otpExpiresAt) {
       const sentAt = new Date(stop.otpExpiresAt.getTime() - OTP_EXPIRY_MINUTES * 60 * 1000);
       const elapsedSeconds = (Date.now() - sentAt.getTime()) / 1000;
       if (elapsedSeconds < RESEND_COOLDOWN_SECONDS) {
-        throw new RpcBadRequestException('OTP was recently sent. Please wait before requesting again');
+        throw new OtpCooldownException();
       }
+    }
+
+    const customerEmail = await this.stopRepo.findCustomerEmailAsync(command.tripId, command.stopId);
+    if (!customerEmail) {
+      throw new CustomerEmailUnavailableException();
     }
 
     const otp = crypto.randomInt(100000, 999999).toString().padStart(6, '0');
     const otpHash = await bcrypt.hash(otp, BCRYPT_ROUNDS);
     const otpExpiresAt = new Date(Date.now() + OTP_EXPIRY_MINUTES * 60 * 1000);
 
-    await stopRepo.update(stop.id, { otpCode: otpHash, otpExpiresAt });
-
-    const customerEmail = stop.order?.customer?.email;
-    if (!customerEmail) {
-      throw new RpcBadRequestException('Customer email not available for OTP delivery');
-    }
+    await this.stopRepo.updateOtpAsync(stop.id, otpHash, otpExpiresAt);
 
     await this.mailService
       .sendDeliveryOtpAsync(customerEmail, otp, OTP_EXPIRY_MINUTES)

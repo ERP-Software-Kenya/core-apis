@@ -65,6 +65,7 @@ import {
   CustomerTypeRuleRepo,
   TripStopRepo,
   UserDeviceTokenRepo,
+  VehicleLocationRepo,
 } from './persistence';
 
 import {
@@ -125,6 +126,7 @@ import {
   CUSTOMER_TYPE_RULE_REPO,
   TRIP_STOP_REPO,
   USER_DEVICE_TOKEN_REPO,
+  VEHICLE_LOCATION_REPO,
 } from '../application/constants';
 
 @Module({})
@@ -209,6 +211,7 @@ export class InfrastructureModule {
         { provide: CUSTOMER_TYPE_RULE_REPO, useClass: CustomerTypeRuleRepo },
         { provide: TRIP_STOP_REPO, useClass: TripStopRepo },
         { provide: USER_DEVICE_TOKEN_REPO, useClass: UserDeviceTokenRepo },
+        { provide: VEHICLE_LOCATION_REPO, useClass: VehicleLocationRepo },
       ],
       exports: [
         EntityMapperProfile,
@@ -269,6 +272,7 @@ export class InfrastructureModule {
         CUSTOMER_TYPE_RULE_REPO,
         TRIP_STOP_REPO,
         USER_DEVICE_TOKEN_REPO,
+        VEHICLE_LOCATION_REPO,
       ],
     };
   }

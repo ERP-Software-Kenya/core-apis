@@ -1,58 +1,31 @@
 import { Inject } from '@nestjs/common';
 import { ICommandHandler } from '@nestjs/cqrs';
 import { InjectPinoLogger, PinoLogger } from 'nestjs-pino';
-import { DataSource } from 'typeorm';
 import { CommandHandlerStrict } from '../../../../../common';
 import { IPushNotificationService, PUSH_NOTIFICATION_SERVICE } from '../../../../../common';
 import { CentrifugalService } from '../../../../../common/centrifugal';
-import { TripEntity, TripStopEntity, OrderEntity } from '../../../../../infrastructure/persistence/entities';
-import { ETripStatus } from '../../../../shared/enums/e-trip-status';
-import { ETripStopStatus } from '../../../../shared/enums/e-trip-stop-status';
-import { EOrderStatus } from '../../../../shared/enums/e-order-status';
+import { TRIP_REPO } from '../../../../../application/constants';
+import { ITripRepo } from '../../../trips/repositories/i-trip.repo';
+import { Trip } from '../../../trips/domain';
 import { CreateMultiStopTripCommand } from './create-multi-stop-trip.command';
 
 @CommandHandlerStrict(CreateMultiStopTripCommand)
-export class CreateMultiStopTripCommandHandler implements ICommandHandler<CreateMultiStopTripCommand, TripEntity> {
+export class CreateMultiStopTripCommandHandler implements ICommandHandler<CreateMultiStopTripCommand, Trip> {
   public constructor(
-    private readonly dataSource: DataSource,
+    @Inject(TRIP_REPO) private readonly tripRepo: ITripRepo,
     private readonly centrifugal: CentrifugalService,
     @Inject(PUSH_NOTIFICATION_SERVICE) private readonly pushService: IPushNotificationService,
     @InjectPinoLogger(CreateMultiStopTripCommandHandler.name) private readonly logger: PinoLogger,
   ) {}
 
-  public async execute(command: CreateMultiStopTripCommand): Promise<TripEntity> {
+  public async execute(command: CreateMultiStopTripCommand): Promise<Trip> {
     this.logger.info(`Executing Command '${CreateMultiStopTripCommand.name}' driverId=${command.driverId}`);
 
-    const tripNumber = `TRP-${Date.now()}`;
-
-    const trip = await this.dataSource.transaction(async (manager) => {
-      const newTrip = manager.create(TripEntity, {
-        tripNumber,
-        vehicleId: command.vehicleId,
-        driverId: command.driverId,
-        customerId: command.stops[0]?.orderId ?? command.driverId,
-        pickupLocation: 'warehouse',
-        dropLocation: 'multi-stop',
-        startDatetime: new Date(),
-        tripStatus: ETripStatus.Scheduled,
-        priority: 'medium',
-      });
-      const savedTrip = await manager.save(TripEntity, newTrip);
-
-      for (const stopInput of command.stops) {
-        const stop = manager.create(TripStopEntity, {
-          tripId: savedTrip.id,
-          orderId: stopInput.orderId,
-          sequence: stopInput.sequence,
-          status: ETripStopStatus.Pending,
-        });
-        await manager.save(TripStopEntity, stop);
-
-        await manager.update(OrderEntity, stopInput.orderId, { status: EOrderStatus.InTransit });
-      }
-
-      return savedTrip;
-    });
+    const trip = await this.tripRepo.createTripWithStopsAsync(
+      command.driverId,
+      command.vehicleId,
+      command.stops,
+    );
 
     await this.centrifugal
       .publish(`user_${command.driverId}`, {

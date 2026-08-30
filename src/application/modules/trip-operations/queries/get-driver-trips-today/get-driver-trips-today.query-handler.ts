@@ -1,8 +1,10 @@
+import { Inject } from '@nestjs/common';
 import { IQueryHandler } from '@nestjs/cqrs';
 import { InjectPinoLogger, PinoLogger } from 'nestjs-pino';
-import { DataSource } from 'typeorm';
 import { QueryHandlerStrict } from '../../../../../common';
-import { TripEntity, TripStopEntity } from '../../../../../infrastructure/persistence/entities';
+import { TRIP_REPO, TRIP_STOP_REPO } from '../../../../../application/constants';
+import { ITripRepo } from '../../../trips/repositories/i-trip.repo';
+import { ITripStopRepo } from '../../repositories/i-trip-stop.repo';
 import { ETripStatus } from '../../../../shared/enums/e-trip-status';
 import { GetDriverTripsTodayQuery } from './get-driver-trips-today.query';
 
@@ -18,7 +20,8 @@ export interface DriverTripItem {
 export class GetDriverTripsTodayQueryHandler
   implements IQueryHandler<GetDriverTripsTodayQuery, DriverTripItem[]> {
   public constructor(
-    private readonly dataSource: DataSource,
+    @Inject(TRIP_REPO) private readonly tripRepo: ITripRepo,
+    @Inject(TRIP_STOP_REPO) private readonly stopRepo: ITripStopRepo,
     @InjectPinoLogger(GetDriverTripsTodayQueryHandler.name) private readonly logger: PinoLogger,
   ) {}
 
@@ -30,23 +33,16 @@ export class GetDriverTripsTodayQueryHandler
     const todayEnd = new Date();
     todayEnd.setHours(23, 59, 59, 999);
 
-    const trips = await this.dataSource
-      .getRepository(TripEntity)
-      .createQueryBuilder('trip')
-      .where('trip.driverId = :driverId', { driverId: query.driverId })
-      .andWhere('trip.startDatetime >= :todayStart', { todayStart })
-      .andWhere('trip.startDatetime <= :todayEnd', { todayEnd })
-      .andWhere('trip.tripStatus IN (:...statuses)', {
-        statuses: [ETripStatus.Scheduled, ETripStatus.InTransit],
-      })
-      .getMany();
+    const trips = await this.tripRepo.findByDriverAndDateAsync(
+      query.driverId,
+      todayStart,
+      todayEnd,
+      [ETripStatus.Scheduled, ETripStatus.InTransit],
+    );
 
     const results: DriverTripItem[] = [];
     for (const trip of trips) {
-      const stopCount = await this.dataSource
-        .getRepository(TripStopEntity)
-        .count({ where: { tripId: trip.id } });
-
+      const stopCount = await this.stopRepo.countByTripAsync(trip.id);
       results.push({
         id: trip.id,
         tripNumber: trip.tripNumber,

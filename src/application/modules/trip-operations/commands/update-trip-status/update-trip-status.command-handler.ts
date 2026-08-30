@@ -1,24 +1,28 @@
+import { Inject } from '@nestjs/common';
 import { ICommandHandler } from '@nestjs/cqrs';
 import { InjectPinoLogger, PinoLogger } from 'nestjs-pino';
-import { DataSource } from 'typeorm';
 import { CommandHandlerStrict } from '../../../../../common';
-import { TripEntity } from '../../../../../infrastructure/persistence/entities';
+import { TRIP_REPO } from '../../../../../application/constants';
+import { ITripRepo } from '../../../trips/repositories/i-trip.repo';
+import { Trip } from '../../../trips/domain';
+import { TripNotFoundException } from '../../exceptions';
 import { UpdateTripStatusCommand } from './update-trip-status.command';
 
 @CommandHandlerStrict(UpdateTripStatusCommand)
-export class UpdateTripStatusCommandHandler implements ICommandHandler<UpdateTripStatusCommand, TripEntity> {
+export class UpdateTripStatusCommandHandler implements ICommandHandler<UpdateTripStatusCommand, Trip> {
   public constructor(
-    private readonly dataSource: DataSource,
+    @Inject(TRIP_REPO) private readonly tripRepo: ITripRepo,
     @InjectPinoLogger(UpdateTripStatusCommandHandler.name) private readonly logger: PinoLogger,
   ) {}
 
-  public async execute(command: UpdateTripStatusCommand): Promise<TripEntity> {
-    this.logger.info(`Executing Command '${UpdateTripStatusCommand.name}' tripId=${command.tripId} status=${command.status}`);
+  public async execute(command: UpdateTripStatusCommand): Promise<Trip> {
+    this.logger.info(
+      `Executing Command '${UpdateTripStatusCommand.name}' tripId=${command.tripId} status=${command.status}`,
+    );
 
-    await this.dataSource
-      .getRepository(TripEntity)
-      .update(command.tripId, { tripStatus: command.status });
-
-    return this.dataSource.getRepository(TripEntity).findOneOrFail({ where: { id: command.tripId } });
+    const trip = await this.tripRepo.getAsync(command.tripId);
+    if (!trip) throw new TripNotFoundException();
+    trip.tripStatus = command.status;
+    return this.tripRepo.updateAsync(trip);
   }
 }

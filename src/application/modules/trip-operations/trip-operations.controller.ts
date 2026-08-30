@@ -11,7 +11,7 @@ import {
   requireOrganizationId,
 } from '../../../common';
 import { ERole } from '../../../infrastructure';
-import { TripEntity } from '../../../infrastructure/persistence/entities';
+import { Trip } from '../trips/domain';
 import {
   CreateMultiStopTripCommand,
   UpdateTripStatusCommand,
@@ -40,7 +40,7 @@ import { DriverTripResponse, FleetLiveLocationResponse, OtpInitiatedResponse } f
 @ApiBearerAuth()
 @ApiTags('Trip Operations')
 @UseGuards(ClerkAuthGuard, RolesGuard)
-@Controller({ version: '1' })
+@Controller({ path: 'field-ops', version: '1' })
 export class TripOperationsController {
   public constructor(
     protected readonly mediator: CqrsMediator,
@@ -62,7 +62,7 @@ export class TripOperationsController {
     command.vehicleId = body.vehicleId;
     command.organizationId = organizationId;
     command.stops = body.stops;
-    await this.mediator.execute<CreateMultiStopTripCommand, TripEntity>(command);
+    await this.mediator.execute<CreateMultiStopTripCommand, Trip>(command);
     return true;
   }
 
@@ -103,7 +103,7 @@ export class TripOperationsController {
     command.tripId = id;
     command.driverId = user.dbUserId ?? '';
     command.status = body.status;
-    await this.mediator.execute<UpdateTripStatusCommand, TripEntity>(command);
+    await this.mediator.execute<UpdateTripStatusCommand, Trip>(command);
     return true;
   }
 

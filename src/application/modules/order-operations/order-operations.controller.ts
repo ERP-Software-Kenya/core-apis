@@ -22,7 +22,6 @@ import { OrderQueueItem } from './queries/get-order-queue/get-order-queue.query-
 import { ClaimOrderRequest } from './models/requests/claim-order.request';
 import { PackOrderRequest } from './models/requests/pack-order.request';
 import { OrderQueueItemResponse } from './models/responses/order-queue-item.response';
-import { OrderEntity } from '../../../infrastructure/persistence/entities';
 
 @ApiBearerAuth()
 @ApiTags('Warehouse Order Operations')
@@ -74,7 +73,7 @@ export class OrderOperationsController {
     command.orderId = id;
     command.pickerUserId = body.pickerUserId;
     command.organizationId = organizationId;
-    await this.mediator.execute<ClaimOrderCommand, OrderEntity>(command);
+    await this.mediator.execute<ClaimOrderCommand, Order>(command);
     return true;
   }
 
@@ -94,7 +93,7 @@ export class OrderOperationsController {
     command.packerUserId = body.packerUserId;
     command.organizationId = organizationId;
     command.items = body.items;
-    await this.mediator.execute<PackOrderCommand, OrderEntity>(command);
+    await this.mediator.execute<PackOrderCommand, Order>(command);
     return true;
   }
 

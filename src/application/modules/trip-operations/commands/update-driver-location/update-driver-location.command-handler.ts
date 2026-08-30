@@ -1,15 +1,19 @@
+import { Inject } from '@nestjs/common';
 import { ICommandHandler } from '@nestjs/cqrs';
 import { InjectPinoLogger, PinoLogger } from 'nestjs-pino';
-import { DataSource } from 'typeorm';
 import { CommandHandlerStrict } from '../../../../../common';
 import { CentrifugalService } from '../../../../../common/centrifugal';
-import { TripEntity, VehicleLocationEntity } from '../../../../../infrastructure/persistence/entities';
+import { TRIP_REPO, VEHICLE_LOCATION_REPO } from '../../../../../application/constants';
+import { ITripRepo } from '../../../trips/repositories/i-trip.repo';
+import { IVehicleLocationRepo } from '../../../trips/repositories/i-vehicle-location.repo';
+import { TripNotFoundException } from '../../exceptions';
 import { UpdateDriverLocationCommand } from './update-driver-location.command';
 
 @CommandHandlerStrict(UpdateDriverLocationCommand)
 export class UpdateDriverLocationCommandHandler implements ICommandHandler<UpdateDriverLocationCommand, void> {
   public constructor(
-    private readonly dataSource: DataSource,
+    @Inject(TRIP_REPO) private readonly tripRepo: ITripRepo,
+    @Inject(VEHICLE_LOCATION_REPO) private readonly vehicleLocationRepo: IVehicleLocationRepo,
     private readonly centrifugal: CentrifugalService,
     @InjectPinoLogger(UpdateDriverLocationCommandHandler.name) private readonly logger: PinoLogger,
   ) {}
@@ -17,28 +21,14 @@ export class UpdateDriverLocationCommandHandler implements ICommandHandler<Updat
   public async execute(command: UpdateDriverLocationCommand): Promise<void> {
     this.logger.info(`Executing Command '${UpdateDriverLocationCommand.name}' tripId=${command.tripId}`);
 
-    const trip = await this.dataSource
-      .getRepository(TripEntity)
-      .findOneOrFail({ where: { id: command.tripId } });
-
-    const locationRepo = this.dataSource.getRepository(VehicleLocationEntity);
-    const existing = await locationRepo.findOne({ where: { vehicleId: trip.vehicleId } });
-
-    if (existing) {
-      await locationRepo.update(existing.id, {
-        latitude: command.latitude,
-        longitude: command.longitude,
-        gpsTime: new Date(),
-      });
-    } else {
-      const newLocation = locationRepo.create({
-        vehicleId: trip.vehicleId,
-        latitude: command.latitude,
-        longitude: command.longitude,
-        gpsTime: new Date(),
-      });
-      await locationRepo.save(newLocation);
-    }
+    const trip = await this.tripRepo.getAsync(command.tripId);
+    if (!trip) throw new TripNotFoundException();
+    await this.vehicleLocationRepo.upsertByVehicleIdAsync(
+      trip.vehicleId,
+      command.latitude,
+      command.longitude,
+      new Date(),
+    );
 
     await this.centrifugal
       .publish(`org_${command.organizationId}`, {
