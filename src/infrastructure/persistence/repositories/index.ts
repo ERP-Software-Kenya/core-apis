@@ -53,3 +53,6 @@ export * from './vehicle-expense.repo';
 export * from './email-template.repo';
 export * from './quick-charge.repo';
 export * from './customer-type-rule.repo';
+export * from './trip-stop.repo';
+export * from './user-device-token.repo';
+export * from './vehicle-location.repo';

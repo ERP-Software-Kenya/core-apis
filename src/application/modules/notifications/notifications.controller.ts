@@ -4,7 +4,7 @@ import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Post, Put, 
 import { ApiBearerAuth, ApiCreatedResponse, ApiOkResponse, ApiOperation, ApiParam, ApiTags } from '@nestjs/swagger';
 import { InjectPinoLogger, PinoLogger } from 'nestjs-pino';
 import { AuthenticatedUser, CentrifugalService, ClerkAuthGuard, CqrsMediator, CurrentUser, IPageable, ResourceNotOwnedByOrgException, requireDbUserId, requireOrganizationId } from '../../../common';
-import { CreateNotificationCommand, DeleteNotificationCommand, MarkAllNotificationsReadCommand, UpdateNotificationCommand } from './commands';
+import { CreateNotificationCommand, DeleteNotificationCommand, MarkAllNotificationsReadCommand, UpdateNotificationCommand, RegisterDeviceCommand } from './commands';
 import { Notification } from './domain';
 import { CreateNotificationRequest, SearchNotificationsRequest, ListNotificationsRequest, NotificationResponse, NotificationsPagedResponse, UpdateNotificationRequest } from './models';
 import { GetNotificationQuery, GetUnreadNotificationCountQuery, ListNotificationsQuery, SearchNotificationsQuery } from './queries';
@@ -148,5 +148,21 @@ export class NotificationsController {
     const command = new DeleteNotificationCommand();
     command.id    = id;
     return this.mediator.execute<DeleteNotificationCommand, boolean>(command);
+  }
+
+  @ApiOperation({ summary: 'Register device push token for the current user' })
+  @ApiOkResponse({ schema: { type: 'object', properties: { ok: { type: 'boolean' } } } })
+  @HttpCode(HttpStatus.OK)
+  @Post('register-device')
+  public async registerDevice(
+    @Body() body: { token: string; platform: string },
+    @CurrentUser() user: AuthenticatedUser,
+  ): Promise<{ ok: boolean }> {
+    const command = new RegisterDeviceCommand();
+    command.userId = requireDbUserId(user);
+    command.token = body.token;
+    command.platform = body.platform;
+    await this.mediator.execute<RegisterDeviceCommand, boolean>(command);
+    return { ok: true };
   }
 }
