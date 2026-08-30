@@ -40,6 +40,8 @@ import {
 } from './models';
 import { ListOrganizationsQuery } from '../organizations/queries';
 import { Organization } from '../organizations/domain';
+import { ListRolesQuery } from '../roles/queries';
+import { Role } from '../roles/domain';
 import { User } from '../users/domain';
 
 @ApiBearerAuth()
@@ -195,6 +197,23 @@ export class AuthController {
     const query = new ListOrganizationsQuery();
     const orgs = await this.mediator.execute<ListOrganizationsQuery, Organization[]>(query);
     return orgs.map((org) => ({ id: org.id, name: org.name ?? '' }));
+  }
+
+  // ── GET /auth/dev/roles ─────────────────────────────────────────────────────
+  @ApiOperation({ summary: 'List picker and driver roles for mobile staff signup (dev only)' })
+  @ApiOkResponse({ schema: { type: 'array', items: { properties: { id: { type: 'string' }, name: { type: 'string' } } } } })
+  @HttpCode(HttpStatus.OK)
+  @AllowAnonymous()
+  @Get('dev/roles')
+  public async devRoles(): Promise<Array<{ id: string; name: string }>> {
+    if (!isDev() && !isLocal() && !isTest()) {
+      throw new ForbiddenException('Endpoint disabled outside development');
+    }
+    const query = new ListRolesQuery();
+    const roles = await this.mediator.execute<ListRolesQuery, Role[]>(query);
+    return roles
+      .filter((role) => role.name === 'picker' || role.name === 'driver')
+      .map((role) => ({ id: role.id, name: role.name }));
   }
 
   // ── POST /auth/mobile/register ───────────────────────────────────────────────
