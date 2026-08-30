@@ -15,7 +15,6 @@ import {
   UserRoleEntity,
   OrgMemberEntity,
   RoleEntity,
-  OrganizationEntity,
 } from '../../../infrastructure/persistence/entities';
 import { AuthMailService } from './mail';
 
@@ -28,7 +27,6 @@ import { AuthMailService } from './mail';
       UserRoleEntity,
       OrgMemberEntity,
       RoleEntity,
-      OrganizationEntity,
     ]),
   ],
   controllers: [AuthController],
