@@ -6,10 +6,13 @@ import { DataSource } from 'typeorm';
 import { BaseSeed } from '../../../common';
 import { ERole, RoleEntity } from '../entities';
 
+
+const VERSION = 2;
+
 @Injectable()
 export class RolesSeed extends BaseSeed<RoleEntity> {
   public get version(): number {
-    return 1;
+    return VERSION;
   }
 
   public get seedingData(): Partial<RoleEntity>[] {
