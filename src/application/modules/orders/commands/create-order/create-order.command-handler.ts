@@ -53,8 +53,8 @@ export class CreateOrderCommandHandler implements ICommandHandler<CreateOrderCom
     bill.sourceOrderId = order.id;
     bill.status = EBillStatus.Initiated;
     bill.saleType = ESaleType.Normal;
-    bill.subtotal = Number(order.subtotal ?? 0);
-    bill.taxAmount = Number(order.taxAmount ?? 0);
+    bill.subtotal = Number(order.totalAmount ?? 0);
+    bill.taxAmount = 0;
     bill.discountAmount = 0;
     bill.totalAmount = Number(order.totalAmount ?? 0);
     bill.blackAmount = 0;
