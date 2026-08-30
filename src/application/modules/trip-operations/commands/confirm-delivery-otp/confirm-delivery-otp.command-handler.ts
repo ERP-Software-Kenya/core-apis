@@ -4,13 +4,15 @@ import { InjectPinoLogger, PinoLogger } from 'nestjs-pino';
 import * as bcrypt from 'bcrypt';
 import { CommandHandlerStrict } from '../../../../../common';
 import { CentrifugalService } from '../../../../../common/centrifugal';
-import { TRIP_STOP_REPO, ORDER_REPO, TRIP_REPO } from '../../../../../application/constants';
+import { BILL_REPO, TRIP_STOP_REPO, ORDER_REPO, TRIP_REPO } from '../../../../../application/constants';
 import { ITripStopRepo } from '../../repositories/i-trip-stop.repo';
 import { IOrderRepo } from '../../../orders';
 import { ITripRepo } from '../../../trips/repositories/i-trip.repo';
+import { IBillRepo } from '../../../bills';
 import { ETripStopStatus } from '../../../../shared/enums/e-trip-stop-status';
 import { ETripStatus } from '../../../../shared/enums/e-trip-status';
 import { EOrderStatus } from '../../../../shared/enums/e-order-status';
+import { EBillStatus } from '../../../../../infrastructure/persistence/entities';
 import {
   TripStopNotFoundException,
   OtpNotInitiatedException,
@@ -25,6 +27,7 @@ export class ConfirmDeliveryOtpCommandHandler implements ICommandHandler<Confirm
     @Inject(TRIP_STOP_REPO) private readonly stopRepo: ITripStopRepo,
     @Inject(ORDER_REPO) private readonly orderRepo: IOrderRepo,
     @Inject(TRIP_REPO) private readonly tripRepo: ITripRepo,
+    @Inject(BILL_REPO) private readonly billRepo: IBillRepo,
     private readonly centrifugal: CentrifugalService,
     @InjectPinoLogger(ConfirmDeliveryOtpCommandHandler.name) private readonly logger: PinoLogger,
   ) {}
@@ -52,10 +55,21 @@ export class ConfirmDeliveryOtpCommandHandler implements ICommandHandler<Confirm
     if (order) {
       order.status = EOrderStatus.Delivered;
       await this.orderRepo.updateAsync(order);
+      await this.completeBillForOrderAsync(order.id);
     }
 
     await this.maybeCompleteTripAsync(command.tripId, command.driverUserId);
     return true;
+  }
+
+  private async completeBillForOrderAsync(orderId: string): Promise<void> {
+    const bill = await this.billRepo.findBySourceOrderIdAsync(orderId).catch(() => null);
+    if (!bill) return;
+    bill.status = EBillStatus.Completed;
+    bill.billedAt = new Date();
+    await this.billRepo.updateAsync(bill).catch((err: Error) =>
+      this.logger.warn({ error: err.message, orderId }, 'Bill completion on delivery failed — non-fatal'),
+    );
   }
 
   private async maybeCompleteTripAsync(tripId: string, driverId: string): Promise<void> {

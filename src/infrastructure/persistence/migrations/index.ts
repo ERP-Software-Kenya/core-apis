@@ -6,3 +6,4 @@ export * from './1787681135660-migration';
 export * from './1788252500000-migration';
 export * from './1788028557892-migration';
 export * from './1788068982880-migration';
+export * from './1788081078461-migration';
