@@ -1,4 +1,4 @@
-import { Body, Controller, Get, HttpCode, HttpStatus, Param, Post, Query, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, HttpCode, HttpStatus, Param, Patch, Post, Query, UseGuards } from '@nestjs/common';
 import { ApiBearerAuth, ApiOkResponse, ApiOperation, ApiParam, ApiTags } from '@nestjs/swagger';
 import { InjectPinoLogger, PinoLogger } from 'nestjs-pino';
 import {
@@ -16,10 +16,12 @@ import { Order } from '../orders/domain';
 import { OrderResponse } from '../orders/models';
 import { GetOrderQuery } from '../orders/queries';
 import { ClaimOrderCommand } from './commands/claim-order/claim-order.command';
+import { FulfillFromStoreCommand } from './commands/fulfill-from-store/fulfill-from-store.command';
 import { PackOrderCommand } from './commands/pack-order/pack-order.command';
 import { GetOrderQueueQuery } from './queries/get-order-queue/get-order-queue.query';
 import { OrderQueueItem } from './queries/get-order-queue/get-order-queue.query-handler';
 import { ClaimOrderRequest } from './models/requests/claim-order.request';
+import { FulfillFromStoreRequest } from './models/requests/fulfill-from-store.request';
 import { PackOrderRequest } from './models/requests/pack-order.request';
 import { OrderQueueItemResponse } from './models/responses/order-queue-item.response';
 
@@ -94,6 +96,25 @@ export class OrderOperationsController {
     command.organizationId = organizationId;
     command.items = body.items;
     await this.mediator.execute<PackOrderCommand, Order>(command);
+    return true;
+  }
+
+  @ApiOperation({ summary: 'Fulfill an order directly from store (skip warehouse claim/pack)' })
+  @ApiOkResponse({ type: Boolean })
+  @ApiParam({ name: 'id', description: 'Order UUID' })
+  @HttpCode(HttpStatus.OK)
+  @Patch(':id/fulfill-from-store')
+  public async fulfillFromStore(
+    @Param('id') id: string,
+    @Body() body: FulfillFromStoreRequest,
+    @CurrentUser() user: AuthenticatedUser,
+  ): Promise<boolean> {
+    const organizationId = requireOrganizationId(user);
+    const command = new FulfillFromStoreCommand();
+    command.orderId = id;
+    command.userId = body.userId;
+    command.organizationId = organizationId;
+    await this.mediator.execute<FulfillFromStoreCommand, Order>(command);
     return true;
   }
 

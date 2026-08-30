@@ -69,4 +69,14 @@ export class BillRepo
     const end   = new Date(Date.UTC(yr, mo, dy, 23, 59, 59, 999));
     return this.internalRepo.count({ where: { createdAt: Between(start, end) }, withDeleted: true });
   }
+
+  public async findBySourceOrderIdAsync(orderId: string): Promise<Bill | null> {
+    try {
+      const entity = await this.internalRepo.findOne({ where: { sourceOrderId: orderId } });
+      return entity ? this.mapToModel(entity) : null;
+    } catch (ex) {
+      this.logger.error(ex);
+      throw new DbException(ex);
+    }
+  }
 }
