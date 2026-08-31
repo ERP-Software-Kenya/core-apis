@@ -3,7 +3,7 @@ import { InjectMapper } from '@automapper/nestjs';
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { InjectPinoLogger, PinoLogger } from 'nestjs-pino';
-import { Between, FindManyOptions, In, Not, Repository } from 'typeorm';
+import { Between, FindManyOptions, In, Repository } from 'typeorm';
 import { BaseRepo, DbException, Filter, PageableFilter } from '../../../common';
 import { BillEntity } from '../entities';
 import { Bill } from '../../../application/modules/bills/domain';
@@ -27,7 +27,7 @@ export class BillRepo
   }
 
   public override get specialFilterFields(): (keyof (PageableFilter<BillFilter>))[] {
-    return [...super.specialFilterFields, 'saleTypeNot', 'accessibleLocationIds'] as any;
+    return [...super.specialFilterFields, 'accessibleLocationIds'] as any;
   }
 
   public override get softDeleteEnabled(): boolean {
@@ -57,10 +57,7 @@ export class BillRepo
     findOpts: FindManyOptions<BillEntity>,
     filterObj: Filter<BillFilter> | PageableFilter<BillFilter>,
   ): void {
-    const f = filterObj as BillFilter & { saleTypeNot?: string };
-    if (f?.saleTypeNot) {
-      findOpts.where = { ...(findOpts.where as object), saleType: Not(f.saleTypeNot) };
-    }
+    const f = filterObj as BillFilter;
     if (f?.accessibleLocationIds?.length && !f.locationId) {
       findOpts.where = { ...(findOpts.where as object), locationId: In(f.accessibleLocationIds) };
     }

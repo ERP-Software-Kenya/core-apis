@@ -3,7 +3,7 @@ import { InjectMapper } from '@automapper/nestjs';
 import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Post, Put, Query, UseGuards } from '@nestjs/common';
 import { ApiBearerAuth, ApiCreatedResponse, ApiOkResponse, ApiOperation, ApiParam, ApiTags } from '@nestjs/swagger';
 import { InjectPinoLogger, PinoLogger } from 'nestjs-pino';
-import { ClerkAuthGuard, CqrsMediator, CurrentUser, AuthenticatedUser, IPageable, Roles, RolesGuard, InventoryNotOwnedByOrgException } from 'src/common';
+import { ClerkAuthGuard, CqrsMediator, CurrentUser, AuthenticatedUser, IPageable, Roles, RolesGuard, InventoryNotOwnedByOrgException, assertLocationAccess, LocationAccessDeniedException } from 'src/common';
 import { ERole } from 'src/infrastructure/persistence/entities/role.entity';
 import { CreateInventoryCommand, DeleteInventoryCommand, UpdateInventoryCommand } from './commands';
 import { Inventory } from './domain';
