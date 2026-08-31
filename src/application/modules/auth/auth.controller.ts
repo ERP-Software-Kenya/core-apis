@@ -21,6 +21,7 @@ import {
 } from '../../../common';
 import { SyncUserCommand } from './commands/sync-user';
 import { OnboardOrganizationCommand, OnboardOrganizationResult } from './commands/onboard-organization';
+import { RegisterMobileUserCommand } from './commands/register-mobile-user';
 import { GetMeQuery, MeResult } from './queries/get-me';
 import { GetTokenQuery } from './queries/get-token';
 import { GetDevTokenQuery } from './queries/get-dev-token';
@@ -28,6 +29,8 @@ import {
   GetTokenRequest,
   GetDevTokenRequest,
   OnboardOrganizationRequest,
+  MobileLoginRequest,
+  RegisterMobileUserRequest,
   MeResponse,
   SyncUserResponse,
   OnboardOrganizationResponse,
@@ -35,6 +38,10 @@ import {
   OrganizationSummary,
   MembershipSummary,
 } from './models';
+import { ListOrganizationsQuery } from '../organizations/queries';
+import { Organization } from '../organizations/domain';
+import { ListRolesQuery } from '../roles/queries';
+import { Role } from '../roles/domain';
 import { User } from '../users/domain';
 
 @ApiBearerAuth()
@@ -80,6 +87,23 @@ export class AuthController {
     if (!isDev() && !isLocal() && !isTest()) {
       throw new ForbiddenException('Dev login is disabled outside development');
     }
+    const query    = new GetDevTokenQuery();
+    query.email    = body.email;
+    query.password = body.password;
+    const token = await this.mediator.execute<GetDevTokenQuery, string>(query);
+    return { token };
+  }
+
+  // ── POST /auth/login (mobile — Clerk email+password) ───────────────────────
+  @ApiOperation({
+    summary: 'Mobile login — sign in with email + password via Clerk',
+    description: 'Returns a Clerk JWT. Mobile clients store this token and pass it as Bearer on subsequent requests. Call GET /auth/me after login to obtain role and org context.',
+  })
+  @ApiCreatedResponse({ type: TokenResponse })
+  @HttpCode(HttpStatus.CREATED)
+  @AllowAnonymous()
+  @Post('login')
+  public async mobileLogin(@Body() body: MobileLoginRequest): Promise<TokenResponse> {
     const query    = new GetDevTokenQuery();
     query.email    = body.email;
     query.password = body.password;
@@ -160,6 +184,59 @@ export class AuthController {
     };
   }
 
+  // ── GET /auth/dev/organizations ─────────────────────────────────────────────
+  @ApiOperation({ summary: 'List organizations for mobile staff signup (dev only)' })
+  @ApiOkResponse({ schema: { type: 'array', items: { properties: { id: { type: 'string' }, name: { type: 'string' } } } } })
+  @HttpCode(HttpStatus.OK)
+  @AllowAnonymous()
+  @Get('dev/organizations')
+  public async devOrganizations(): Promise<Array<{ id: string; name: string }>> {
+    if (!isDev() && !isLocal() && !isTest()) {
+      throw new ForbiddenException('Endpoint disabled outside development');
+    }
+    const query = new ListOrganizationsQuery();
+    const orgs = await this.mediator.execute<ListOrganizationsQuery, Organization[]>(query);
+    return orgs.map((org) => ({ id: org.id, name: org.name ?? '' }));
+  }
+
+  // ── GET /auth/dev/roles ─────────────────────────────────────────────────────
+  @ApiOperation({ summary: 'List picker and driver roles for mobile staff signup (dev only)' })
+  @ApiOkResponse({ schema: { type: 'array', items: { properties: { id: { type: 'string' }, name: { type: 'string' } } } } })
+  @HttpCode(HttpStatus.OK)
+  @AllowAnonymous()
+  @Get('dev/roles')
+  public async devRoles(): Promise<Array<{ id: string; name: string }>> {
+    if (!isDev() && !isLocal() && !isTest()) {
+      throw new ForbiddenException('Endpoint disabled outside development');
+    }
+    const query = new ListRolesQuery();
+    const roles = await this.mediator.execute<ListRolesQuery, Role[]>(query);
+    return roles
+      .filter((role) => role.name === 'picker' || role.name === 'driver')
+      .map((role) => ({ id: role.id, name: role.name }));
+  }
+
+  // ── POST /auth/mobile/register ───────────────────────────────────────────────
+  @ApiOperation({ summary: 'Register a picker/driver staff user in Clerk + DB (dev only)' })
+  @ApiCreatedResponse({ schema: { properties: { userId: { type: 'string' } } } })
+  @HttpCode(HttpStatus.CREATED)
+  @AllowAnonymous()
+  @Post('mobile/register')
+  public async mobileRegister(@Body() body: RegisterMobileUserRequest): Promise<{ userId: string }> {
+    if (!isDev() && !isLocal() && !isTest()) {
+      throw new ForbiddenException('Registration endpoint disabled outside development');
+    }
+    const command              = new RegisterMobileUserCommand();
+    command.firstName          = body.firstName;
+    command.lastName           = body.lastName;
+    command.email              = body.email;
+    command.password           = body.password;
+    command.organizationId     = body.organizationId;
+    command.roleId             = body.roleId;
+    const userId = await this.mediator.execute<RegisterMobileUserCommand, string>(command);
+    return { userId };
+  }
+
   // ── GET /auth/me ─────────────────────────────────────────────────────────────
   @ApiOperation({
     summary: 'Get current user profile with org and role (session enrichment)',
@@ -230,9 +307,9 @@ export class AuthController {
 }
 
 function resolveCurrencyCode(country?: string): string {
-  const c = (country ?? '').toLowerCase();
-  if (c.includes('kenya') || c === 'ke') return 'KES';
-  if (c.includes('india') || c === 'in') return 'INR';
-  if (c.includes('united states') || c === 'us' || c === 'usa') return 'USD';
+  const cc = (country ?? '').toLowerCase();
+  if (cc.includes('kenya') || cc === 'ke') return 'KES';
+  if (cc.includes('india') || cc === 'in') return 'INR';
+  if (cc.includes('united states') || cc === 'us' || cc === 'usa') return 'USD';
   return 'KES';
 }
