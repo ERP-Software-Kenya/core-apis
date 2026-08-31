@@ -12,6 +12,7 @@ import {
 } from 'typeorm';
 import { CORE_SCHEMA, ECoreTableName } from './e-core-table-name';
 import { OrganizationEntity } from './organization.entity';
+import { BranchEntity } from './branch.entity';
 import { InventoryEntity } from './inventory.entity';
 import { StockMovementEntity } from './stock-movement.entity';
 
@@ -31,6 +32,10 @@ export class LocationEntity {
   @AutoMap()
   @Column({ name: 'organization_id', type: 'uuid' })
   public organizationId: string;
+
+  @AutoMap()
+  @Column({ name: 'branch_id', type: 'uuid' })
+  public branchId: string;
 
   @AutoMap()
   @Column({ type: 'varchar', length: 150 })
@@ -90,6 +95,15 @@ export class LocationEntity {
     foreignKeyConstraintName: `FK__${ECoreTableName.Locations}__${ECoreTableName.Organizations}`,
   })
   public organization: OrganizationEntity;
+
+  @AutoMap(() => BranchEntity)
+  @ManyToOne(() => BranchEntity, (branch) => branch.locations)
+  @JoinColumn({
+    name: 'branch_id',
+    referencedColumnName: 'id',
+    foreignKeyConstraintName: `FK__${ECoreTableName.Locations}__${ECoreTableName.Branches}`,
+  })
+  public branch: BranchEntity;
 
   @AutoMap(() => [InventoryEntity])
   @OneToMany(() => InventoryEntity, (inv) => inv.location)

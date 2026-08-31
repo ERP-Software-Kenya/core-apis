@@ -3,4 +3,5 @@ import { QueryBase } from 'src/common';
 
 export class GetValuationQuery extends QueryBase {
   @AutoMap() public organizationId: string;
+  @AutoMap(() => [String]) public accessibleLocationIds?: string[];
 }

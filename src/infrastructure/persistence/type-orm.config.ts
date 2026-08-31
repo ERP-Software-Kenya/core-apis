@@ -25,6 +25,7 @@ export const generateDataSourceOptions = (
     logging: true,
     entities: [...Entities],
     migrations: [__dirname + '/migrations/*-migration{.ts,.js}'],
+    migrationsTransactionMode: 'each',
     ssl: sslEnabled
       ? {
           rejectUnauthorized: true,

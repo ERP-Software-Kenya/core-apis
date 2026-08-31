@@ -1,4 +1,5 @@
 import { LocationEntity } from './location.entity';
+import { BranchEntity } from './branch.entity';
 import { ProductLogEntity } from './product-log.entity';
 import { ActivityLogEntity } from './activity-log.entity';
 import { CategoryEntity } from './category.entity';
@@ -78,6 +79,7 @@ import { EmailTemplateEntity } from './email-template.entity';
 import { QuickChargeEntity } from './quick-charge.entity';
 import { CustomerTypeRuleEntity } from './customer-type-rule.entity';
 
+export * from './branch.entity';
 export * from './location.entity';
 export * from './product-log.entity';
 export * from './activity-log.entity';
@@ -161,6 +163,7 @@ export * from './quick-charge.entity';
 export * from './customer-type-rule.entity';
 
 export default [
+  BranchEntity,
   LocationEntity,
   ProductLogEntity,
   ActivityLogEntity,

@@ -6,6 +6,7 @@ import { BillFilter } from '../../domain';
 export class ListBillsQuery extends QueryBase implements Filter<BillFilter> {
   @AutoMap() public organizationId?: string;
   @AutoMap() public locationId?: string;
+  @AutoMap(() => Array) public accessibleLocationIds?: string[];
   @AutoMap() public customerId?: string;
   @AutoMap() public createdById?: string;
   @AutoMap() public billNumber?: string;

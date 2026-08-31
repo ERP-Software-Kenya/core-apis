@@ -3,7 +3,7 @@ import { InjectMapper } from '@automapper/nestjs';
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { InjectPinoLogger, PinoLogger } from 'nestjs-pino';
-import { Repository } from 'typeorm';
+import { Repository, In } from 'typeorm';
 import { BaseRepo, Filter, PageableFilter } from '../../../common';
 import { LocationEntity } from '../entities';
 import { Location, LocationFilter } from '../../../application/modules/locations/domain';
@@ -28,5 +28,33 @@ export class LocationRepo
 
   public override get softDeleteEnabled(): boolean {
     return true;
+  }
+
+  public async findIdsByBranchIdAsync(branchId: string): Promise<string[]> {
+    const rows = await this.internalRepo.find({ where: { branchId }, select: ['id'] });
+    return rows.map((r) => r.id);
+  }
+
+  public async findByBranchIdsAsync(branchIds: string[]): Promise<{ id: string; branchId: string }[]> {
+    if (!branchIds.length) return [];
+    const rows = await this.internalRepo.find({
+      where: { branchId: In(branchIds) },
+      select: ['id', 'branchId'],
+    });
+    return rows.map((r) => ({ id: r.id, branchId: r.branchId }));
+  }
+
+  public async findIdsByBranchIdsAsync(branchIds: string[]): Promise<string[]> {
+    if (!branchIds.length) return [];
+    const rows = await this.internalRepo.find({
+      where: { branchId: In(branchIds) },
+      select: ['id'],
+    });
+    return rows.map((r) => r.id);
+  }
+
+  public async assignBranchAsync(branchId: string, locationIds: string[]): Promise<void> {
+    if (!locationIds.length) return;
+    await this.internalRepo.update({ id: In(locationIds) }, { branchId });
   }
 }

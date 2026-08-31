@@ -1,6 +1,7 @@
 export const CORE_SCHEMA = 'core';
 
 export enum ECoreTableName {
+  Branches              = 'branches',
   Locations             = 'locations',
   Organizations         = 'organizations',
   OrgAddresses          = 'org_addresses',

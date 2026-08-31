@@ -3,7 +3,7 @@ import { InjectMapper } from '@automapper/nestjs';
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { InjectPinoLogger, PinoLogger } from 'nestjs-pino';
-import { EntityManager, Repository } from 'typeorm';
+import { EntityManager, FindManyOptions, In, Repository } from 'typeorm';
 import { BaseRepo, Filter, PageableFilter } from '../../../common';
 import { InventoryEntity } from '../entities';
 import { Inventory, InventoryFilter, IInventoryRepo } from 'src/application/modules/inventory';
@@ -23,6 +23,27 @@ export class InventoryRepo
 
   public override get idColumnName(): keyof InventoryEntity {
     return 'id';
+  }
+
+  public override async getAsync(pk: string): Promise<Inventory> {
+    const entity = await this.internalRepo.findOne({ where: { id: pk }, relations: { product: true } });
+    if (!entity) return null;
+    return this.mapper.map(entity, InventoryEntity, Inventory);
+  }
+
+  public override get specialFilterFields(): (keyof (PageableFilter<InventoryFilter>))[] {
+    return [...super.specialFilterFields, 'accessibleLocationIds'] as any;
+  }
+
+  protected override modifyFindOption(
+    findOpts: FindManyOptions<InventoryEntity>,
+    filterObj?: Filter<InventoryFilter> | PageableFilter<InventoryFilter>,
+  ): void {
+    findOpts.relations = { product: true };
+    const f = filterObj as InventoryFilter | undefined;
+    if (f?.accessibleLocationIds?.length && !f.locationId) {
+      findOpts.where = { ...(findOpts.where as object), locationId: In(f.accessibleLocationIds) };
+    }
   }
 
   public async addStockAsync(id: string, quantity: number, unitCost: number | undefined, manager: EntityManager): Promise<Inventory> {
@@ -104,17 +125,24 @@ export class InventoryRepo
     return entity ? this.mapper.map(entity, InventoryEntity, Inventory) : null;
   }
 
-  public async getLowStockAsync(organizationId: string): Promise<Inventory[]> {
-    const entities = await this.internalRepo
+  public async getLowStockAsync(organizationId: string, locationIds?: string[]): Promise<Inventory[]> {
+    const qb = this.internalRepo
       .createQueryBuilder('inv')
       .where('inv.organization_id = :organizationId', { organizationId })
-      .andWhere('inv.quantity_on_hand <= inv.reorder_level')
-      .getMany();
+      .andWhere('inv.quantity_on_hand <= inv.reorder_level');
+    if (locationIds?.length) {
+      qb.andWhere('inv.location_id IN (:...locationIds)', { locationIds });
+    }
+    const entities = await qb.getMany();
     return this.mapper.mapArray(entities, InventoryEntity, Inventory);
   }
 
-  public async getValuationAsync(organizationId: string): Promise<Inventory[]> {
-    const entities = await this.internalRepo.find({ where: { organizationId } });
+  public async getValuationAsync(organizationId: string, locationIds?: string[]): Promise<Inventory[]> {
+    const where: { organizationId: string; locationId?: ReturnType<typeof In> } = { organizationId };
+    if (locationIds?.length) {
+      where.locationId = In(locationIds);
+    }
+    const entities = await this.internalRepo.find({ where });
     return this.mapper.mapArray(entities, InventoryEntity, Inventory);
   }
 

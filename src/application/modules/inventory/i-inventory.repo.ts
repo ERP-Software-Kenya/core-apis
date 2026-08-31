@@ -5,6 +5,7 @@ import { Inventory } from './domain';
 export interface InventoryFilter {
   organizationId?: string;
   locationId?: string;
+  accessibleLocationIds?: string[];
   productId?: string;
   lowStock?: boolean;
 }
@@ -25,6 +26,6 @@ export interface IInventoryRepo extends IBaseRepo<Inventory, string, PageableFil
     productId: string,
     manager?: EntityManager,
   ): Promise<Inventory | null>;
-  getLowStockAsync(organizationId: string): Promise<Inventory[]>;
-  getValuationAsync(organizationId: string): Promise<Inventory[]>;
+  getLowStockAsync(organizationId: string, locationIds?: string[]): Promise<Inventory[]>;
+  getValuationAsync(organizationId: string, locationIds?: string[]): Promise<Inventory[]>;
 }
