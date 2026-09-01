@@ -81,7 +81,9 @@ export class LocationsController {
     @Body() body: CreateLocationRequest,
   ): Promise<LocationResponse> {
     const command            = this.mapper.map(body, CreateLocationRequest, CreateLocationCommand);
-    command.organizationId   = user.organizationId;
+    const isSuperAdmin       = user.roles?.includes(ERole.SuperAdmin) ?? false;
+    command.organizationId   = isSuperAdmin ? (body.organizationId ?? user.organizationId) : user.organizationId;
+    if (!command.organizationId) throw new ForbiddenException('Organization is required');
     const result             = await this.mediator.execute<CreateLocationCommand, Location>(command);
     return this.mapper.map(result, Location, LocationResponse);
   }

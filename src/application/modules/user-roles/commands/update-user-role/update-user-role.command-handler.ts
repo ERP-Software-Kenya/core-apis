@@ -74,8 +74,9 @@ export class UpdateUserRoleCommandHandler implements ICommandHandler<UpdateUserR
     updated.id = existing.id;
     updated.userId = existing.userId;
     updated.roleId = roleId;
-    updated.locationId = locationId;
-    updated.branchId = branchId;
+    // updateAsync skips undefined-valued columns: omitted locationId/branchId leaves unchanged, explicit null clears.
+    updated.locationId = command.locationId;
+    updated.branchId = command.branchId;
     return this.repo.updateAsync(updated);
   }
 

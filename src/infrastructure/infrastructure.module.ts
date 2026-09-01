@@ -14,6 +14,7 @@ import {
   SupplierRepo,
   InventoryRepo,
   PurchaseOrderRepo,
+  PurchaseItemAllocationRepo,
   ActivityLogRepo,
   BillRepo,
   BillItemRepo,
@@ -30,6 +31,7 @@ import {
   RoleRepo,
   StockMovementRepo,
   StockTransferRepo,
+  StockTransferRequestRepo,
   UserRoleRepo,
   UserRepo,
   OrgMemberRepo,
@@ -62,6 +64,9 @@ import {
   EmailTemplateRepo,
   QuickChargeRepo,
   CustomerTypeRuleRepo,
+  TripStopRepo,
+  UserDeviceTokenRepo,
+  VehicleLocationRepo,
 } from './persistence';
 
 import {
@@ -80,12 +85,14 @@ import {
   PAYMENT_TRANSACTION_REPO,
   PLATFORM_CONFIGURATION_REPO,
   PRODUCT_REPO,
+  PURCHASE_ITEM_ALLOCATION_REPO,
   PURCHASE_ITEM_REPO,
   PURCHASE_ORDER_REPO,
   REPORT_GENERATION_LOG_REPO,
   ROLE_REPO,
   STOCK_MOVEMENT_REPO,
   STOCK_TRANSFER_REPO,
+  STOCK_TRANSFER_REQUEST_REPO,
   SUPPLIER_REPO,
   USER_REPO,
   USER_ROLE_REPO,
@@ -119,6 +126,9 @@ import {
   EMAIL_TEMPLATE_REPO,
   QUICK_CHARGE_REPO,
   CUSTOMER_TYPE_RULE_REPO,
+  TRIP_STOP_REPO,
+  USER_DEVICE_TOKEN_REPO,
+  VEHICLE_LOCATION_REPO,
 } from '../application/constants';
 
 @Module({})
@@ -152,6 +162,7 @@ export class InfrastructureModule {
         { provide: SUPPLIER_REPO, useClass: SupplierRepo },
         { provide: INVENTORY_REPO, useClass: InventoryRepo },
         { provide: PURCHASE_ORDER_REPO, useClass: PurchaseOrderRepo },
+        { provide: PURCHASE_ITEM_ALLOCATION_REPO, useClass: PurchaseItemAllocationRepo },
         { provide: ACTIVITY_LOG_REPO, useClass: ActivityLogRepo },
         { provide: BILL_REPO, useClass: BillRepo },
         { provide: BILL_ITEM_REPO, useClass: BillItemRepo },
@@ -168,6 +179,7 @@ export class InfrastructureModule {
         { provide: ROLE_REPO, useClass: RoleRepo },
         { provide: STOCK_MOVEMENT_REPO, useClass: StockMovementRepo },
         { provide: STOCK_TRANSFER_REPO, useClass: StockTransferRepo },
+        { provide: STOCK_TRANSFER_REQUEST_REPO, useClass: StockTransferRequestRepo },
         { provide: USER_REPO, useClass: UserRepo },
         { provide: USER_ROLE_REPO, useClass: UserRoleRepo },
         { provide: ORG_MEMBER_REPO, useClass: OrgMemberRepo },
@@ -200,6 +212,9 @@ export class InfrastructureModule {
         { provide: EMAIL_TEMPLATE_REPO, useClass: EmailTemplateRepo },
         { provide: QUICK_CHARGE_REPO, useClass: QuickChargeRepo },
         { provide: CUSTOMER_TYPE_RULE_REPO, useClass: CustomerTypeRuleRepo },
+        { provide: TRIP_STOP_REPO, useClass: TripStopRepo },
+        { provide: USER_DEVICE_TOKEN_REPO, useClass: UserDeviceTokenRepo },
+        { provide: VEHICLE_LOCATION_REPO, useClass: VehicleLocationRepo },
       ],
       exports: [
         EntityMapperProfile,
@@ -209,6 +224,7 @@ export class InfrastructureModule {
         SUPPLIER_REPO,
         INVENTORY_REPO,
         PURCHASE_ORDER_REPO,
+        PURCHASE_ITEM_ALLOCATION_REPO,
         ACTIVITY_LOG_REPO,
         BILL_REPO,
         BILL_ITEM_REPO,
@@ -225,6 +241,7 @@ export class InfrastructureModule {
         ROLE_REPO,
         STOCK_MOVEMENT_REPO,
         STOCK_TRANSFER_REPO,
+        STOCK_TRANSFER_REQUEST_REPO,
         USER_REPO,
         USER_ROLE_REPO,
         ORG_MEMBER_REPO,
@@ -257,6 +274,9 @@ export class InfrastructureModule {
         EMAIL_TEMPLATE_REPO,
         QUICK_CHARGE_REPO,
         CUSTOMER_TYPE_RULE_REPO,
+        TRIP_STOP_REPO,
+        USER_DEVICE_TOKEN_REPO,
+        VEHICLE_LOCATION_REPO,
       ],
     };
   }

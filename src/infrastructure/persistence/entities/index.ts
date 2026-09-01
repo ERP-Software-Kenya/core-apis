@@ -7,6 +7,7 @@ import { InventoryEntity } from './inventory.entity';
 import { OrganizationEntity } from './organization.entity';
 import { ProductEntity } from './product.entity';
 import { PurchaseItemEntity } from './purchase-item.entity';
+import { PurchaseItemAllocationEntity } from './purchase-item-allocation.entity';
 import { PurchaseOrderEntity } from './purchase-order.entity';
 import { RoleEntity } from './role.entity';
 import { StockMovementEntity } from './stock-movement.entity';
@@ -30,6 +31,7 @@ import { ReportGenerationLogEntity } from './report-generation-log.entity';
 import { StockEntryEntity } from './stock-entry.entity';
 import { StockTransferEntity } from './stock-transfer.entity';
 import { StockTransferItemEntity } from './stock-transfer-item.entity';
+import { StockTransferRequestEntity } from './stock-transfer-request.entity';
 import { ProductVariantEntity } from './product-variant.entity';
 import { ProductImageEntity } from './product-image.entity';
 import { ProductSupplierEntity } from './product-supplier.entity';
@@ -78,6 +80,8 @@ import { AlertEntity } from './alert.entity';
 import { EmailTemplateEntity } from './email-template.entity';
 import { QuickChargeEntity } from './quick-charge.entity';
 import { CustomerTypeRuleEntity } from './customer-type-rule.entity';
+import { TripStopEntity } from './trip-stop.entity';
+import { UserDeviceTokenEntity } from './user-device-token.entity';
 
 export * from './branch.entity';
 export * from './location.entity';
@@ -90,6 +94,7 @@ export * from './inventory.entity';
 export * from './organization.entity';
 export * from './product.entity';
 export * from './purchase-item.entity';
+export * from './purchase-item-allocation.entity';
 export * from './purchase-order.entity';
 export * from './role.entity';
 export * from './stock-movement.entity';
@@ -114,6 +119,7 @@ export * from './report-generation-log.entity';
 export * from './stock-entry.entity';
 export * from './stock-transfer.entity';
 export * from './stock-transfer-item.entity';
+export * from './stock-transfer-request.entity';
 export * from './product-variant.entity';
 export * from './product-image.entity';
 export * from './product-supplier.entity';
@@ -161,6 +167,8 @@ export * from './alert.entity';
 export * from './email-template.entity';
 export * from './quick-charge.entity';
 export * from './customer-type-rule.entity';
+export * from './trip-stop.entity';
+export * from './user-device-token.entity';
 
 export default [
   BranchEntity,
@@ -172,6 +180,7 @@ export default [
   OrganizationEntity,
   ProductEntity,
   PurchaseItemEntity,
+  PurchaseItemAllocationEntity,
   PurchaseOrderEntity,
   RoleEntity,
   StockMovementEntity,
@@ -195,6 +204,7 @@ export default [
   StockEntryEntity,
   StockTransferEntity,
   StockTransferItemEntity,
+  StockTransferRequestEntity,
   ProductVariantEntity,
   ProductImageEntity,
   ProductSupplierEntity,
@@ -242,4 +252,6 @@ export default [
   EmailTemplateEntity,
   QuickChargeEntity,
   CustomerTypeRuleEntity,
+  TripStopEntity,
+  UserDeviceTokenEntity,
 ];

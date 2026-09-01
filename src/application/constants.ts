@@ -13,8 +13,9 @@ export const PRODUCT_REPO         = 'PRODUCT_REPO';
 export const SUPPLIER_REPO        = 'SUPPLIER_REPO';
 export const INVENTORY_REPO       = 'INVENTORY_REPO';
 export const STOCK_MOVEMENT_REPO  = 'STOCK_MOVEMENT_REPO';
-export const PURCHASE_ORDER_REPO  = 'PURCHASE_ORDER_REPO';
-export const PURCHASE_ITEM_REPO   = 'PURCHASE_ITEM_REPO';
+export const PURCHASE_ORDER_REPO            = 'PURCHASE_ORDER_REPO';
+export const PURCHASE_ITEM_REPO             = 'PURCHASE_ITEM_REPO';
+export const PURCHASE_ITEM_ALLOCATION_REPO  = 'PURCHASE_ITEM_ALLOCATION_REPO';
 export const ACTIVITY_LOG_REPO    = 'ACTIVITY_LOG_REPO';
 
 export const BILL_REPO                    = 'BILL_REPO';
@@ -28,6 +29,7 @@ export const INVOICE_REPO                 = 'INVOICE_REPO';
 export const CUSTOMER_REPO                = 'CUSTOMER_REPO';
 export const EXPENSE_REPO                 = 'EXPENSE_REPO';
 export const STOCK_TRANSFER_REPO          = 'STOCK_TRANSFER_REPO';
+export const STOCK_TRANSFER_REQUEST_REPO  = 'STOCK_TRANSFER_REQUEST_REPO';
 export const PLATFORM_REPO                = 'PLATFORM_REPO';
 export const PLATFORM_CONFIGURATION_REPO  = 'PLATFORM_CONFIGURATION_REPO';
 export const PRODUCT_VARIANT_REPO         = 'PRODUCT_VARIANT_REPO';
@@ -79,3 +81,7 @@ export const ALERT_REPO                    = 'ALERT_REPO';
 export const EMAIL_TEMPLATE_REPO           = 'IEmailTemplateRepo';
 export const QUICK_CHARGE_REPO             = 'QUICK_CHARGE_REPO';
 export const CUSTOMER_TYPE_RULE_REPO       = 'CUSTOMER_TYPE_RULE_REPO';
+
+// ─── Field App ───────────────────────────────────────────────────────────────
+export const TRIP_STOP_REPO                = 'TRIP_STOP_REPO';
+export const USER_DEVICE_TOKEN_REPO        = 'USER_DEVICE_TOKEN_REPO';

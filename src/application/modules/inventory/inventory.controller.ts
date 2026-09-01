@@ -3,7 +3,7 @@ import { InjectMapper } from '@automapper/nestjs';
 import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Post, Put, Query, UseGuards } from '@nestjs/common';
 import { ApiBearerAuth, ApiCreatedResponse, ApiOkResponse, ApiOperation, ApiParam, ApiTags } from '@nestjs/swagger';
 import { InjectPinoLogger, PinoLogger } from 'nestjs-pino';
-import { ClerkAuthGuard, CqrsMediator, CurrentUser, AuthenticatedUser, IPageable, Roles, RolesGuard, InventoryNotOwnedByOrgException, assertLocationAccess, LocationAccessDeniedException } from 'src/common';
+import { ClerkAuthGuard, CqrsMediator, CurrentUser, AuthenticatedUser, IPageable, Roles, RolesGuard, InventoryNotOwnedByOrgException, LocationAccessDeniedException, assertLocationAccess } from 'src/common';
 import { ERole } from 'src/infrastructure/persistence/entities/role.entity';
 import { CreateInventoryCommand, DeleteInventoryCommand, UpdateInventoryCommand } from './commands';
 import { Inventory } from './domain';
@@ -27,6 +27,8 @@ export class InventoryController {
   @HttpCode(HttpStatus.OK)
   @Get()
   public async search(@CurrentUser() user: AuthenticatedUser, @Query() filter?: SearchInventoryRequest): Promise<InventorysPagedResponse> {
+    if (!filter?.locationId && !user.hasOrgWideAccess) throw new LocationAccessDeniedException(undefined, 'Filter by locationId, or use an org-wide role to search without one.');
+    if (filter?.locationId) assertLocationAccess(user, filter.locationId);
     const query            = this.mapper.map(filter, SearchInventoryRequest, SearchInventoryQuery);
     query.organizationId   = user.organizationId;
     this.applyInventoryLocationScope(user, query, filter?.locationId);
@@ -39,6 +41,8 @@ export class InventoryController {
   @HttpCode(HttpStatus.OK)
   @Get('list')
   public async list(@CurrentUser() user: AuthenticatedUser, @Query() filter?: ListInventoryRequest): Promise<InventoryResponse[]> {
+    if (!filter?.locationId && !user.hasOrgWideAccess) throw new LocationAccessDeniedException(undefined, 'Filter by locationId, or use an org-wide role to list without one.');
+    if (filter?.locationId) assertLocationAccess(user, filter.locationId);
     const query            = this.mapper.map(filter, ListInventoryRequest, ListInventoryQuery);
     query.organizationId   = user.organizationId;
     this.applyInventoryLocationScope(user, query, filter?.locationId);
@@ -80,6 +84,7 @@ export class InventoryController {
     query.id     = id;
     const result = await this.mediator.execute<GetInventoryQuery, Inventory>(query);
     if (result.organizationId !== user.organizationId) throw new InventoryNotOwnedByOrgException();
+    assertLocationAccess(user, result.locationId);
     return this.mapper.map(result, Inventory, InventoryResponse);
   }
 
@@ -92,6 +97,7 @@ export class InventoryController {
     @CurrentUser() user: AuthenticatedUser,
     @Body() body: CreateInventoryRequest,
   ): Promise<InventoryResponse> {
+    assertLocationAccess(user, body.locationId);
     const command          = this.mapper.map(body, CreateInventoryRequest, CreateInventoryCommand);
     command.organizationId = user.organizationId;
     const result           = await this.mediator.execute<CreateInventoryCommand, Inventory>(command);
@@ -107,6 +113,7 @@ export class InventoryController {
   public async update(@Param('id') id: string, @Body() body: UpdateInventoryRequest, @CurrentUser() user: AuthenticatedUser): Promise<InventoryResponse> {
     const existing = await this.mediator.execute<GetInventoryQuery, Inventory>(Object.assign(new GetInventoryQuery(), { id }));
     if (existing.organizationId !== user.organizationId) throw new InventoryNotOwnedByOrgException();
+    assertLocationAccess(user, existing.locationId);
     const command = this.mapper.map(body, UpdateInventoryRequest, UpdateInventoryCommand);
     command.id    = id;
     const result  = await this.mediator.execute<UpdateInventoryCommand, Inventory>(command);
@@ -122,6 +129,7 @@ export class InventoryController {
   public async delete(@Param('id') id: string, @CurrentUser() user: AuthenticatedUser): Promise<boolean> {
     const existing = await this.mediator.execute<GetInventoryQuery, Inventory>(Object.assign(new GetInventoryQuery(), { id }));
     if (existing.organizationId !== user.organizationId) throw new InventoryNotOwnedByOrgException();
+    assertLocationAccess(user, existing.locationId);
     const command = new DeleteInventoryCommand();
     command.id    = id;
     return this.mediator.execute<DeleteInventoryCommand, boolean>(command);
