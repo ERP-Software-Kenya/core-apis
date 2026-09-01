@@ -8,7 +8,8 @@ import { InjectPinoLogger, PinoLogger } from 'nestjs-pino';
 import { ExtractJwt, Strategy } from 'passport-jwt';
 import { Repository } from 'typeorm';
 import { ICoreApiConfig } from '../../../configuration';
-import { UserEntity, UserRoleEntity, OrgMemberEntity } from '../../../infrastructure/persistence/entities';
+import { UserEntity, UserRoleEntity, OrgMemberEntity, LocationEntity } from '../../../infrastructure/persistence/entities';
+import { In } from 'typeorm';
 import { CLERK_STRATEGY } from '../constants';
 import { AuthenticatedUser, ClerkJwtPayload } from '../types';
 import { computeHasOrgWideAccess } from '../org-wide-access';
@@ -22,6 +23,7 @@ export class ClerkJwtStrategy extends PassportStrategy(Strategy, CLERK_STRATEGY)
     @InjectRepository(UserEntity) private readonly userRepo: Repository<UserEntity>,
     @InjectRepository(UserRoleEntity) private readonly userRoleRepo: Repository<UserRoleEntity>,
     @InjectRepository(OrgMemberEntity) private readonly orgMemberRepo: Repository<OrgMemberEntity>,
+    @InjectRepository(LocationEntity) private readonly locationRepo: Repository<LocationEntity>,
     @InjectPinoLogger(ClerkJwtStrategy.name) private readonly logger: PinoLogger,
   ) {
     const clerkCfg = configService.get<ICoreApiConfig['clerk']>('clerk');
@@ -46,6 +48,7 @@ export class ClerkJwtStrategy extends PassportStrategy(Strategy, CLERK_STRATEGY)
     authUser.clerkOrgRole = payload.o?.rol;
     authUser.roles = [];
     authUser.locationIds = [];
+    authUser.branchIds = [];
     authUser.hasOrgWideAccess = false;
 
     if (payload.email) {
@@ -77,9 +80,18 @@ export class ClerkJwtStrategy extends PassportStrategy(Strategy, CLERK_STRATEGY)
       const systemRoles = userRoles.map((ur) => ur.role?.name).filter(Boolean);
       const orgRoles = orgMembers.map((om) => om.role?.name).filter(Boolean);
       authUser.roles = [...new Set([...systemRoles, ...orgRoles])];
-      // Org memberships carry no location concept, so any membership grants org-wide access;
-      // a user_roles row with locationId null does the same. Only non-null rows scope access.
-      authUser.locationIds = [...new Set(userRoles.filter((ur) => ur.locationId).map((ur) => ur.locationId))];
+      const branchIds = [...new Set(userRoles.filter((ur) => ur.branchId).map((ur) => ur.branchId))];
+      authUser.branchIds = branchIds;
+      const storeIds = userRoles.filter((ur) => ur.locationId).map((ur) => ur.locationId);
+      let branchLocationIds: string[] = [];
+      if (branchIds.length) {
+        const branchLocs = await this.locationRepo.find({
+          where: { branchId: In(branchIds) },
+          select: ['id'],
+        });
+        branchLocationIds = branchLocs.map((l) => l.id);
+      }
+      authUser.locationIds = [...new Set([...storeIds, ...branchLocationIds])];
       authUser.hasOrgWideAccess = computeHasOrgWideAccess(userRoles, orgMembers.length);
     }
 

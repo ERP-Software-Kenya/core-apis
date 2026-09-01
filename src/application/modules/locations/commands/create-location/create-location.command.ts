@@ -4,6 +4,7 @@ import { ELocationType } from 'src/infrastructure/persistence/entities';
 
 export class CreateLocationCommand extends CommandBase {
   @AutoMap() public organizationId: string;
+  @AutoMap() public branchId: string;
   @AutoMap() public name: string;
   @AutoMap(() => String) public type: ELocationType;
   @AutoMap() public address?: string;

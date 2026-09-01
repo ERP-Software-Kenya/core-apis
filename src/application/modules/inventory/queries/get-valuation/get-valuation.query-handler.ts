@@ -16,6 +16,6 @@ export class GetValuationQueryHandler implements IQueryHandler<GetValuationQuery
 
   public async execute(query: GetValuationQuery): Promise<Inventory[]> {
     this.logger.info(`Executing ${GetValuationQuery.name} org=${query.organizationId}`);
-    return this.repo.getValuationAsync(query.organizationId);
+    return this.repo.getValuationAsync(query.organizationId, query.accessibleLocationIds);
   }
 }
