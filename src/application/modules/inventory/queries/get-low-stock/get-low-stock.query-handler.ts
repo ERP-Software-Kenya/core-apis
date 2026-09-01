@@ -16,6 +16,6 @@ export class GetLowStockQueryHandler implements IQueryHandler<GetLowStockQuery, 
 
   public async execute(query: GetLowStockQuery): Promise<Inventory[]> {
     this.logger.info(`Executing ${GetLowStockQuery.name} org=${query.organizationId}`);
-    return this.repo.getLowStockAsync(query.organizationId);
+    return this.repo.getLowStockAsync(query.organizationId, query.accessibleLocationIds);
   }
 }

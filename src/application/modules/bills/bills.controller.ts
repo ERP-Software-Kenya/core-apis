@@ -4,7 +4,7 @@ import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Patch, Post
 import { ApiBearerAuth, ApiCreatedResponse, ApiOkResponse, ApiOperation, ApiParam, ApiTags } from '@nestjs/swagger';
 import type { Response } from 'express';
 import { InjectPinoLogger, PinoLogger } from 'nestjs-pino';
-import { AuthenticatedUser, ClerkAuthGuard, CqrsMediator, CurrentUser, IPageable, PdfDocument, RolesGuard, assertOrgOwnership } from '../../../common';
+import { AuthenticatedUser, ClerkAuthGuard, CqrsMediator, CurrentUser, IPageable, PdfDocument, RolesGuard, assertOrgOwnership, assertLocationAccess, LocationAccessDeniedException } from '../../../common';
 import {
   AddBillItemCommand,
   CreateBillCommand,
@@ -49,6 +49,7 @@ export class BillsController {
   ): Promise<BillsPagedResponse> {
     const query = this.mapper.map(filter ?? new SearchBillsRequest(), SearchBillsRequest, SearchBillsQuery);
     query.organizationId = user.organizationId;
+    this.applyBillLocationScope(user, query, filter?.locationId);
     const result = await this.mediator.execute<SearchBillsQuery, IPageable<Bill>>(query);
     return { ...result, items: this.mapper.mapArray(result.items, Bill, BillResponse) };
   }
@@ -63,6 +64,7 @@ export class BillsController {
   ): Promise<BillResponse[]> {
     const query = this.mapper.map(filter ?? new ListBillsRequest(), ListBillsRequest, ListBillsQuery);
     query.organizationId = user.organizationId;
+    this.applyBillLocationScope(user, query, filter?.locationId);
     const result = await this.mediator.execute<ListBillsQuery, Bill[]>(query);
     return this.mapper.mapArray(result, Bill, BillResponse);
   }
@@ -77,6 +79,7 @@ export class BillsController {
     query.id    = id;
     const result = await this.mediator.execute<GetBillQuery, Bill>(query);
     assertOrgOwnership(user, result.organizationId, 'Bill');
+    assertLocationAccess(user, result.locationId);
     return this.mapper.map(result, Bill, BillResponse);
   }
 
@@ -93,6 +96,7 @@ export class BillsController {
     fetchQuery.id     = id;
     const existing    = await this.mediator.execute<GetBillQuery, Bill>(fetchQuery);
     assertOrgOwnership(user, existing.organizationId, 'Bill');
+    assertLocationAccess(user, existing.locationId);
     const query       = new ExportBillQuery();
     query.id          = id;
     const doc: PdfDocument = await this.mediator.execute<ExportBillQuery, PdfDocument>(query);
@@ -117,6 +121,7 @@ export class BillsController {
     command.createdById      = user.dbUserId;
     command.performedByRoles = user?.roles ?? [];
     command.commissionPct    = body.commissionPct;
+    assertLocationAccess(user, body.locationId);
     const result = await this.mediator.execute<CreateBillCommand, Bill>(command);
     return this.mapper.map(result, Bill, BillResponse);
   }
@@ -131,6 +136,7 @@ export class BillsController {
     fetchQuery.id = id;
     const existing = await this.mediator.execute<GetBillQuery, Bill>(fetchQuery);
     assertOrgOwnership(user, existing.organizationId, 'Bill');
+    assertLocationAccess(user, existing.locationId);
     const command = this.mapper.map(body, UpdateBillRequest, UpdateBillCommand);
     command.id    = id;
     const result  = await this.mediator.execute<UpdateBillCommand, Bill>(command);
@@ -147,6 +153,7 @@ export class BillsController {
     fetchQuery.id = id;
     const existing = await this.mediator.execute<GetBillQuery, Bill>(fetchQuery);
     assertOrgOwnership(user, existing.organizationId, 'Bill');
+    assertLocationAccess(user, existing.locationId);
     const command = new DeleteBillCommand();
     command.id    = id;
     return this.mediator.execute<DeleteBillCommand, boolean>(command);
@@ -166,6 +173,7 @@ export class BillsController {
     fetchQuery.id = id;
     const existing = await this.mediator.execute<GetBillQuery, Bill>(fetchQuery);
     assertOrgOwnership(user, existing.organizationId, 'Bill');
+    assertLocationAccess(user, existing.locationId);
     const command          = new TransitionBillStatusCommand();
     command.id             = id;
     command.status         = body.status;
@@ -185,6 +193,7 @@ export class BillsController {
     fetchQuery.id = id;
     const existing = await this.mediator.execute<GetBillQuery, Bill>(fetchQuery);
     assertOrgOwnership(user, existing.organizationId, 'Bill');
+    assertLocationAccess(user, existing.locationId);
     const command          = new AddBillItemCommand();
     command.billId         = id;
     command.productId      = body.productId;
@@ -213,6 +222,7 @@ export class BillsController {
     fetchQuery.id = id;
     const existing = await this.mediator.execute<GetBillQuery, Bill>(fetchQuery);
     assertOrgOwnership(user, existing.organizationId, 'Bill');
+    assertLocationAccess(user, existing.locationId);
     const command          = new UpdateBillItemCommand();
     command.billId         = id;
     command.itemId         = itemId;
@@ -237,9 +247,30 @@ export class BillsController {
     fetchQuery.id = id;
     const existing = await this.mediator.execute<GetBillQuery, Bill>(fetchQuery);
     assertOrgOwnership(user, existing.organizationId, 'Bill');
+    assertLocationAccess(user, existing.locationId);
     const command  = new RemoveBillItemCommand();
     command.billId = id;
     command.itemId = itemId;
     return this.mediator.execute<RemoveBillItemCommand, boolean>(command);
+  }
+
+  private applyBillLocationScope(
+    user: AuthenticatedUser,
+    query: { locationId?: string; accessibleLocationIds?: string[] },
+    requestedLocationId?: string,
+  ): void {
+    if (user.hasOrgWideAccess) {
+      if (requestedLocationId) query.locationId = requestedLocationId;
+      return;
+    }
+    if (requestedLocationId) {
+      assertLocationAccess(user, requestedLocationId);
+      query.locationId = requestedLocationId;
+      return;
+    }
+    if (!user.locationIds.length) {
+      throw new LocationAccessDeniedException(undefined, 'Filter by locationId, or use an org-wide role to list without one.');
+    }
+    query.accessibleLocationIds = user.locationIds;
   }
 }

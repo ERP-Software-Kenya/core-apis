@@ -3,6 +3,7 @@ import { EBillStatus, EPaymentMethod, ESaleType } from '../../../../infrastructu
 export interface BillFilter {
   organizationId?: string;
   locationId?: string;
+  accessibleLocationIds?: string[];
   customerId?: string;
   createdById?: string;
   billNumber?: string;

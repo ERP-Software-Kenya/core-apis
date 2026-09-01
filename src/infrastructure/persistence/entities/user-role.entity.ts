@@ -12,6 +12,7 @@ import { CORE_SCHEMA, ECoreTableName } from './e-core-table-name';
 import { UserEntity } from './user.entity';
 import { RoleEntity } from './role.entity';
 import { LocationEntity } from './location.entity';
+import { BranchEntity } from './branch.entity';
 
 const PK_NAME = 'PK_' + ECoreTableName.UserRoles;
 
@@ -29,11 +30,15 @@ export class UserRoleEntity {
   @Column({ type: 'uuid' })
   public roleId: string;
 
-  /** Optional scope — null means org-wide, non-null scopes role to a specific store.
-   *  DB column was renamed location_id → store_id by migration 1786301965722. */
+  /** Optional scope — null means org-wide, non-null scopes role to a specific store. */
   @AutoMap()
   @Column({ name: 'store_id', type: 'uuid', nullable: true })
   public locationId?: string;
+
+  /** Optional scope — null means not branch-scoped. Mutually exclusive with store_id. */
+  @AutoMap()
+  @Column({ name: 'branch_id', type: 'uuid', nullable: true })
+  public branchId?: string;
 
   @AutoMap(() => Date)
   @CreateDateColumn({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
@@ -71,4 +76,13 @@ export class UserRoleEntity {
     foreignKeyConstraintName: `FK__${ECoreTableName.UserRoles}__${ECoreTableName.Locations}`,
   })
   public location?: LocationEntity;
+
+  @AutoMap(() => BranchEntity)
+  @ManyToOne(() => BranchEntity, { nullable: true })
+  @JoinColumn({
+    name: 'branch_id',
+    referencedColumnName: 'id',
+    foreignKeyConstraintName: `FK__${ECoreTableName.UserRoles}__${ECoreTableName.Branches}`,
+  })
+  public branch?: BranchEntity;
 }

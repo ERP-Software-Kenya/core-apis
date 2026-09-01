@@ -16,7 +16,7 @@ import { GetStockMovementQuery, ListMovementsByInventoryQuery } from './queries'
 @ApiTags('Stock Movements')
 @Controller({ path: 'stock-movements', version: '1' })
 @UseGuards(ClerkAuthGuard, RolesGuard)
-@Roles(ERole.OrgAdmin, ERole.SuperAdmin, ERole.StoreManager, ERole.StoreStaff)
+@Roles(ERole.OrgAdmin, ERole.SuperAdmin, ERole.BranchManager, ERole.StoreManager, ERole.StoreStaff)
 export class StockMovementsController {
   constructor(
     protected readonly mediator: CqrsMediator,
@@ -61,7 +61,7 @@ export class StockMovementsController {
   @ApiOperation({ summary: 'Add published stock to an inventory record' })
   @ApiCreatedResponse()
   @HttpCode(HttpStatus.CREATED)
-  @Roles(ERole.OrgAdmin, ERole.SuperAdmin, ERole.StoreManager)
+  @Roles(ERole.OrgAdmin, ERole.SuperAdmin, ERole.BranchManager, ERole.StoreManager)
   @Post('add')
   public async addStock(@CurrentUser() user: AuthenticatedUser, @Body() body: StockOperationRequest): Promise<void> {
     assertLocationAccess(user, body.locationId);
@@ -74,7 +74,7 @@ export class StockMovementsController {
   @ApiOperation({ summary: 'Remove stock from an inventory record' })
   @ApiCreatedResponse()
   @HttpCode(HttpStatus.CREATED)
-  @Roles(ERole.OrgAdmin, ERole.SuperAdmin, ERole.StoreManager)
+  @Roles(ERole.OrgAdmin, ERole.SuperAdmin, ERole.BranchManager, ERole.StoreManager)
   @Post('remove')
   public async removeStock(@CurrentUser() user: AuthenticatedUser, @Body() body: StockOperationRequest): Promise<void> {
     assertLocationAccess(user, body.locationId);
@@ -87,7 +87,7 @@ export class StockMovementsController {
   @ApiOperation({ summary: 'Adjust stock to an absolute quantity' })
   @ApiCreatedResponse()
   @HttpCode(HttpStatus.CREATED)
-  @Roles(ERole.OrgAdmin, ERole.SuperAdmin, ERole.StoreManager)
+  @Roles(ERole.OrgAdmin, ERole.SuperAdmin, ERole.BranchManager, ERole.StoreManager)
   @Post('adjust')
   public async adjustStock(@CurrentUser() user: AuthenticatedUser, @Body() body: AdjustStockRequest): Promise<void> {
     assertLocationAccess(user, body.locationId);
@@ -100,7 +100,7 @@ export class StockMovementsController {
   @ApiOperation({ summary: 'Reserve stock for a pending order' })
   @ApiCreatedResponse()
   @HttpCode(HttpStatus.CREATED)
-  @Roles(ERole.OrgAdmin, ERole.SuperAdmin, ERole.StoreManager)
+  @Roles(ERole.OrgAdmin, ERole.SuperAdmin, ERole.BranchManager, ERole.StoreManager)
   @Post('reserve')
   public async reserveStock(@CurrentUser() user: AuthenticatedUser, @Body() body: StockOperationRequest): Promise<void> {
     assertLocationAccess(user, body.locationId);
@@ -113,7 +113,7 @@ export class StockMovementsController {
   @ApiOperation({ summary: 'Release a stock reservation' })
   @ApiCreatedResponse()
   @HttpCode(HttpStatus.CREATED)
-  @Roles(ERole.OrgAdmin, ERole.SuperAdmin, ERole.StoreManager)
+  @Roles(ERole.OrgAdmin, ERole.SuperAdmin, ERole.BranchManager, ERole.StoreManager)
   @Post('release-reservation')
   public async releaseReservation(@CurrentUser() user: AuthenticatedUser, @Body() body: StockOperationRequest): Promise<void> {
     assertLocationAccess(user, body.locationId);
@@ -126,7 +126,7 @@ export class StockMovementsController {
   @ApiOperation({ summary: 'Mark stock as damaged' })
   @ApiCreatedResponse()
   @HttpCode(HttpStatus.CREATED)
-  @Roles(ERole.OrgAdmin, ERole.SuperAdmin, ERole.StoreManager)
+  @Roles(ERole.OrgAdmin, ERole.SuperAdmin, ERole.BranchManager, ERole.StoreManager)
   @Post('damage')
   public async damageStock(@CurrentUser() user: AuthenticatedUser, @Body() body: StockOperationRequest): Promise<void> {
     assertLocationAccess(user, body.locationId);
@@ -139,7 +139,7 @@ export class StockMovementsController {
   @ApiOperation({ summary: 'Write off stock (shrinkage, expiry)' })
   @ApiCreatedResponse()
   @HttpCode(HttpStatus.CREATED)
-  @Roles(ERole.OrgAdmin, ERole.SuperAdmin, ERole.StoreManager)
+  @Roles(ERole.OrgAdmin, ERole.SuperAdmin, ERole.BranchManager, ERole.StoreManager)
   @Post('write-off')
   public async writeOffStock(@CurrentUser() user: AuthenticatedUser, @Body() body: StockOperationRequest): Promise<void> {
     assertLocationAccess(user, body.locationId);

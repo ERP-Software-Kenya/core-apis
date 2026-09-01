@@ -14,7 +14,7 @@ import { GetInventoryQuery, GetLowStockQuery, GetValuationQuery, ListInventoryQu
 @ApiTags('Inventory')
 @Controller({ path: 'inventory', version: '1' })
 @UseGuards(ClerkAuthGuard, RolesGuard)
-@Roles(ERole.OrgAdmin, ERole.SuperAdmin, ERole.StoreManager, ERole.StoreStaff)
+@Roles(ERole.OrgAdmin, ERole.SuperAdmin, ERole.BranchManager, ERole.StoreManager, ERole.StoreStaff)
 export class InventoryController {
   constructor(
     protected readonly mediator: CqrsMediator,
@@ -31,6 +31,7 @@ export class InventoryController {
     if (filter?.locationId) assertLocationAccess(user, filter.locationId);
     const query            = this.mapper.map(filter, SearchInventoryRequest, SearchInventoryQuery);
     query.organizationId   = user.organizationId;
+    this.applyInventoryLocationScope(user, query, filter?.locationId);
     const result = await this.mediator.execute<SearchInventoryQuery, IPageable<Inventory>>(query);
     return { ...result, items: this.mapper.mapArray(result.items, Inventory, InventoryResponse) };
   }
@@ -44,6 +45,7 @@ export class InventoryController {
     if (filter?.locationId) assertLocationAccess(user, filter.locationId);
     const query            = this.mapper.map(filter, ListInventoryRequest, ListInventoryQuery);
     query.organizationId   = user.organizationId;
+    this.applyInventoryLocationScope(user, query, filter?.locationId);
     const result = await this.mediator.execute<ListInventoryQuery, Inventory[]>(query);
     return this.mapper.mapArray(result, Inventory, InventoryResponse);
   }
@@ -55,6 +57,7 @@ export class InventoryController {
   public async getLowStock(@CurrentUser() user: AuthenticatedUser): Promise<InventoryResponse[]> {
     const query            = new GetLowStockQuery();
     query.organizationId   = user.organizationId;
+    this.applyInventoryLocationScope(user, query);
     const result = await this.mediator.execute<GetLowStockQuery, Inventory[]>(query);
     return this.mapper.mapArray(result, Inventory, InventoryResponse);
   }
@@ -66,6 +69,7 @@ export class InventoryController {
   public async getValuation(@CurrentUser() user: AuthenticatedUser): Promise<InventoryResponse[]> {
     const query            = new GetValuationQuery();
     query.organizationId   = user.organizationId;
+    this.applyInventoryLocationScope(user, query);
     const result = await this.mediator.execute<GetValuationQuery, Inventory[]>(query);
     return this.mapper.mapArray(result, Inventory, InventoryResponse);
   }
@@ -87,7 +91,7 @@ export class InventoryController {
   @ApiOperation({ summary: 'Create an inventory record for a product at a location' })
   @ApiCreatedResponse({ type: InventoryResponse })
   @HttpCode(HttpStatus.CREATED)
-  @Roles(ERole.OrgAdmin, ERole.SuperAdmin, ERole.StoreManager)
+  @Roles(ERole.OrgAdmin, ERole.SuperAdmin, ERole.BranchManager, ERole.StoreManager)
   @Post()
   public async create(
     @CurrentUser() user: AuthenticatedUser,
@@ -104,7 +108,7 @@ export class InventoryController {
   @ApiOkResponse({ type: InventoryResponse })
   @ApiParam({ name: 'id', description: 'Inventory UUID' })
   @HttpCode(HttpStatus.OK)
-  @Roles(ERole.OrgAdmin, ERole.SuperAdmin, ERole.StoreManager)
+  @Roles(ERole.OrgAdmin, ERole.SuperAdmin, ERole.BranchManager, ERole.StoreManager)
   @Put(':id')
   public async update(@Param('id') id: string, @Body() body: UpdateInventoryRequest, @CurrentUser() user: AuthenticatedUser): Promise<InventoryResponse> {
     const existing = await this.mediator.execute<GetInventoryQuery, Inventory>(Object.assign(new GetInventoryQuery(), { id }));
@@ -129,5 +133,25 @@ export class InventoryController {
     const command = new DeleteInventoryCommand();
     command.id    = id;
     return this.mediator.execute<DeleteInventoryCommand, boolean>(command);
+  }
+
+  private applyInventoryLocationScope(
+    user: AuthenticatedUser,
+    query: { locationId?: string; accessibleLocationIds?: string[] },
+    requestedLocationId?: string,
+  ): void {
+    if (user.hasOrgWideAccess) {
+      if (requestedLocationId) query.locationId = requestedLocationId;
+      return;
+    }
+    if (requestedLocationId) {
+      assertLocationAccess(user, requestedLocationId);
+      query.locationId = requestedLocationId;
+      return;
+    }
+    if (!user.locationIds.length) {
+      throw new LocationAccessDeniedException(undefined, 'Filter by locationId, or use an org-wide role to list without one.');
+    }
+    query.accessibleLocationIds = user.locationIds;
   }
 }
