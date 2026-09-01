@@ -2,6 +2,7 @@
 export * from './1787251424817-migration';
 export * from './1787392406941-migration';
 export * from './1787630908150-migration';
+export * from './1787681135660-migration';
 export * from './1788028557892-migration';
 export * from './1788068982880-migration';
 export * from './1788081078461-migration';
