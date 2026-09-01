@@ -30,10 +30,17 @@ export class SearchReportLogsRequest {
   @ApiProperty({ required: false }) @AutoMap(() => String) public reportType?: string;
   @ApiProperty({ required: false }) @AutoMap(() => String) public reportPeriod?: string;
   @ApiProperty({ required: false }) @AutoMap() public status?: string;
+  @ApiProperty({ required: false, description: 'Partial match on report name' }) @IsOptional() @IsString() @AutoMap() public reportName?: string;
+  @ApiProperty({ required: false, description: 'Alias for reportName (generic client search)' }) @IsOptional() @IsString() @AutoMap() public name?: string;
   @ApiProperty({ required: false, default: 1 }) @IsOptional() @Type(() => Number) @IsNumber() @Min(1) @AutoMap() public $page?: number;
   @ApiProperty({ required: false, default: 20 }) @IsOptional() @Type(() => Number) @IsNumber() @Min(1) @AutoMap() public $perPage?: number;
 }
 
 export class ListReportLogsRequest {
   @ApiProperty({ required: false }) @AutoMap() public orgId?: string;
+  @ApiProperty({ required: false }) @AutoMap(() => String) public reportType?: string;
+  @ApiProperty({ required: false }) @AutoMap(() => String) public reportPeriod?: string;
+  @ApiProperty({ required: false }) @AutoMap() public status?: string;
+  @ApiProperty({ required: false }) @IsOptional() @IsString() @AutoMap() public reportName?: string;
+  @ApiProperty({ required: false }) @IsOptional() @IsString() @AutoMap() public name?: string;
 }
