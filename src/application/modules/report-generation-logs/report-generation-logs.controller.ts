@@ -67,7 +67,7 @@ export class ReportGenerationLogsController {
     @CurrentUser() user: AuthenticatedUser,
   ): Promise<ReportGenerationLogResponse> {
     const command         = this.mapper.map(body, GenerateReportRequest, GenerateReportCommand);
-    command.orgId         = user.organizationId ?? '';
+    command.orgId         = requireOrganizationId(user);
     command.generatedById = user.dbUserId ?? '';
     const result          = await this.mediator.execute<GenerateReportCommand, ReportGenerationLog>(command);
     return this.mapper.map(result, ReportGenerationLog, ReportGenerationLogResponse);
@@ -119,8 +119,12 @@ export class ReportGenerationLogsController {
   @ApiCreatedResponse({ type: ReportGenerationLogResponse })
   @HttpCode(HttpStatus.CREATED)
   @Post()
-  public async create(@Body() body: CreateReportLogRequest): Promise<ReportGenerationLogResponse> {
+  public async create(
+    @Body() body: CreateReportLogRequest,
+    @CurrentUser() user: AuthenticatedUser,
+  ): Promise<ReportGenerationLogResponse> {
     const command = this.mapper.map(body, CreateReportLogRequest, CreateReportLogCommand);
+    command.orgId = requireOrganizationId(user);
     const result  = await this.mediator.execute<CreateReportLogCommand, ReportGenerationLog>(command);
     return this.mapper.map(result, ReportGenerationLog, ReportGenerationLogResponse);
   }

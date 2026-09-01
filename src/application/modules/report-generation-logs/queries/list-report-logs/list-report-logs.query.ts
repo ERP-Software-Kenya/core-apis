@@ -7,6 +7,9 @@ export class ListReportLogsQuery extends QueryBase implements Filter<ReportGener
   @AutoMap() public reportType?: string;
   @AutoMap() public reportPeriod?: string;
   @AutoMap() public status?: string;
+  @AutoMap() public reportName?: string;
+  /** Generic client search alias — normalizer maps to reportName. */
+  @AutoMap() public name?: string;
 
   @AutoMap() public $orderBy?: string;
   @AutoMap(() => String) public $order?: EOrder;
