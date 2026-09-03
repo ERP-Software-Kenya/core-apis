@@ -1,6 +1,7 @@
 import { Module } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { CqrsModule } from '@nestjs/cqrs';
+import { SharedModule } from '../../shared';
 import { TripOperationsController } from './trip-operations.controller';
 import { TripOperationCommandHandlers } from './commands';
 import { TripOperationQueryHandlers } from './queries';
@@ -10,7 +11,7 @@ import { MailOptions } from '../../../common';
 import { ICoreApiConfig } from '../../../configuration';
 
 @Module({
-  imports: [CqrsModule],
+  imports: [CqrsModule, SharedModule],
   controllers: [TripOperationsController],
   providers: [
     {

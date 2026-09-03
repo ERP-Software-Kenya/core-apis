@@ -8,6 +8,7 @@ import { ORDER_REPO } from '../../../../../application/constants';
 import { IOrderRepo } from '../../../orders';
 import { Order } from '../../../orders/domain';
 import { EOrderStatus } from '../../../../shared/enums/e-order-status';
+import { OrderDispatchPaymentService } from '../../../../shared/services/order-dispatch-payment.service';
 import { OrderNotFoundException, OrderNotInConfirmedStatusException } from '../../exceptions';
 import { FulfillFromStoreCommand } from './fulfill-from-store.command';
 
@@ -15,6 +16,7 @@ import { FulfillFromStoreCommand } from './fulfill-from-store.command';
 export class FulfillFromStoreCommandHandler implements ICommandHandler<FulfillFromStoreCommand, Order> {
   public constructor(
     @Inject(ORDER_REPO) private readonly orderRepo: IOrderRepo,
+    private readonly dispatchPaymentService: OrderDispatchPaymentService,
     private readonly centrifugal: CentrifugalService,
     @Inject(PUSH_NOTIFICATION_SERVICE) private readonly pushService: IPushNotificationService,
     @InjectPinoLogger(FulfillFromStoreCommandHandler.name) private readonly logger: PinoLogger,
@@ -29,6 +31,8 @@ export class FulfillFromStoreCommandHandler implements ICommandHandler<FulfillFr
     if (order.status !== EOrderStatus.Confirmed) {
       throw new OrderNotInConfirmedStatusException();
     }
+
+    await this.dispatchPaymentService.assertCanFulfillAsync(command.orderId, order.orderNumber);
 
     order.status = EOrderStatus.Packed;
     order.packedByUserId = command.userId;

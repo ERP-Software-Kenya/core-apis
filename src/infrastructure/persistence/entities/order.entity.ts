@@ -4,6 +4,7 @@ import { CORE_SCHEMA, ECoreTableName } from './e-core-table-name';
 import { LocationEntity } from './location.entity';
 import { CustomerEntity } from './customer.entity';
 import { OrderItemEntity } from './order-item.entity';
+import { EFulfillmentMode } from '../../../application/shared/enums/e-fulfillment-mode';
 
 const PK_NAME = 'PK_' + ECoreTableName.Orders;
 
@@ -44,6 +45,19 @@ export class OrderEntity {
   @AutoMap()
   @Column({ name: 'payment_status', type: 'varchar', length: 50, default: 'UNPAID' })
   public paymentStatus: string;
+
+  @AutoMap(() => String)
+  @Column({
+    name: 'fulfillment_mode',
+    type: 'enum',
+    enum: EFulfillmentMode,
+    default: EFulfillmentMode.Delivery,
+  })
+  public fulfillmentMode: EFulfillmentMode;
+
+  @AutoMap()
+  @Column({ name: 'fulfillment_location_id', type: 'uuid', nullable: true })
+  public fulfillmentLocationId?: string;
 
   @AutoMap()
   @Column({ name: 'claimed_by_user_id', type: 'uuid', nullable: true })

@@ -70,6 +70,12 @@ export class BillCompletionService {
     @InjectPinoLogger(BillCompletionService.name) private readonly logger: PinoLogger,
   ) {}
 
+  /** Credit-limit gate for order-linked bills (no stock deduction). */
+  public async assertCreditLimitForBill(bill: Bill, requestedById: string): Promise<void> {
+    if (bill.saleType !== ESaleType.Credit) return;
+    await this.enforceCreditLimit(bill, requestedById);
+  }
+
   public async completeBill(billId: string, performedById: string, creditOverrideApproved = false): Promise<Bill> {
     const bill = await this.billRepo.getAsync(billId);
     if (!bill) throw new NotFoundException(`Bill ${billId} not found`);
