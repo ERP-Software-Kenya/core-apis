@@ -9,4 +9,4 @@ export * from './1788081078461-migration';
 export * from './1788084835696-migration';
 export * from './1788252500000-migration';
 export * from './1788283790698-migration';
-export * from './1788400000000-migration';
+export * from './1788806546993-migration'
