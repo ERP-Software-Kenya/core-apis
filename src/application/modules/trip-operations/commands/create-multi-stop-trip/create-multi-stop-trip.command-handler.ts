@@ -4,15 +4,19 @@ import { InjectPinoLogger, PinoLogger } from 'nestjs-pino';
 import { CommandHandlerStrict } from '../../../../../common';
 import { IPushNotificationService, PUSH_NOTIFICATION_SERVICE } from '../../../../../common';
 import { CentrifugalService } from '../../../../../common/centrifugal';
-import { TRIP_REPO } from '../../../../../application/constants';
+import { TRIP_REPO, ORDER_REPO } from '../../../../../application/constants';
 import { ITripRepo } from '../../../trips/repositories/i-trip.repo';
+import { IOrderRepo } from '../../../orders';
 import { Trip } from '../../../trips/domain';
+import { OrderDispatchPaymentService } from '../../../../shared/services/order-dispatch-payment.service';
 import { CreateMultiStopTripCommand } from './create-multi-stop-trip.command';
 
 @CommandHandlerStrict(CreateMultiStopTripCommand)
 export class CreateMultiStopTripCommandHandler implements ICommandHandler<CreateMultiStopTripCommand, Trip> {
   public constructor(
     @Inject(TRIP_REPO) private readonly tripRepo: ITripRepo,
+    @Inject(ORDER_REPO) private readonly orderRepo: IOrderRepo,
+    private readonly dispatchPaymentService: OrderDispatchPaymentService,
     private readonly centrifugal: CentrifugalService,
     @Inject(PUSH_NOTIFICATION_SERVICE) private readonly pushService: IPushNotificationService,
     @InjectPinoLogger(CreateMultiStopTripCommandHandler.name) private readonly logger: PinoLogger,
@@ -20,6 +24,11 @@ export class CreateMultiStopTripCommandHandler implements ICommandHandler<Create
 
   public async execute(command: CreateMultiStopTripCommand): Promise<Trip> {
     this.logger.info(`Executing Command '${CreateMultiStopTripCommand.name}' driverId=${command.driverId}`);
+
+    for (const stop of command.stops) {
+      const order = await this.orderRepo.getAsync(stop.orderId);
+      await this.dispatchPaymentService.assertCanDispatchAsync(stop.orderId, order?.orderNumber);
+    }
 
     const trip = await this.tripRepo.createTripWithStopsAsync(
       command.driverId,
