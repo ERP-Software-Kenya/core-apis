@@ -26,6 +26,8 @@ export class MeResponse {
   @ApiProperty() public isOnboarded: boolean;
   @ApiPropertyOptional({ type: OrganizationSummary }) public organization?: OrganizationSummary;
   @ApiPropertyOptional({ type: MembershipSummary }) public membership?: MembershipSummary;
+  @ApiProperty({ type: [String], description: 'Branch IDs the user is scoped to (empty if org-wide or store-only)' })
+  public branchIds: string[];
   @ApiProperty({ type: [String], description: 'Store location IDs the user is scoped to (empty if org-wide)' })
   public locationIds: string[];
   @ApiProperty({ description: 'True when the user can view all branches/locations' })

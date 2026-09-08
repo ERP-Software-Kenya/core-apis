@@ -36,6 +36,7 @@ import {
   ECreditApprovalStatus,
   ECreditTransactionType,
   EMovementType,
+  EPaymentMethod,
   EUnpublishedMovementType,
   ESaleType,
 } from '../../../infrastructure/persistence/entities';
@@ -76,7 +77,12 @@ export class BillCompletionService {
     await this.enforceCreditLimit(bill, requestedById);
   }
 
-  public async completeBill(billId: string, performedById: string, creditOverrideApproved = false): Promise<Bill> {
+  public async completeBill(
+    billId: string,
+    performedById: string,
+    creditOverrideApproved = false,
+    paymentMethod?: EPaymentMethod,
+  ): Promise<Bill> {
     const bill = await this.billRepo.getAsync(billId);
     if (!bill) throw new NotFoundException(`Bill ${billId} not found`);
     const items = (bill.items?.length ? bill.items : await this.itemRepo.allAsync({ billId })) ?? [];
@@ -102,6 +108,10 @@ export class BillCompletionService {
 
     bill.billedAt = new Date();
     bill.status = EBillStatus.Completed;
+    bill.paymentMethod =
+      paymentMethod ??
+      bill.paymentMethod ??
+      (bill.saleType === ESaleType.Credit ? EPaymentMethod.Credit : EPaymentMethod.Cash);
     await this.billRepo.updateAsync({ ...bill, items: undefined });
     return this.billRepo.getAsync(billId);
   }

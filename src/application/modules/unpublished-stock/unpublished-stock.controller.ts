@@ -3,7 +3,7 @@ import { InjectMapper } from '@automapper/nestjs';
 import { Body, Controller, Get, HttpCode, HttpStatus, Param, Post, Query, UseGuards } from '@nestjs/common';
 import { ApiBearerAuth, ApiCreatedResponse, ApiOkResponse, ApiOperation, ApiParam, ApiTags } from '@nestjs/swagger';
 import { InjectPinoLogger, PinoLogger } from 'nestjs-pino';
-import { ClerkAuthGuard, CqrsMediator, CurrentUser, AuthenticatedUser, Roles, RolesGuard, InventoryNotOwnedByOrgException, assertLocationAccess } from 'src/common';
+import { ClerkAuthGuard, CqrsMediator, CurrentUser, AuthenticatedUser, Roles, RolesGuard, InventoryNotOwnedByOrgException, LocationAccessDeniedException, assertLocationAccess } from 'src/common';
 import { ERole } from 'src/infrastructure/persistence/entities/role.entity';
 import { AddUnpublishedStockCommand, PublishUnpublishedStockCommand } from './commands';
 import { UnpublishedStock, UnpublishedStockMovement } from './domain';
@@ -20,7 +20,7 @@ import { GetUnpublishedStockQuery, ListMovementsByUnpublishedStockQuery, ListUnp
 @ApiTags('Unpublished Stock')
 @Controller({ path: 'unpublished-stock', version: '1' })
 @UseGuards(ClerkAuthGuard, RolesGuard)
-@Roles(ERole.OrgAdmin, ERole.SuperAdmin, ERole.StoreManager, ERole.StoreStaff)
+@Roles(ERole.OrgAdmin, ERole.SuperAdmin, ERole.BranchManager, ERole.StoreManager, ERole.StoreStaff)
 export class UnpublishedStockController {
   constructor(
     protected readonly mediator: CqrsMediator,
@@ -35,6 +35,7 @@ export class UnpublishedStockController {
   public async list(@CurrentUser() user: AuthenticatedUser, @Query() filter: ListUnpublishedStockRequest): Promise<UnpublishedStockResponse[]> {
     const query          = this.mapper.map(filter, ListUnpublishedStockRequest, ListUnpublishedStockQuery);
     query.organizationId = user.organizationId;
+    this.applyLocationScope(user, query, filter?.locationId);
     const result         = await this.mediator.execute<ListUnpublishedStockQuery, UnpublishedStock[]>(query);
     return this.mapper.mapArray(result, UnpublishedStock, UnpublishedStockResponse);
   }
@@ -49,6 +50,7 @@ export class UnpublishedStockController {
     query.id     = id;
     const result = await this.mediator.execute<GetUnpublishedStockQuery, UnpublishedStock>(query);
     if (result.organizationId !== user.organizationId) throw new InventoryNotOwnedByOrgException();
+    assertLocationAccess(user, result.locationId);
     return this.mapper.map(result, UnpublishedStock, UnpublishedStockResponse);
   }
 
@@ -62,6 +64,7 @@ export class UnpublishedStockController {
     stockQuery.id    = unpublishedStockId;
     const stock      = await this.mediator.execute<GetUnpublishedStockQuery, UnpublishedStock>(stockQuery);
     if (stock.organizationId !== user.organizationId) throw new InventoryNotOwnedByOrgException();
+    assertLocationAccess(user, stock.locationId);
     const query                = new ListMovementsByUnpublishedStockQuery();
     query.unpublishedStockId   = unpublishedStockId;
     const result               = await this.mediator.execute<ListMovementsByUnpublishedStockQuery, UnpublishedStockMovement[]>(query);
@@ -71,7 +74,7 @@ export class UnpublishedStockController {
   @ApiOperation({ summary: 'Add stock to the unpublished pool' })
   @ApiCreatedResponse()
   @HttpCode(HttpStatus.CREATED)
-  @Roles(ERole.OrgAdmin, ERole.SuperAdmin, ERole.StoreManager)
+  @Roles(ERole.OrgAdmin, ERole.SuperAdmin, ERole.BranchManager, ERole.StoreManager)
   @Post('add')
   public async addStock(@CurrentUser() user: AuthenticatedUser, @Body() body: AddUnpublishedStockRequest): Promise<void> {
     assertLocationAccess(user, body.locationId);
@@ -84,7 +87,7 @@ export class UnpublishedStockController {
   @ApiOperation({ summary: 'Publish stock from unpublished pool to live inventory' })
   @ApiCreatedResponse()
   @HttpCode(HttpStatus.CREATED)
-  @Roles(ERole.OrgAdmin, ERole.SuperAdmin, ERole.StoreManager)
+  @Roles(ERole.OrgAdmin, ERole.SuperAdmin, ERole.BranchManager, ERole.StoreManager)
   @Post('publish')
   public async publishStock(@CurrentUser() user: AuthenticatedUser, @Body() body: PublishUnpublishedStockRequest): Promise<void> {
     const existingQuery = new GetUnpublishedStockQuery();
@@ -95,5 +98,25 @@ export class UnpublishedStockController {
     command.organizationId = user.organizationId;
     command.performedById  = user.dbUserId;
     await this.mediator.execute<PublishUnpublishedStockCommand, void>(command);
+  }
+
+  private applyLocationScope(
+    user: AuthenticatedUser,
+    query: ListUnpublishedStockQuery,
+    requestedLocationId?: string,
+  ): void {
+    if (user.hasOrgWideAccess) {
+      if (requestedLocationId) query.locationId = requestedLocationId;
+      return;
+    }
+    if (requestedLocationId) {
+      assertLocationAccess(user, requestedLocationId);
+      query.locationId = requestedLocationId;
+      return;
+    }
+    if (!user.locationIds.length) {
+      throw new LocationAccessDeniedException(undefined, 'Filter by locationId, or use an org-wide role to list without one.');
+    }
+    query.accessibleLocationIds = user.locationIds;
   }
 }

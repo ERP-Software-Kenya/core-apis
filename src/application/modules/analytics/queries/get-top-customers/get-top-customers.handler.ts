@@ -24,9 +24,16 @@ const TOP_CUSTOMERS_SQL = `
   WHERE b.organization_id = $1
     AND b.status = 'COMPLETED'
     AND b.deleted_at IS NULL
+    AND b.created_at >= $2
+    AND b.created_at <= $3
+    AND ($4::uuid IS NULL OR b.location_id = $4)
+    AND ($5::uuid IS NULL OR EXISTS (
+      SELECT 1 FROM core.locations l WHERE l.id = b.location_id AND l.branch_id = $5
+    ))
+    AND ($6::uuid[] IS NULL OR b.location_id = ANY($6))
   GROUP BY b.customer_id, COALESCE(c.name, b.walk_in_name, 'Walk-in')
   ORDER BY SUM(b.total_amount) DESC
-  LIMIT $2
+  LIMIT $7
 `;
 
 @QueryHandlerStrict(GetTopCustomersQuery)
@@ -38,7 +45,15 @@ export class GetTopCustomersHandler implements IQueryHandler<GetTopCustomersQuer
 
   public async execute(query: GetTopCustomersQuery): Promise<TopCustomerResponse[]> {
     this.logger.info(`Executing Query '${GetTopCustomersQuery.name}'`);
-    const rows = await this.dataSource.query<RawTopCustomer[]>(TOP_CUSTOMERS_SQL, [query.organizationId, query.limit]);
+    const rows = await this.dataSource.query<RawTopCustomer[]>(TOP_CUSTOMERS_SQL, [
+      query.organizationId,
+      query.from,
+      query.to,
+      query.locationId ?? null,
+      query.branchId ?? null,
+      query.locationIds ?? null,
+      query.limit,
+    ]);
     return rows.map(row => ({
       customerId:   row.customerId,
       customerName: row.customerName,

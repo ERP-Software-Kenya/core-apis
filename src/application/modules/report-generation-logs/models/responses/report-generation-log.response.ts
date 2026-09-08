@@ -16,6 +16,7 @@ export class ReportGenerationLogResponse {
   @AutoMap() @ApiProperty() public status: string;
   @AutoMap() @ApiProperty({ required: false }) public fileUrl?: string;
   @AutoMap() @ApiProperty({ required: false }) public errorMessage?: string;
+  @AutoMap() @ApiProperty({ required: false }) public reportData?: Record<string, unknown>;
   @AutoMap(() => Date) @ApiProperty() public createdAt: Date;
 }
 

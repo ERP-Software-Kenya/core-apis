@@ -27,6 +27,10 @@ const TOTALS_SQL = `
     AND pl.created_at >= $2
     AND pl.created_at <= $3
     AND ($4::uuid IS NULL OR pl.location_id = $4)
+    AND ($5::uuid IS NULL OR EXISTS (
+      SELECT 1 FROM core.locations l WHERE l.id = pl.location_id AND l.branch_id = $5
+    ))
+    AND ($6::uuid[] IS NULL OR pl.location_id = ANY($6))
 `;
 
 const TOP_SQL = `
@@ -41,10 +45,14 @@ const TOP_SQL = `
     AND pl.created_at >= $2
     AND pl.created_at <= $3
     AND ($4::uuid IS NULL OR pl.location_id = $4)
+    AND ($5::uuid IS NULL OR EXISTS (
+      SELECT 1 FROM core.locations l WHERE l.id = pl.location_id AND l.branch_id = $5
+    ))
+    AND ($6::uuid[] IS NULL OR pl.location_id = ANY($6))
   GROUP BY pl.product_id, p.name
   HAVING COALESCE(SUM(COALESCE((pl.metadata->>'quantity')::numeric, 0)), 0) > 0
   ORDER BY quantity DESC
-  LIMIT $5
+  LIMIT $7
 `;
 
 @QueryHandlerStrict(GetStockDamageSummaryQuery)
@@ -59,7 +67,14 @@ export class GetStockDamageSummaryHandler
   public async execute(query: GetStockDamageSummaryQuery): Promise<StockDamageSummaryResponse> {
     this.logger.info(`Executing Query '${GetStockDamageSummaryQuery.name}'`);
 
-    const params = [query.organizationId, query.from, query.to, query.locationId ?? null];
+    const params = [
+      query.organizationId,
+      query.from,
+      query.to,
+      query.locationId ?? null,
+      query.branchId ?? null,
+      query.locationIds ?? null,
+    ];
 
     const [[totals], products] = await Promise.all([
       this.dataSource.query<TotalsRow[]>(TOTALS_SQL, params),

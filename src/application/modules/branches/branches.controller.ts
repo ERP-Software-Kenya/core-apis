@@ -3,8 +3,10 @@ import { InjectMapper } from '@automapper/nestjs';
 import { Body, Controller, Get, HttpCode, HttpStatus, Param, Patch, Post, Put, Query, UseGuards } from '@nestjs/common';
 import { ApiBearerAuth, ApiCreatedResponse, ApiOkResponse, ApiOperation, ApiParam, ApiTags } from '@nestjs/swagger';
 import { InjectPinoLogger, PinoLogger } from 'nestjs-pino';
-import { AuthenticatedUser, ClerkAuthGuard, CqrsMediator, CurrentUser, IPageable, Roles, RolesGuard, assertOrgOwnership } from '../../../common';
+import { AuthenticatedUser, ClerkAuthGuard, CqrsMediator, CurrentUser, IPageable, LocationAccessDeniedException, Roles, RolesGuard, assertOrgOwnership } from '../../../common';
 import { ERole } from '../../../infrastructure';
+import { Location } from '../locations/domain';
+import { ListLocationsQuery } from '../locations/queries';
 import { CreateBranchCommand, UpdateBranchCommand } from './commands';
 import { Branch } from './domain';
 import {
@@ -56,6 +58,8 @@ export class BranchesController {
     if (!user.organizationId) return [];
     const query = this.mapper.map(filter ?? new ListBranchesRequest(), ListBranchesRequest, ListBranchesQuery);
     query.organizationId = user.organizationId;
+    const hasVisibleBranches = await this.applyBranchScope(user, query);
+    if (!hasVisibleBranches) return [];
     const result = await this.mediator.execute<ListBranchesQuery, Branch[]>(query);
     return this.mapper.mapArray(result, Branch, BranchResponse);
   }
@@ -128,5 +132,27 @@ export class BranchesController {
     command.isActive = false;
     const result = await this.mediator.execute<UpdateBranchCommand, Branch>(command);
     return this.mapper.map(result, Branch, BranchResponse);
+  }
+
+  private async applyBranchScope(user: AuthenticatedUser, query: ListBranchesQuery): Promise<boolean> {
+    if (user.hasOrgWideAccess) return true;
+
+    if (user.branchIds.length) {
+      query.$ids = user.branchIds;
+      return true;
+    }
+
+    if (!user.locationIds.length) {
+      throw new LocationAccessDeniedException(undefined, 'No branch or store location assigned to your account.');
+    }
+
+    const locationQuery = new ListLocationsQuery();
+    locationQuery.organizationId = user.organizationId;
+    locationQuery.$ids = user.locationIds;
+    const locations = await this.mediator.execute<ListLocationsQuery, Location[]>(locationQuery);
+    const branchIds = [...new Set(locations.map((location) => location.branchId).filter(Boolean))];
+    if (!branchIds.length) return false;
+    query.$ids = branchIds;
+    return true;
   }
 }

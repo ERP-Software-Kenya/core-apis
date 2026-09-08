@@ -20,8 +20,23 @@ const SQL = `
   SELECT
     COUNT(CASE WHEN status IN ('ordered', 'partially_received') THEN 1 END) AS pending,
     COUNT(CASE WHEN status = 'draft' THEN 1 END) AS "approvalPending"
-  FROM core.purchase_orders
-  WHERE organization_id = $1
+  FROM core.purchase_orders po
+  WHERE po.organization_id = $1
+    AND po.created_at >= $2
+    AND po.created_at <= $3
+    AND (
+      $4::uuid IS NULL AND $5::uuid IS NULL AND $6::uuid[] IS NULL
+      OR EXISTS (
+        SELECT 1
+        FROM core.purchase_items pi
+        INNER JOIN core.purchase_item_allocations pia ON pia.purchase_item_id = pi.id
+        INNER JOIN core.locations l ON l.id = pia.location_id
+        WHERE pi.purchase_order_id = po.id
+          AND ($4::uuid IS NULL OR pia.location_id = $4)
+          AND ($5::uuid IS NULL OR l.branch_id = $5)
+          AND ($6::uuid[] IS NULL OR pia.location_id = ANY($6))
+      )
+    )
 `;
 
 const PRICE_INCREASED_SQL = `
@@ -35,6 +50,20 @@ const PRICE_INCREASED_SQL = `
     JOIN core.purchase_orders po ON po.id = pi.purchase_order_id
     WHERE po.organization_id = $1
       AND po.status = 'received'
+      AND po.created_at >= $2
+      AND po.created_at <= $3
+      AND (
+        $4::uuid IS NULL AND $5::uuid IS NULL AND $6::uuid[] IS NULL
+        OR EXISTS (
+          SELECT 1
+          FROM core.purchase_item_allocations pia
+          INNER JOIN core.locations l ON l.id = pia.location_id
+          WHERE pia.purchase_item_id = pi.id
+            AND ($4::uuid IS NULL OR pia.location_id = $4)
+            AND ($5::uuid IS NULL OR l.branch_id = $5)
+            AND ($6::uuid[] IS NULL OR pia.location_id = ANY($6))
+        )
+      )
   )
   SELECT COUNT(*) AS "priceIncreased"
   FROM po_costs
@@ -52,9 +81,17 @@ export class GetPurchaseExceptionsHandler
 
   public async execute(query: GetPurchaseExceptionsQuery): Promise<PurchaseExceptionsResponse> {
     this.logger.info(`Executing Query '${GetPurchaseExceptionsQuery.name}'`);
+    const params = [
+      query.organizationId,
+      query.from,
+      query.to,
+      query.locationId ?? null,
+      query.branchId ?? null,
+      query.locationIds ?? null,
+    ];
     const [[row], [priceRow]] = await Promise.all([
-      this.dataSource.query<RawRow[]>(SQL, [query.organizationId]),
-      this.dataSource.query<RawPriceRow[]>(PRICE_INCREASED_SQL, [query.organizationId]),
+      this.dataSource.query<RawRow[]>(SQL, params),
+      this.dataSource.query<RawPriceRow[]>(PRICE_INCREASED_SQL, params),
     ]);
     return {
       pending: Number(row?.pending ?? 0),

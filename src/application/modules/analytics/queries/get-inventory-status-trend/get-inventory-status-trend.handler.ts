@@ -59,8 +59,11 @@ export class GetInventoryStatusTrendHandler
           i.reorder_level,
           i.max_stock
         FROM core.inventory i
+        INNER JOIN core.locations l ON l.id = i.location_id
         WHERE i.organization_id = $1
           AND ($4::uuid IS NULL OR i.location_id = $4)
+          AND ($6::uuid IS NULL OR l.branch_id = $6)
+          AND ($7::uuid[] IS NULL OR i.location_id = ANY($7))
       ),
       classified AS (
         SELECT
@@ -79,6 +82,10 @@ export class GetInventoryStatusTrendHandler
                 AND bl.created_at >= b.bucket - ($5 || ' days')::interval
                 AND bl.created_at < b.bucket + ${step}::interval
                 AND ($4::uuid IS NULL OR bl.location_id = $4)
+                AND ($6::uuid IS NULL OR EXISTS (
+                  SELECT 1 FROM core.locations bill_loc WHERE bill_loc.id = bl.location_id AND bill_loc.branch_id = $6
+                ))
+                AND ($7::uuid[] IS NULL OR bl.location_id = ANY($7))
             ) THEN 'dead'
             ELSE 'normal'
           END AS status
@@ -103,6 +110,8 @@ export class GetInventoryStatusTrendHandler
       query.to,
       query.locationId ?? null,
       String(query.staleDays),
+      query.branchId ?? null,
+      query.locationIds ?? null,
     ]);
 
     return rows.map((row) => ({

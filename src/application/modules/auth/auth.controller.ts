@@ -259,6 +259,7 @@ export class AuthController {
         isOnboarded: false,
         organization: undefined,
         membership: undefined,
+        branchIds: [],
         locationIds: [],
         hasOrgWideAccess: false,
       };
@@ -299,6 +300,7 @@ export class AuthController {
       isOnboarded: true,
       organization: orgSummary,
       membership: membershipSummary,
+      branchIds: currentUser.branchIds ?? [],
       locationIds: currentUser.locationIds ?? [],
       hasOrgWideAccess: currentUser.hasOrgWideAccess ?? false,
       currencyCode: resolveCurrencyCode(result.organization?.country),

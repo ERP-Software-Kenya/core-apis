@@ -92,7 +92,7 @@ export class ClerkJwtStrategy extends PassportStrategy(Strategy, CLERK_STRATEGY)
         branchLocationIds = branchLocs.map((l) => l.id);
       }
       authUser.locationIds = [...new Set([...storeIds, ...branchLocationIds])];
-      authUser.hasOrgWideAccess = computeHasOrgWideAccess(userRoles, orgMembers.length);
+      authUser.hasOrgWideAccess = computeHasOrgWideAccess(userRoles, orgMembers);
     }
 
     return authUser;

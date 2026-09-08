@@ -27,6 +27,10 @@ const SQL = `
     AND b.created_at >= $2
     AND b.created_at <= $3
     AND ($4::uuid IS NULL OR b.location_id = $4)
+    AND ($5::uuid IS NULL OR EXISTS (
+      SELECT 1 FROM core.locations l WHERE l.id = b.location_id AND l.branch_id = $5
+    ))
+    AND ($6::uuid[] IS NULL OR b.location_id = ANY($6))
   GROUP BY c.id, c.name
   HAVING COALESCE(SUM(bi.line_total), 0) > 0
   ORDER BY value DESC
@@ -48,6 +52,8 @@ export class GetSalesByCategoryHandler
       query.from,
       query.to,
       query.locationId ?? null,
+      query.branchId ?? null,
+      query.locationIds ?? null,
     ]);
     return rows.map((row) => ({
       categoryId: row.categoryId ?? undefined,
