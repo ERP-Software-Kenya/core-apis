@@ -56,7 +56,8 @@ const PERIOD_QUERY = [
   { name: 'period', required: false, description: 'today | 7d | month | year | custom' },
   { name: 'from', required: false, description: 'ISO date (custom period start)' },
   { name: 'to', required: false, description: 'ISO date (custom period end)' },
-  { name: 'locationId', required: false, description: 'Filter by store/location UUID' },
+  { name: 'locationId', required: false, description: 'Legacy filter by store/location UUID' },
+  { name: 'branchId', required: false, description: 'Filter by branch UUID; includes all stores in the branch' },
 ];
 
 @ApiBearerAuth()
@@ -93,20 +94,24 @@ export class AnalyticsController {
   @ApiQuery(PERIOD_QUERY[1])
   @ApiQuery(PERIOD_QUERY[2])
   @ApiQuery(PERIOD_QUERY[3])
+  @ApiQuery(PERIOD_QUERY[4])
   @Get('sales-summary')
   public async getSalesSummary(
     @Query('period') period?: string,
     @Query('from') from?: string,
     @Query('to') to?: string,
+    @Query('branchId') branchId?: string,
     @Query('locationId') locationId?: string,
     @CurrentUser() user?: AuthenticatedUser,
   ): Promise<SalesSummaryResponse> {
-    const ctx = buildAnalyticsQueryContext(user, { period, from, to, locationId });
+    const ctx = buildAnalyticsQueryContext(user, { period, from, to, branchId, locationId });
     const query = new GetSalesSummaryQuery();
     query.organizationId = ctx.organizationId;
+    query.branchId = ctx.branchId;
     query.from = ctx.from;
     query.to = ctx.to;
     query.locationId = ctx.locationId;
+    query.locationIds = ctx.locationIds;
     query.period = ctx.preset;
     return this.mediator.execute<GetSalesSummaryQuery, SalesSummaryResponse>(query);
   }
@@ -117,23 +122,27 @@ export class AnalyticsController {
   @ApiQuery(PERIOD_QUERY[1])
   @ApiQuery(PERIOD_QUERY[2])
   @ApiQuery(PERIOD_QUERY[3])
+  @ApiQuery(PERIOD_QUERY[4])
   @ApiQuery({ name: 'months', required: false, description: 'Legacy: last N months if period omitted' })
   @Get('revenue-trend')
   public async getRevenueTrend(
     @Query('period') period?: string,
     @Query('from') from?: string,
     @Query('to') to?: string,
+    @Query('branchId') branchId?: string,
     @Query('locationId') locationId?: string,
     @Query('months') rawMonths?: string,
     @CurrentUser() user?: AuthenticatedUser,
   ): Promise<RevenueTrendPointResponse[]> {
     const months = rawMonths ? Math.max(1, Math.min(24, parseInt(rawMonths, 10))) : undefined;
-    const ctx = buildAnalyticsQueryContext(user, { period, from, to, locationId, months });
+    const ctx = buildAnalyticsQueryContext(user, { period, from, to, branchId, locationId, months });
     const query = new GetRevenueTrendQuery();
     query.organizationId = ctx.organizationId;
+    query.branchId = ctx.branchId;
     query.from = ctx.from;
     query.to = ctx.to;
     query.locationId = ctx.locationId;
+    query.locationIds = ctx.locationIds;
     query.trunc = ctx.trunc;
     return this.mediator.execute<GetRevenueTrendQuery, RevenueTrendPointResponse[]>(query);
   }
@@ -144,6 +153,7 @@ export class AnalyticsController {
   @ApiQuery(PERIOD_QUERY[1])
   @ApiQuery(PERIOD_QUERY[2])
   @ApiQuery(PERIOD_QUERY[3])
+  @ApiQuery(PERIOD_QUERY[4])
   @ApiQuery({ name: 'limit', required: false })
   @Get('top-products')
   public async getTopProducts(
@@ -151,29 +161,48 @@ export class AnalyticsController {
     @Query('period') period?: string,
     @Query('from') from?: string,
     @Query('to') to?: string,
+    @Query('branchId') branchId?: string,
     @Query('locationId') locationId?: string,
     @CurrentUser() user?: AuthenticatedUser,
   ): Promise<TopProductResponse[]> {
-    const ctx = buildAnalyticsQueryContext(user, { period, from, to, locationId });
+    const ctx = buildAnalyticsQueryContext(user, { period, from, to, branchId, locationId });
     const query = new GetTopProductsQuery();
     query.organizationId = ctx.organizationId;
+    query.branchId = ctx.branchId;
     query.limit = rawLimit ? Math.max(1, Math.min(50, parseInt(rawLimit, 10))) : 10;
     query.from = ctx.from;
     query.to = ctx.to;
     query.locationId = ctx.locationId;
+    query.locationIds = ctx.locationIds;
     return this.mediator.execute<GetTopProductsQuery, TopProductResponse[]>(query);
   }
 
   @ApiOperation({ summary: 'Get top customers by spend on completed bills' })
   @ApiOkResponse({ type: [TopCustomerResponse] })
+  @ApiQuery(PERIOD_QUERY[0])
+  @ApiQuery(PERIOD_QUERY[1])
+  @ApiQuery(PERIOD_QUERY[2])
+  @ApiQuery(PERIOD_QUERY[3])
+  @ApiQuery(PERIOD_QUERY[4])
   @Get('top-customers')
   public async getTopCustomers(
     @Query('limit') rawLimit?: string,
+    @Query('period') period?: string,
+    @Query('from') from?: string,
+    @Query('to') to?: string,
+    @Query('branchId') branchId?: string,
+    @Query('locationId') locationId?: string,
     @CurrentUser() user?: AuthenticatedUser,
   ): Promise<TopCustomerResponse[]> {
+    const ctx = buildAnalyticsQueryContext(user, { period, from, to, branchId, locationId });
     const query = new GetTopCustomersQuery();
-    query.organizationId = requireOrganizationId(user);
+    query.organizationId = ctx.organizationId;
+    query.branchId = ctx.branchId;
     query.limit = rawLimit ? Math.max(1, Math.min(50, parseInt(rawLimit, 10))) : 10;
+    query.from = ctx.from;
+    query.to = ctx.to;
+    query.locationId = ctx.locationId;
+    query.locationIds = ctx.locationIds;
     return this.mediator.execute<GetTopCustomersQuery, TopCustomerResponse[]>(query);
   }
 
@@ -183,20 +212,24 @@ export class AnalyticsController {
   @ApiQuery(PERIOD_QUERY[1])
   @ApiQuery(PERIOD_QUERY[2])
   @ApiQuery(PERIOD_QUERY[3])
+  @ApiQuery(PERIOD_QUERY[4])
   @Get('purchase-summary')
   public async getPurchaseSummary(
     @Query('period') period?: string,
     @Query('from') from?: string,
     @Query('to') to?: string,
+    @Query('branchId') branchId?: string,
     @Query('locationId') locationId?: string,
     @CurrentUser() user?: AuthenticatedUser,
   ): Promise<PurchaseSummaryResponse> {
-    const ctx = buildAnalyticsQueryContext(user, { period, from, to, locationId });
+    const ctx = buildAnalyticsQueryContext(user, { period, from, to, branchId, locationId });
     const query = new GetPurchaseSummaryQuery();
     query.organizationId = ctx.organizationId;
+    query.branchId = ctx.branchId;
     query.from = ctx.from;
     query.to = ctx.to;
     query.locationId = ctx.locationId;
+    query.locationIds = ctx.locationIds;
     return this.mediator.execute<GetPurchaseSummaryQuery, PurchaseSummaryResponse>(query);
   }
 
@@ -206,67 +239,111 @@ export class AnalyticsController {
   @ApiQuery(PERIOD_QUERY[1])
   @ApiQuery(PERIOD_QUERY[2])
   @ApiQuery(PERIOD_QUERY[3])
+  @ApiQuery(PERIOD_QUERY[4])
   @ApiQuery({ name: 'months', required: false })
   @Get('purchase-trend')
   public async getPurchaseTrend(
     @Query('period') period?: string,
     @Query('from') from?: string,
     @Query('to') to?: string,
+    @Query('branchId') branchId?: string,
     @Query('locationId') locationId?: string,
     @Query('months') rawMonths?: string,
     @CurrentUser() user?: AuthenticatedUser,
   ): Promise<PurchaseTrendPointResponse[]> {
     const months = rawMonths ? Math.max(1, Math.min(24, parseInt(rawMonths, 10))) : undefined;
-    const ctx = buildAnalyticsQueryContext(user, { period, from, to, locationId, months });
+    const ctx = buildAnalyticsQueryContext(user, { period, from, to, branchId, locationId, months });
     const query = new GetPurchaseTrendQuery();
     query.organizationId = ctx.organizationId;
+    query.branchId = ctx.branchId;
     query.from = ctx.from;
     query.to = ctx.to;
     query.locationId = ctx.locationId;
+    query.locationIds = ctx.locationIds;
     query.trunc = ctx.trunc;
     return this.mediator.execute<GetPurchaseTrendQuery, PurchaseTrendPointResponse[]>(query);
   }
 
   @ApiOperation({ summary: 'Get top suppliers by spend on received purchase orders' })
   @ApiOkResponse({ type: [TopSupplierResponse] })
+  @ApiQuery(PERIOD_QUERY[0])
+  @ApiQuery(PERIOD_QUERY[1])
+  @ApiQuery(PERIOD_QUERY[2])
+  @ApiQuery(PERIOD_QUERY[3])
+  @ApiQuery(PERIOD_QUERY[4])
   @Get('top-suppliers')
   public async getTopSuppliers(
     @Query('limit') rawLimit?: string,
+    @Query('period') period?: string,
+    @Query('from') from?: string,
+    @Query('to') to?: string,
+    @Query('branchId') branchId?: string,
+    @Query('locationId') locationId?: string,
     @CurrentUser() user?: AuthenticatedUser,
   ): Promise<TopSupplierResponse[]> {
+    const ctx = buildAnalyticsQueryContext(user, { period, from, to, branchId, locationId });
     const query = new GetTopSuppliersQuery();
-    query.organizationId = requireOrganizationId(user);
+    query.organizationId = ctx.organizationId;
+    query.branchId = ctx.branchId;
     query.limit = rawLimit ? Math.max(1, Math.min(50, parseInt(rawLimit, 10))) : 10;
+    query.from = ctx.from;
+    query.to = ctx.to;
+    query.locationId = ctx.locationId;
+    query.locationIds = ctx.locationIds;
     return this.mediator.execute<GetTopSuppliersQuery, TopSupplierResponse[]>(query);
   }
 
   @ApiOperation({ summary: 'Get inventory summary KPIs' })
   @ApiOkResponse({ type: InventorySummaryResponse })
+  @ApiQuery(PERIOD_QUERY[0])
+  @ApiQuery(PERIOD_QUERY[1])
+  @ApiQuery(PERIOD_QUERY[2])
   @ApiQuery(PERIOD_QUERY[3])
+  @ApiQuery(PERIOD_QUERY[4])
   @Get('inventory-summary')
   public async getInventorySummary(
+    @Query('period') period?: string,
+    @Query('from') from?: string,
+    @Query('to') to?: string,
+    @Query('branchId') branchId?: string,
     @Query('locationId') locationId?: string,
     @CurrentUser() user?: AuthenticatedUser,
   ): Promise<InventorySummaryResponse> {
-    const ctx = buildAnalyticsQueryContext(user, { locationId });
+    const ctx = buildAnalyticsQueryContext(user, { period, from, to, branchId, locationId });
     const query = new GetInventorySummaryQuery();
     query.organizationId = ctx.organizationId;
+    query.branchId = ctx.branchId;
     query.locationId = ctx.locationId;
+    query.locationIds = ctx.locationIds;
+    query.from = ctx.from;
+    query.to = ctx.to;
     return this.mediator.execute<GetInventorySummaryQuery, InventorySummaryResponse>(query);
   }
 
   @ApiOperation({ summary: 'Get stock totals and valuation grouped by location' })
   @ApiOkResponse({ type: [StockByLocationPointResponse] })
+  @ApiQuery(PERIOD_QUERY[0])
+  @ApiQuery(PERIOD_QUERY[1])
+  @ApiQuery(PERIOD_QUERY[2])
   @ApiQuery(PERIOD_QUERY[3])
+  @ApiQuery(PERIOD_QUERY[4])
   @Get('stock-by-location')
   public async getStockByLocation(
+    @Query('period') period?: string,
+    @Query('from') from?: string,
+    @Query('to') to?: string,
+    @Query('branchId') branchId?: string,
     @Query('locationId') locationId?: string,
     @CurrentUser() user?: AuthenticatedUser,
   ): Promise<StockByLocationPointResponse[]> {
-    const ctx = buildAnalyticsQueryContext(user, { locationId });
+    const ctx = buildAnalyticsQueryContext(user, { period, from, to, branchId, locationId });
     const query = new GetStockByLocationQuery();
     query.organizationId = ctx.organizationId;
+    query.branchId = ctx.branchId;
     query.locationId = ctx.locationId;
+    query.locationIds = ctx.locationIds;
+    query.from = ctx.from;
+    query.to = ctx.to;
     return this.mediator.execute<GetStockByLocationQuery, StockByLocationPointResponse[]>(query);
   }
 
@@ -276,35 +353,51 @@ export class AnalyticsController {
   @ApiQuery(PERIOD_QUERY[1])
   @ApiQuery(PERIOD_QUERY[2])
   @ApiQuery(PERIOD_QUERY[3])
+  @ApiQuery(PERIOD_QUERY[4])
   @Get('payment-mix')
   public async getPaymentMix(
     @Query('period') period?: string,
     @Query('from') from?: string,
     @Query('to') to?: string,
+    @Query('branchId') branchId?: string,
     @Query('locationId') locationId?: string,
     @CurrentUser() user?: AuthenticatedUser,
   ): Promise<PaymentMixPointResponse[]> {
-    const ctx = buildAnalyticsQueryContext(user, { period, from, to, locationId });
+    const ctx = buildAnalyticsQueryContext(user, { period, from, to, branchId, locationId });
     const query = new GetPaymentMixQuery();
     query.organizationId = ctx.organizationId;
+    query.branchId = ctx.branchId;
     query.from = ctx.from;
     query.to = ctx.to;
     query.locationId = ctx.locationId;
+    query.locationIds = ctx.locationIds;
     return this.mediator.execute<GetPaymentMixQuery, PaymentMixPointResponse[]>(query);
   }
 
   @ApiOperation({ summary: 'Stock value grouped by product category' })
   @ApiOkResponse({ type: [CategoryValuePointResponse] })
+  @ApiQuery(PERIOD_QUERY[0])
+  @ApiQuery(PERIOD_QUERY[1])
+  @ApiQuery(PERIOD_QUERY[2])
   @ApiQuery(PERIOD_QUERY[3])
+  @ApiQuery(PERIOD_QUERY[4])
   @Get('stock-value-by-category')
   public async getStockValueByCategory(
+    @Query('period') period?: string,
+    @Query('from') from?: string,
+    @Query('to') to?: string,
+    @Query('branchId') branchId?: string,
     @Query('locationId') locationId?: string,
     @CurrentUser() user?: AuthenticatedUser,
   ): Promise<CategoryValuePointResponse[]> {
-    const ctx = buildAnalyticsQueryContext(user, { locationId });
+    const ctx = buildAnalyticsQueryContext(user, { period, from, to, branchId, locationId });
     const query = new GetStockValueByCategoryQuery();
     query.organizationId = ctx.organizationId;
+    query.branchId = ctx.branchId;
     query.locationId = ctx.locationId;
+    query.locationIds = ctx.locationIds;
+    query.from = ctx.from;
+    query.to = ctx.to;
     return this.mediator.execute<GetStockValueByCategoryQuery, CategoryValuePointResponse[]>(query);
   }
 
@@ -314,20 +407,24 @@ export class AnalyticsController {
   @ApiQuery(PERIOD_QUERY[1])
   @ApiQuery(PERIOD_QUERY[2])
   @ApiQuery(PERIOD_QUERY[3])
+  @ApiQuery(PERIOD_QUERY[4])
   @Get('purchase-by-category')
   public async getPurchaseByCategory(
     @Query('period') period?: string,
     @Query('from') from?: string,
     @Query('to') to?: string,
+    @Query('branchId') branchId?: string,
     @Query('locationId') locationId?: string,
     @CurrentUser() user?: AuthenticatedUser,
   ): Promise<CategoryValuePointResponse[]> {
-    const ctx = buildAnalyticsQueryContext(user, { period, from, to, locationId });
+    const ctx = buildAnalyticsQueryContext(user, { period, from, to, branchId, locationId });
     const query = new GetPurchaseByCategoryQuery();
     query.organizationId = ctx.organizationId;
+    query.branchId = ctx.branchId;
     query.from = ctx.from;
     query.to = ctx.to;
     query.locationId = ctx.locationId;
+    query.locationIds = ctx.locationIds;
     return this.mediator.execute<GetPurchaseByCategoryQuery, CategoryValuePointResponse[]>(query);
   }
 
@@ -337,35 +434,51 @@ export class AnalyticsController {
   @ApiQuery(PERIOD_QUERY[1])
   @ApiQuery(PERIOD_QUERY[2])
   @ApiQuery(PERIOD_QUERY[3])
+  @ApiQuery(PERIOD_QUERY[4])
   @Get('sales-by-category')
   public async getSalesByCategory(
     @Query('period') period?: string,
     @Query('from') from?: string,
     @Query('to') to?: string,
+    @Query('branchId') branchId?: string,
     @Query('locationId') locationId?: string,
     @CurrentUser() user?: AuthenticatedUser,
   ): Promise<CategoryValuePointResponse[]> {
-    const ctx = buildAnalyticsQueryContext(user!, { period, from, to, locationId });
+    const ctx = buildAnalyticsQueryContext(user, { period, from, to, branchId, locationId });
     const query = new GetSalesByCategoryQuery();
     query.organizationId = ctx.organizationId;
+    query.branchId = ctx.branchId;
     query.from = ctx.from;
     query.to = ctx.to;
     query.locationId = ctx.locationId;
+    query.locationIds = ctx.locationIds;
     return this.mediator.execute<GetSalesByCategoryQuery, CategoryValuePointResponse[]>(query);
   }
 
   @ApiOperation({ summary: 'Purchase exception counts (pending POs, drafts awaiting approval)' })
   @ApiOkResponse({ type: PurchaseExceptionsResponse })
+  @ApiQuery(PERIOD_QUERY[0])
+  @ApiQuery(PERIOD_QUERY[1])
+  @ApiQuery(PERIOD_QUERY[2])
   @ApiQuery(PERIOD_QUERY[3])
+  @ApiQuery(PERIOD_QUERY[4])
   @Get('purchase-exceptions')
   public async getPurchaseExceptions(
+    @Query('period') period?: string,
+    @Query('from') from?: string,
+    @Query('to') to?: string,
+    @Query('branchId') branchId?: string,
     @Query('locationId') locationId?: string,
     @CurrentUser() user?: AuthenticatedUser,
   ): Promise<PurchaseExceptionsResponse> {
-    const ctx = buildAnalyticsQueryContext(user, { locationId });
+    const ctx = buildAnalyticsQueryContext(user, { period, from, to, branchId, locationId });
     const query = new GetPurchaseExceptionsQuery();
     query.organizationId = ctx.organizationId;
+    query.branchId = ctx.branchId;
     query.locationId = ctx.locationId;
+    query.locationIds = ctx.locationIds;
+    query.from = ctx.from;
+    query.to = ctx.to;
     return this.mediator.execute<GetPurchaseExceptionsQuery, PurchaseExceptionsResponse>(query);
   }
 
@@ -375,20 +488,24 @@ export class AnalyticsController {
   @ApiQuery(PERIOD_QUERY[1])
   @ApiQuery(PERIOD_QUERY[2])
   @ApiQuery(PERIOD_QUERY[3])
+  @ApiQuery(PERIOD_QUERY[4])
   @Get('product-demand-tiers')
   public async getProductDemandTiers(
     @Query('period') period?: string,
     @Query('from') from?: string,
     @Query('to') to?: string,
+    @Query('branchId') branchId?: string,
     @Query('locationId') locationId?: string,
     @CurrentUser() user?: AuthenticatedUser,
   ): Promise<DemandTierPointResponse[]> {
-    const ctx = buildAnalyticsQueryContext(user, { period, from, to, locationId });
+    const ctx = buildAnalyticsQueryContext(user, { period, from, to, branchId, locationId });
     const query = new GetProductDemandTiersQuery();
     query.organizationId = ctx.organizationId;
+    query.branchId = ctx.branchId;
     query.from = ctx.from;
     query.to = ctx.to;
     query.locationId = ctx.locationId;
+    query.locationIds = ctx.locationIds;
     return this.mediator.execute<GetProductDemandTiersQuery, DemandTierPointResponse[]>(query);
   }
 
@@ -398,22 +515,26 @@ export class AnalyticsController {
   @ApiQuery(PERIOD_QUERY[1])
   @ApiQuery(PERIOD_QUERY[2])
   @ApiQuery(PERIOD_QUERY[3])
+  @ApiQuery(PERIOD_QUERY[4])
   @ApiQuery({ name: 'limit', required: false })
   @Get('top-margin-products')
   public async getTopMarginProducts(
     @Query('period') period?: string,
     @Query('from') from?: string,
     @Query('to') to?: string,
+    @Query('branchId') branchId?: string,
     @Query('locationId') locationId?: string,
     @Query('limit') rawLimit?: string,
     @CurrentUser() user?: AuthenticatedUser,
   ): Promise<ProductMarginRankResponse[]> {
-    const ctx = buildAnalyticsQueryContext(user, { period, from, to, locationId });
+    const ctx = buildAnalyticsQueryContext(user, { period, from, to, branchId, locationId });
     const query = new GetTopMarginProductsQuery();
     query.organizationId = ctx.organizationId;
+    query.branchId = ctx.branchId;
     query.from = ctx.from;
     query.to = ctx.to;
     query.locationId = ctx.locationId;
+    query.locationIds = ctx.locationIds;
     query.limit = rawLimit ? Math.max(1, Math.min(50, parseInt(rawLimit, 10))) : 10;
     return this.mediator.execute<GetTopMarginProductsQuery, ProductMarginRankResponse[]>(query);
   }
@@ -424,22 +545,26 @@ export class AnalyticsController {
   @ApiQuery(PERIOD_QUERY[1])
   @ApiQuery(PERIOD_QUERY[2])
   @ApiQuery(PERIOD_QUERY[3])
+  @ApiQuery(PERIOD_QUERY[4])
   @ApiQuery({ name: 'limit', required: false })
   @Get('costly-products')
   public async getCostlyProducts(
     @Query('period') period?: string,
     @Query('from') from?: string,
     @Query('to') to?: string,
+    @Query('branchId') branchId?: string,
     @Query('locationId') locationId?: string,
     @Query('limit') rawLimit?: string,
     @CurrentUser() user?: AuthenticatedUser,
   ): Promise<ProductMarginRankResponse[]> {
-    const ctx = buildAnalyticsQueryContext(user, { period, from, to, locationId });
+    const ctx = buildAnalyticsQueryContext(user, { period, from, to, branchId, locationId });
     const query = new GetCostlyProductsQuery();
     query.organizationId = ctx.organizationId;
+    query.branchId = ctx.branchId;
     query.from = ctx.from;
     query.to = ctx.to;
     query.locationId = ctx.locationId;
+    query.locationIds = ctx.locationIds;
     query.limit = rawLimit ? Math.max(1, Math.min(50, parseInt(rawLimit, 10))) : 10;
     return this.mediator.execute<GetCostlyProductsQuery, ProductMarginRankResponse[]>(query);
   }
@@ -450,42 +575,58 @@ export class AnalyticsController {
   @ApiQuery(PERIOD_QUERY[1])
   @ApiQuery(PERIOD_QUERY[2])
   @ApiQuery(PERIOD_QUERY[3])
+  @ApiQuery(PERIOD_QUERY[4])
   @ApiQuery({ name: 'limit', required: false })
   @Get('fast-moving-products')
   public async getFastMovingProducts(
     @Query('period') period?: string,
     @Query('from') from?: string,
     @Query('to') to?: string,
+    @Query('branchId') branchId?: string,
     @Query('locationId') locationId?: string,
     @Query('limit') rawLimit?: string,
     @CurrentUser() user?: AuthenticatedUser,
   ): Promise<ProductMovementRankResponse[]> {
-    const ctx = buildAnalyticsQueryContext(user, { period, from, to, locationId });
+    const ctx = buildAnalyticsQueryContext(user, { period, from, to, branchId, locationId });
     const query = new GetFastMovingProductsQuery();
     query.organizationId = ctx.organizationId;
+    query.branchId = ctx.branchId;
     query.from = ctx.from;
     query.to = ctx.to;
     query.locationId = ctx.locationId;
+    query.locationIds = ctx.locationIds;
     query.limit = rawLimit ? Math.max(1, Math.min(50, parseInt(rawLimit, 10))) : 10;
     return this.mediator.execute<GetFastMovingProductsQuery, ProductMovementRankResponse[]>(query);
   }
 
   @ApiOperation({ summary: 'Dead stock — on-hand with no sales in stale window' })
   @ApiOkResponse({ type: [ProductMovementRankResponse] })
+  @ApiQuery(PERIOD_QUERY[0])
+  @ApiQuery(PERIOD_QUERY[1])
+  @ApiQuery(PERIOD_QUERY[2])
   @ApiQuery(PERIOD_QUERY[3])
+  @ApiQuery(PERIOD_QUERY[4])
   @ApiQuery({ name: 'limit', required: false })
   @ApiQuery({ name: 'staleDays', required: false, description: 'Default 90' })
   @Get('dead-stock')
   public async getDeadStock(
+    @Query('period') period?: string,
+    @Query('from') from?: string,
+    @Query('to') to?: string,
+    @Query('branchId') branchId?: string,
     @Query('locationId') locationId?: string,
     @Query('limit') rawLimit?: string,
     @Query('staleDays') rawStaleDays?: string,
     @CurrentUser() user?: AuthenticatedUser,
   ): Promise<ProductMovementRankResponse[]> {
-    const ctx = buildAnalyticsQueryContext(user, { locationId });
+    const ctx = buildAnalyticsQueryContext(user, { period, from, to, branchId, locationId });
     const query = new GetDeadStockQuery();
     query.organizationId = ctx.organizationId;
+    query.branchId = ctx.branchId;
     query.locationId = ctx.locationId;
+    query.locationIds = ctx.locationIds;
+    query.from = ctx.from;
+    query.to = ctx.to;
     query.limit = rawLimit ? Math.max(1, Math.min(50, parseInt(rawLimit, 10))) : 10;
     query.staleDays = rawStaleDays ? Math.max(7, Math.min(365, parseInt(rawStaleDays, 10))) : 90;
     return this.mediator.execute<GetDeadStockQuery, ProductMovementRankResponse[]>(query);
@@ -497,40 +638,56 @@ export class AnalyticsController {
   @ApiQuery(PERIOD_QUERY[1])
   @ApiQuery(PERIOD_QUERY[2])
   @ApiQuery(PERIOD_QUERY[3])
+  @ApiQuery(PERIOD_QUERY[4])
   @ApiQuery({ name: 'limit', required: false })
   @Get('supplier-price-comparison')
   public async getSupplierPriceComparison(
     @Query('period') period?: string,
     @Query('from') from?: string,
     @Query('to') to?: string,
+    @Query('branchId') branchId?: string,
     @Query('locationId') locationId?: string,
     @Query('limit') rawLimit?: string,
     @CurrentUser() user?: AuthenticatedUser,
   ): Promise<SupplierPricePointResponse[]> {
-    const ctx = buildAnalyticsQueryContext(user, { period, from, to, locationId });
+    const ctx = buildAnalyticsQueryContext(user, { period, from, to, branchId, locationId });
     const query = new GetSupplierPriceComparisonQuery();
     query.organizationId = ctx.organizationId;
+    query.branchId = ctx.branchId;
     query.from = ctx.from;
     query.to = ctx.to;
     query.locationId = ctx.locationId;
+    query.locationIds = ctx.locationIds;
     query.limit = rawLimit ? Math.max(1, Math.min(100, parseInt(rawLimit, 10))) : 30;
     return this.mediator.execute<GetSupplierPriceComparisonQuery, SupplierPricePointResponse[]>(query);
   }
 
   @ApiOperation({ summary: 'Inventory status breakdown (Normal/Low/Out/Over/Dead)' })
   @ApiOkResponse({ type: InventoryStatusResponse })
+  @ApiQuery(PERIOD_QUERY[0])
+  @ApiQuery(PERIOD_QUERY[1])
+  @ApiQuery(PERIOD_QUERY[2])
   @ApiQuery(PERIOD_QUERY[3])
+  @ApiQuery(PERIOD_QUERY[4])
   @ApiQuery({ name: 'staleDays', required: false })
   @Get('inventory-status')
   public async getInventoryStatus(
+    @Query('period') period?: string,
+    @Query('from') from?: string,
+    @Query('to') to?: string,
+    @Query('branchId') branchId?: string,
     @Query('locationId') locationId?: string,
     @Query('staleDays') rawStaleDays?: string,
     @CurrentUser() user?: AuthenticatedUser,
   ): Promise<InventoryStatusResponse> {
-    const ctx = buildAnalyticsQueryContext(user, { locationId });
+    const ctx = buildAnalyticsQueryContext(user, { period, from, to, branchId, locationId });
     const query = new GetInventoryStatusQuery();
     query.organizationId = ctx.organizationId;
+    query.branchId = ctx.branchId;
     query.locationId = ctx.locationId;
+    query.locationIds = ctx.locationIds;
+    query.from = ctx.from;
+    query.to = ctx.to;
     query.staleDays = rawStaleDays ? Math.max(7, Math.min(365, parseInt(rawStaleDays, 10))) : 90;
     return this.mediator.execute<GetInventoryStatusQuery, InventoryStatusResponse>(query);
   }
@@ -541,22 +698,26 @@ export class AnalyticsController {
   @ApiQuery(PERIOD_QUERY[1])
   @ApiQuery(PERIOD_QUERY[2])
   @ApiQuery(PERIOD_QUERY[3])
+  @ApiQuery(PERIOD_QUERY[4])
   @ApiQuery({ name: 'staleDays', required: false })
   @Get('inventory-status-trend')
   public async getInventoryStatusTrend(
     @Query('period') period?: string,
     @Query('from') from?: string,
     @Query('to') to?: string,
+    @Query('branchId') branchId?: string,
     @Query('locationId') locationId?: string,
     @Query('staleDays') rawStaleDays?: string,
     @CurrentUser() user?: AuthenticatedUser,
   ): Promise<InventoryStatusTrendPointResponse[]> {
-    const ctx = buildAnalyticsQueryContext(user, { period, from, to, locationId });
+    const ctx = buildAnalyticsQueryContext(user, { period, from, to, branchId, locationId });
     const query = new GetInventoryStatusTrendQuery();
     query.organizationId = ctx.organizationId;
+    query.branchId = ctx.branchId;
     query.from = ctx.from;
     query.to = ctx.to;
     query.locationId = ctx.locationId;
+    query.locationIds = ctx.locationIds;
     query.trunc = ctx.trunc;
     query.staleDays = rawStaleDays ? Math.max(7, Math.min(365, parseInt(rawStaleDays, 10))) : 90;
     return this.mediator.execute<GetInventoryStatusTrendQuery, InventoryStatusTrendPointResponse[]>(query);
@@ -568,22 +729,26 @@ export class AnalyticsController {
   @ApiQuery(PERIOD_QUERY[1])
   @ApiQuery(PERIOD_QUERY[2])
   @ApiQuery(PERIOD_QUERY[3])
+  @ApiQuery(PERIOD_QUERY[4])
   @ApiQuery({ name: 'limit', required: false })
   @Get('stock-damage-summary')
   public async getStockDamageSummary(
     @Query('period') period?: string,
     @Query('from') from?: string,
     @Query('to') to?: string,
+    @Query('branchId') branchId?: string,
     @Query('locationId') locationId?: string,
     @Query('limit') rawLimit?: string,
     @CurrentUser() user?: AuthenticatedUser,
   ): Promise<StockDamageSummaryResponse> {
-    const ctx = buildAnalyticsQueryContext(user, { period, from, to, locationId });
+    const ctx = buildAnalyticsQueryContext(user, { period, from, to, branchId, locationId });
     const query = new GetStockDamageSummaryQuery();
     query.organizationId = ctx.organizationId;
+    query.branchId = ctx.branchId;
     query.from = ctx.from;
     query.to = ctx.to;
     query.locationId = ctx.locationId;
+    query.locationIds = ctx.locationIds;
     query.limit = rawLimit ? Math.max(1, Math.min(50, parseInt(rawLimit, 10))) : 10;
     return this.mediator.execute<GetStockDamageSummaryQuery, StockDamageSummaryResponse>(query);
   }

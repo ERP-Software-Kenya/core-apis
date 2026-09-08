@@ -5,6 +5,7 @@ import { UnpublishedStock } from './domain';
 export interface UnpublishedStockFilter {
   organizationId?: string;
   locationId?: string;
+  accessibleLocationIds?: string[];
   productId?: string;
 }
 

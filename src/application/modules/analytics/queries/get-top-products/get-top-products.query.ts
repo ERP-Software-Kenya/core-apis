@@ -5,5 +5,7 @@ export class GetTopProductsQuery extends QueryBase {
   public limit: number;
   public from?: Date;
   public to?: Date;
+  public branchId?: string;
   public locationId?: string;
+  public locationIds?: string[];
 }

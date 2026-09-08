@@ -18,7 +18,7 @@ export function resolveAnalyticsLocationId(
     throw new ForbiddenException('You do not have access to this location');
   }
 
-  return requested || user.locationIds[0];
+  return requested || undefined;
 }
 
 /** All locations a scoped user may query analytics for. */
@@ -36,4 +36,13 @@ export function resolveAnalyticsLocationIds(user: AuthenticatedUser, requested?:
     return [requested];
   }
   return user.locationIds;
+}
+
+/** Resolves branch filter; scoped users are still constrained by locationIds in query handlers. */
+export function resolveAnalyticsBranchId(user: AuthenticatedUser, requested?: string): string | undefined {
+  if (!requested) return undefined;
+  if (user.hasOrgWideAccess || user.branchIds.includes(requested) || user.locationIds.length) {
+    return requested;
+  }
+  throw new ForbiddenException('You do not have access to this branch');
 }

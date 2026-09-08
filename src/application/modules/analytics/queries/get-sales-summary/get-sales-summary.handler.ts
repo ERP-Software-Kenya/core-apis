@@ -32,7 +32,9 @@ interface PeriodParams {
   organizationId: string;
   from: Date;
   to: Date;
+  branchId?: string;
   locationId?: string;
+  locationIds?: string[];
 }
 
 async function fetchPeriodMetrics(
@@ -62,6 +64,10 @@ async function fetchPeriodMetrics(
           AND cb.created_at >= $2
           AND cb.created_at <= $3
           AND ($4::uuid IS NULL OR cb.location_id = $4)
+          AND ($5::uuid IS NULL OR EXISTS (
+            SELECT 1 FROM core.locations l WHERE l.id = cb.location_id AND l.branch_id = $5
+          ))
+          AND ($6::uuid[] IS NULL OR cb.location_id = ANY($6))
       ), 0) AS "totalUnitsSold"
     FROM core.bills b
     WHERE b.organization_id = $1
@@ -69,6 +75,10 @@ async function fetchPeriodMetrics(
       AND b.created_at >= $2
       AND b.created_at <= $3
       AND ($4::uuid IS NULL OR b.location_id = $4)
+      AND ($5::uuid IS NULL OR EXISTS (
+        SELECT 1 FROM core.locations l WHERE l.id = b.location_id AND l.branch_id = $5
+      ))
+      AND ($6::uuid[] IS NULL OR b.location_id = ANY($6))
   `;
 
   const customersSql = `
@@ -81,9 +91,20 @@ async function fetchPeriodMetrics(
       AND created_at >= $2
       AND created_at <= $3
       AND ($4::uuid IS NULL OR location_id = $4)
+      AND ($5::uuid IS NULL OR EXISTS (
+        SELECT 1 FROM core.locations l WHERE l.id = location_id AND l.branch_id = $5
+      ))
+      AND ($6::uuid[] IS NULL OR location_id = ANY($6))
   `;
 
-  const sqlParams = [params.organizationId, params.from, params.to, params.locationId ?? null];
+  const sqlParams = [
+    params.organizationId,
+    params.from,
+    params.to,
+    params.locationId ?? null,
+    params.branchId ?? null,
+    params.locationIds ?? null,
+  ];
   const [summary] = await dataSource.query<RawSummary[]>(summarySql, sqlParams);
   const [customers] = await dataSource.query<RawCustomerCount[]>(customersSql, sqlParams);
 
@@ -115,12 +136,16 @@ async function fetchTopByRevenue(
       AND b.created_at >= $2
       AND b.created_at <= $3
       AND ($4::uuid IS NULL OR b.location_id = $4)
+      AND ($5::uuid IS NULL OR EXISTS (
+        SELECT 1 FROM core.locations l WHERE l.id = b.location_id AND l.branch_id = $5
+      ))
+      AND ($6::uuid[] IS NULL OR b.location_id = ANY($6))
     GROUP BY bi.product_id, p.name
     ORDER BY SUM(bi.line_total) DESC
     LIMIT 1
   `;
   const rows = await dataSource.query<RawProductRank[]>(sql, [
-    params.organizationId, params.from, params.to, params.locationId ?? null,
+    params.organizationId, params.from, params.to, params.locationId ?? null, params.branchId ?? null, params.locationIds ?? null,
   ]);
   return rows[0];
 }
@@ -143,13 +168,17 @@ async function fetchTopByMargin(
       AND b.created_at >= $2
       AND b.created_at <= $3
       AND ($4::uuid IS NULL OR b.location_id = $4)
+      AND ($5::uuid IS NULL OR EXISTS (
+        SELECT 1 FROM core.locations l WHERE l.id = b.location_id AND l.branch_id = $5
+      ))
+      AND ($6::uuid[] IS NULL OR b.location_id = ANY($6))
     GROUP BY bi.product_id, p.name
     HAVING SUM(bi.line_total) > 0
     ORDER BY SUM((bi.unit_price - COALESCE(p.cost_price, 0)) * bi.quantity) DESC
     LIMIT 1
   `;
   const rows = await dataSource.query<RawProductRank[]>(sql, [
-    params.organizationId, params.from, params.to, params.locationId ?? null,
+    params.organizationId, params.from, params.to, params.locationId ?? null, params.branchId ?? null, params.locationIds ?? null,
   ]);
   return rows[0];
 }
@@ -172,13 +201,17 @@ async function fetchTopByAvgPrice(
       AND b.created_at >= $2
       AND b.created_at <= $3
       AND ($4::uuid IS NULL OR b.location_id = $4)
+      AND ($5::uuid IS NULL OR EXISTS (
+        SELECT 1 FROM core.locations l WHERE l.id = b.location_id AND l.branch_id = $5
+      ))
+      AND ($6::uuid[] IS NULL OR b.location_id = ANY($6))
     GROUP BY bi.product_id, p.name
     HAVING SUM(bi.quantity) > 0
     ORDER BY AVG(bi.unit_price) DESC
     LIMIT 1
   `;
   const rows = await dataSource.query<RawProductRank[]>(sql, [
-    params.organizationId, params.from, params.to, params.locationId ?? null,
+    params.organizationId, params.from, params.to, params.locationId ?? null, params.branchId ?? null, params.locationIds ?? null,
   ]);
   return rows[0];
 }
@@ -199,9 +232,13 @@ async function fetchProductRevenueInPeriod(
       AND b.created_at >= $3
       AND b.created_at <= $4
       AND ($5::uuid IS NULL OR b.location_id = $5)
+      AND ($6::uuid IS NULL OR EXISTS (
+        SELECT 1 FROM core.locations l WHERE l.id = b.location_id AND l.branch_id = $6
+      ))
+      AND ($7::uuid[] IS NULL OR b.location_id = ANY($7))
   `;
   const [row] = await dataSource.query<RawProductRank[]>(sql, [
-    params.organizationId, productId, params.from, params.to, params.locationId ?? null,
+    params.organizationId, productId, params.from, params.to, params.locationId ?? null, params.branchId ?? null, params.locationIds ?? null,
   ]);
   return Number(row?.metricValue ?? 0);
 }
@@ -223,9 +260,13 @@ async function fetchProductMarginInPeriod(
       AND b.created_at >= $3
       AND b.created_at <= $4
       AND ($5::uuid IS NULL OR b.location_id = $5)
+      AND ($6::uuid IS NULL OR EXISTS (
+        SELECT 1 FROM core.locations l WHERE l.id = b.location_id AND l.branch_id = $6
+      ))
+      AND ($7::uuid[] IS NULL OR b.location_id = ANY($7))
   `;
   const [row] = await dataSource.query<RawProductRank[]>(sql, [
-    params.organizationId, productId, params.from, params.to, params.locationId ?? null,
+    params.organizationId, productId, params.from, params.to, params.locationId ?? null, params.branchId ?? null, params.locationIds ?? null,
   ]);
   return Number(row?.metricValue ?? 0);
 }
@@ -246,9 +287,13 @@ async function fetchProductAvgPriceInPeriod(
       AND b.created_at >= $3
       AND b.created_at <= $4
       AND ($5::uuid IS NULL OR b.location_id = $5)
+      AND ($6::uuid IS NULL OR EXISTS (
+        SELECT 1 FROM core.locations l WHERE l.id = b.location_id AND l.branch_id = $6
+      ))
+      AND ($7::uuid[] IS NULL OR b.location_id = ANY($7))
   `;
   const [row] = await dataSource.query<RawProductRank[]>(sql, [
-    params.organizationId, productId, params.from, params.to, params.locationId ?? null,
+    params.organizationId, productId, params.from, params.to, params.locationId ?? null, params.branchId ?? null, params.locationIds ?? null,
   ]);
   return Number(row?.metricValue ?? 0);
 }
@@ -283,7 +328,9 @@ export class GetSalesSummaryHandler implements IQueryHandler<GetSalesSummaryQuer
         organizationId: query.organizationId,
         from: new Date(Date.now() - 30 * 86400000),
         to: new Date(),
+        branchId: query.branchId,
         locationId: query.locationId,
+        locationIds: query.locationIds,
       };
       const metrics = await fetchPeriodMetrics(this.dataSource, params);
       return {
@@ -301,7 +348,9 @@ export class GetSalesSummaryHandler implements IQueryHandler<GetSalesSummaryQuer
       organizationId: query.organizationId,
       from: query.from!,
       to: query.to!,
+      branchId: query.branchId,
       locationId: query.locationId,
+      locationIds: query.locationIds,
     };
 
     const current = await fetchPeriodMetrics(this.dataSource, currentParams);
@@ -311,7 +360,9 @@ export class GetSalesSummaryHandler implements IQueryHandler<GetSalesSummaryQuer
       organizationId: query.organizationId,
       from: previousWindow.from,
       to: previousWindow.to,
+      branchId: query.branchId,
       locationId: query.locationId,
+      locationIds: query.locationIds,
     };
 
     const [previous, topSelling, topMargin, topCostly] = await Promise.all([

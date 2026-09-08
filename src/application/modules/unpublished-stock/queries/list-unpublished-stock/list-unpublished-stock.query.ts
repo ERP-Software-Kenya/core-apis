@@ -5,5 +5,6 @@ import { UnpublishedStockFilter } from '../../i-unpublished-stock.repo';
 export class ListUnpublishedStockQuery extends QueryBase implements Filter<UnpublishedStockFilter> {
   @AutoMap() public organizationId?: string;
   @AutoMap() public locationId?: string;
+  @AutoMap(() => Array) public accessibleLocationIds?: string[];
   @AutoMap() public productId?: string;
 }

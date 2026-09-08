@@ -3,7 +3,7 @@ import { InjectMapper } from '@automapper/nestjs';
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { InjectPinoLogger, PinoLogger } from 'nestjs-pino';
-import { EntityManager, Repository } from 'typeorm';
+import { EntityManager, FindManyOptions, In, Repository } from 'typeorm';
 import { BaseRepo, Filter, PageableFilter } from '../../../common';
 import { UnpublishedStockEntity } from '../entities';
 import { UnpublishedStock, UnpublishedStockFilter, IUnpublishedStockRepo } from 'src/application/modules/unpublished-stock';
@@ -23,6 +23,20 @@ export class UnpublishedStockRepo
 
   public override get idColumnName(): keyof UnpublishedStockEntity {
     return 'id';
+  }
+
+  public override get specialFilterFields(): (keyof PageableFilter<UnpublishedStockFilter>)[] {
+    return [...super.specialFilterFields, 'accessibleLocationIds'];
+  }
+
+  protected override modifyFindOption(
+    findOpts: FindManyOptions<UnpublishedStockEntity>,
+    filterObj: Filter<UnpublishedStockFilter> | PageableFilter<UnpublishedStockFilter>,
+  ): void {
+    const filter = filterObj as UnpublishedStockFilter;
+    if (filter?.accessibleLocationIds?.length && !filter.locationId) {
+      findOpts.where = { ...(findOpts.where as object), locationId: In(filter.accessibleLocationIds) };
+    }
   }
 
   public async findOrCreateAsync(organizationId: string, locationId: string, productId: string, manager: EntityManager): Promise<UnpublishedStock> {

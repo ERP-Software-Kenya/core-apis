@@ -14,6 +14,7 @@ import {
   PdfDocument,
   Roles,
   RolesGuard,
+  assertLocationAccess,
 } from '../../../common';
 import { ERole } from '../../../infrastructure';
 import {
@@ -180,6 +181,9 @@ export class PurchaseOrdersController {
     @Body() body: AllocatePurchaseOrderRequest,
   ): Promise<PurchaseOrderResponse> {
     const command           = new AllocatePurchaseOrderCommand();
+    for (const allocation of body.allocations) {
+      assertLocationAccess(user, allocation.locationId);
+    }
     command.purchaseOrderId = id;
     command.organizationId  = user.organizationId;
     command.allocations     = body.allocations;

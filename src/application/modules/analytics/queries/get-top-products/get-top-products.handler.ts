@@ -23,11 +23,6 @@ export class GetTopProductsHandler implements IQueryHandler<GetTopProductsQuery,
   public async execute(query: GetTopProductsQuery): Promise<TopProductResponse[]> {
     this.logger.info(`Executing Query '${GetTopProductsQuery.name}'`);
 
-    const dateFilter = query.from && query.to
-      ? `AND b.created_at >= $3 AND b.created_at <= $4`
-      : '';
-    const locationFilter = `AND ($${query.from && query.to ? 5 : 3}::uuid IS NULL OR b.location_id = $${query.from && query.to ? 5 : 3})`;
-
     const sql = `
       SELECT
         bi.product_id AS "productId",
@@ -40,21 +35,27 @@ export class GetTopProductsHandler implements IQueryHandler<GetTopProductsQuery,
       WHERE b.organization_id = $1
         AND b.status = 'COMPLETED'
         AND b.deleted_at IS NULL
-        ${dateFilter}
-        ${locationFilter}
+        AND b.created_at >= $3
+        AND b.created_at <= $4
+        AND ($5::uuid IS NULL OR b.location_id = $5)
+        AND ($6::uuid IS NULL OR EXISTS (
+          SELECT 1 FROM core.locations l WHERE l.id = b.location_id AND l.branch_id = $6
+        ))
+        AND ($7::uuid[] IS NULL OR b.location_id = ANY($7))
       GROUP BY bi.product_id, p.name
       ORDER BY SUM(bi.line_total) DESC
       LIMIT $2
     `;
 
-    const params: unknown[] = [query.organizationId, query.limit];
-    if (query.from && query.to) {
-      params.push(query.from, query.to, query.locationId ?? null);
-    } else {
-      params.push(query.locationId ?? null);
-    }
-
-    const rows = await this.dataSource.query<RawTopProduct[]>(sql, params);
+    const rows = await this.dataSource.query<RawTopProduct[]>(sql, [
+      query.organizationId,
+      query.limit,
+      query.from,
+      query.to,
+      query.locationId ?? null,
+      query.branchId ?? null,
+      query.locationIds ?? null,
+    ]);
     return rows.map((row) => ({
       productId: row.productId,
       productName: row.productName,

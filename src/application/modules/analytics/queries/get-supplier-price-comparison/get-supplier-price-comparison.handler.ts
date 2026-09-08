@@ -5,6 +5,7 @@ import { DataSource } from 'typeorm';
 import { QueryHandlerStrict } from 'src/common';
 import { GetSupplierPriceComparisonQuery } from './get-supplier-price-comparison.query';
 import { SupplierPricePointResponse } from '../../models';
+import { EPurchaseOrderStatus } from 'src/application/shared/enums';
 
 interface RawRow {
   productId: string;
@@ -25,9 +26,21 @@ const SQL = `
     FROM core.purchase_items pi
     JOIN core.purchase_orders po ON po.id = pi.purchase_order_id
     WHERE po.organization_id = $1
-      AND po.status = 'received'
+      AND po.status::text = ANY($5::text[])
       AND po.created_at >= $2
       AND po.created_at <= $3
+      AND (
+        $6::uuid IS NULL AND $7::uuid IS NULL AND $8::uuid[] IS NULL
+        OR EXISTS (
+          SELECT 1
+          FROM core.purchase_item_allocations pia
+          INNER JOIN core.locations l ON l.id = pia.location_id
+          WHERE pia.purchase_item_id = pi.id
+            AND ($6::uuid IS NULL OR pia.location_id = $6)
+            AND ($7::uuid IS NULL OR l.branch_id = $7)
+            AND ($8::uuid[] IS NULL OR pia.location_id = ANY($8))
+        )
+      )
     GROUP BY pi.product_id, po.supplier_id
   ),
   multi_supplier_products AS (
@@ -63,11 +76,20 @@ export class GetSupplierPriceComparisonHandler
 
   public async execute(query: GetSupplierPriceComparisonQuery): Promise<SupplierPricePointResponse[]> {
     this.logger.info(`Executing Query '${GetSupplierPriceComparisonQuery.name}'`);
+    const completedStatuses = [
+      EPurchaseOrderStatus.Received,
+      EPurchaseOrderStatus.PartiallyAllocated,
+      EPurchaseOrderStatus.Allocated,
+    ];
     const rows = await this.dataSource.query<RawRow[]>(SQL, [
       query.organizationId,
       query.from,
       query.to,
       query.limit,
+      completedStatuses,
+      query.locationId ?? null,
+      query.branchId ?? null,
+      query.locationIds ?? null,
     ]);
     return rows.map((r) => ({
       productId: r.productId,

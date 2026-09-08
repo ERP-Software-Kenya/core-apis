@@ -137,6 +137,7 @@ export class BillsController {
     const existing = await this.mediator.execute<GetBillQuery, Bill>(fetchQuery);
     assertOrgOwnership(user, existing.organizationId, 'Bill');
     assertLocationAccess(user, existing.locationId);
+    if (body.locationId) assertLocationAccess(user, body.locationId);
     const command = this.mapper.map(body, UpdateBillRequest, UpdateBillCommand);
     command.id    = id;
     const result  = await this.mediator.execute<UpdateBillCommand, Bill>(command);

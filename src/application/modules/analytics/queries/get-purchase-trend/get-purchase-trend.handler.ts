@@ -5,6 +5,7 @@ import { DataSource } from 'typeorm';
 import { QueryHandlerStrict } from 'src/common';
 import { GetPurchaseTrendQuery } from './get-purchase-trend.query';
 import { PurchaseTrendPointResponse } from '../../models';
+import { EPurchaseOrderStatus } from 'src/application/shared/enums';
 
 interface RawPurchaseTrendRow {
   period: string;
@@ -30,26 +31,46 @@ export class GetPurchaseTrendHandler implements IQueryHandler<GetPurchaseTrendQu
 
     const trunc = query.trunc ?? 'month';
     const labelExpr = formatExpr(trunc);
-
-    // POs have no location_id; location lives on purchase_item_allocations.
+    const completedStatuses = [
+      EPurchaseOrderStatus.Received,
+      EPurchaseOrderStatus.PartiallyAllocated,
+      EPurchaseOrderStatus.Allocated,
+    ];
     const sql = `
       SELECT
         ${labelExpr} AS period,
         COALESCE(SUM(total_amount), 0) AS spend,
         COUNT(*) AS "poCount"
-      FROM core.purchase_orders
+      FROM core.purchase_orders po
       WHERE organization_id = $1
-        AND status = 'received'
-        AND created_at >= $2
-        AND created_at <= $3
+        AND status::text = ANY($2::text[])
+        AND created_at >= $3
+        AND created_at <= $4
+        AND (
+          $5::uuid IS NULL AND $6::uuid IS NULL AND $7::uuid[] IS NULL
+          OR EXISTS (
+            SELECT 1
+            FROM core.purchase_items pi
+            INNER JOIN core.purchase_item_allocations pia ON pia.purchase_item_id = pi.id
+            INNER JOIN core.locations l ON l.id = pia.location_id
+            WHERE pi.purchase_order_id = po.id
+              AND ($5::uuid IS NULL OR pia.location_id = $5)
+              AND ($6::uuid IS NULL OR l.branch_id = $6)
+              AND ($7::uuid[] IS NULL OR pia.location_id = ANY($7))
+          )
+        )
       GROUP BY DATE_TRUNC('${trunc}', created_at)
       ORDER BY DATE_TRUNC('${trunc}', created_at)
     `;
 
     const rows = await this.dataSource.query<RawPurchaseTrendRow[]>(sql, [
       query.organizationId,
+      completedStatuses,
       query.from!,
       query.to!,
+      query.locationId ?? null,
+      query.branchId ?? null,
+      query.locationIds ?? null,
     ]);
 
     return rows.map((row) => ({

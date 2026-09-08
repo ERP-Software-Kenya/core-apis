@@ -28,9 +28,13 @@ const SQL = `
     AND b.created_at >= $2
     AND b.created_at <= $3
     AND ($4::uuid IS NULL OR b.location_id = $4)
+    AND ($5::uuid IS NULL OR EXISTS (
+      SELECT 1 FROM core.locations l WHERE l.id = b.location_id AND l.branch_id = $5
+    ))
+    AND ($6::uuid[] IS NULL OR b.location_id = ANY($6))
   GROUP BY bi.product_id, p.name
   ORDER BY SUM(bi.quantity) DESC
-  LIMIT $5
+  LIMIT $7
 `;
 
 @QueryHandlerStrict(GetFastMovingProductsQuery)
@@ -49,6 +53,8 @@ export class GetFastMovingProductsHandler
       query.from,
       query.to,
       query.locationId ?? null,
+      query.branchId ?? null,
+      query.locationIds ?? null,
       query.limit,
     ]);
     return rows.map((r) => ({

@@ -5,6 +5,7 @@ import { DataSource } from 'typeorm';
 import { QueryHandlerStrict } from 'src/common';
 import { GetTopSuppliersQuery } from './get-top-suppliers.query';
 import { TopSupplierResponse } from '../../models';
+import { EPurchaseOrderStatus } from 'src/application/shared/enums';
 
 interface RawTopSupplier {
   supplierId: string;
@@ -22,10 +23,25 @@ const TOP_SUPPLIERS_SQL = `
   FROM core.purchase_orders po
   JOIN core.suppliers s ON po.supplier_id = s.id
   WHERE po.organization_id = $1
-    AND po.status = 'received'
+    AND po.status::text = ANY($2::text[])
+    AND po.created_at >= $3
+    AND po.created_at <= $4
+    AND (
+      $5::uuid IS NULL AND $6::uuid IS NULL AND $7::uuid[] IS NULL
+      OR EXISTS (
+        SELECT 1
+        FROM core.purchase_items pi
+        INNER JOIN core.purchase_item_allocations pia ON pia.purchase_item_id = pi.id
+        INNER JOIN core.locations l ON l.id = pia.location_id
+        WHERE pi.purchase_order_id = po.id
+          AND ($5::uuid IS NULL OR pia.location_id = $5)
+          AND ($6::uuid IS NULL OR l.branch_id = $6)
+          AND ($7::uuid[] IS NULL OR pia.location_id = ANY($7))
+      )
+    )
   GROUP BY po.supplier_id, s.name
   ORDER BY SUM(po.total_amount) DESC
-  LIMIT $2
+  LIMIT $8
 `;
 
 @QueryHandlerStrict(GetTopSuppliersQuery)
@@ -37,7 +53,21 @@ export class GetTopSuppliersHandler implements IQueryHandler<GetTopSuppliersQuer
 
   public async execute(query: GetTopSuppliersQuery): Promise<TopSupplierResponse[]> {
     this.logger.info(`Executing Query '${GetTopSuppliersQuery.name}'`);
-    const rows = await this.dataSource.query<RawTopSupplier[]>(TOP_SUPPLIERS_SQL, [query.organizationId, query.limit]);
+    const completedStatuses = [
+      EPurchaseOrderStatus.Received,
+      EPurchaseOrderStatus.PartiallyAllocated,
+      EPurchaseOrderStatus.Allocated,
+    ];
+    const rows = await this.dataSource.query<RawTopSupplier[]>(TOP_SUPPLIERS_SQL, [
+      query.organizationId,
+      completedStatuses,
+      query.from,
+      query.to,
+      query.locationId ?? null,
+      query.branchId ?? null,
+      query.locationIds ?? null,
+      query.limit,
+    ]);
     return rows.map(row => ({
       supplierId:   row.supplierId,
       supplierName: row.supplierName,

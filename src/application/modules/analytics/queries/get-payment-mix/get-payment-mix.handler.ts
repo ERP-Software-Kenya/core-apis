@@ -28,6 +28,10 @@ const SQL = `
     AND created_at >= $2
     AND created_at <= $3
     AND ($4::uuid IS NULL OR location_id = $4)
+    AND ($5::uuid IS NULL OR EXISTS (
+      SELECT 1 FROM core.locations l WHERE l.id = location_id AND l.branch_id = $5
+    ))
+    AND ($6::uuid[] IS NULL OR location_id = ANY($6))
   GROUP BY 1
   HAVING COALESCE(SUM(total_amount), 0) > 0
   ORDER BY amount DESC
@@ -47,6 +51,8 @@ export class GetPaymentMixHandler implements IQueryHandler<GetPaymentMixQuery, P
       query.from,
       query.to,
       query.locationId ?? null,
+      query.branchId ?? null,
+      query.locationIds ?? null,
     ]);
     return rows.map((row) => ({
       method: row.method,
