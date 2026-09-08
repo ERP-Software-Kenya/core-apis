@@ -48,8 +48,8 @@ export class GetPurchaseTrendHandler implements IQueryHandler<GetPurchaseTrendQu
 
     const rows = await this.dataSource.query<RawPurchaseTrendRow[]>(sql, [
       query.organizationId,
-      query.from!,
-      query.to!,
+      query.from,
+      query.to,
     ]);
 
     return rows.map((row) => ({
