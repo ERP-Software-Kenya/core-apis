@@ -1,6 +1,6 @@
 import { AuthenticatedUser, CqrsMediator, LocationAccessDeniedException } from '../../../common';
-import { GetLocationQuery } from '../locations/queries/get-location/get-location.query';
 import { Location } from '../locations/domain';
+import { GetLocationQuery } from '../locations/queries';
 
 /** Cross-branch transfers require org-wide roles (spec). */
 export async function assertSameBranchTransferOrOrgWide(
@@ -16,7 +16,7 @@ export async function assertSameBranchTransferOrOrgWide(
     mediator.execute<GetLocationQuery, Location>(Object.assign(new GetLocationQuery(), { id: toLocationId })),
   ]);
 
-  if (from.branchId !== to.branchId) {
+  if (from.id !== to.id) {
     throw new LocationAccessDeniedException(undefined, 'Cross-branch stock transfers require an org-wide role.');
   }
 }
