@@ -10,5 +10,6 @@ export class CreateBranchCommand extends CommandBase {
   @AutoMap() public state?: string;
   @AutoMap() public country?: string;
   @AutoMap() public phone?: string;
+  @AutoMap() public userId?: string;
   @AutoMap(() => [String]) public locationIds?: string[];
 }

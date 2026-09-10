@@ -14,7 +14,7 @@ import { GetProductLogQuery, ListLogsByInventoryQuery, ListLogsByProductQuery } 
 @ApiTags('Product Logs')
 @Controller({ path: 'product-logs', version: '1' })
 @UseGuards(ClerkAuthGuard, RolesGuard)
-@Roles(ERole.OrgAdmin, ERole.SuperAdmin, ERole.StoreManager, ERole.StoreStaff)
+@Roles(ERole.OrgAdmin, ERole.SuperAdmin)
 export class ProductLogsController {
   constructor(
     protected readonly mediator: CqrsMediator,

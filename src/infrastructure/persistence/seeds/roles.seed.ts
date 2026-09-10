@@ -7,7 +7,7 @@ import { BaseSeed } from '../../../common';
 import { ERole, RoleEntity } from '../entities';
 
 
-const VERSION = 2;
+const VERSION = 3;
 
 @Injectable()
 export class RolesSeed extends BaseSeed<RoleEntity> {
@@ -17,14 +17,11 @@ export class RolesSeed extends BaseSeed<RoleEntity> {
 
   public get seedingData(): Partial<RoleEntity>[] {
     return [
-      { name: ERole.SuperAdmin,   description: 'Full platform access across all organizations' },
-      { name: ERole.OrgAdmin,     description: 'Full access within an organization' },
-      { name: ERole.OrgManager,   description: 'Equal authority to Org Admin for approvals, black sales, and black inventory' },
-      // { name: ERole.BranchManager, description: 'Manage all stores and warehouses within a branch' },
-      { name: ERole.StoreManager, description: 'Manage a specific store and its inventory' },
-      { name: ERole.StoreStaff,   description: 'Day-to-day stock operations within a store' },
-      { name: ERole.Picker,       description: 'Warehouse picker — claims and packs orders for dispatch' },
-      { name: ERole.Driver,       description: 'Delivery driver — manages trips and confirms deliveries' },
+      { name: ERole.SuperAdmin,    description: 'Full platform access across all organizations' },
+      { name: ERole.OrgAdmin,      description: 'Full access within an organization' },
+      { name: ERole.BranchManager, description: 'Manage all locations (stores/warehouses) within a branch' },
+      { name: ERole.Driver,        description: 'Delivery driver — manages trips and confirms deliveries' },
+      { name: ERole.Packer,        description: 'Warehouse packer — claims and packs orders for dispatch' },
     ];
   }
 

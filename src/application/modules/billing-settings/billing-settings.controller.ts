@@ -21,8 +21,8 @@ import {
 } from './models';
 import { ListCustomerTypeRulesQuery, ListQuickChargesQuery } from './queries';
 
-const ADMIN_ROLES = [ERole.OrgAdmin, ERole.OrgManager, ERole.SuperAdmin] as const;
-const READ_ROLES = [...ADMIN_ROLES, ERole.StoreManager, ERole.StoreStaff] as const;
+const ADMIN_ROLES = [ERole.OrgAdmin, ERole.SuperAdmin] as const;
+const READ_ROLES = [...ADMIN_ROLES] as const;
 
 @ApiBearerAuth()
 @ApiTags('Billing Settings')

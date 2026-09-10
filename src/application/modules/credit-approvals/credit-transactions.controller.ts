@@ -16,7 +16,7 @@ export class CreditTransactionsController {
   @ApiOperation({ summary: 'Search organization credit transactions' })
   @ApiOkResponse({ type: CreditTransactionsDocumentsPagedResponse })
   @Get()
-  @Roles(ERole.StoreManager, ERole.OrgManager, ERole.OrgAdmin, ERole.SuperAdmin)
+  @Roles(ERole.OrgAdmin, ERole.SuperAdmin)
   @HttpCode(HttpStatus.OK)
   public async search(
     @CurrentUser() user: AuthenticatedUser,

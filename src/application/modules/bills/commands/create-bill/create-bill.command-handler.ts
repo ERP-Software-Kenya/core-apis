@@ -12,7 +12,7 @@ import { applyBillTotals, generateBillNumber } from '../../helpers';
 import { IBillRepo } from '../..';
 import { CreateBillCommand, CreateBillItemCommand } from './create-bill.command';
 
-const BLACK_SALE_ROLES = new Set([ERole.OrgAdmin, ERole.OrgManager, ERole.SuperAdmin]);
+const BLACK_SALE_ROLES = new Set([ERole.OrgAdmin, ERole.SuperAdmin]);
 
 @CommandHandlerStrict(CreateBillCommand)
 export class CreateBillCommandHandler implements ICommandHandler<CreateBillCommand, Bill> {
