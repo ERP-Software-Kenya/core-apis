@@ -49,7 +49,7 @@ export class TripOperationsController {
 
   @ApiOperation({ summary: 'Create a multi-stop delivery trip' })
   @ApiOkResponse({ type: Boolean })
-  @Roles(ERole.OrgAdmin, ERole.OrgManager, ERole.SuperAdmin)
+  @Roles(ERole.OrgAdmin, ERole.SuperAdmin)
   @HttpCode(HttpStatus.CREATED)
   @Post('trips')
   public async createMultiStopTrip(
@@ -68,7 +68,7 @@ export class TripOperationsController {
 
   @ApiOperation({ summary: 'Get trips assigned to driver for today' })
   @ApiOkResponse({ type: [DriverTripResponse] })
-  @Roles(ERole.OrgAdmin, ERole.OrgManager, ERole.SuperAdmin, ERole.StoreManager, ERole.StoreStaff)
+  @Roles(ERole.OrgAdmin, ERole.SuperAdmin)
   @HttpCode(HttpStatus.OK)
   @Get('driver/trips/today')
   public async getDriverTripsToday(
@@ -91,7 +91,7 @@ export class TripOperationsController {
   @ApiOperation({ summary: 'Update trip status' })
   @ApiOkResponse({ type: Boolean })
   @ApiParam({ name: 'id', description: 'Trip UUID' })
-  @Roles(ERole.OrgAdmin, ERole.OrgManager, ERole.SuperAdmin, ERole.StoreManager, ERole.StoreStaff)
+  @Roles(ERole.OrgAdmin, ERole.SuperAdmin)
   @HttpCode(HttpStatus.OK)
   @Patch('trips/:id/status')
   public async updateTripStatus(
@@ -110,7 +110,7 @@ export class TripOperationsController {
   @ApiOperation({ summary: 'Update driver live location' })
   @ApiOkResponse({ type: Boolean })
   @ApiParam({ name: 'id', description: 'Trip UUID' })
-  @Roles(ERole.OrgAdmin, ERole.OrgManager, ERole.SuperAdmin, ERole.StoreManager, ERole.StoreStaff)
+  @Roles(ERole.OrgAdmin, ERole.SuperAdmin)
   @HttpCode(HttpStatus.OK)
   @Post('trips/:id/location')
   public async updateDriverLocation(
@@ -132,7 +132,7 @@ export class TripOperationsController {
 
   @ApiOperation({ summary: 'Get fleet live locations' })
   @ApiOkResponse({ type: [FleetLiveLocationResponse] })
-  @Roles(ERole.OrgAdmin, ERole.OrgManager, ERole.SuperAdmin)
+  @Roles(ERole.OrgAdmin, ERole.SuperAdmin)
   @HttpCode(HttpStatus.OK)
   @Get('fleet/live-locations')
   public async getFleetLiveLocations(
@@ -156,7 +156,7 @@ export class TripOperationsController {
   @ApiOkResponse({ type: OtpInitiatedResponse })
   @ApiParam({ name: 'tripId', description: 'Trip UUID' })
   @ApiParam({ name: 'stopId', description: 'Stop UUID' })
-  @Roles(ERole.OrgAdmin, ERole.OrgManager, ERole.SuperAdmin, ERole.StoreManager, ERole.StoreStaff)
+  @Roles(ERole.OrgAdmin, ERole.SuperAdmin)
   @HttpCode(HttpStatus.OK)
   @Post('trips/:tripId/stops/:stopId/initiate-delivery')
   public async initiateDelivery(
@@ -179,7 +179,7 @@ export class TripOperationsController {
   @ApiOkResponse({ type: Boolean })
   @ApiParam({ name: 'tripId', description: 'Trip UUID' })
   @ApiParam({ name: 'stopId', description: 'Stop UUID' })
-  @Roles(ERole.OrgAdmin, ERole.OrgManager, ERole.SuperAdmin, ERole.StoreManager, ERole.StoreStaff)
+  @Roles(ERole.OrgAdmin, ERole.SuperAdmin)
   @HttpCode(HttpStatus.OK)
   @Post('trips/:tripId/stops/:stopId/confirm-delivery')
   public async confirmDelivery(
@@ -200,7 +200,7 @@ export class TripOperationsController {
   @ApiOkResponse({ type: OtpInitiatedResponse })
   @ApiParam({ name: 'tripId', description: 'Trip UUID' })
   @ApiParam({ name: 'stopId', description: 'Stop UUID' })
-  @Roles(ERole.OrgAdmin, ERole.OrgManager, ERole.SuperAdmin, ERole.StoreManager, ERole.StoreStaff)
+  @Roles(ERole.OrgAdmin, ERole.SuperAdmin)
   @HttpCode(HttpStatus.OK)
   @Post('trips/:tripId/stops/:stopId/resend-otp')
   public async resendOtp(

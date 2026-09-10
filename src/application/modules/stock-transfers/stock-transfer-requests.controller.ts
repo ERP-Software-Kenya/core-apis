@@ -28,7 +28,7 @@ import {
 @ApiTags('Stock Transfer Requests')
 @Controller({ path: 'stock-transfer-requests', version: '1' })
 @UseGuards(ClerkAuthGuard, RolesGuard)
-@Roles(ERole.OrgAdmin, ERole.SuperAdmin, ERole.StoreManager, ERole.StoreStaff)
+@Roles(ERole.OrgAdmin, ERole.SuperAdmin)
 export class StockTransferRequestsController {
   constructor(
     protected readonly mediator: CqrsMediator,

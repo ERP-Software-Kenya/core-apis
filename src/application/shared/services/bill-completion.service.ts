@@ -76,7 +76,7 @@ export class BillCompletionService {
     await this.enforceCreditLimit(bill, requestedById);
   }
 
-  public async completeBill(billId: string, performedById: string, creditOverrideApproved = false): Promise<Bill> {
+  public async completeBill(billId: string, performedById: string, creditOverrideApproved = false, paymentMethod?: string): Promise<Bill> {
     const bill = await this.billRepo.getAsync(billId);
     if (!bill) throw new NotFoundException(`Bill ${billId} not found`);
     const items = (bill.items?.length ? bill.items : await this.itemRepo.allAsync({ billId })) ?? [];
@@ -102,6 +102,7 @@ export class BillCompletionService {
 
     bill.billedAt = new Date();
     bill.status = EBillStatus.Completed;
+    if (paymentMethod) bill.paymentMethod = paymentMethod as never;
     await this.billRepo.updateAsync({ ...bill, items: undefined });
     return this.billRepo.getAsync(billId);
   }

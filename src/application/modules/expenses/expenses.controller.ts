@@ -42,7 +42,7 @@ export class ExpensesController {
   @ApiParam({ name: 'id', description: 'Expense UUID' })
   @HttpCode(HttpStatus.OK)
   @UseGuards(RolesGuard)
-  @Roles(ERole.StoreManager, ERole.OrgManager, ERole.OrgAdmin, ERole.SuperAdmin)
+  @Roles(ERole.OrgAdmin, ERole.SuperAdmin)
   @Patch(':id/status')
   public async updateStatus(
     @Param('id') id: string,

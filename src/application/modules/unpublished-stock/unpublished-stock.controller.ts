@@ -20,7 +20,7 @@ import { GetUnpublishedStockQuery, ListMovementsByUnpublishedStockQuery, ListUnp
 @ApiTags('Unpublished Stock')
 @Controller({ path: 'unpublished-stock', version: '1' })
 @UseGuards(ClerkAuthGuard, RolesGuard)
-@Roles(ERole.OrgAdmin, ERole.SuperAdmin, ERole.StoreManager, ERole.StoreStaff)
+@Roles(ERole.OrgAdmin, ERole.SuperAdmin)
 export class UnpublishedStockController {
   constructor(
     protected readonly mediator: CqrsMediator,
@@ -71,7 +71,7 @@ export class UnpublishedStockController {
   @ApiOperation({ summary: 'Add stock to the unpublished pool' })
   @ApiCreatedResponse()
   @HttpCode(HttpStatus.CREATED)
-  @Roles(ERole.OrgAdmin, ERole.SuperAdmin, ERole.StoreManager)
+  @Roles(ERole.OrgAdmin, ERole.SuperAdmin)
   @Post('add')
   public async addStock(@CurrentUser() user: AuthenticatedUser, @Body() body: AddUnpublishedStockRequest): Promise<void> {
     assertLocationAccess(user, body.locationId);
@@ -84,7 +84,7 @@ export class UnpublishedStockController {
   @ApiOperation({ summary: 'Publish stock from unpublished pool to live inventory' })
   @ApiCreatedResponse()
   @HttpCode(HttpStatus.CREATED)
-  @Roles(ERole.OrgAdmin, ERole.SuperAdmin, ERole.StoreManager)
+  @Roles(ERole.OrgAdmin, ERole.SuperAdmin)
   @Post('publish')
   public async publishStock(@CurrentUser() user: AuthenticatedUser, @Body() body: PublishUnpublishedStockRequest): Promise<void> {
     const existingQuery = new GetUnpublishedStockQuery();

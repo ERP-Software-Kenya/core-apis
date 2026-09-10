@@ -14,6 +14,7 @@ import { OrganizationEntity } from './organization.entity';
 import { SupplierEntity } from './supplier.entity';
 import { UserEntity } from './user.entity';
 import { PurchaseItemEntity } from './purchase-item.entity';
+import { BranchEntity } from './branch.entity';
 import { EPurchaseOrderStatus } from '../../../application/shared/enums';
 
 const PK_NAME = 'PK_' + ECoreTableName.PurchaseOrders;
@@ -35,6 +36,10 @@ export class PurchaseOrderEntity {
   @AutoMap()
   @Column({ type: 'uuid', nullable: true })
   public createdById?: string;
+
+  @AutoMap()
+  @Column({ name: 'branch_id', type: 'uuid', nullable: true })
+  public branchId?: string;
 
   /** Human-readable PO number e.g. PO-2026-00001 */
   @AutoMap()
@@ -103,6 +108,15 @@ export class PurchaseOrderEntity {
     foreignKeyConstraintName: `FK__${ECoreTableName.PurchaseOrders}__${ECoreTableName.Users}`,
   })
   public createdBy?: UserEntity;
+
+  @AutoMap(() => BranchEntity)
+  @ManyToOne(() => BranchEntity, { nullable: true })
+  @JoinColumn({
+    name: 'branch_id',
+    referencedColumnName: 'id',
+    foreignKeyConstraintName: `FK__${ECoreTableName.PurchaseOrders}__${ECoreTableName.Branches}`,
+  })
+  public branch?: BranchEntity;
 
   @AutoMap(() => [PurchaseItemEntity])
   @OneToMany(() => PurchaseItemEntity, (pi) => pi.purchaseOrder, { cascade: true })

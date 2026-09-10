@@ -38,7 +38,7 @@ export class CreditApprovalsController {
   @ApiOkResponse({ type: [CreditApprovalRequestResponse] })
   @HttpCode(HttpStatus.OK)
   @Get()
-  @Roles(ERole.OrgAdmin, ERole.OrgManager, ERole.SuperAdmin)
+  @Roles(ERole.OrgAdmin, ERole.SuperAdmin)
   public async listPending(@CurrentUser() user: AuthenticatedUser): Promise<CreditApprovalRequestResponse[]> {
     const query = new ListPendingCreditApprovalsQuery();
     query.organizationId = user.organizationId;
@@ -51,7 +51,7 @@ export class CreditApprovalsController {
   @ApiOkResponse({ type: [CreditApprovalRequestResponse] })
   @HttpCode(HttpStatus.OK)
   @Get('mine')
-  @Roles(ERole.OrgAdmin, ERole.OrgManager, ERole.SuperAdmin, ERole.StoreManager, ERole.StoreStaff)
+  @Roles(ERole.OrgAdmin, ERole.SuperAdmin)
   public async listMine(
     @CurrentUser() user: AuthenticatedUser,
     @Query('status') status?: string,
@@ -68,7 +68,7 @@ export class CreditApprovalsController {
   @ApiOkResponse({ type: BlackLedgerResponse })
   @HttpCode(HttpStatus.OK)
   @Get('black-ledger')
-  @Roles(ERole.OrgAdmin, ERole.OrgManager, ERole.SuperAdmin)
+  @Roles(ERole.OrgAdmin, ERole.SuperAdmin)
   public async blackLedger(@CurrentUser() user: AuthenticatedUser): Promise<BlackLedgerResponse> {
     const query = new GetBlackLedgerQuery();
     query.organizationId = user.organizationId;
@@ -83,7 +83,7 @@ export class CreditApprovalsController {
   @ApiOkResponse({ type: CreditApprovalRequestResponse })
   @HttpCode(HttpStatus.OK)
   @Post(':id/approve')
-  @Roles(ERole.OrgAdmin, ERole.OrgManager, ERole.SuperAdmin)
+  @Roles(ERole.OrgAdmin, ERole.SuperAdmin)
   public async approve(
     @Param('id') id: string,
     @CurrentUser() user: AuthenticatedUser,
@@ -100,7 +100,7 @@ export class CreditApprovalsController {
   @ApiOkResponse({ type: CreditApprovalRequestResponse })
   @HttpCode(HttpStatus.OK)
   @Post(':id/reject')
-  @Roles(ERole.OrgAdmin, ERole.OrgManager, ERole.SuperAdmin)
+  @Roles(ERole.OrgAdmin, ERole.SuperAdmin)
   public async reject(
     @Param('id') id: string,
     @CurrentUser() user: AuthenticatedUser,
@@ -117,7 +117,7 @@ export class CreditApprovalsController {
   @ApiOkResponse({ type: CommissionPayableResponse })
   @HttpCode(HttpStatus.OK)
   @Post('commissions/:id/mark-paid')
-  @Roles(ERole.OrgAdmin, ERole.OrgManager, ERole.SuperAdmin)
+  @Roles(ERole.OrgAdmin, ERole.SuperAdmin)
   public async markCommissionPaid(
     @Param('id') id: string,
     @CurrentUser() user: AuthenticatedUser,

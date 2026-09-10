@@ -11,6 +11,7 @@ import { FuelTypesSeed } from './fuel-types.seed';
 import { MaintenanceTypesSeed } from './maintenance-types.seed';
 import { VehicleBrandsSeed } from './vehicle-brands.seed';
 import { VehicleTypesSeed } from './vehicle-types.seed';
+import { DemoOrgDataSeed } from './demo-org-data.seed';
 
 /**
  * Orchestrates all seeds in strict dependency order.
@@ -32,7 +33,8 @@ export class SeedingService {
     private readonly maintenanceTypesSeed: MaintenanceTypesSeed,
     private readonly fuelTypesSeed: FuelTypesSeed,
     private readonly vehicleBrandsSeed: VehicleBrandsSeed,
-    private readonly vehicleTypesSeed: VehicleTypesSeed
+    private readonly vehicleTypesSeed: VehicleTypesSeed,
+    // private readonly demoOrgDataSeed: DemoOrgDataSeed,
   ) {}
 
   public async runAsync(): Promise<void> {
@@ -48,6 +50,7 @@ export class SeedingService {
     await this.vehicleTypesSeed.runAsync();
     await this.rolesSeed.runAsync();
     await this.emailTemplatesSeed.runAsync();
+    // await this.demoOrgDataSeed.runAsync();`
     this.logger.info('All seeds applied successfully');
   }
 }

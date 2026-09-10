@@ -1,4 +1,5 @@
 // Standard barrel file
+export * from './demo-org-data.seed';
 export * from './categories.seed';
 export * from './default-organization.seed';
 export * from './inventory.seed';
@@ -19,6 +20,7 @@ export * from './maintenance-types.seed';
 export * from './email-templates.seed';
 
 import { SeedingService } from "./seeding.service";
+import { DemoOrgDataSeed } from "./demo-org-data.seed";
 import { RolesSeed } from "./roles.seed";
 import { RefCountriesSeed } from './ref-countries.seed';
 import { RefStatesSeed } from './ref-states.seed';
@@ -33,6 +35,7 @@ import { EmailTemplatesSeed } from './email-templates.seed';
 
 export default [
   SeedingService,
+  DemoOrgDataSeed,
   RolesSeed,
   RefCountriesSeed,
   RefStatesSeed,
