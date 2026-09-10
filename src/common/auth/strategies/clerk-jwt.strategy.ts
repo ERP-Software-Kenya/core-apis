@@ -86,7 +86,7 @@ export class ClerkJwtStrategy extends PassportStrategy(Strategy, CLERK_STRATEGY)
       let branchLocationIds: string[] = [];
       if (branchIds.length) {
         const branchLocs = await this.locationRepo.find({
-          where: { branchId: In(branchIds) },
+          where: { parent: { id: In(branchIds) } },
           select: ['id'],
         });
         branchLocationIds = branchLocs.map((l) => l.id);
