@@ -1,5 +1,5 @@
 import { AutoMap } from '@automapper/classes';
-import { ApiProperty } from '@nestjs/swagger';
+import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 
 export class OrderQueueItemResponse {
   @ApiProperty() @AutoMap() public id: string;
@@ -9,4 +9,5 @@ export class OrderQueueItemResponse {
   @ApiProperty() @AutoMap() public status: string;
   @ApiProperty() @AutoMap() public totalAmount: number;
   @ApiProperty() @AutoMap() public createdAt: Date;
+  @ApiPropertyOptional() public fulfillmentMode?: string;
 }

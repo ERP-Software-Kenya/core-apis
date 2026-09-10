@@ -24,8 +24,11 @@ export class AuthenticatedUser {
   /** Resolved DB roles from the user_roles table */
   roles: ERole[];
 
-  /** Location IDs the user holds at least one role scoped specifically to (user_roles.locationId) */
+  /** Location IDs the user holds at least one role scoped specifically to (user_roles.locationId), plus all locations in assigned branches */
   locationIds: string[];
+
+  /** Branch IDs from branch-scoped role assignments (user_roles.branchId) */
+  branchIds: string[];
 
   /** True if the user holds at least one org-wide role (a user_roles row with locationId null, or any org membership) */
   hasOrgWideAccess: boolean;

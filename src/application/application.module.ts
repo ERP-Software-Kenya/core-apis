@@ -29,6 +29,7 @@ import { ItemReturnsModule } from './modules/item-returns';
 import { NotificationsModule } from './modules/notifications';
 import { ReportGenerationLogsModule } from './modules/report-generation-logs';
 import { LocationsModule } from './modules/locations';
+import { BranchesModule } from './modules/branches';
 import { ProductLogsModule } from './modules/product-logs';
 import { UnpublishedStockModule } from './modules/unpublished-stock';
 import { SharedModule } from './shared';
@@ -82,6 +83,7 @@ export class ApplicationModule {
         NotificationsModule,
         ReportGenerationLogsModule,
         LocationsModule,
+        BranchesModule,
         ProductLogsModule,
         UnpublishedStockModule,
         SharedModule,

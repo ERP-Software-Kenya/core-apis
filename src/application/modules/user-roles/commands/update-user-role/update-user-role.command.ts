@@ -5,6 +5,7 @@ export class UpdateUserRoleCommand extends CommandBase {
   @AutoMap() public id: string;
   @AutoMap() public roleId?: string;
   @AutoMap() public locationId?: string;
+  @AutoMap() public branchId?: string;
   public organizationId?: string;
   public callerIsSuperAdmin: boolean;
 }

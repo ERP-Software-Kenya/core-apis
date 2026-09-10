@@ -1,3 +1,4 @@
+export * from './branch.repo';
 export * from './location.repo';
 export * from './product-log.repo';
 export * from './category.repo';
@@ -16,6 +17,7 @@ export * from './invoice.repo';
 export * from './item-return.repo';
 export * from './notification.repo';
 export * from './order.repo';
+export * from './order-item.repo';
 export * from './payment-transaction.repo';
 export * from './platform-configuration.repo';
 export * from './purchase-item.repo';

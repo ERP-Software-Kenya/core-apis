@@ -1,4 +1,4 @@
-import { Inject } from '@nestjs/common';
+import { Inject, NotFoundException } from '@nestjs/common';
 import { IQueryHandler } from '@nestjs/cqrs';
 import { InjectPinoLogger, PinoLogger } from 'nestjs-pino';
 import { QueryHandlerStrict } from '../../../../../common';
@@ -16,6 +16,10 @@ export class GetOrderQueryHandler implements IQueryHandler<GetOrderQuery, Order>
 
   public async execute(query: GetOrderQuery): Promise<Order> {
     this.logger.info(`Executing ${GetOrderQuery.name} id=${query.id}`);
-    return this.repo.getAsync(query.id);
+    const order = await this.repo.getWithItemsAsync(query.id);
+    if (!order) {
+      throw new NotFoundException(`Order ${query.id} not found`);
+    }
+    return order;
   }
 }

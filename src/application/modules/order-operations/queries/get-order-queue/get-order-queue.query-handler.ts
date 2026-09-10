@@ -7,7 +7,7 @@ import { IOrderRepo } from '../../../orders';
 import { Order } from '../../../orders/domain';
 import { GetOrderQueueQuery } from './get-order-queue.query';
 
-export type OrderQueueItem = Pick<Order, 'id' | 'orderNumber' | 'customerId' | 'locationId' | 'status' | 'totalAmount' | 'createdAt'>;
+export type OrderQueueItem = Pick<Order, 'id' | 'orderNumber' | 'customerId' | 'locationId' | 'status' | 'totalAmount' | 'createdAt' | 'fulfillmentMode'>;
 
 @QueryHandlerStrict(GetOrderQueueQuery)
 export class GetOrderQueueQueryHandler implements IQueryHandler<GetOrderQueueQuery, OrderQueueItem[]> {
@@ -28,6 +28,7 @@ export class GetOrderQueueQueryHandler implements IQueryHandler<GetOrderQueueQue
       status: order.status,
       totalAmount: Number(order.totalAmount),
       createdAt: order.createdAt,
+      fulfillmentMode: order.fulfillmentMode,
     }));
   }
 }

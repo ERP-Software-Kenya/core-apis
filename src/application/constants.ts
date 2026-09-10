@@ -1,5 +1,6 @@
 export const AUTH_SERVICE         = 'AUTH_SERVICE';
 export const LOCATION_REPO        = 'LOCATION_REPO';
+export const BRANCH_REPO          = 'BRANCH_REPO';
 export const PRODUCT_LOG_REPO     = 'PRODUCT_LOG_REPO';
 export const ORG_MEMBER_REPO      = 'ORG_MEMBER_REPO';
 export const USER_SERVICE         = 'USER_SERVICE';
@@ -24,6 +25,7 @@ export const NOTIFICATION_REPO            = 'NOTIFICATION_REPO';
 export const REPORT_GENERATION_LOG_REPO   = 'REPORT_GENERATION_LOG_REPO';
 export const PAYMENT_TRANSACTION_REPO     = 'PAYMENT_TRANSACTION_REPO';
 export const ORDER_REPO                   = 'ORDER_REPO';
+export const ORDER_ITEM_REPO              = 'ORDER_ITEM_REPO';
 export const INVOICE_REPO                 = 'INVOICE_REPO';
 export const CUSTOMER_REPO                = 'CUSTOMER_REPO';
 export const EXPENSE_REPO                 = 'EXPENSE_REPO';

@@ -1,4 +1,5 @@
 import { LocationEntity } from './location.entity';
+import { BranchEntity } from './branch.entity';
 import { ProductLogEntity } from './product-log.entity';
 import { ActivityLogEntity } from './activity-log.entity';
 import { CategoryEntity } from './category.entity';
@@ -82,6 +83,7 @@ import { CustomerTypeRuleEntity } from './customer-type-rule.entity';
 import { TripStopEntity } from './trip-stop.entity';
 import { UserDeviceTokenEntity } from './user-device-token.entity';
 
+export * from './branch.entity';
 export * from './location.entity';
 export * from './product-log.entity';
 export * from './activity-log.entity';
@@ -169,6 +171,7 @@ export * from './trip-stop.entity';
 export * from './user-device-token.entity';
 
 export default [
+  BranchEntity,
   LocationEntity,
   ProductLogEntity,
   ActivityLogEntity,

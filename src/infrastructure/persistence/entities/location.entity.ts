@@ -12,6 +12,7 @@ import {
 } from 'typeorm';
 import { CORE_SCHEMA, ECoreTableName } from './e-core-table-name';
 import { OrganizationEntity } from './organization.entity';
+import { BranchEntity } from './branch.entity';
 import { InventoryEntity } from './inventory.entity';
 import { StockMovementEntity } from './stock-movement.entity';
 

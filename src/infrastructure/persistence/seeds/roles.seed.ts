@@ -20,6 +20,7 @@ export class RolesSeed extends BaseSeed<RoleEntity> {
       { name: ERole.SuperAdmin,   description: 'Full platform access across all organizations' },
       { name: ERole.OrgAdmin,     description: 'Full access within an organization' },
       { name: ERole.OrgManager,   description: 'Equal authority to Org Admin for approvals, black sales, and black inventory' },
+      { name: ERole.BranchManager, description: 'Manage all stores and warehouses within a branch' },
       { name: ERole.StoreManager, description: 'Manage a specific store and its inventory' },
       { name: ERole.StoreStaff,   description: 'Day-to-day stock operations within a store' },
       { name: ERole.Picker,       description: 'Warehouse picker — claims and packs orders for dispatch' },
