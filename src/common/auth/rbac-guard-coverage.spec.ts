@@ -335,7 +335,7 @@ describe('stock-transfer-requests controller', () => {
   it('restricts the controller to store-capable roles', () => {
     const match = source().match(/@Roles\(([^)]*)\)/);
     expect(match).not.toBeNull();
-    const roles = match![1].split(',').map((entry) => entry.trim());
+    const roles = match[1].split(',').map((entry) => entry.trim());
     expect(roles).toEqual(storeTier);
   });
 
