@@ -1,0 +1,315 @@
+export interface ItemListCategorySeedRow {
+  readonly id: string;
+  readonly name: string;
+  readonly description: string;
+  readonly parentId?: string;
+}
+
+export const ITEM_LIST_CATEGORY_SEED_ROWS: ItemListCategorySeedRow[] = [
+  {
+    id: "aceeb238-f8a0-5b8d-a512-ecdcb729da9d",
+    name: "Abrasives & Cutting",
+    description: "Abrasive papers, grinding discs, cutting discs, and related consumables.",
+  },
+  {
+    id: "001ec5bb-56eb-5c87-97d8-01719f15cc0d",
+    name: "Sandpaper & Sharpening",
+    description: "Sandpaper, sharpening stones, and abrasive sheets.",
+    parentId: "aceeb238-f8a0-5b8d-a512-ecdcb729da9d",
+  },
+  {
+    id: "c0819a94-c34d-52ee-9edb-6eca1a61164c",
+    name: "Grinding & Flap Discs",
+    description: "Grinding discs, flap discs, and abrasive wheels.",
+    parentId: "aceeb238-f8a0-5b8d-a512-ecdcb729da9d",
+  },
+  {
+    id: "6f1a519b-6735-58ca-ab44-32c0ba69a6ef",
+    name: "Cutting & Diamond Discs",
+    description: "Metal cutting, diamond cutting, and tile/glass cutting discs.",
+    parentId: "aceeb238-f8a0-5b8d-a512-ecdcb729da9d",
+  },
+  {
+    id: "42516fbb-4a5a-5502-9d2d-d5d61c646e26",
+    name: "Hand Tools",
+    description: "General manual tools for workshop, masonry, carpentry, and site use.",
+  },
+  {
+    id: "7614ade2-abfd-5392-9a57-1ee8a40ed8b6",
+    name: "Wrenches & Spanners",
+    description: "Adjustable wrenches, pipe wrenches, fix spanners, and ring spanners.",
+    parentId: "42516fbb-4a5a-5502-9d2d-d5d61c646e26",
+  },
+  {
+    id: "4f18dc4c-82b0-539a-b494-9af3b878a152",
+    name: "Hammers",
+    description: "Claw, mason, sledge, tack, and specialty hammers.",
+    parentId: "42516fbb-4a5a-5502-9d2d-d5d61c646e26",
+  },
+  {
+    id: "ebcd4c22-0bfb-5849-8b0a-2f60ecc4669d",
+    name: "Pliers, Snips & Cutters",
+    description: "Pliers, tin snips, glass cutters, tile cutters, and hand cutters.",
+    parentId: "42516fbb-4a5a-5502-9d2d-d5d61c646e26",
+  },
+  {
+    id: "631c1eaa-de97-5d0d-9f11-14aa8eab385e",
+    name: "Screwdrivers, Bits & Testers",
+    description: "Screwdrivers, screw bits, magnetic bits, testers, and related driver tools.",
+    parentId: "42516fbb-4a5a-5502-9d2d-d5d61c646e26",
+  },
+  {
+    id: "4659a867-4dd0-545f-bb1b-5266ef7c7db2",
+    name: "Saws, Frames & Blades",
+    description: "Handsaws, hacksaws, jigsaw blades, and saw frames.",
+    parentId: "42516fbb-4a5a-5502-9d2d-d5d61c646e26",
+  },
+  {
+    id: "2f25bc0e-b27f-52ab-8f5b-d85cf5f6fd0f",
+    name: "Masonry & Measuring Tools",
+    description: "Levels, scales, squares, tapes, plumb bobs, trowels, and masonry layout tools.",
+    parentId: "42516fbb-4a5a-5502-9d2d-d5d61c646e26",
+  },
+  {
+    id: "63f4b972-41b7-58f7-a18d-6195cef5f11e",
+    name: "Woodworking Tools & Bits",
+    description: "Auger bits, flat wood bits, jack planes, and woodworking hand tools.",
+    parentId: "42516fbb-4a5a-5502-9d2d-d5d61c646e26",
+  },
+  {
+    id: "dd69b32d-eea5-5765-a0e4-bb6ab06b187b",
+    name: "Scrapers & Finishing Tools",
+    description: "Scrapers and plastering/finishing hand tools.",
+    parentId: "42516fbb-4a5a-5502-9d2d-d5d61c646e26",
+  },
+  {
+    id: "e0ba502a-7a96-51df-b408-8d863df28753",
+    name: "Fasteners & Fixings",
+    description: "Nails, screws, rivets, plugs, hooks, anchors, and fixing hardware.",
+  },
+  {
+    id: "1a846928-a148-545f-a582-3b7070ea6bcf",
+    name: "Nails & Tacks",
+    description: "Steel nails, shoe tacks, tack nails, and similar fastening consumables.",
+    parentId: "e0ba502a-7a96-51df-b408-8d863df28753",
+  },
+  {
+    id: "3000537c-f33d-591a-b80d-45832234948f",
+    name: "Screws",
+    description: "Gypsum screws, MDF screws, wood screws, roofing screws, and self-drilling screws.",
+    parentId: "e0ba502a-7a96-51df-b408-8d863df28753",
+  },
+  {
+    id: "c9ddecae-e3be-50ee-842c-56f65d2a2825",
+    name: "Rivets",
+    description: "Pop rivets and rivet tools.",
+    parentId: "e0ba502a-7a96-51df-b408-8d863df28753",
+  },
+  {
+    id: "47a03ef0-4cff-5dc1-9b07-1455cc79493c",
+    name: "Wall Plugs, Rawl Bolts & Anchors",
+    description: "PVC wall plugs, rawl bolts, anchors, and related masonry fixings.",
+    parentId: "e0ba502a-7a96-51df-b408-8d863df28753",
+  },
+  {
+    id: "d6772b6f-853f-5b8f-9d71-be6b322c0506",
+    name: "Hooks, Brackets & Supports",
+    description: "Hooks, shelf brackets, cupboard brackets, flanges, and support fittings.",
+    parentId: "e0ba502a-7a96-51df-b408-8d863df28753",
+  },
+  {
+    id: "a21368fc-fff4-5717-a363-574e4db72659",
+    name: "Door & Cabinet Hardware",
+    description: "Door, cabinet, curtain, and furniture hardware.",
+  },
+  {
+    id: "b18e92d6-02bb-5b03-b2da-ebacc3beac22",
+    name: "Hinges",
+    description: "Door, cabinet, piano, mild steel, brass, and hydraulic hinges.",
+    parentId: "a21368fc-fff4-5717-a363-574e4db72659",
+  },
+  {
+    id: "edacd144-a7e3-520a-935b-2759cd127209",
+    name: "Locks & Padlocks",
+    description: "Drawer locks, door locks, padlocks, and related locking hardware.",
+    parentId: "a21368fc-fff4-5717-a363-574e4db72659",
+  },
+  {
+    id: "e3dcaa54-8477-5dd1-8639-1e493ed3deb2",
+    name: "Bolts, Catches & Hasps",
+    description: "Tower bolts, pad bolts, ball catches, hasps, staples, aldrop, and konji hardware.",
+    parentId: "a21368fc-fff4-5717-a363-574e4db72659",
+  },
+  {
+    id: "05c4cee7-4dfe-5686-9dfd-7d458441c450",
+    name: "Handles & Door Stoppers",
+    description: "Door pulls, rubber door stoppers, and handle accessories.",
+    parentId: "a21368fc-fff4-5717-a363-574e4db72659",
+  },
+  {
+    id: "1891ac05-7b2e-598b-b201-0dc5b348cf78",
+    name: "Drawer, Curtain & Furniture Fittings",
+    description: "Drawer slides, curtain hooks, curtain runners, curtain rails, and furniture fittings.",
+    parentId: "a21368fc-fff4-5717-a363-574e4db72659",
+  },
+  {
+    id: "119437b8-7da1-5368-b5a5-8bee9c5591c6",
+    name: "Building & Construction Supplies",
+    description: "Construction consumables, boards, mesh, and site materials.",
+  },
+  {
+    id: "64ca0214-7e5a-5c57-bd6c-e29d2a7516f2",
+    name: "Gypsum Boards & Accessories",
+    description: "Gypsum boards, studs, channels, tape, and gypsum screws.",
+    parentId: "119437b8-7da1-5368-b5a5-8bee9c5591c6",
+  },
+  {
+    id: "63852482-e02e-5a7b-b26d-a55ef8f734f4",
+    name: "Wire Mesh & Fencing",
+    description: "Chicken wire, gauze wire, cage mesh, razor wire, and tray mesh.",
+    parentId: "119437b8-7da1-5368-b5a5-8bee9c5591c6",
+  },
+  {
+    id: "2dfb8e92-01fa-5bf8-97fe-91215b34507e",
+    name: "Masonry & Structural Supplies",
+    description: "Manhole covers, masonry bits, concrete/structural accessories, and general masonry supplies.",
+    parentId: "119437b8-7da1-5368-b5a5-8bee9c5591c6",
+  },
+  {
+    id: "34155b78-2d0e-5c18-9828-e8ac466a15cc",
+    name: "Plumbing & Sanitary",
+    description: "Sanitaryware, cisterns, valves, hoses, connectors, and sink fittings.",
+  },
+  {
+    id: "0b9f0d73-df85-59a4-9a14-98e38f2d0aaf",
+    name: "Cisterns & Toilet Fittings",
+    description: "Cisterns, siphons, toilet connectors, flush handles, float valves, and WC screws.",
+    parentId: "34155b78-2d0e-5c18-9828-e8ac466a15cc",
+  },
+  {
+    id: "bc1a3d14-e045-50c5-89cc-6b63c344a3d9",
+    name: "Bathroom Accessories",
+    description: "Shower roses, soap dishes, tissue holders, towel rails, and bathroom fittings.",
+    parentId: "34155b78-2d0e-5c18-9828-e8ac466a15cc",
+  },
+  {
+    id: "86acb3cb-1541-5046-b823-acabbd4683f6",
+    name: "Hoses, Pipes & Connectors",
+    description: "Flexible hoses, chrome pipes, straight connectors, rubber connectors, and related pipe fittings.",
+    parentId: "34155b78-2d0e-5c18-9828-e8ac466a15cc",
+  },
+  {
+    id: "6282abb2-703e-514a-bf9b-2cd4a1a746d2",
+    name: "Valves & Pump Fittings",
+    description: "Foot valves, non-return valves, force pumps, and plumbing valve fittings.",
+    parentId: "34155b78-2d0e-5c18-9828-e8ac466a15cc",
+  },
+  {
+    id: "fddc11d8-fdee-5124-a7d2-41d6a52b553b",
+    name: "Kitchen Sinks",
+    description: "Kitchen sink bowls and sink units.",
+    parentId: "34155b78-2d0e-5c18-9828-e8ac466a15cc",
+  },
+  {
+    id: "08de686f-fcea-5022-842a-d8d50dd25d27",
+    name: "Garden & Agricultural Tools",
+    description: "Outdoor, garden, agricultural, and landscaping tools.",
+  },
+  {
+    id: "29468044-55b9-5c0d-831f-ef520a61f0f9",
+    name: "Digging, Cutting & Farming Tools",
+    description: "Shovels, axes, picks, mattocks, jembes, pangas, sickles, slashers, and related tools.",
+    parentId: "08de686f-fcea-5022-842a-d8d50dd25d27",
+  },
+  {
+    id: "a826b428-68f6-5737-9b2e-f37b2737f77a",
+    name: "Rakes, Sprinklers & Outdoor Accessories",
+    description: "Garden rakes, leaf rakes, sprinklers, plastic spikes, and outdoor accessories.",
+    parentId: "08de686f-fcea-5022-842a-d8d50dd25d27",
+  },
+  {
+    id: "0ba1b922-c5c0-5202-96b6-5bdb1e384fab",
+    name: "Painting & Decorating",
+    description: "Paint brushes, rollers, adhesives, tapes, oxides, and decorating supplies.",
+  },
+  {
+    id: "5bc31bc1-880b-569c-9745-514df89a991a",
+    name: "Paint Brushes & Rollers",
+    description: "Paint brushes, artist brush sets, paint rollers, and roller accessories.",
+    parentId: "0ba1b922-c5c0-5202-96b6-5bdb1e384fab",
+  },
+  {
+    id: "e3c05ee7-d758-52a3-94b6-4c6475842be3",
+    name: "Adhesives, Sealants & Chemicals",
+    description: "Contact adhesives, professional adhesives, silicone, thread tape, warning tape, and chemical products.",
+    parentId: "0ba1b922-c5c0-5202-96b6-5bdb1e384fab",
+  },
+  {
+    id: "74184d9d-0b66-59f3-8c62-d927da338197",
+    name: "Oxides & Colorants",
+    description: "Oxide powders and colorants.",
+    parentId: "0ba1b922-c5c0-5202-96b6-5bdb1e384fab",
+  },
+  {
+    id: "91c8a243-d159-5b34-aa4a-a3775108dad9",
+    name: "Cleaning Tools",
+    description: "Mops, brooms, wire brushes, and cleaning accessories.",
+    parentId: "0ba1b922-c5c0-5202-96b6-5bdb1e384fab",
+  },
+  {
+    id: "056fe452-7e5c-5f50-8ea9-069b371e3c2e",
+    name: "Electrical & Safety",
+    description: "Electrical accessories and personal/site safety products.",
+  },
+  {
+    id: "106f5b2d-bc27-55aa-b823-3a7bb07ddaa9",
+    name: "Cable Accessories",
+    description: "Cable ties and electrical fixing accessories.",
+    parentId: "056fe452-7e5c-5f50-8ea9-069b371e3c2e",
+  },
+  {
+    id: "fed34c15-f1ef-5f9f-8080-cd7dc4357bed",
+    name: "Safety Equipment",
+    description: "Helmets and safety products.",
+    parentId: "056fe452-7e5c-5f50-8ea9-069b371e3c2e",
+  },
+  {
+    id: "fd411516-4fc6-51c4-9585-76e77cd0dda0",
+    name: "Ropes & Chains",
+    description: "Chains, ropes, manilla, and tying/lashing supplies.",
+  },
+  {
+    id: "dd3d0183-5939-5d03-a874-94e95f71e263",
+    name: "Chains",
+    description: "Dog chains, link chains, and related chain products.",
+    parentId: "fd411516-4fc6-51c4-9585-76e77cd0dda0",
+  },
+  {
+    id: "7087a444-48a0-5fcd-af7a-ddc0942fac5d",
+    name: "Ropes & Manilla",
+    description: "Nylon ropes, manilla, and rope products.",
+    parentId: "fd411516-4fc6-51c4-9585-76e77cd0dda0",
+  },
+  {
+    id: "3d02e0ab-3724-5357-954b-361e6f8cfe74",
+    name: "Files",
+    description: "Hand files and filing tools.",
+  },
+  {
+    id: "ff68f66d-c904-5572-8e66-bcf275602741",
+    name: "Hand Files",
+    description: "Flat, round, and bastard files.",
+    parentId: "3d02e0ab-3724-5357-954b-361e6f8cfe74",
+  },
+  {
+    id: "38b81721-cf11-50bb-888f-53fd35021bfa",
+    name: "General Hardware",
+    description: "Hardware items that do not fit a more specific seeded category.",
+  },
+  {
+    id: "f1ea9b90-053e-59e6-b3c1-1c1dc1addc95",
+    name: "Miscellaneous Hardware",
+    description: "General miscellaneous hardware.",
+    parentId: "38b81721-cf11-50bb-888f-53fd35021bfa",
+  },
+];
