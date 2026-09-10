@@ -80,6 +80,6 @@ export class BranchEntity {
   public organization: OrganizationEntity;
 
   @AutoMap(() => [LocationEntity])
-  @OneToMany(() => LocationEntity, (loc) => loc.branch)
+  @OneToMany(() => LocationEntity, (loc) => loc.children)
   public locations?: LocationEntity[];
 }
