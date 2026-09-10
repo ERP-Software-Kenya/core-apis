@@ -31,23 +31,23 @@ export class LocationRepo
   }
 
   public async findIdsByBranchIdAsync(branchId: string): Promise<string[]> {
-    const rows = await this.internalRepo.find({ where: { branchId }, select: ['id'] });
+    const rows = await this.internalRepo.find({ where: { parent: { id: branchId } }, select: ['id'] });
     return rows.map((r) => r.id);
   }
 
   public async findByBranchIdsAsync(branchIds: string[]): Promise<{ id: string; branchId: string }[]> {
     if (!branchIds.length) return [];
     const rows = await this.internalRepo.find({
-      where: { branchId: In(branchIds) },
-      select: ['id', 'branchId'],
+      where: { parent: { id: In(branchIds) } },
+      select: ['id', 'parent'],
     });
-    return rows.map((r) => ({ id: r.id, branchId: r.branchId }));
+    return rows.map((r) => ({ id: r.id, branchId: r.parent.id }));
   }
 
   public async findIdsByBranchIdsAsync(branchIds: string[]): Promise<string[]> {
     if (!branchIds.length) return [];
     const rows = await this.internalRepo.find({
-      where: { branchId: In(branchIds) },
+      where: { parent: { id: In(branchIds) } },
       select: ['id'],
     });
     return rows.map((r) => r.id);
@@ -55,6 +55,6 @@ export class LocationRepo
 
   public async assignBranchAsync(branchId: string, locationIds: string[]): Promise<void> {
     if (!locationIds.length) return;
-    await this.internalRepo.update({ id: In(locationIds) }, { branchId });
+    await this.internalRepo.update({ id: In(locationIds) }, { parent: { id: branchId } });
   }
 }
