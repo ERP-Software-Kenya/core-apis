@@ -106,6 +106,7 @@ export class GenerateReportCommandHandler implements ICommandHandler<GenerateRep
     const orgId      = command.orgId;
     const locationId = command.locationId ?? null;
     const qr         = this.dataSource.createQueryRunner();
+    await qr.connect();
 
     const locFilter     = locationId ? `AND location_id = '${locationId}'` : '';
     const locBillFilter = locationId ? `AND b.location_id = '${locationId}'` : '';
