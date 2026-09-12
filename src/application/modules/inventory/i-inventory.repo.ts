@@ -26,6 +26,12 @@ export interface IInventoryRepo extends IBaseRepo<Inventory, string, PageableFil
     productId: string,
     manager?: EntityManager,
   ): Promise<Inventory | null>;
+  findOrCreateAsync(
+    organizationId: string,
+    locationId: string,
+    productId: string,
+    manager: EntityManager,
+  ): Promise<Inventory>;
   getLowStockAsync(organizationId: string, locationIds?: string[]): Promise<Inventory[]>;
   getValuationAsync(organizationId: string, locationIds?: string[]): Promise<Inventory[]>;
 }
