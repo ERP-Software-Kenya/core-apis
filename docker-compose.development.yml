@@ -1,73 +1,14 @@
-
-version: "3.3"
 services:
-  postgres:
-    image: postgres:16
-    container_name: postgres
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+
+    container_name: core-backend
+    restart: unless-stopped
+
     ports:
-      - "5432:5432"
-    volumes:
-      - ./docker/tmp/postgres:/var/lib/postgresql/data/
-      - ./docker/database/init.sql:/docker-entrypoint-initdb.d/init.sql
-    networks:
-      - core-network
-    environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
-      POSTGRES_DB: core_db
+      - "10000:10000"
 
-  pg-admin:
-    image: dpage/pgadmin4:6.8
-    container_name: pg-admin
-    ports:
-      - "5050:80"
-    volumes:
-      - ./docker/tmp/pgadmin:/var/lib/pgadmin
-    environment:
-      PGADMIN_DEFAULT_EMAIL: admin@admin.com
-      PGADMIN_DEFAULT_PASSWORD: postgres
-    depends_on:
-      - postgres
-    networks:
-      - core-network
-
-  rabbitmq:
-    container_name: rabbitmq
-    image: rabbitmq:3.8.27-management-alpine
-    ports:
-      - "5672:5672"
-      - "15672:15672"
-    volumes:
-      - ./docker/tmp/rabbitmq/data:/var/lib/rabbitmq/mnesia
-      - ./docker/tmp/rabbitmq/logs:/var/log/rabbitmq
-    networks:
-      - core-network
-
-  redis:
-    container_name: redis
-    image: bitnami/redis:latest
-    ports:
-      - "6379:6379"
-    volumes:
-      - ./docker/tmp/redis:/bitnami/redis/data
-    environment:
-      REDIS_PASSWORD: redis
-    networks:
-      - core-network
-
-  centrifugo:
-    container_name: centrifugo
-    image: centrifugo/centrifugo:v6
-    volumes:
-      - ./docker/centrifugo/config.yml:/config.yml:ro
-    command: centrifugo -c /config.yml
-    ports:
-      - "8001:8000"
-    depends_on:
-      - redis
-    networks:
-      - core-network
-
-networks:
-  core-network:
-
+    env_file:
+      - .env

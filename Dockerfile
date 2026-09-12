@@ -1,15 +1,26 @@
-FROM node:20-alpine
+FROM node:22-alpine AS builder
 
 WORKDIR /app
 
 COPY package*.json ./
 
-RUN npm install
+RUN npm ci --legacy-peer-deps
 
 COPY . .
 
-RUN npm run build
+RUN NODE_OPTIONS="--max-old-space-size=2048" npm run build
 
-EXPOSE 3000
 
-CMD ["npm", "run", "start:dev"]
+FROM node:22-alpine
+
+WORKDIR /app
+
+COPY package*.json ./
+
+RUN npm ci --omit=dev --legacy-peer-deps
+
+COPY --from=builder /app/dist ./dist
+
+EXPOSE 10000
+
+CMD ["node", "dist/main.js"]
