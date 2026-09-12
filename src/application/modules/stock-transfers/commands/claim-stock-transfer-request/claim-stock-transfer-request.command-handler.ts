@@ -35,12 +35,11 @@ export class ClaimStockTransferRequestCommandHandler implements ICommandHandler<
       throw new BadRequestException(`Request ${command.requestId} is not in ACCEPTED state`);
     }
 
-    const inventory = await this.inventoryRepo.findByOrgLocationProductAsync(
+    const inventory = await this.inventoryRepo.findOrCreateAsync(
       command.organizationId,
       request.requestingLocationId,
       request.productId,
     );
-    if (!inventory) throw new BadRequestException('No inventory record found for this product at the requesting location');
 
     await this.orchestrator.addStock({
       inventoryId:    inventory.id,
