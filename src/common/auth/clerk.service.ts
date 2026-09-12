@@ -192,8 +192,6 @@ export class ClerkService implements IClerkService {
       for (const m of memberships) {
         if (m.role === 'org:admin' || m.role === 'admin') {
           roles.push('org_admin');
-        } else if (m.role === 'org:member' || m.role === 'member') {
-          roles.push('store_staff');
         }
       }
     }
