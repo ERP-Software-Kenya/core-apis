@@ -21,6 +21,7 @@ export * from './order-item.repo';
 export * from './payment-transaction.repo';
 export * from './platform-configuration.repo';
 export * from './purchase-item.repo';
+export * from './report-data-aggregator';
 export * from './report-generation-log.repo';
 export * from './role.repo';
 export * from './stock-movement.repo';
