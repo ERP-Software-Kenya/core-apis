@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectDataSource } from '@nestjs/typeorm';
 import { DataSource, QueryRunner } from 'typeorm';
 import { BuildReportParams, EReportType, ReportData, REPORT_TYPE_LABELS } from '../../../application/modules/report-generation-logs/domain';
-import { IReportDataAggregator } from '../../../application/modules/report-generation-logs';
+import { IReportDataAggregator } from '../../../application/modules/report-generation-logs/i-report-data-aggregator';
 
 type ReportBase = Omit<ReportData, 'formattedValue' | 'tableHeaders' | 'tableRows' | 'summaryCards' | 'note'>;
 type Row = Record<string, unknown>;
