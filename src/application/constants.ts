@@ -22,6 +22,7 @@ export const BILL_REPO                    = 'BILL_REPO';
 export const BILL_ITEM_REPO               = 'BILL_ITEM_REPO';
 export const ITEM_RETURN_REPO             = 'ITEM_RETURN_REPO';
 export const NOTIFICATION_REPO            = 'NOTIFICATION_REPO';
+export const REPORT_DATA_AGGREGATOR       = 'IReportDataAggregator';
 export const REPORT_GENERATION_LOG_REPO   = 'REPORT_GENERATION_LOG_REPO';
 export const PAYMENT_TRANSACTION_REPO     = 'PAYMENT_TRANSACTION_REPO';
 export const ORDER_REPO                   = 'ORDER_REPO';

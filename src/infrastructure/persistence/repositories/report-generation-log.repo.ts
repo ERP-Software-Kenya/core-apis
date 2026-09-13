@@ -1,20 +1,28 @@
+import { Inject, Injectable } from '@nestjs/common';
 import { Mapper } from '@automapper/core';
 import { InjectMapper } from '@automapper/nestjs';
-import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { InjectPinoLogger, PinoLogger } from 'nestjs-pino';
 import { FindManyOptions, ILike, Repository } from 'typeorm';
 import { BaseRepo, Filter, PageableFilter } from '../../../common';
 import { ReportGenerationLogEntity } from '../entities';
-import { ReportGenerationLog } from '../../../application/modules/report-generation-logs/domain';
-import { IReportGenerationLogRepo, ReportGenerationLogFilter } from '../../../application/modules/report-generation-logs';
+import { BuildReportParams, ReportData, ReportGenerationLog } from '../../../application/modules/report-generation-logs/domain';
+import {
+  IReportGenerationLogRepo,
+  ReportGenerationLogFilter,
+  REPORT_DATA_AGGREGATOR,
+  IReportDataAggregator,
+} from '../../../application/modules/report-generation-logs';
 
 @Injectable()
-export class ReportGenerationLogRepo extends BaseRepo<ReportGenerationLogEntity, ReportGenerationLog, string, PageableFilter<ReportGenerationLogFilter>, Filter<ReportGenerationLogFilter>> implements IReportGenerationLogRepo {
+export class ReportGenerationLogRepo
+  extends BaseRepo<ReportGenerationLogEntity, ReportGenerationLog, string, PageableFilter<ReportGenerationLogFilter>, Filter<ReportGenerationLogFilter>>
+  implements IReportGenerationLogRepo {
   constructor(
     @InjectRepository(ReportGenerationLogEntity) internalRepo: Repository<ReportGenerationLogEntity>,
     @InjectMapper() mapper: Mapper,
     @InjectPinoLogger(ReportGenerationLogRepo.name) logger: PinoLogger,
+    @Inject(REPORT_DATA_AGGREGATOR) private readonly aggregator: IReportDataAggregator,
   ) {
     super(internalRepo, mapper, logger, ReportGenerationLogEntity, ReportGenerationLog);
   }
@@ -27,6 +35,10 @@ export class ReportGenerationLogRepo extends BaseRepo<ReportGenerationLogEntity,
     return [...super.specialFilterFields, 'name'];
   }
 
+  public async buildReportDataAsync(params: BuildReportParams): Promise<ReportData> {
+    return this.aggregator.aggregate(params);
+  }
+
   protected override modifyFindOption(
     findOpts: FindManyOptions<ReportGenerationLogEntity>,
     filterObj: Filter<ReportGenerationLogFilter> | PageableFilter<ReportGenerationLogFilter>,
@@ -34,7 +46,6 @@ export class ReportGenerationLogRepo extends BaseRepo<ReportGenerationLogEntity,
     const where = findOpts.where as Record<string, unknown> | undefined;
     if (!where) return;
 
-    // Exact match for categorical filters — avoids ILike partial-match surprises.
     for (const key of ['reportType', 'reportPeriod', 'status'] as const) {
       const value = filterObj[key];
       if (value !== undefined) {
