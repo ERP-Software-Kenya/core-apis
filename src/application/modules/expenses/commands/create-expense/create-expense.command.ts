@@ -9,4 +9,6 @@ export class CreateExpenseCommand extends CommandBase {
   @AutoMap() public expenseDate: Date;
   @AutoMap() public description?: string;
   @AutoMap() public submittedBy?: string;
+  @AutoMap() public submittedByUserId: string;
+  @AutoMap() public submittedByName?: string;
 }

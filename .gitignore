@@ -64,3 +64,4 @@ report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json
 
 # Puppeteer browser cache
 .puppeteer-cache/
+.brainstorm/
