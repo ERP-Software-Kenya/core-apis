@@ -7,12 +7,9 @@ import { FindManyOptions, ILike, Repository } from 'typeorm';
 import { BaseRepo, Filter, PageableFilter } from '../../../common';
 import { ReportGenerationLogEntity } from '../entities';
 import { BuildReportParams, ReportData, ReportGenerationLog } from '../../../application/modules/report-generation-logs/domain';
-import {
-  IReportGenerationLogRepo,
-  ReportGenerationLogFilter,
-  REPORT_DATA_AGGREGATOR,
-  IReportDataAggregator,
-} from '../../../application/modules/report-generation-logs';
+import { IReportGenerationLogRepo } from '../../../application/modules/report-generation-logs/i-report-generation-log.repo';
+import { ReportGenerationLogFilter } from '../../../application/modules/report-generation-logs/domain';
+import { REPORT_DATA_AGGREGATOR, IReportDataAggregator } from '../../../application/modules/report-generation-logs/i-report-data-aggregator';
 
 @Injectable()
 export class ReportGenerationLogRepo
