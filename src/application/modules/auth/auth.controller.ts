@@ -191,6 +191,9 @@ export class AuthController {
   @AllowAnonymous()
   @Get('dev/organizations')
   public async devOrganizations(): Promise<Array<{ id: string; name: string }>> {
+    if (!isDev() && !isLocal() && !isTest()) {
+      throw new ForbiddenException('Endpoint disabled outside development');
+    }
     const query = new ListOrganizationsQuery();
     const orgs = await this.mediator.execute<ListOrganizationsQuery, Organization[]>(query);
     return orgs.map((org) => ({ id: org.id, name: org.name ?? '' }));
@@ -203,9 +206,14 @@ export class AuthController {
   @AllowAnonymous()
   @Get('dev/roles')
   public async devRoles(): Promise<Array<{ id: string; name: string }>> {
+    if (!isDev() && !isLocal() && !isTest()) {
+      throw new ForbiddenException('Endpoint disabled outside development');
+    }
     const query = new ListRolesQuery();
     const roles = await this.mediator.execute<ListRolesQuery, Role[]>(query);
-    return roles.map((role) => ({ id: role.id, name: role.name }));
+    return roles
+      .filter((role) => role.name === 'picker' || role.name === 'driver')
+      .map((role) => ({ id: role.id, name: role.name }));
   }
 
   // ── POST /auth/mobile/register ───────────────────────────────────────────────
@@ -215,6 +223,9 @@ export class AuthController {
   @AllowAnonymous()
   @Post('mobile/register')
   public async mobileRegister(@Body() body: RegisterMobileUserRequest): Promise<{ userId: string }> {
+    if (!isDev() && !isLocal() && !isTest()) {
+      throw new ForbiddenException('Registration endpoint disabled outside development');
+    }
     const command              = new RegisterMobileUserCommand();
     command.firstName          = body.firstName;
     command.lastName           = body.lastName;
