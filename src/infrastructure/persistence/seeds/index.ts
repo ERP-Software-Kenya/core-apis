@@ -22,16 +22,18 @@ export * from './email-templates.seed';
 import { SeedingService } from "./seeding.service";
 import { DemoOrgDataSeed } from "./demo-org-data.seed";
 import { RolesSeed } from "./roles.seed";
-import { RefCountriesSeed } from './ref-countries.seed';
-import { RefStatesSeed } from './ref-states.seed';
-import { RefCitiesSeed } from './ref-cities.seed';
-import { RefCurrenciesSeed } from './ref-currencies.seed';
-import { RefLanguagesSeed } from './ref-languages.seed';
-import { VehicleTypesSeed } from './vehicle-types.seed';
-import { VehicleBrandsSeed } from './vehicle-brands.seed';
-import { FuelTypesSeed } from './fuel-types.seed';
-import { MaintenanceTypesSeed } from './maintenance-types.seed';
-import { EmailTemplatesSeed } from './email-templates.seed';
+import { RefCountriesSeed } from "./ref-countries.seed";
+import { RefStatesSeed } from "./ref-states.seed";
+import { RefCitiesSeed } from "./ref-cities.seed";
+import { RefCurrenciesSeed } from "./ref-currencies.seed";
+import { RefLanguagesSeed } from "./ref-languages.seed";
+import { VehicleTypesSeed } from "./vehicle-types.seed";
+import { VehicleBrandsSeed } from "./vehicle-brands.seed";
+import { FuelTypesSeed } from "./fuel-types.seed";
+import { MaintenanceTypesSeed } from "./maintenance-types.seed";
+import { EmailTemplatesSeed } from "./email-templates.seed";
+import { ProductsSeed } from "./products.seed";
+import { CategoriesSeed } from "./categories.seed";
 
 export default [
   SeedingService,
@@ -47,4 +49,6 @@ export default [
   FuelTypesSeed,
   MaintenanceTypesSeed,
   EmailTemplatesSeed,
+  CategoriesSeed,
+  ProductsSeed,
 ];

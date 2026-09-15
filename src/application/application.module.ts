@@ -9,6 +9,7 @@ import { ProductsModule } from './modules/products';
 import { SuppliersModule } from './modules/suppliers';
 import { InventoryModule } from './modules/inventory';
 import { PurchaseOrdersModule } from './modules/purchase-orders';
+import { PurchaseReturnsModule } from './modules/purchase-returns';
 import { CustomersModule } from './modules/customers';
 import { OrdersModule } from './modules/orders';
 import { InvoicesModule } from './modules/invoices';
@@ -23,6 +24,7 @@ import { StockMovementsModule } from './modules/stock-movements';
 import { PurchaseItemsModule } from './modules/purchase-items';
 import { ActivityLogsModule } from './modules/activity-logs';
 import { BillsModule } from './modules/bills';
+import { SalesReturnsModule } from './modules/sales-returns';
 import { CreditApprovalsModule } from './modules/credit-approvals';
 import { PaymentTransactionsModule } from './modules/payment-transactions';
 import { ItemReturnsModule } from './modules/item-returns';
@@ -63,6 +65,7 @@ export class ApplicationModule {
         SuppliersModule,
         InventoryModule,
         PurchaseOrdersModule,
+        PurchaseReturnsModule,
         CustomersModule,
         OrdersModule,
         InvoicesModule,
@@ -77,6 +80,7 @@ export class ApplicationModule {
         PurchaseItemsModule,
         ActivityLogsModule,
         BillsModule,
+        SalesReturnsModule,
         CreditApprovalsModule,
         PaymentTransactionsModule,
         ItemReturnsModule,

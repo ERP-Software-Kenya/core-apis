@@ -11,7 +11,6 @@ import { FuelTypesSeed } from './fuel-types.seed';
 import { MaintenanceTypesSeed } from './maintenance-types.seed';
 import { VehicleBrandsSeed } from './vehicle-brands.seed';
 import { VehicleTypesSeed } from './vehicle-types.seed';
-import { DemoOrgDataSeed } from './demo-org-data.seed';
 
 /**
  * Orchestrates all seeds in strict dependency order.
@@ -38,7 +37,7 @@ export class SeedingService {
   ) {}
 
   public async runAsync(): Promise<void> {
-    this.logger.info('Applying seeds...');
+    this.logger.info("Applying seeds...");
     await this.refCurrenciesSeed.runAsync();
     await this.refLanguagesSeed.runAsync();
     await this.refCountriesSeed.runAsync();
