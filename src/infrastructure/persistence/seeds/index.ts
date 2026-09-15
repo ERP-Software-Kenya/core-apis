@@ -1,6 +1,5 @@
 // Standard barrel file
 export * from "./categories.seed";
-export * from "./default-organization.seed";
 export * from "./inventory.seed";
 export * from "./products.seed";
 export * from "./purchase-orders.seed";
@@ -32,11 +31,9 @@ import { MaintenanceTypesSeed } from "./maintenance-types.seed";
 import { EmailTemplatesSeed } from "./email-templates.seed";
 import { ProductsSeed } from "./products.seed";
 import { CategoriesSeed } from "./categories.seed";
-import { DefaultOrganizationSeed } from "./default-organization.seed";
 
 export default [
   SeedingService,
-  DefaultOrganizationSeed,
   RolesSeed,
   RefCountriesSeed,
   RefStatesSeed,

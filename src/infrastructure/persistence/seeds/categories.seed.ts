@@ -6,19 +6,18 @@ import { DataSource } from "typeorm";
 import { BaseSeed } from "../../../common";
 import { CategoryEntity } from "../entities";
 import { ITEM_LIST_CATEGORY_SEED_ROWS } from "./data/item-list-categories.seed-data";
-
-const CATEGORY_SEED_ORGANIZATION_ID = "00000000-0000-4000-8000-000000000001";
+import { SEED_ORG_ID } from "./seed.constants";
 
 @Injectable()
 export class CategoriesSeed extends BaseSeed<CategoryEntity> {
   public get version(): number {
-    return 3;
+    return 5;
   }
 
   public get seedingData(): Partial<CategoryEntity>[] {
     return ITEM_LIST_CATEGORY_SEED_ROWS.map((category) => ({
       id: category.id,
-      organizationId: CATEGORY_SEED_ORGANIZATION_ID,
+      organizationId: SEED_ORG_ID,
       name: category.name,
       description: category.description,
       parentId: category.parentId,
@@ -35,6 +34,6 @@ export class CategoriesSeed extends BaseSeed<CategoryEntity> {
   }
 
   protected createFilter(): FindOptionsWhere<CategoryEntity> {
-    return { organizationId: CATEGORY_SEED_ORGANIZATION_ID };
+    return { organizationId: SEED_ORG_ID };
   }
 }
