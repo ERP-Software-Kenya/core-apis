@@ -1,18 +1,16 @@
-import { Injectable } from "@nestjs/common";
-import { PinoLogger, InjectPinoLogger } from "nestjs-pino";
-import { RolesSeed } from "./roles.seed";
-import { RefCountriesSeed } from "./ref-countries.seed";
-import { RefStatesSeed } from "./ref-states.seed";
-import { RefCitiesSeed } from "./ref-cities.seed";
-import { RefCurrenciesSeed } from "./ref-currencies.seed";
-import { RefLanguagesSeed } from "./ref-languages.seed";
-import { EmailTemplatesSeed } from "./email-templates.seed";
-import { FuelTypesSeed } from "./fuel-types.seed";
-import { MaintenanceTypesSeed } from "./maintenance-types.seed";
-import { VehicleBrandsSeed } from "./vehicle-brands.seed";
-import { VehicleTypesSeed } from "./vehicle-types.seed";
-import { ProductsSeed } from "./products.seed";
-import { CategoriesSeed } from "./categories.seed";
+import { Injectable } from '@nestjs/common';
+import { PinoLogger, InjectPinoLogger } from 'nestjs-pino';
+import { RolesSeed } from './roles.seed';
+import { RefCountriesSeed } from './ref-countries.seed';
+import { RefStatesSeed } from './ref-states.seed';
+import { RefCitiesSeed } from './ref-cities.seed';
+import { RefCurrenciesSeed } from './ref-currencies.seed';
+import { RefLanguagesSeed } from './ref-languages.seed';
+import { EmailTemplatesSeed } from './email-templates.seed';
+import { FuelTypesSeed } from './fuel-types.seed';
+import { MaintenanceTypesSeed } from './maintenance-types.seed';
+import { VehicleBrandsSeed } from './vehicle-brands.seed';
+import { VehicleTypesSeed } from './vehicle-types.seed';
 
 /**
  * Orchestrates all seeds in strict dependency order.
@@ -35,8 +33,7 @@ export class SeedingService {
     private readonly fuelTypesSeed: FuelTypesSeed,
     private readonly vehicleBrandsSeed: VehicleBrandsSeed,
     private readonly vehicleTypesSeed: VehicleTypesSeed,
-    private readonly categoriesSeed: CategoriesSeed,
-    private readonly productsSeed: ProductsSeed,
+    // private readonly demoOrgDataSeed: DemoOrgDataSeed,
   ) {}
 
   public async runAsync(): Promise<void> {
@@ -52,8 +49,7 @@ export class SeedingService {
     await this.vehicleTypesSeed.runAsync();
     await this.rolesSeed.runAsync();
     await this.emailTemplatesSeed.runAsync();
-    await this.categoriesSeed.runAsync();
-    await this.productsSeed.runAsync();
-    this.logger.info("All seeds applied successfully");
+    // await this.demoOrgDataSeed.runAsync();`
+    this.logger.info('All seeds applied successfully');
   }
 }

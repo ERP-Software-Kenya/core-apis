@@ -1,6 +1,6 @@
 import { AutoMap } from '@automapper/classes';
 import { ApiPropertyOptional } from '@nestjs/swagger';
-import { IsBoolean, IsEnum, IsOptional, IsString } from 'class-validator';
+import { IsBoolean, IsEnum, IsOptional, IsString, IsUUID } from 'class-validator';
 import { ELocationType } from 'src/infrastructure/persistence/entities';
 
 export class UpdateLocationRequest {

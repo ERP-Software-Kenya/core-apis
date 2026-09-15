@@ -31,7 +31,7 @@ export class BranchesController {
   @ApiOperation({ summary: 'Search branches (paginated)' })
   @ApiOkResponse({ type: BranchesPagedResponse })
   @HttpCode(HttpStatus.OK)
-  @Roles(ERole.OrgAdmin, ERole.OrgManager, ERole.SuperAdmin)
+  @Roles(ERole.OrgAdmin, ERole.SuperAdmin)
   @Get()
   public async search(
     @CurrentUser() user: AuthenticatedUser,
@@ -47,7 +47,7 @@ export class BranchesController {
   @ApiOperation({ summary: 'List all branches for the current organization' })
   @ApiOkResponse({ type: [BranchResponse] })
   @HttpCode(HttpStatus.OK)
-  @Roles(ERole.OrgAdmin, ERole.OrgManager, ERole.SuperAdmin, ERole.StoreManager, ERole.BranchManager)
+  @Roles(ERole.OrgAdmin, ERole.SuperAdmin, ERole.BranchManager)
   @Get('list')
   public async list(
     @CurrentUser() user: AuthenticatedUser,
@@ -64,7 +64,7 @@ export class BranchesController {
   @ApiOkResponse({ type: BranchResponse })
   @ApiParam({ name: 'id', description: 'Branch UUID' })
   @HttpCode(HttpStatus.OK)
-  @Roles(ERole.OrgAdmin, ERole.OrgManager, ERole.SuperAdmin)
+  @Roles(ERole.OrgAdmin, ERole.SuperAdmin)
   @Get(':id')
   public async getById(@Param('id') id: string, @CurrentUser() user: AuthenticatedUser): Promise<BranchResponse> {
     const query = new GetBranchQuery();
@@ -77,7 +77,7 @@ export class BranchesController {
   @ApiOperation({ summary: 'Create a new branch' })
   @ApiCreatedResponse({ type: BranchResponse })
   @HttpCode(HttpStatus.CREATED)
-  @Roles(ERole.OrgAdmin, ERole.OrgManager, ERole.SuperAdmin)
+  @Roles(ERole.OrgAdmin, ERole.SuperAdmin)
   @Post()
   public async create(
     @CurrentUser() user: AuthenticatedUser,
@@ -93,7 +93,7 @@ export class BranchesController {
   @ApiOkResponse({ type: BranchResponse })
   @ApiParam({ name: 'id', description: 'Branch UUID' })
   @HttpCode(HttpStatus.OK)
-  @Roles(ERole.OrgAdmin, ERole.OrgManager, ERole.SuperAdmin)
+  @Roles(ERole.OrgAdmin, ERole.SuperAdmin)
   @Put(':id')
   public async update(
     @Param('id') id: string,
@@ -115,7 +115,7 @@ export class BranchesController {
   @ApiOkResponse({ type: BranchResponse })
   @ApiParam({ name: 'id', description: 'Branch UUID' })
   @HttpCode(HttpStatus.OK)
-  @Roles(ERole.OrgAdmin, ERole.OrgManager, ERole.SuperAdmin)
+  @Roles(ERole.OrgAdmin, ERole.SuperAdmin)
   @Patch(':id/inactive')
   public async inactive(@Param('id') id: string, @CurrentUser() user: AuthenticatedUser): Promise<BranchResponse> {
     const fetchQuery = new GetBranchQuery();

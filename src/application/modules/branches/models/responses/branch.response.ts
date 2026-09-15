@@ -11,6 +11,7 @@ export class BranchResponse {
   @ApiPropertyOptional() @AutoMap() public state?: string;
   @ApiPropertyOptional() @AutoMap() public country?: string;
   @ApiPropertyOptional() @AutoMap() public phone?: string;
+  @ApiPropertyOptional() @AutoMap() public userId?: string;
   @ApiProperty() @AutoMap() public isActive: boolean;
   @ApiPropertyOptional({ type: [String] }) @AutoMap(() => [String]) public locationIds?: string[];
   @ApiPropertyOptional() @AutoMap() public createdAt?: Date;

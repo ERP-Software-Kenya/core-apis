@@ -164,11 +164,16 @@ export class StockOrchestrationService {
   }
 
   private async runTransferWithManager(input: ITransferStockOperation, manager: EntityManager): Promise<void> {
+    let toInventoryId = input.toInventoryId;
+    if (!toInventoryId) {
+      const destInv = await this.inventoryRepo.findOrCreateAsync(input.organizationId, input.toLocationId, input.productId, manager);
+      toInventoryId = destInv.id;
+    }
     const src  = await this.inventoryRepo.deductStockAsync(input.fromInventoryId, input.quantity, manager);
-    const dest = await this.inventoryRepo.addStockAsync(input.toInventoryId, input.quantity, undefined, manager);
+    const dest = await this.inventoryRepo.addStockAsync(toInventoryId, input.quantity, undefined, manager);
 
     const srcOp: IStockOperation  = { inventoryId: input.fromInventoryId, organizationId: input.organizationId, productId: input.productId, locationId: input.fromLocationId, quantity: input.quantity, performedById: input.performedById, referenceId: input.referenceId, notes: input.notes };
-    const destOp: IStockOperation = { inventoryId: input.toInventoryId, organizationId: input.organizationId, productId: input.productId, locationId: input.toLocationId, quantity: input.quantity, performedById: input.performedById, referenceId: input.referenceId, notes: input.notes };
+    const destOp: IStockOperation = { inventoryId: toInventoryId, organizationId: input.organizationId, productId: input.productId, locationId: input.toLocationId, quantity: input.quantity, performedById: input.performedById, referenceId: input.referenceId, notes: input.notes };
 
     await this.movementRepo.createWithManagerAsync(this.buildMovementInput(srcOp, EMovementType.TransferOut, src.quantityOnHand + input.quantity, src.quantityOnHand), manager);
     await this.movementRepo.createWithManagerAsync(this.buildMovementInput(destOp, EMovementType.TransferIn, dest.quantityOnHand - input.quantity, dest.quantityOnHand), manager);

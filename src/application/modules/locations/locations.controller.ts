@@ -15,7 +15,7 @@ import { GetLocationQuery, ListLocationsQuery, SearchLocationsQuery } from './qu
 @ApiTags('Locations')
 @Controller({ path: 'locations', version: '1' })
 @UseGuards(ClerkAuthGuard, RolesGuard)
-@Roles(ERole.OrgAdmin, ERole.OrgManager, ERole.SuperAdmin, ERole.BranchManager, ERole.StoreManager, ERole.StoreStaff)
+@Roles(ERole.OrgAdmin, ERole.SuperAdmin, ERole.BranchManager)
 export class LocationsController {
   constructor(
     protected readonly mediator: CqrsMediator,
@@ -26,7 +26,7 @@ export class LocationsController {
   @ApiOperation({ summary: 'Search locations (paginated)' })
   @ApiOkResponse({ type: LocationsPagedResponse })
   @HttpCode(HttpStatus.OK)
-  @Roles(ERole.OrgAdmin, ERole.OrgManager, ERole.SuperAdmin, ERole.BranchManager, ERole.StoreManager, ERole.StoreStaff)
+  @Roles(ERole.OrgAdmin, ERole.SuperAdmin, ERole.BranchManager)
   @Get()
   public async search(
     @CurrentUser() user: AuthenticatedUser,
@@ -41,7 +41,7 @@ export class LocationsController {
   @ApiOperation({ summary: 'List all locations' })
   @ApiOkResponse({ type: [LocationResponse] })
   @HttpCode(HttpStatus.OK)
-  @Roles(ERole.OrgAdmin, ERole.OrgManager, ERole.SuperAdmin, ERole.BranchManager, ERole.StoreManager, ERole.StoreStaff)
+  @Roles(ERole.OrgAdmin, ERole.SuperAdmin, ERole.BranchManager)
   @Get('list')
   public async list(
     @CurrentUser() user: AuthenticatedUser,
@@ -57,7 +57,7 @@ export class LocationsController {
   @ApiOkResponse({ type: LocationResponse })
   @ApiParam({ name: 'id', description: 'Location UUID' })
   @HttpCode(HttpStatus.OK)
-  @Roles(ERole.OrgAdmin, ERole.OrgManager, ERole.SuperAdmin, ERole.BranchManager, ERole.StoreManager, ERole.StoreStaff)
+  @Roles(ERole.OrgAdmin, ERole.SuperAdmin, ERole.BranchManager)
   @Get(':id')
   public async getById(@Param('id') id: string, @CurrentUser() user: AuthenticatedUser): Promise<LocationResponse> {
     const query  = new GetLocationQuery();
@@ -74,7 +74,7 @@ export class LocationsController {
   @ApiOperation({ summary: 'Create a new location' })
   @ApiCreatedResponse({ type: LocationResponse })
   @HttpCode(HttpStatus.CREATED)
-  @Roles(ERole.OrgAdmin, ERole.OrgManager, ERole.SuperAdmin, ERole.StoreManager)
+  @Roles(ERole.OrgAdmin, ERole.SuperAdmin)
   @Post()
   public async create(
     @CurrentUser() user: AuthenticatedUser,
@@ -92,7 +92,7 @@ export class LocationsController {
   @ApiOkResponse({ type: LocationResponse })
   @ApiParam({ name: 'id', description: 'Location UUID' })
   @HttpCode(HttpStatus.OK)
-  @Roles(ERole.OrgAdmin, ERole.OrgManager, ERole.SuperAdmin, ERole.StoreManager)
+  @Roles(ERole.OrgAdmin, ERole.SuperAdmin)
   @Put(':id')
   public async update(@Param('id') id: string, @Body() body: UpdateLocationRequest, @CurrentUser() user: AuthenticatedUser): Promise<LocationResponse> {
     const existing = await this.mediator.execute<GetLocationQuery, Location>(Object.assign(new GetLocationQuery(), { id }));
@@ -111,7 +111,7 @@ export class LocationsController {
   @ApiOkResponse({ type: Boolean })
   @ApiParam({ name: 'id', description: 'Location UUID' })
   @HttpCode(HttpStatus.OK)
-  @Roles(ERole.OrgAdmin, ERole.OrgManager, ERole.SuperAdmin)
+  @Roles(ERole.OrgAdmin, ERole.SuperAdmin)
   @Delete(':id')
   public async delete(@Param('id') id: string, @CurrentUser() user: AuthenticatedUser): Promise<boolean> {
     const existing = await this.mediator.execute<GetLocationQuery, Location>(Object.assign(new GetLocationQuery(), { id }));
@@ -132,7 +132,7 @@ export class LocationsController {
   @ApiParam({ name: 'id', description: 'Location UUID' })
   @HttpCode(HttpStatus.CREATED)
   @UseInterceptors(FileInterceptor('file'))
-  @Roles(ERole.OrgAdmin, ERole.OrgManager, ERole.SuperAdmin, ERole.StoreManager)
+  @Roles(ERole.OrgAdmin, ERole.SuperAdmin)
   @Post(':id/image')
   public async uploadImage(
     @Param('id') id: string,
@@ -157,7 +157,7 @@ export class LocationsController {
   @ApiOkResponse({ type: Boolean })
   @ApiParam({ name: 'id', description: 'Location UUID' })
   @HttpCode(HttpStatus.OK)
-  @Roles(ERole.OrgAdmin, ERole.OrgManager, ERole.SuperAdmin, ERole.StoreManager)
+  @Roles(ERole.OrgAdmin, ERole.SuperAdmin)
   @Delete(':id/image')
   public async removeImage(@Param('id') id: string, @CurrentUser() user: AuthenticatedUser): Promise<boolean> {
     const existing = await this.mediator.execute<GetLocationQuery, Location>(Object.assign(new GetLocationQuery(), { id }));
