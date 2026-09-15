@@ -13,7 +13,7 @@ const PRODUCT_SEED_CREATED_BY_ID = "00000000-0000-4000-8000-000000000002";
 @Injectable()
 export class ProductsSeed extends BaseSeed<ProductEntity> {
   public get version(): number {
-    return 2;
+    return 3;
   }
 
   public get seedingData(): Partial<ProductEntity>[] {

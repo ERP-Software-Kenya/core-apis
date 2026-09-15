@@ -13,6 +13,7 @@ import { VehicleBrandsSeed } from "./vehicle-brands.seed";
 import { VehicleTypesSeed } from "./vehicle-types.seed";
 import { ProductsSeed } from "./products.seed";
 import { CategoriesSeed } from "./categories.seed";
+import { DefaultOrganizationSeed } from "./default-organization.seed";
 
 /**
  * Orchestrates all seeds in strict dependency order.
@@ -37,10 +38,12 @@ export class SeedingService {
     private readonly vehicleTypesSeed: VehicleTypesSeed,
     private readonly categoriesSeed: CategoriesSeed,
     private readonly productsSeed: ProductsSeed,
+    private readonly defaultOrganizationSeed: DefaultOrganizationSeed,
   ) {}
 
   public async runAsync(): Promise<void> {
     this.logger.info("Applying seeds...");
+    await this.defaultOrganizationSeed.runAsync();
     await this.refCurrenciesSeed.runAsync();
     await this.refLanguagesSeed.runAsync();
     await this.refCountriesSeed.runAsync();

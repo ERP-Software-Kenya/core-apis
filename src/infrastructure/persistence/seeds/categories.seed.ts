@@ -12,7 +12,7 @@ const CATEGORY_SEED_ORGANIZATION_ID = "00000000-0000-4000-8000-000000000001";
 @Injectable()
 export class CategoriesSeed extends BaseSeed<CategoryEntity> {
   public get version(): number {
-    return 2;
+    return 3;
   }
 
   public get seedingData(): Partial<CategoryEntity>[] {
