@@ -15,6 +15,7 @@ export class CreateBillItemCommand {
   @AutoMap() public unitPrice: number;
   @AutoMap() public taxRate?: number;
   @AutoMap() public discountAmount?: number;
+  @AutoMap() public locationId?: string;
 }
 
 export class CreateBillCommand extends CommandBase {

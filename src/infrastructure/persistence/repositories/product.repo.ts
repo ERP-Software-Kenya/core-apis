@@ -3,7 +3,7 @@ import { InjectMapper } from '@automapper/nestjs';
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { InjectPinoLogger, PinoLogger } from 'nestjs-pino';
-import { Repository } from 'typeorm';
+import { FindManyOptions, FindOptionsWhere, ILike, Repository } from 'typeorm';
 import { BaseRepo } from '../../../common';
 import { Filter, PageableFilter } from '../../../common';
 import { ProductEntity } from '../entities';
@@ -22,5 +22,25 @@ export class ProductRepo extends BaseRepo<ProductEntity, Product, string, Pageab
 
   public override get idColumnName(): keyof ProductEntity {
     return 'id';
+  }
+
+  protected override modifyFindOption(
+    findOpts: FindManyOptions<ProductEntity>,
+    filterObj: Filter<ProductFilter> | PageableFilter<ProductFilter>,
+  ): void {
+    const searchTerm = (filterObj as ProductFilter).search;
+    if (!searchTerm) return;
+
+    const where = findOpts.where as Record<string, unknown>;
+    if (!where || Array.isArray(where)) return;
+
+    // Remove the virtual 'search' field BaseRepo added (it's not a real column)
+    delete where.search;
+
+    // OR across name and sku, preserving all other conditions (e.g. organizationId)
+    findOpts.where = [
+      { ...where, name: ILike(`%${searchTerm}%`) },
+      { ...where, sku: ILike(`%${searchTerm}%`) },
+    ] as FindOptionsWhere<ProductEntity>[];
   }
 }

@@ -9,6 +9,7 @@ import { ProductEntity } from './product.entity';
 import { PurchaseItemEntity } from './purchase-item.entity';
 import { PurchaseItemAllocationEntity } from './purchase-item-allocation.entity';
 import { PurchaseOrderEntity } from './purchase-order.entity';
+import { PurchaseOrderPaymentEntity } from './purchase-order-payment.entity';
 import { RoleEntity } from './role.entity';
 import { StockMovementEntity } from './stock-movement.entity';
 import { SupplierEntity } from './supplier.entity';
@@ -21,6 +22,10 @@ import { OrderItemEntity } from './order-item.entity';
 import { InvoiceEntity } from './invoice.entity';
 import { BillEntity } from './bill.entity';
 import { BillItemEntity } from './bill-item.entity';
+import { SalesReturnEntity } from './sales-return.entity';
+import { SalesReturnItemEntity } from './sales-return-item.entity';
+import { PurchaseReturnEntity } from './purchase-return.entity';
+import { PurchaseReturnItemEntity } from './purchase-return-item.entity';
 import { PaymentTransactionEntity } from './payment-transaction.entity';
 import { ExpenseEntity } from './expense.entity';
 import { ItemReturnEntity } from './item-return.entity';
@@ -97,6 +102,7 @@ export * from './product.entity';
 export * from './purchase-item.entity';
 export * from './purchase-item-allocation.entity';
 export * from './purchase-order.entity';
+export * from './purchase-order-payment.entity';
 export * from './role.entity';
 export * from './stock-movement.entity';
 export * from './supplier.entity';
@@ -109,6 +115,10 @@ export * from './order-item.entity';
 export * from './invoice.entity';
 export * from './bill.entity';
 export * from './bill-item.entity';
+export * from './sales-return.entity';
+export * from './sales-return-item.entity';
+export * from './purchase-return.entity';
+export * from './purchase-return-item.entity';
 export * from './numeric.transformer';
 export * from './payment-transaction.entity';
 export * from './expense.entity';
@@ -184,6 +194,7 @@ export default [
   PurchaseItemEntity,
   PurchaseItemAllocationEntity,
   PurchaseOrderEntity,
+  PurchaseOrderPaymentEntity,
   RoleEntity,
   StockMovementEntity,
   SupplierEntity,
@@ -196,6 +207,10 @@ export default [
   InvoiceEntity,
   BillEntity,
   BillItemEntity,
+  SalesReturnEntity,
+  SalesReturnItemEntity,
+  PurchaseReturnEntity,
+  PurchaseReturnItemEntity,
   PaymentTransactionEntity,
   ExpenseEntity,
   ItemReturnEntity,

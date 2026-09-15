@@ -60,17 +60,24 @@ export class PdfExportService implements IPdfExportService {
       const page = await browser.newPage();
       await page.setContent(html, { waitUntil: 'load' });
 
-      const pdfBuffer = await page.pdf({
-        format: options?.format ?? 'A4',
-        landscape: options?.landscape ?? false,
-        printBackground: options?.printBackground ?? true,
-        margin: options?.margin ?? {
-          top: '20mm',
-          right: '15mm',
-          bottom: '20mm',
-          left: '15mm',
-        },
-      });
+      const pdfBuffer = options?.width
+        ? await page.pdf({
+            width: options.width,
+            height: await this.measureContentHeight(page),
+            printBackground: options?.printBackground ?? true,
+            margin: options?.margin ?? { top: '0', right: '0', bottom: '0', left: '0' },
+          })
+        : await page.pdf({
+            format: options?.format ?? 'A4',
+            landscape: options?.landscape ?? false,
+            printBackground: options?.printBackground ?? true,
+            margin: options?.margin ?? {
+              top: '20mm',
+              right: '15mm',
+              bottom: '20mm',
+              left: '15mm',
+            },
+          });
 
       return Buffer.from(pdfBuffer);
     } catch (err) {
@@ -80,5 +87,13 @@ export class PdfExportService implements IPdfExportService {
     } finally {
       if (browser) await browser.close();
     }
+  }
+
+  /** Receipt-style PDFs have no fixed page length — size the page to the rendered content. */
+  private async measureContentHeight(page: import('puppeteer').Page): Promise<string> {
+    const scrollHeightPx = await page.evaluate(() => document.documentElement.scrollHeight);
+    const PX_PER_MM = 96 / 25.4;
+    const heightMm = Math.ceil(scrollHeightPx / PX_PER_MM) + 4;
+    return `${heightMm}mm`;
   }
 }
