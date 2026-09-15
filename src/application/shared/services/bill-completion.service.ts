@@ -174,9 +174,10 @@ export class BillCompletionService {
 
   private async deductOfficialStock(bill: Bill, items: BillItem[], performedById: string, manager: EntityManager): Promise<void> {
     for (const item of items) {
+      const itemLocationId = item.locationId ?? bill.locationId;
       const inv = await this.inventoryRepo.findByOrgLocationProductAsync(
         bill.organizationId,
-        bill.locationId,
+        itemLocationId,
         item.productId,
         manager,
       );
@@ -185,7 +186,7 @@ export class BillCompletionService {
       const updated = await this.inventoryRepo.deductStockAsync(inv.id, Number(item.quantity), manager);
       const movement = Object.assign(new StockMovementInput(), {
         inventoryId: inv.id,
-        locationId: bill.locationId,
+        locationId: itemLocationId,
         productId: item.productId,
         performedById,
         referenceId: bill.id,
@@ -208,9 +209,10 @@ export class BillCompletionService {
     manager: EntityManager,
   ): Promise<void> {
     for (const item of items) {
+      const itemLocationId = item.locationId ?? bill.locationId;
       const unpublished = await this.unpublishedStockRepo.findByOrgLocationProductAsync(
         bill.organizationId,
-        bill.locationId,
+        itemLocationId,
         item.productId,
         manager,
       );
@@ -222,7 +224,7 @@ export class BillCompletionService {
       await this.unpublishedMovementRepo.createWithManagerAsync(
         Object.assign(new UnpublishedStockMovementInput(), {
           unpublishedStockId: unpublished.id,
-          locationId:         bill.locationId,
+          locationId:         itemLocationId,
           productId:          item.productId,
           performedById,
           movementType:       EUnpublishedMovementType.StockOut,

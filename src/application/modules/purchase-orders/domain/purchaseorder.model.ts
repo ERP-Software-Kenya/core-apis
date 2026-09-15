@@ -11,6 +11,7 @@ export class PurchaseOrder {
   @AutoMap(() => Date) public expectedAt?: Date;
   @AutoMap(() => Date) public receivedAt?: Date;
   @AutoMap() public totalAmount: number;
+  @AutoMap() public amountPaid: number;
   @AutoMap() public notes?: string;
   @AutoMap(() => Date) public createdAt?: Date;
   @AutoMap(() => Date) public updatedAt?: Date;
