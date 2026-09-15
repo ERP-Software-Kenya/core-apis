@@ -31,6 +31,7 @@ export class AddBillItemCommandHandler implements ICommandHandler<AddBillItemCom
     item.unitPrice      = command.unitPrice;
     item.taxRate        = command.taxRate;
     item.discountAmount = command.discountAmount;
+    item.locationId     = command.locationId;
     computeBillItemTotals(item);
 
     const created = await this.itemRepo.createAsync(item);
