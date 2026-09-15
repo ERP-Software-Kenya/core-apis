@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Sales Invoice {{billNumber}}</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+      color: #1a1a1a;
+      font-size: 12px;
+      line-height: 1.5;
+    }
+    .page { padding: 8px 4px; }
+    .brand { display: flex; gap: 12px; align-items: center; border-bottom: 2px solid #1a1a1a; padding-bottom: 10px; }
+    .brand img { height: 48px; }
+    .brand h1 { font-size: 20px; font-weight: 800; text-transform: uppercase; }
+    .brand .meta { color: #444; margin-top: 3px; font-size: 11px; }
+    .title { text-align: center; font-size: 16px; letter-spacing: 0.1em; font-weight: 800; margin: 14px 0; text-decoration: underline; }
+    .head-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 14px; }
+    .head-grid .label { color: #555; font-size: 10px; text-transform: uppercase; }
+    .head-right div { display: flex; justify-content: space-between; padding: 2px 0; }
+    .head-right .label { min-width: 120px; }
+    table { width: 100%; border-collapse: collapse; margin-bottom: 14px; }
+    th { border: 1px solid #1a1a1a; background: #eee; text-align: left; padding: 6px; font-size: 10px; text-transform: uppercase; }
+    th.num, td.num { text-align: right; }
+    td { border: 1px solid #ccc; padding: 6px; }
+    .totals { display: flex; justify-content: flex-end; margin-bottom: 20px; }
+    .totals table { width: 260px; }
+    .totals td { border: none; padding: 3px 4px; }
+    .totals .grand td { border-top: 1px solid #1a1a1a; font-weight: 800; font-size: 13px; }
+    .terms { font-size: 10px; color: #333; margin-bottom: 24px; }
+    .terms .terms-title { font-weight: 700; margin-bottom: 4px; }
+    .terms ol { padding-left: 16px; }
+    .terms li { margin-bottom: 2px; }
+    .sign-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-top: 30px; }
+    .sign-box { border-top: 1px solid #1a1a1a; padding-top: 4px; font-size: 10px; text-align: center; }
+    .sign-name { font-size: 12px; font-weight: 700; margin-bottom: 20px; }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <div class="brand">
+      {{#if logoUrl}}<img src="{{logoUrl}}" alt="" />{{/if}}
+      <div>
+        <h1>{{orgName}}</h1>
+        <div class="meta">
+          {{#if orgAddress}}{{orgAddress}}{{/if}}
+          {{#if orgPhone}} · Tel: {{orgPhone}}{{/if}}
+          {{#if orgEmail}} · {{orgEmail}}{{/if}}
+        </div>
+      </div>
+    </div>
+
+    <div class="title">Sales Invoice</div>
+
+    <div class="head-grid">
+      <div>
+        <div class="label">Invoice To</div>
+        <div><strong>{{customerName}}</strong></div>
+        {{#if customerPhone}}<div>{{customerPhone}}</div>{{/if}}
+      </div>
+      <div class="head-right">
+        <div><span class="label">Doc Date</span><span>{{billedAt}}</span></div>
+        <div><span class="label">Document No.</span><span>{{billNumber}}</span></div>
+        {{#if creditTerms}}<div><span class="label">Credit Terms</span><span>{{creditTerms}}</span></div>{{/if}}
+      </div>
+    </div>
+
+    <table>
+      <thead>
+        <tr>
+          <th>No</th>
+          <th>Product Name</th>
+          <th class="num">Quantity</th>
+          <th class="num">Price</th>
+          <th class="num">Disc</th>
+          <th class="num">VAT</th>
+          <th class="num">Amount</th>
+        </tr>
+      </thead>
+      <tbody>
+        {{#each items}}
+          <tr>
+            <td>{{this.no}}</td>
+            <td>{{this.name}}</td>
+            <td class="num">{{this.quantity}}</td>
+            <td class="num">{{this.price}}</td>
+            <td class="num">{{this.discount}}</td>
+            <td class="num">{{this.taxRate}}%</td>
+            <td class="num">{{this.amount}}</td>
+          </tr>
+        {{else}}
+          <tr><td colspan="7" style="text-align:center;color:#666;">No line items on this bill.</td></tr>
+        {{/each}}
+      </tbody>
+    </table>
+
+    <div class="totals">
+      <table>
+        <tr><td>Subtotal</td><td class="num">{{subtotal}}</td></tr>
+        <tr><td>VAT</td><td class="num">{{taxAmount}}</td></tr>
+        <tr><td>Discount</td><td class="num">{{discountAmount}}</td></tr>
+        <tr class="grand"><td>Total</td><td class="num">{{totalAmount}}</td></tr>
+      </table>
+    </div>
+
+    <div class="terms">
+      <div class="terms-title">Terms &amp; Conditions of Sale</div>
+      <ol>
+        <li>Payment terms are strictly as per credit terms from the date of invoice.</li>
+        <li>All goods sold remain property of {{orgName}} until fully paid for.</li>
+        <li>Goods once sold are not returnable nor exchangeable.</li>
+        <li>Discrepancies should be notified within 3 days from receipt of goods.</li>
+      </ol>
+    </div>
+
+    <div class="sign-grid">
+      <div class="sign-box">
+        {{#if authorizedByName}}<div class="sign-name">{{authorizedByName}}</div>{{/if}}
+        Authorized By
+      </div>
+      <div class="sign-box">
+        Goods Received By &amp; ID No / Company Stamp
+      </div>
+    </div>
+  </div>
+</body>
+</html>
