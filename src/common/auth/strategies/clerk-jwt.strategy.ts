@@ -5,12 +5,29 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { createClerkClient } from '@clerk/backend';
 import { passportJwtSecret } from 'jwks-rsa';
 import { InjectPinoLogger, PinoLogger } from 'nestjs-pino';
-import { ExtractJwt, Strategy } from 'passport-jwt';
+import { ExtractJwt, SecretOrKeyProvider, Strategy } from 'passport-jwt';
 import { Repository } from 'typeorm';
 import { ICoreApiConfig } from '../../../configuration';
 import { UserEntity, UserRoleEntity, OrgMemberEntity, LocationEntity, BranchEntity } from '../../../infrastructure/persistence/entities';
 import { CLERK_STRATEGY } from '../constants';
 import { AuthenticatedUser, ClerkJwtPayload } from '../types';
+
+// Constrain JWKS fetches to known Clerk domains — prevents SSRF via a crafted iss claim.
+const CLERK_ISSUER_PATTERN = /^https:\/\/[a-zA-Z0-9-]+\.(clerk\.accounts\.dev|clerkstage\.dev)$/;
+
+function extractIssuer(rawToken: string): string | null {
+  try {
+    const segment = rawToken.split('.')[1];
+    if (!segment) return null;
+    const parsed: unknown = JSON.parse(Buffer.from(segment, 'base64url').toString('utf8'));
+    if (typeof parsed !== 'object' || parsed === null) return null;
+    const iss = (parsed as Record<string, unknown>)['iss'];
+    if (typeof iss !== 'string' || !CLERK_ISSUER_PATTERN.test(iss)) return null;
+    return iss;
+  } catch {
+    return null;
+  }
+}
 
 @Injectable()
 export class ClerkJwtStrategy extends PassportStrategy(Strategy, CLERK_STRATEGY) {
@@ -26,13 +43,29 @@ export class ClerkJwtStrategy extends PassportStrategy(Strategy, CLERK_STRATEGY)
     @InjectPinoLogger(ClerkJwtStrategy.name) private readonly logger: PinoLogger,
   ) {
     const clerkCfg = configService.get<ICoreApiConfig['clerk']>('clerk');
+
+    const jwksProviders = new Map<string, SecretOrKeyProvider>();
+    const getProvider = (iss: string): SecretOrKeyProvider => {
+      if (!jwksProviders.has(iss)) {
+        jwksProviders.set(iss, passportJwtSecret({
+          cache: true,
+          rateLimit: true,
+          jwksRequestsPerMinute: 10,
+          jwksUri: `${iss}/.well-known/jwks.json`,
+        }));
+      }
+      return jwksProviders.get(iss)!;
+    };
+
     super({
-      secretOrKeyProvider: passportJwtSecret({
-        cache: true,
-        rateLimit: true,
-        jwksRequestsPerMinute: 10,
-        jwksUri: clerkCfg.jwksUrl,
-      }),
+      secretOrKeyProvider: (req, rawToken: string, done): void => {
+        const iss = extractIssuer(rawToken);
+        if (!iss) {
+          done(null, undefined);
+          return;
+        }
+        getProvider(iss)(req, rawToken, done);
+      },
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
       algorithms: ['RS256'],
       ignoreExpiration: false,
