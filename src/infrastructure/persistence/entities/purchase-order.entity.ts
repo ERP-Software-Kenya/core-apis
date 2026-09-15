@@ -10,6 +10,7 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 import { CORE_SCHEMA, ECoreTableName } from './e-core-table-name';
+import { numericTransformer } from './numeric.transformer';
 import { OrganizationEntity } from './organization.entity';
 import { SupplierEntity } from './supplier.entity';
 import { UserEntity } from './user.entity';
@@ -65,8 +66,12 @@ export class PurchaseOrderEntity {
   public receivedAt?: Date;
 
   @AutoMap()
-  @Column({ type: 'decimal', precision: 18, scale: 4, default: 0 })
+  @Column({ type: 'decimal', precision: 18, scale: 4, default: 0, transformer: numericTransformer })
   public totalAmount: number;
+
+  @AutoMap()
+  @Column({ name: 'amount_paid', type: 'decimal', precision: 18, scale: 4, default: 0, transformer: numericTransformer })
+  public amountPaid: number;
 
   @AutoMap()
   @Column({ type: 'text', nullable: true })

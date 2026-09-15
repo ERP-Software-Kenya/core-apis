@@ -6,9 +6,9 @@ import { InjectPinoLogger, PinoLogger } from 'nestjs-pino';
 import { AuthenticatedUser, ClerkAuthGuard, CqrsMediator, CurrentUser, IPageable, Roles, RolesGuard, assertOrgOwnership } from '../../../common';
 import { ERole } from '../../../infrastructure';
 import { CreateSupplierCommand, DeleteSupplierCommand, UpdateSupplierCommand } from './commands';
-import { Supplier } from './domain';
-import { CreateSupplierRequest, SearchSuppliersRequest, ListSuppliersRequest, SupplierResponse, SuppliersPagedResponse, UpdateSupplierRequest } from './models';
-import { GetSupplierQuery, ListSuppliersQuery, SearchSuppliersQuery } from './queries';
+import { Supplier, SupplierAccount } from './domain';
+import { CreateSupplierRequest, SearchSuppliersRequest, ListSuppliersRequest, SupplierAccountResponse, SupplierResponse, SuppliersPagedResponse, UpdateSupplierRequest } from './models';
+import { GetSupplierAccountQuery, GetSupplierQuery, ListSuppliersQuery, SearchSuppliersQuery } from './queries';
 
 @ApiBearerAuth()
 @ApiTags('Suppliers')
@@ -66,6 +66,19 @@ export class SuppliersController {
     const result = await this.mediator.execute<GetSupplierQuery, Supplier>(query);
     assertOrgOwnership(user, result.organizationId, 'Supplier');
     return this.mapper.map(result, Supplier, SupplierResponse);
+  }
+
+  @ApiOperation({ summary: 'Get supplier account summary with per-PO payment breakdown' })
+  @ApiOkResponse({ type: SupplierAccountResponse })
+  @ApiParam({ name: 'id', description: 'Supplier UUID' })
+  @HttpCode(HttpStatus.OK)
+  @Get(':id/account')
+  public async getAccount(@Param('id') id: string, @CurrentUser() user: AuthenticatedUser): Promise<SupplierAccountResponse> {
+    const query            = new GetSupplierAccountQuery();
+    query.supplierId       = id;
+    query.organizationId   = user.organizationId;
+    const result           = await this.mediator.execute<GetSupplierAccountQuery, SupplierAccount>(query);
+    return this.mapper.map(result, SupplierAccount, SupplierAccountResponse);
   }
 
   @ApiOperation({ summary: 'Create a new supplier' })

@@ -12,6 +12,8 @@ export class PurchaseOrderResponse {
   @ApiPropertyOptional() @AutoMap(() => Date) public expectedAt?: Date;
   @ApiPropertyOptional() @AutoMap(() => Date) public receivedAt?: Date;
   @ApiProperty() @AutoMap() public totalAmount: number;
+  @ApiProperty() @AutoMap() public amountPaid: number;
+  @ApiPropertyOptional() public paymentStatus?: string;
   @ApiPropertyOptional() @AutoMap() public notes?: string;
   @ApiPropertyOptional() @AutoMap(() => Date) public createdAt?: Date;
   @ApiPropertyOptional() @AutoMap(() => Date) public updatedAt?: Date;
