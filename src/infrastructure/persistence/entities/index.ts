@@ -21,6 +21,10 @@ import { OrderItemEntity } from './order-item.entity';
 import { InvoiceEntity } from './invoice.entity';
 import { BillEntity } from './bill.entity';
 import { BillItemEntity } from './bill-item.entity';
+import { SalesReturnEntity } from './sales-return.entity';
+import { SalesReturnItemEntity } from './sales-return-item.entity';
+import { PurchaseReturnEntity } from './purchase-return.entity';
+import { PurchaseReturnItemEntity } from './purchase-return-item.entity';
 import { PaymentTransactionEntity } from './payment-transaction.entity';
 import { ExpenseEntity } from './expense.entity';
 import { ItemReturnEntity } from './item-return.entity';
@@ -108,6 +112,10 @@ export * from './order-item.entity';
 export * from './invoice.entity';
 export * from './bill.entity';
 export * from './bill-item.entity';
+export * from './sales-return.entity';
+export * from './sales-return-item.entity';
+export * from './purchase-return.entity';
+export * from './purchase-return-item.entity';
 export * from './numeric.transformer';
 export * from './payment-transaction.entity';
 export * from './expense.entity';
@@ -194,6 +202,10 @@ export default [
   InvoiceEntity,
   BillEntity,
   BillItemEntity,
+  SalesReturnEntity,
+  SalesReturnItemEntity,
+  PurchaseReturnEntity,
+  PurchaseReturnItemEntity,
   PaymentTransactionEntity,
   ExpenseEntity,
   ItemReturnEntity,
