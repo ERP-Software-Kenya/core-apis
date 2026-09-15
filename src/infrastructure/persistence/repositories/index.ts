@@ -6,6 +6,7 @@ export * from './inventory.repo';
 export * from './organization.repo';
 export * from './product.repo';
 export * from './purchase-item-allocation.repo';
+export * from './purchase-order-payment.repo';
 export * from './purchaseorder.repo';
 export * from './supplier.repo';
 export * from './activity-log.repo';

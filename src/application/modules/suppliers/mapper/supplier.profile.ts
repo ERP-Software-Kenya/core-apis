@@ -2,8 +2,8 @@ import { createMap, Mapper } from '@automapper/core';
 import { AutomapperProfile, InjectMapper } from '@automapper/nestjs';
 import { Injectable } from '@nestjs/common';
 import { SupplierEntity } from '../../../../infrastructure/persistence/entities';
-import { Supplier } from '../domain';
-import { CreateSupplierRequest, SupplierResponse, UpdateSupplierRequest, ListSuppliersRequest, SearchSuppliersRequest } from '../models';
+import { Supplier, SupplierAccount, SupplierAccountPurchaseOrder } from '../domain';
+import { CreateSupplierRequest, SupplierAccountPurchaseOrderResponse, SupplierAccountResponse, SupplierResponse, UpdateSupplierRequest, ListSuppliersRequest, SearchSuppliersRequest } from '../models';
 import { CreateSupplierCommand, UpdateSupplierCommand } from '../commands';
 import { ListSuppliersQuery, SearchSuppliersQuery } from '../queries';
 
@@ -22,6 +22,8 @@ export class SupplierProfile extends AutomapperProfile {
       createMap(mapper, ListSuppliersRequest, ListSuppliersQuery);
       createMap(mapper, SearchSuppliersRequest, SearchSuppliersQuery);
       createMap(mapper, Supplier, SupplierResponse);
+      createMap(mapper, SupplierAccountPurchaseOrder, SupplierAccountPurchaseOrderResponse);
+      createMap(mapper, SupplierAccount, SupplierAccountResponse);
     };
   }
 }

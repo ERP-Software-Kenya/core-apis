@@ -21,20 +21,23 @@ import {
   CreatePurchaseOrderCommand,
   DeletePurchaseOrderCommand,
   ReceivePurchaseOrderCommand,
+  RecordPurchaseOrderPaymentCommand,
   UpdatePurchaseOrderCommand,
 } from './commands';
-import { PurchaseOrder } from './domain';
+import { PurchaseOrder, PurchaseOrderPayment } from './domain';
 import {
   AllocatePurchaseOrderRequest,
   CreatePurchaseOrderRequest,
   ListPurchaseOrdersRequest,
+  PurchaseOrderPaymentResponse,
   PurchaseOrderResponse,
   PurchaseOrdersPagedResponse,
   ReceivePurchaseOrderRequest,
+  RecordPurchaseOrderPaymentRequest,
   SearchPurchaseOrdersRequest,
   UpdatePurchaseOrderRequest,
 } from './models';
-import { ExportPurchaseOrderQuery, GetPurchaseOrderQuery, ListPurchaseOrdersQuery, SearchPurchaseOrdersQuery } from './queries';
+import { ExportPurchaseOrderQuery, GetPurchaseOrderQuery, ListPurchaseOrderPaymentsQuery, ListPurchaseOrdersQuery, SearchPurchaseOrdersQuery } from './queries';
 
 @ApiBearerAuth()
 @ApiTags('PurchaseOrders')
@@ -187,6 +190,44 @@ export class PurchaseOrdersController {
     command.notes           = body.notes;
     const result            = await this.mediator.execute<AllocatePurchaseOrderCommand, PurchaseOrder>(command);
     return this.mapper.map(result, PurchaseOrder, PurchaseOrderResponse);
+  }
+
+  @ApiOperation({ summary: 'Record a payment against a purchase order' })
+  @ApiOkResponse({ type: PurchaseOrderResponse })
+  @ApiParam({ name: 'id', description: 'Purchase Order UUID' })
+  @HttpCode(HttpStatus.OK)
+  @Post(':id/payments')
+  public async recordPayment(
+    @Param('id') id: string,
+    @CurrentUser() user: AuthenticatedUser,
+    @Body() body: RecordPurchaseOrderPaymentRequest,
+  ): Promise<PurchaseOrderResponse> {
+    const command             = new RecordPurchaseOrderPaymentCommand();
+    command.purchaseOrderId   = id;
+    command.organizationId    = user.organizationId;
+    command.amount            = body.amount;
+    command.paymentMethod     = body.paymentMethod;
+    command.paidAt            = body.paidAt ?? new Date();
+    command.note              = body.note;
+    command.performedById     = user.dbUserId;
+    const result              = await this.mediator.execute<RecordPurchaseOrderPaymentCommand, PurchaseOrder>(command);
+    return this.mapper.map(result, PurchaseOrder, PurchaseOrderResponse);
+  }
+
+  @ApiOperation({ summary: 'List all payments for a purchase order' })
+  @ApiOkResponse({ type: [PurchaseOrderPaymentResponse] })
+  @ApiParam({ name: 'id', description: 'Purchase Order UUID' })
+  @HttpCode(HttpStatus.OK)
+  @Get(':id/payments')
+  public async listPayments(
+    @Param('id') id: string,
+    @CurrentUser() user: AuthenticatedUser,
+  ): Promise<PurchaseOrderPaymentResponse[]> {
+    const query             = new ListPurchaseOrderPaymentsQuery();
+    query.purchaseOrderId   = id;
+    query.organizationId    = user.organizationId;
+    const result            = await this.mediator.execute<ListPurchaseOrderPaymentsQuery, PurchaseOrderPayment[]>(query);
+    return this.mapper.mapArray(result, PurchaseOrderPayment, PurchaseOrderPaymentResponse);
   }
 
   @ApiOperation({ summary: 'Delete a purchase order' })

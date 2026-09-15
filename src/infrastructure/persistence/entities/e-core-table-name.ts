@@ -31,6 +31,7 @@ export enum ECoreTableName {
   StockTransferItems    = 'stock_transfer_items',
   StockTransferRequests = 'stock_transfer_requests',
   PurchaseOrders            = 'purchase_orders',
+  PurchaseOrderPayments     = 'purchase_order_payments',
   PurchaseItems             = 'purchase_items',
   PurchaseItemAllocations   = 'purchase_item_allocations',
   Customers             = 'customers',
