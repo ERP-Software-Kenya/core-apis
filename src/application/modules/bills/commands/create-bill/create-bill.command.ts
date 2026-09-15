@@ -2,6 +2,7 @@ import { AutoMap } from '@automapper/classes';
 import { CommandBase } from '../../../../../common';
 import {
   ECustomerType,
+  EPaymentMethod,
   EPaymentTiming,
   ESaleType,
 } from '../../../../../infrastructure/persistence/entities';
@@ -14,6 +15,7 @@ export class CreateBillItemCommand {
   @AutoMap() public unitPrice: number;
   @AutoMap() public taxRate?: number;
   @AutoMap() public discountAmount?: number;
+  @AutoMap() public locationId?: string;
 }
 
 export class CreateBillCommand extends CommandBase {
@@ -27,6 +29,7 @@ export class CreateBillCommand extends CommandBase {
   @AutoMap() public walkInPhone?: string;
   @AutoMap() public walkInGstin?: string;
   @AutoMap() public notes?: string;
+  @AutoMap(() => String) public paymentMethod?: EPaymentMethod;
   @AutoMap(() => String) public saleType?: ESaleType;
   @AutoMap(() => String) public customerType?: ECustomerType;
   @AutoMap(() => String) public paymentTiming?: EPaymentTiming;

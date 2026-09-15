@@ -299,14 +299,14 @@ export class GetSalesSummaryHandler implements IQueryHandler<GetSalesSummaryQuer
 
     const currentParams: PeriodParams = {
       organizationId: query.organizationId,
-      from: query.from!,
-      to: query.to!,
+      from: query.from,
+      to: query.to,
       locationId: query.locationId,
     };
 
     const current = await fetchPeriodMetrics(this.dataSource, currentParams);
-    const preset = (query.period ?? 'month') as AnalyticsPeriodPreset;
-    const previousWindow = resolvePreviousAnalyticsPeriod(preset, query.from!, query.to!);
+    const preset = (query.period ?? 'month');
+    const previousWindow = resolvePreviousAnalyticsPeriod(preset, query.from, query.to);
     const previousParams: PeriodParams = {
       organizationId: query.organizationId,
       from: previousWindow.from,

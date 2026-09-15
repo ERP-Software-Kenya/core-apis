@@ -6,5 +6,4 @@ export class UserRoleResponse {
   @ApiProperty() @AutoMap() public userId: string;
   @ApiProperty() @AutoMap() public roleId: string;
   @ApiPropertyOptional() @AutoMap() public locationId?: string;
-  @ApiPropertyOptional() @AutoMap() public branchId?: string;
 }

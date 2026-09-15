@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Receipt {{billNumber}}</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Courier New', Courier, monospace;
+      font-size: 11px;
+      line-height: 1.4;
+      color: #000;
+      width: 76mm;
+      padding: 2mm 2mm 6mm;
+    }
+    .center { text-align: center; }
+    .bold { font-weight: 700; }
+    .org-name { font-size: 14px; font-weight: 700; text-transform: uppercase; }
+    .org-line { font-size: 10px; }
+    .rule { border: none; border-top: 1px dashed #000; margin: 6px 0; }
+    .ref-box { border: 1px solid #000; display: inline-block; padding: 2px 8px; margin: 6px 0; font-weight: 700; }
+    .meta-line { margin: 2px 0; }
+    table { width: 100%; border-collapse: collapse; margin: 6px 0; font-size: 10px; }
+    th { text-align: left; border-bottom: 1px solid #000; padding: 2px 2px 4px; font-weight: 700; }
+    th.num, td.num { text-align: right; }
+    td { padding: 3px 2px; vertical-align: top; }
+    .totals { margin-top: 6px; }
+    .totals-row { display: flex; justify-content: space-between; padding: 2px 0; }
+    .totals-row.grand { font-weight: 700; border-top: 1px solid #000; margin-top: 4px; padding-top: 4px; }
+    .footer { margin-top: 10px; font-size: 10px; }
+    .ref-number { margin-top: 10px; font-size: 10px; letter-spacing: 1px; }
+  </style>
+</head>
+<body>
+  <div class="center">
+    <div class="org-name">{{orgName}}</div>
+    {{#if orgAddress}}<div class="org-line">{{orgAddress}}</div>{{/if}}
+    {{#if orgPhone}}<div class="org-line">TEL: {{orgPhone}}</div>{{/if}}
+  </div>
+
+  <hr class="rule" />
+
+  <div class="center"><span class="ref-box">Sales Receipt #{{billNumber}}</span></div>
+
+  {{#if servedByName}}<div class="meta-line">Served By: {{servedByName}}</div>{{/if}}
+  <div class="meta-line">{{billedAt}}</div>
+
+  <hr class="rule" />
+
+  <table>
+    <thead>
+      <tr>
+        <th>DESCRIPTION</th>
+        <th class="num">QTY</th>
+        <th class="num">RATE</th>
+        <th class="num">AMOUNT</th>
+      </tr>
+    </thead>
+    <tbody>
+      {{#each items}}
+        <tr>
+          <td>{{this.name}}</td>
+          <td class="num">{{this.quantity}}</td>
+          <td class="num">{{this.rate}}</td>
+          <td class="num">{{this.amount}}</td>
+        </tr>
+      {{/each}}
+    </tbody>
+  </table>
+
+  <hr class="rule" />
+
+  <div class="totals">
+    <div class="totals-row"><span>Subtotal</span><span>{{subtotal}}</span></div>
+    <div class="totals-row grand"><span>RECEIPT TOTAL:</span><span>{{totalAmount}}</span></div>
+  </div>
+
+  {{#unless isCash}}
+    <div class="meta-line" style="margin-top:6px;">Payment: {{paymentMethod}}</div>
+  {{/unless}}
+
+  <hr class="rule" />
+
+  <div class="center footer bold">GOODS ONCE SOLD CANNOT BE RETURNED!</div>
+  <div class="center ref-number">{{billNumber}}</div>
+</body>
+</html>

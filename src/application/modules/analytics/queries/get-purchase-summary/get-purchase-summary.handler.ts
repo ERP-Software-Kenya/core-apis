@@ -28,9 +28,9 @@ export class GetPurchaseSummaryHandler implements IQueryHandler<GetPurchaseSumma
 
     const sql = `
       SELECT
-        COALESCE(SUM(CASE WHEN status = 'received' ${hasRange ? `AND created_at >= $2 AND created_at <= $3` : `AND DATE_TRUNC('month', created_at) = DATE_TRUNC('month', NOW())`} THEN total_amount ELSE 0 END), 0) AS "spendInPeriod",
+        COALESCE(SUM(CASE WHEN status IN ('received', 'partially_allocated', 'allocated') ${hasRange ? `AND created_at >= $2 AND created_at <= $3` : `AND DATE_TRUNC('month', created_at) = DATE_TRUNC('month', NOW())`} THEN total_amount ELSE 0 END), 0) AS "spendInPeriod",
         COUNT(CASE WHEN status IN ('ordered', 'partially_received') THEN 1 END) AS "outstandingPos",
-        COALESCE(AVG(CASE WHEN status = 'received' THEN total_amount END), 0) AS "avgPoValue",
+        COALESCE(AVG(CASE WHEN status IN ('received', 'partially_allocated', 'allocated') THEN total_amount END), 0) AS "avgPoValue",
         COUNT(DISTINCT supplier_id) AS "supplierCount"
       FROM core.purchase_orders
       WHERE organization_id = $1

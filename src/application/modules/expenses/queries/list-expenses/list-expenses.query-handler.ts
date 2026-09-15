@@ -20,14 +20,11 @@ export class ListExpensesQueryHandler implements IQueryHandler<ListExpensesQuery
 
   public async execute(query: ListExpensesQuery): Promise<ExpenseResponse[]> {
     this.logger.info(`Executing ${ListExpensesQuery.name}`);
-    let expenses = await this.repo.allAsync();
-    // ponytail: in-memory org/status filter until ExpenseRepo grows a Filter
-    if (query.organizationId) {
-      expenses = expenses.filter((expense) => expense.organizationId === query.organizationId);
-    }
-    if (query.status) {
-      expenses = expenses.filter((expense) => expense.status === query.status);
-    }
+    const expenses = await this.repo.listAsync({
+      organizationId:    query.organizationId,
+      status:            query.status,
+      submittedByUserId: query.submittedByUserId,
+    });
     return this.mapper.mapArray(expenses, Expense, ExpenseResponse);
   }
 }

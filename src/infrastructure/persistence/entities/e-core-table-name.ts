@@ -31,6 +31,7 @@ export enum ECoreTableName {
   StockTransferItems    = 'stock_transfer_items',
   StockTransferRequests = 'stock_transfer_requests',
   PurchaseOrders            = 'purchase_orders',
+  PurchaseOrderPayments     = 'purchase_order_payments',
   PurchaseItems             = 'purchase_items',
   PurchaseItemAllocations   = 'purchase_item_allocations',
   Customers             = 'customers',
@@ -40,6 +41,10 @@ export enum ECoreTableName {
   Invoices              = 'invoices',
   Bills                 = 'bills',
   BillItems             = 'bill_items',
+  SalesReturns          = 'sales_returns',
+  SalesReturnItems      = 'sales_return_items',
+  PurchaseReturns       = 'purchase_returns',
+  PurchaseReturnItems   = 'purchase_return_items',
   CustomerCreditTransactions = 'customer_credit_transactions',
   CreditApprovalRequests     = 'credit_approval_requests',
   QuickCharges               = 'quick_charges',
@@ -95,4 +100,7 @@ export enum ECoreTableName {
   // ─── Field App ───────────────────────────────────────────────────────────────
   TripStops             = 'trip_stops',
   UserDeviceTokens      = 'user_device_tokens',
+
+  // ─── CI / Deploy verification ─────────────────────────────────────────────
+  DeploymentChecks      = 'deployment_checks',
 }

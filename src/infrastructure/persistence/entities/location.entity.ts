@@ -21,6 +21,7 @@ const PK_NAME = 'PK_' + ECoreTableName.Locations;
 export enum ELocationType {
   Store     = 'store',
   Warehouse = 'warehouse',
+  Branch    = 'branch',
 }
 
 @Entity({ schema: CORE_SCHEMA, name: ECoreTableName.Locations })
@@ -34,8 +35,8 @@ export class LocationEntity {
   public organizationId: string;
 
   @AutoMap()
-  @Column({ name: 'branch_id', type: 'uuid' })
-  public branchId: string;
+  @Column({ name: 'branch_id', type: 'uuid', nullable: true })
+  public branchId?: string;
 
   @AutoMap()
   @Column({ type: 'varchar', length: 150 })
@@ -97,13 +98,13 @@ export class LocationEntity {
   public organization: OrganizationEntity;
 
   @AutoMap(() => BranchEntity)
-  @ManyToOne(() => BranchEntity, (branch) => branch.locations)
+  @ManyToOne(() => BranchEntity, (branch) => branch.locations, { nullable: true })
   @JoinColumn({
     name: 'branch_id',
     referencedColumnName: 'id',
     foreignKeyConstraintName: `FK__${ECoreTableName.Locations}__${ECoreTableName.Branches}`,
   })
-  public branch: BranchEntity;
+  public branch?: BranchEntity;
 
   @AutoMap(() => [InventoryEntity])
   @OneToMany(() => InventoryEntity, (inv) => inv.location)

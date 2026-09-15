@@ -125,6 +125,23 @@ export class InventoryRepo
     return entity ? this.mapper.map(entity, InventoryEntity, Inventory) : null;
   }
 
+  public async findOrCreateAsync(
+    organizationId: string,
+    locationId: string,
+    productId: string,
+    manager?: EntityManager,
+  ): Promise<Inventory> {
+    const run = async (mgr: EntityManager): Promise<Inventory> => {
+      let entity = await mgr.findOne(InventoryEntity, { where: { organizationId, locationId, productId } });
+      if (!entity) {
+        entity = mgr.create(InventoryEntity, { organizationId, locationId, productId, quantityOnHand: 0 });
+        await mgr.save(InventoryEntity, entity);
+      }
+      return this.mapper.map(entity, InventoryEntity, Inventory);
+    };
+    return manager ? run(manager) : this.internalRepo.manager.transaction(run);
+  }
+
   public async getLowStockAsync(organizationId: string, locationIds?: string[]): Promise<Inventory[]> {
     const qb = this.internalRepo
       .createQueryBuilder('inv')

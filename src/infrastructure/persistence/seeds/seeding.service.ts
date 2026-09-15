@@ -43,6 +43,8 @@ export class SeedingService {
     private readonly vehicleTypesSeed: VehicleTypesSeed,
     private readonly categoriesSeed: CategoriesSeed,
     private readonly productsSeed: ProductsSeed,
+    // private readonly demoOrgDataSeed: DemoOrgDataSeed,
+    // private readonly demoOrgDataSeed: DemoOrgDataSeed,
   ) {}
 
   public async runAsync(): Promise<void> {

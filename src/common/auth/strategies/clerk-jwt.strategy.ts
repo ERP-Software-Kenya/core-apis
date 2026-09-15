@@ -5,14 +5,29 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { createClerkClient } from '@clerk/backend';
 import { passportJwtSecret } from 'jwks-rsa';
 import { InjectPinoLogger, PinoLogger } from 'nestjs-pino';
-import { ExtractJwt, Strategy } from 'passport-jwt';
+import { ExtractJwt, SecretOrKeyProvider, Strategy } from 'passport-jwt';
 import { Repository } from 'typeorm';
 import { ICoreApiConfig } from '../../../configuration';
-import { UserEntity, UserRoleEntity, OrgMemberEntity, LocationEntity } from '../../../infrastructure/persistence/entities';
-import { In } from 'typeorm';
+import { UserEntity, UserRoleEntity, OrgMemberEntity, LocationEntity, BranchEntity } from '../../../infrastructure/persistence/entities';
 import { CLERK_STRATEGY } from '../constants';
 import { AuthenticatedUser, ClerkJwtPayload } from '../types';
-import { computeHasOrgWideAccess } from '../org-wide-access';
+
+// Constrain JWKS fetches to known Clerk domains — prevents SSRF via a crafted iss claim.
+const CLERK_ISSUER_PATTERN = /^https:\/\/[a-zA-Z0-9-]+\.(clerk\.accounts\.dev|clerkstage\.dev)$/;
+
+function extractIssuer(rawToken: string): string | null {
+  try {
+    const segment = rawToken.split('.')[1];
+    if (!segment) return null;
+    const parsed: unknown = JSON.parse(Buffer.from(segment, 'base64url').toString('utf8'));
+    if (typeof parsed !== 'object' || parsed === null) return null;
+    const iss = (parsed as Record<string, unknown>)['iss'];
+    if (typeof iss !== 'string' || !CLERK_ISSUER_PATTERN.test(iss)) return null;
+    return iss;
+  } catch {
+    return null;
+  }
+}
 
 @Injectable()
 export class ClerkJwtStrategy extends PassportStrategy(Strategy, CLERK_STRATEGY) {
@@ -24,16 +39,33 @@ export class ClerkJwtStrategy extends PassportStrategy(Strategy, CLERK_STRATEGY)
     @InjectRepository(UserRoleEntity) private readonly userRoleRepo: Repository<UserRoleEntity>,
     @InjectRepository(OrgMemberEntity) private readonly orgMemberRepo: Repository<OrgMemberEntity>,
     @InjectRepository(LocationEntity) private readonly locationRepo: Repository<LocationEntity>,
+    @InjectRepository(BranchEntity) private readonly branchRepo: Repository<BranchEntity>,
     @InjectPinoLogger(ClerkJwtStrategy.name) private readonly logger: PinoLogger,
   ) {
     const clerkCfg = configService.get<ICoreApiConfig['clerk']>('clerk');
+
+    const jwksProviders = new Map<string, SecretOrKeyProvider>();
+    const getProvider = (iss: string): SecretOrKeyProvider => {
+      if (!jwksProviders.has(iss)) {
+        jwksProviders.set(iss, passportJwtSecret({
+          cache: true,
+          rateLimit: true,
+          jwksRequestsPerMinute: 10,
+          jwksUri: `${iss}/.well-known/jwks.json`,
+        }));
+      }
+      return jwksProviders.get(iss)!;
+    };
+
     super({
-      secretOrKeyProvider: passportJwtSecret({
-        cache: true,
-        rateLimit: true,
-        jwksRequestsPerMinute: 10,
-        jwksUri: clerkCfg.jwksUrl,
-      }),
+      secretOrKeyProvider: (req, rawToken: string, done): void => {
+        const iss = extractIssuer(rawToken);
+        if (!iss) {
+          done(null, undefined);
+          return;
+        }
+        getProvider(iss)(req, rawToken, done);
+      },
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
       algorithms: ['RS256'],
       ignoreExpiration: false,
@@ -48,7 +80,6 @@ export class ClerkJwtStrategy extends PassportStrategy(Strategy, CLERK_STRATEGY)
     authUser.clerkOrgRole = payload.o?.rol;
     authUser.roles = [];
     authUser.locationIds = [];
-    authUser.branchIds = [];
     authUser.hasOrgWideAccess = false;
 
     if (payload.email) {
@@ -69,30 +100,27 @@ export class ClerkJwtStrategy extends PassportStrategy(Strategy, CLERK_STRATEGY)
       authUser.dbUserId = dbUser.id;
       authUser.organizationId = dbUser.organizationId ?? undefined;
 
-      const userRoles = await this.userRoleRepo.find({
-        where: { userId: dbUser.id },
-        relations: ['role'],
-      });
-      const orgMembers = await this.orgMemberRepo.find({
-        where: { userId: dbUser.id },
-        relations: ['role'],
-      });
+      const [userRoles, orgMembers, managedBranch] = await Promise.all([
+        this.userRoleRepo.find({ where: { userId: dbUser.id }, relations: ['role'] }),
+        this.orgMemberRepo.find({ where: { userId: dbUser.id }, relations: ['role'] }),
+        this.branchRepo.findOne({ where: { userId: dbUser.id } }),
+      ]);
+
       const systemRoles = userRoles.map((ur) => ur.role?.name).filter(Boolean);
       const orgRoles = orgMembers.map((om) => om.role?.name).filter(Boolean);
       authUser.roles = [...new Set([...systemRoles, ...orgRoles])];
-      const branchIds = [...new Set(userRoles.filter((ur) => ur.branchId).map((ur) => ur.branchId))];
-      authUser.branchIds = branchIds;
-      const storeIds = userRoles.filter((ur) => ur.locationId).map((ur) => ur.locationId);
-      let branchLocationIds: string[] = [];
-      if (branchIds.length) {
+
+      if (managedBranch) {
+        authUser.branchId = managedBranch.id;
         const branchLocs = await this.locationRepo.find({
-          where: { branchId: In(branchIds) },
+          where: { branch: { id: managedBranch.id } },
           select: ['id'],
         });
-        branchLocationIds = branchLocs.map((l) => l.id);
+        authUser.locationIds = branchLocs.map((l) => l.id);
+        authUser.hasOrgWideAccess = false;
+      } else {
+        authUser.hasOrgWideAccess = true;
       }
-      authUser.locationIds = [...new Set([...storeIds, ...branchLocationIds])];
-      authUser.hasOrgWideAccess = computeHasOrgWideAccess(userRoles, orgMembers.length);
     }
 
     return authUser;
@@ -100,9 +128,6 @@ export class ClerkJwtStrategy extends PassportStrategy(Strategy, CLERK_STRATEGY)
 
   private async enrichFromClerk(authUser: AuthenticatedUser, clerkUserId: string): Promise<void> {
     const clerkUser = await this.clerkClient.users.getUser(clerkUserId);
-    // Password sign-in JWTs carry no email claim, so we look it up here. Clerk only
-    // requires a *primary* email for OAuth accounts — password accounts can have an
-    // attached, verified email that isn't marked primary, so fall back to that.
     const emails = clerkUser.emailAddresses;
     const chosen =
       emails.find((ea) => ea.id === clerkUser.primaryEmailAddressId) ??

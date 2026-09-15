@@ -98,3 +98,6 @@ You MUST maintain strict layer boundaries:
 - **The `migration:generate` command** is the only allowed way to create a migration file. Run it only when the DB is in a clean, up-to-date state (all prior migrations applied).
 - **Do not fix ordering bugs by renaming.** If two migrations are out of order, make the earlier one idempotent OR update a later migration that creates the table to include the final schema (so the earlier one becomes a no-op on fresh install).
 ```
+
+
+<!-- always use the uuid version which is supported user npm run migration:generate command to generate migration never edit the migration or write manuallly the database operations should be always in repo -->

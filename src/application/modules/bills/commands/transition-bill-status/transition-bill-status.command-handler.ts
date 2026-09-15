@@ -37,7 +37,7 @@ export class TransitionBillStatusCommandHandler implements ICommandHandler<Trans
     }
 
     if (command.status === EBillStatus.Completed) {
-      return this.completionService.completeBill(bill.id, command.performedById, false);
+      return this.completionService.completeBill(bill.id, command.performedById, false, command.paymentMethod);
     }
 
     bill.status = command.status;
