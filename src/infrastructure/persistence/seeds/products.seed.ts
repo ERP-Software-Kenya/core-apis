@@ -6,23 +6,20 @@ import { DataSource } from "typeorm";
 import { BaseSeed } from "../../../common";
 import { ProductEntity } from "../entities";
 import { ITEM_LIST_PRODUCT_SEED_ROWS } from "./data/item-list-products.seed-data";
-
-const PRODUCT_SEED_ORGANIZATION_ID = "00000000-0000-4000-8000-000000000001";
-const PRODUCT_SEED_CREATED_BY_ID = "00000000-0000-4000-8000-000000000002";
+import { SEED_ORG_ID } from "./seed.constants";
 
 @Injectable()
 export class ProductsSeed extends BaseSeed<ProductEntity> {
   public get version(): number {
-    return 2;
+    return 5;
   }
 
   public get seedingData(): Partial<ProductEntity>[] {
     return ITEM_LIST_PRODUCT_SEED_ROWS.map((row) => {
       const price = row.retailPrice;
       return {
-        organizationId: PRODUCT_SEED_ORGANIZATION_ID,
+        organizationId: SEED_ORG_ID,
         categoryId: row.categoryId,
-        createdById: PRODUCT_SEED_CREATED_BY_ID,
         name: row.name,
         sku: row.sku,
         description: row.description,
@@ -49,6 +46,6 @@ export class ProductsSeed extends BaseSeed<ProductEntity> {
   }
 
   protected createFilter(): FindOptionsWhere<ProductEntity> {
-    return { organizationId: PRODUCT_SEED_ORGANIZATION_ID };
+    return { organizationId: SEED_ORG_ID };
   }
 }

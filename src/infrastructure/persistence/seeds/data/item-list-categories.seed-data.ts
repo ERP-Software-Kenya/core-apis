@@ -312,4 +312,64 @@ export const ITEM_LIST_CATEGORY_SEED_ROWS: ItemListCategorySeedRow[] = [
     description: "General miscellaneous hardware.",
     parentId: "38b81721-cf11-50bb-888f-53fd35021bfa",
   },
+  {
+    id: "ccc45332-e8ae-5cca-8670-158fd1ee40e0",
+    name: "General Plumbing & Sanitary Items",
+    description: "Imported from ITEM CODE LIST.xlsx Sheet2 category 'PLUMBING / SANITARY'. Ungrouped plumbing and sanitaryware items pending finer sub-categorization.",
+    parentId: "34155b78-2d0e-5c18-9828-e8ac466a15cc",
+  },
+  {
+    id: "106b8bb0-faeb-5876-b551-6e4d24423fcb",
+    name: "General Hardware & Fasteners",
+    description: "Imported from ITEM CODE LIST.xlsx Sheet2 category 'HARDWARE / FASTENERS'. Ungrouped hardware/fastener items pending finer sub-categorization.",
+    parentId: "e0ba502a-7a96-51df-b408-8d863df28753",
+  },
+  {
+    id: "9181252d-4b1f-5dad-a8e5-a79b2aa07f99",
+    name: "General Electrical Accessories",
+    description: "Imported from ITEM CODE LIST.xlsx Sheet2 category 'ELECTRICAL'. Ungrouped electrical accessory items.",
+    parentId: "056fe452-7e5c-5f50-8ea9-069b371e3c2e",
+  },
+  {
+    id: "4f1345d3-6c2f-5423-9192-3d60a89ac06d",
+    name: "Cement & Building Materials",
+    description: "Imported from ITEM CODE LIST.xlsx Sheet2 category 'CEMENT / BUILDING MATERIALS'.",
+    parentId: "119437b8-7da1-5368-b5a5-8bee9c5591c6",
+  },
+  {
+    id: "3c03fe75-8e49-582b-b553-7ef8cbfd0c94",
+    name: "Paints & Coatings",
+    description: "Imported from ITEM CODE LIST.xlsx Sheet2 category 'PAINT / COATINGS'. Paint, primer, and coating products.",
+    parentId: "0ba1b922-c5c0-5202-96b6-5bdb1e384fab",
+  },
+  {
+    id: "f3347084-a442-50be-b847-7c840ad30fee",
+    name: "Roofing",
+    description: "Imported from ITEM CODE LIST.xlsx Sheet2 category 'ROOFING'. Roofing sheets, tiles, and accessories.",
+  },
+  {
+    id: "772b30b0-697e-570a-a260-756d74a0929b",
+    name: "Steel & Metal",
+    description: "Imported from ITEM CODE LIST.xlsx Sheet2 categories 'STEEL / METAL' and 'STEEL'. Structural steel, metal bars, and sections.",
+  },
+  {
+    id: "283bd5ee-df29-5c45-8874-4dddd29a6143",
+    name: "Wood, Boards & Doors",
+    description: "Imported from ITEM CODE LIST.xlsx Sheet2 category 'WOOD / BOARDS / DOORS'. Plywood, boards, and doors.",
+  },
+  {
+    id: "55d303ce-17c9-5ea8-8054-02b2b05e871f",
+    name: "Tools & Equipment",
+    description: "Imported from ITEM CODE LIST.xlsx Sheet2 category 'TOOLS / EQUIPMENT'.",
+  },
+  {
+    id: "3f6914e7-665c-5937-8237-4da91c959d47",
+    name: "Welding",
+    description: "Imported from ITEM CODE LIST.xlsx Sheet2 category 'WELDING'. Welding equipment and consumables.",
+  },
+  {
+    id: "a154305d-abc3-561d-a574-70ad8b3567dd",
+    name: "Tanks",
+    description: "Imported from ITEM CODE LIST.xlsx Sheet2 category 'TANK'. Water tanks and accessories.",
+  },
 ];
