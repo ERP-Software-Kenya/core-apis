@@ -15,12 +15,13 @@ export class ClerkService implements IClerkService {
     this.client = createClerkClient({ secretKey: clerkCfg.secretKey });
   }
 
-  public async createUserAsync(params: { email: string; password: string; firstName: string; lastName: string }): Promise<string> {
+  public async createUserAsync(params: { email: string; password: string; firstName: string; lastName: string; username: string }): Promise<string> {
     const user = await this.client.users.createUser({
       emailAddress: [params.email],
-      password: params.password,
-      firstName: params.firstName,
-      lastName: params.lastName,
+      password:     params.password,
+      firstName:    params.firstName,
+      lastName:     params.lastName,
+      username:     params.username,
     });
     return user.id;
   }
