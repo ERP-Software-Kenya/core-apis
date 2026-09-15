@@ -34,6 +34,11 @@ export class BillItemEntity {
   @Column({ name: 'variant_id', type: 'uuid', nullable: true })
   public variantId?: string;
 
+  /** Per-item stock location override — falls back to bill.locationId when null. */
+  @AutoMap()
+  @Column({ name: 'location_id', type: 'uuid', nullable: true })
+  public locationId?: string;
+
   @AutoMap()
   @Column({ type: 'decimal', precision: 18, scale: 4, transformer: numericTransformer })
   public quantity: number;
