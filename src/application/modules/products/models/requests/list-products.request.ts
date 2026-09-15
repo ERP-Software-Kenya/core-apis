@@ -8,6 +8,8 @@ import { ProductFilter } from '../../domain';
 export class ListProductsRequest implements Filter<ProductFilter> {
   @ApiPropertyOptional() @IsOptional() @IsString() @AutoMap() public name?: string;
 
+  @ApiPropertyOptional({ description: 'Full-text search across name and SKU' }) @IsOptional() @IsString() @AutoMap() public search?: string;
+
   @ApiPropertyOptional() @IsOptional() @IsString() @AutoMap() public categoryId?: string;
 
   @ApiPropertyOptional() @IsOptional() @IsString({ each: true }) @AutoMap(() => Array) public $ids?: string[];
