@@ -3,7 +3,7 @@ import { InjectMapper } from '@automapper/nestjs';
 import { Body, Controller, Get, HttpCode, HttpStatus, Param, Post, Put, Query, UseGuards } from '@nestjs/common';
 import { ApiBearerAuth, ApiCreatedResponse, ApiOkResponse, ApiOperation, ApiParam, ApiTags } from '@nestjs/swagger';
 import { AuthenticatedUser, ClerkAuthGuard, CqrsMediator, CurrentUser, IPageable, InventoryNotOwnedByOrgException, Roles, RolesGuard } from '../../../common';
-import { ERole } from '../../../infrastructure';
+import { ERole } from 'src/infrastructure/persistence/entities/role.entity';
 import { GetPurchaseOrderQuery } from '../purchase-orders/queries';
 import { PurchaseOrder } from '../purchase-orders/domain';
 import { CancelPurchaseReturnCommand, CreatePurchaseReturnCommand, FinalizePurchaseReturnCommand, UpdatePurchaseReturnCommand } from './commands';
