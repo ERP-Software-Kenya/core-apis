@@ -4,7 +4,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { InjectPinoLogger, PinoLogger } from 'nestjs-pino';
 import { FindManyOptions, FindOptionsWhere, ILike, Repository } from 'typeorm';
-import { BaseRepo } from '../../../common';
+import { BaseRepo, isNilOrEmpty } from '../../../common';
 import { Filter, PageableFilter } from '../../../common';
 import { ProductEntity } from '../entities';
 import { ProductFilter, Product } from '../../../application/modules/products/domain';
@@ -24,23 +24,21 @@ export class ProductRepo extends BaseRepo<ProductEntity, Product, string, Pageab
     return 'id';
   }
 
-  protected override modifyFindOption(
-    findOpts: FindManyOptions<ProductEntity>,
-    filterObj: Filter<ProductFilter> | PageableFilter<ProductFilter>,
-  ): void {
-    const searchTerm = (filterObj as ProductFilter).search;
-    if (!searchTerm) return;
+  public override get specialFilterFields(): (keyof PageableFilter<ProductFilter>)[] {
+    return [...super.specialFilterFields, 'search'];
+  }
 
-    const where = findOpts.where as Record<string, unknown>;
-    if (!where || Array.isArray(where)) return;
-
-    // Remove the virtual 'search' field BaseRepo added (it's not a real column)
-    delete where.search;
-
-    // OR across name and sku, preserving all other conditions (e.g. organizationId)
+  protected override modifyFindOption(findOpts: FindManyOptions<ProductEntity>, filterObj: Filter<ProductFilter> | PageableFilter<ProductFilter>): void {
+    const search = (filterObj as ProductFilter).search;
+    if (isNilOrEmpty(search)) {
+      return;
+    }
+    const term = ILike(`%${search}%`);
+    const baseWhere = (findOpts.where ?? {}) as FindOptionsWhere<ProductEntity>;
     findOpts.where = [
-      { ...where, name: ILike(`%${searchTerm}%`) },
-      { ...where, sku: ILike(`%${searchTerm}%`) },
-    ] as FindOptionsWhere<ProductEntity>[];
+      { ...baseWhere, name: term },
+      { ...baseWhere, sku: term },
+      { ...baseWhere, barcode: term },
+    ];
   }
 }
