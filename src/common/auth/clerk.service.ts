@@ -15,12 +15,13 @@ export class ClerkService implements IClerkService {
     this.client = createClerkClient({ secretKey: clerkCfg.secretKey });
   }
 
-  public async createUserAsync(params: { email: string; password: string; firstName: string; lastName: string }): Promise<string> {
+  public async createUserAsync(params: { email: string; password: string; firstName: string; lastName: string; username: string }): Promise<string> {
     const user = await this.client.users.createUser({
       emailAddress: [params.email],
-      password: params.password,
-      firstName: params.firstName,
-      lastName: params.lastName,
+      password:     params.password,
+      firstName:    params.firstName,
+      lastName:     params.lastName,
+      username:     params.username,
     });
     return user.id;
   }
@@ -186,7 +187,15 @@ export class ClerkService implements IClerkService {
 
   private mapUser(user: Awaited<ReturnType<(typeof this.client.users)['getUser']>>): ClerkUserData {
     const meta       = user.publicMetadata as Record<string, unknown>;
-    const roles      = Array.isArray(meta['roles']) ? (meta['roles'] as string[]) : [];
+    let roles        = Array.isArray(meta['roles']) ? (meta['roles'] as string[]) : [];
+    if (roles.length === 0 && Array.isArray((user as unknown as Record<string, unknown>).organizationMemberships)) {
+      const memberships = (user as unknown as Record<string, unknown>).organizationMemberships as Array<{ role?: string }>;
+      for (const m of memberships) {
+        if (m.role === 'org:admin' || m.role === 'admin') {
+          roles.push('org_admin');
+        }
+      }
+    }
     const primaryEmail = user.emailAddresses.find((e) => e.id === user.primaryEmailAddressId);
 
     return {

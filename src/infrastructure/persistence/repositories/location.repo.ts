@@ -32,7 +32,7 @@ export class LocationRepo
 
   public async findIdsByBranchIdAsync(branchId: string): Promise<string[]> {
     const rows = await this.internalRepo.find({ where: { branchId }, select: ['id'] });
-    return rows.map((r) => r.id);
+    return rows.map((row) => row.id);
   }
 
   public async findByBranchIdsAsync(branchIds: string[]): Promise<{ id: string; branchId: string }[]> {
@@ -41,7 +41,7 @@ export class LocationRepo
       where: { branchId: In(branchIds) },
       select: ['id', 'branchId'],
     });
-    return rows.map((r) => ({ id: r.id, branchId: r.branchId }));
+    return rows.map((row) => ({ id: row.id, branchId: row.branchId! }));
   }
 
   public async findIdsByBranchIdsAsync(branchIds: string[]): Promise<string[]> {
@@ -50,7 +50,7 @@ export class LocationRepo
       where: { branchId: In(branchIds) },
       select: ['id'],
     });
-    return rows.map((r) => r.id);
+    return rows.map((row) => row.id);
   }
 
   public async assignBranchAsync(branchId: string, locationIds: string[]): Promise<void> {

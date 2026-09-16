@@ -10,10 +10,12 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 import { CORE_SCHEMA, ECoreTableName } from './e-core-table-name';
+import { numericTransformer } from './numeric.transformer';
 import { OrganizationEntity } from './organization.entity';
 import { SupplierEntity } from './supplier.entity';
 import { UserEntity } from './user.entity';
 import { PurchaseItemEntity } from './purchase-item.entity';
+import { BranchEntity } from './branch.entity';
 import { EPurchaseOrderStatus } from '../../../application/shared/enums';
 
 const PK_NAME = 'PK_' + ECoreTableName.PurchaseOrders;
@@ -35,6 +37,10 @@ export class PurchaseOrderEntity {
   @AutoMap()
   @Column({ type: 'uuid', nullable: true })
   public createdById?: string;
+
+  @AutoMap()
+  @Column({ name: 'branch_id', type: 'uuid', nullable: true })
+  public branchId?: string;
 
   /** Human-readable PO number e.g. PO-2026-00001 */
   @AutoMap()
@@ -60,8 +66,12 @@ export class PurchaseOrderEntity {
   public receivedAt?: Date;
 
   @AutoMap()
-  @Column({ type: 'decimal', precision: 18, scale: 4, default: 0 })
+  @Column({ type: 'decimal', precision: 18, scale: 4, default: 0, transformer: numericTransformer })
   public totalAmount: number;
+
+  @AutoMap()
+  @Column({ name: 'amount_paid', type: 'decimal', precision: 18, scale: 4, default: 0, transformer: numericTransformer })
+  public amountPaid: number;
 
   @AutoMap()
   @Column({ type: 'text', nullable: true })
@@ -103,6 +113,15 @@ export class PurchaseOrderEntity {
     foreignKeyConstraintName: `FK__${ECoreTableName.PurchaseOrders}__${ECoreTableName.Users}`,
   })
   public createdBy?: UserEntity;
+
+  @AutoMap(() => BranchEntity)
+  @ManyToOne(() => BranchEntity, { nullable: true })
+  @JoinColumn({
+    name: 'branch_id',
+    referencedColumnName: 'id',
+    foreignKeyConstraintName: `FK__${ECoreTableName.PurchaseOrders}__${ECoreTableName.Branches}`,
+  })
+  public branch?: BranchEntity;
 
   @AutoMap(() => [PurchaseItemEntity])
   @OneToMany(() => PurchaseItemEntity, (pi) => pi.purchaseOrder, { cascade: true })

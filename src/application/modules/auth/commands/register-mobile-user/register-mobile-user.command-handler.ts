@@ -26,6 +26,7 @@ export class RegisterMobileUserCommandHandler implements ICommandHandler<Registe
       password:  command.password,
       firstName: command.firstName,
       lastName:  command.lastName,
+      username:  command.username,
     });
 
     const user = await this.userRepo.upsertByClerkIdAsync(clerkUserId, {

@@ -345,7 +345,7 @@ export class AnalyticsController {
     @Query('locationId') locationId?: string,
     @CurrentUser() user?: AuthenticatedUser,
   ): Promise<CategoryValuePointResponse[]> {
-    const ctx = buildAnalyticsQueryContext(user!, { period, from, to, locationId });
+    const ctx = buildAnalyticsQueryContext(user, { period, from, to, locationId });
     const query = new GetSalesByCategoryQuery();
     query.organizationId = ctx.organizationId;
     query.from = ctx.from;

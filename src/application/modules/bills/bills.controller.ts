@@ -202,6 +202,7 @@ export class BillsController {
     command.unitPrice      = body.unitPrice;
     command.taxRate        = body.taxRate;
     command.discountAmount = body.discountAmount;
+    command.locationId     = body.locationId;
     const result = await this.mediator.execute<AddBillItemCommand, Bill>(command);
     return this.mapper.map(result, Bill, BillResponse);
   }

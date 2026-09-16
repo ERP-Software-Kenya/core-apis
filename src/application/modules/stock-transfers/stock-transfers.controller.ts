@@ -15,7 +15,7 @@ import { GetStockTransferQuery, SearchStockTransfersQuery } from './queries';
 @ApiTags('Stock Transfers')
 @Controller({ path: 'stock-transfers', version: '1' })
 @UseGuards(ClerkAuthGuard, RolesGuard)
-@Roles(ERole.OrgAdmin, ERole.SuperAdmin, ERole.BranchManager, ERole.StoreManager, ERole.StoreStaff)
+@Roles(ERole.OrgAdmin, ERole.SuperAdmin, ERole.BranchManager)
 export class StockTransfersController {
   constructor(
     protected readonly mediator: CqrsMediator,
@@ -73,7 +73,7 @@ export class StockTransfersController {
   @ApiOperation({ summary: 'Create a new stock transfer' })
   @ApiCreatedResponse({ type: StockTransferResponse })
   @HttpCode(HttpStatus.CREATED)
-  @Roles(ERole.OrgAdmin, ERole.SuperAdmin, ERole.BranchManager, ERole.StoreManager)
+  @Roles(ERole.OrgAdmin, ERole.SuperAdmin, ERole.BranchManager)
   @Post()
   public async create(@CurrentUser() user: AuthenticatedUser, @Body() body: CreateStockTransferRequest): Promise<StockTransferResponse> {
     assertLocationAccess(user, body.fromLocationId);
@@ -89,7 +89,7 @@ export class StockTransfersController {
   @ApiOkResponse({ type: StockTransferResponse })
   @ApiParam({ name: 'id', description: 'StockTransfer UUID' })
   @HttpCode(HttpStatus.OK)
-  @Roles(ERole.OrgAdmin, ERole.SuperAdmin, ERole.BranchManager, ERole.StoreManager)
+  @Roles(ERole.OrgAdmin, ERole.SuperAdmin, ERole.BranchManager)
   @Put(':id/complete')
   public async complete(@Param('id') id: string, @CurrentUser() user: AuthenticatedUser, @Body() body: CompleteStockTransferRequest): Promise<StockTransferResponse> {
     const transfer = await this.mediator.execute<GetStockTransferQuery, StockTransfer>(Object.assign(new GetStockTransferQuery(), { id }));

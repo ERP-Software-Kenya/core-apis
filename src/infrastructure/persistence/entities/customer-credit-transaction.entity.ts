@@ -9,9 +9,10 @@ import { UserEntity } from './user.entity';
 const PK_NAME = 'PK_' + ECoreTableName.CustomerCreditTransactions;
 
 export enum ECreditTransactionType {
-  CreditSale = 'credit_sale',
-  Payment    = 'payment',
-  Adjustment = 'adjustment',
+  CreditSale  = 'credit_sale',
+  Payment     = 'payment',
+  Adjustment  = 'adjustment',
+  SalesReturn = 'sales_return',
 }
 
 @Entity({ schema: CORE_SCHEMA, name: ECoreTableName.CustomerCreditTransactions })

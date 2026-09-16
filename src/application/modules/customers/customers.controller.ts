@@ -51,7 +51,7 @@ class CreditTransactionsPagedResponse {
   public totalPages: number;
 }
 
-const ADMIN_ROLES = [ERole.StoreManager, ERole.OrgManager, ERole.OrgAdmin, ERole.SuperAdmin];
+const ADMIN_ROLES = [ERole.OrgAdmin, ERole.SuperAdmin];
 
 @ApiBearerAuth()
 @ApiTags('Customers')
@@ -126,7 +126,7 @@ export class CustomersController {
   @ApiParam({ name: 'id', description: 'Customer UUID' })
   @HttpCode(HttpStatus.OK)
   @UseGuards(RolesGuard)
-  @Roles(ERole.StoreManager, ERole.OrgManager, ERole.OrgAdmin, ERole.SuperAdmin)
+  @Roles(ERole.OrgAdmin, ERole.SuperAdmin)
   @Delete(':id')
   public async delete(@Param('id') id: string): Promise<boolean> {
     const command = new DeleteCustomerCommand();
@@ -173,7 +173,7 @@ export class CustomersController {
   ): Promise<BillsPagedResponse> {
     const customer = await this.mediator.execute<GetCustomerQuery, Customer>(Object.assign(new GetCustomerQuery(), { id }));
     assertOrgOwnership(user, customer.organizationId, 'Customer');
-    const isAdmin = user.roles?.some((r) => [ERole.OrgAdmin, ERole.OrgManager, ERole.SuperAdmin].includes(r));
+    const isAdmin = user.roles?.some((r) => [ERole.OrgAdmin, ERole.SuperAdmin].includes(r));
     const query = new ListCustomerBillsQuery();
     query.customerId     = id;
     query.organizationId = customer.organizationId;
