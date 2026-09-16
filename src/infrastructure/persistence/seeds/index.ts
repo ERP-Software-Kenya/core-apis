@@ -32,6 +32,7 @@ import { MaintenanceTypesSeed } from "./maintenance-types.seed";
 import { EmailTemplatesSeed } from "./email-templates.seed";
 import { ProductsSeed } from "./products.seed";
 import { CategoriesSeed } from "./categories.seed";
+import { PageAccessSeed } from "./page-access.seed";
 
 export default [
   SeedingService,
@@ -49,4 +50,5 @@ export default [
   EmailTemplatesSeed,
   CategoriesSeed,
   ProductsSeed,
+  PageAccessSeed
 ];
