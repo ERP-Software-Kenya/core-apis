@@ -17,6 +17,8 @@ import { ProductsSeed } from "./products.seed";
 import { CategoriesSeed } from "./categories.seed";
 import { OrganizationEntity } from "../entities";
 import { SEED_ORG_ID } from "./seed.constants";
+import { PageAccessSeed } from './page-access.seed';
+
 
 /**
  * Orchestrates all seeds in strict dependency order.
@@ -43,7 +45,8 @@ export class SeedingService {
     private readonly vehicleTypesSeed: VehicleTypesSeed,
     private readonly categoriesSeed: CategoriesSeed,
     private readonly productsSeed: ProductsSeed,
-    // private readonly demoOrgDataSeed: DemoOrgDataSeed,
+    private readonly pageAccessSeed: PageAccessSeed
+
     // private readonly demoOrgDataSeed: DemoOrgDataSeed,
   ) {}
 
@@ -59,6 +62,7 @@ export class SeedingService {
     await this.vehicleBrandsSeed.runAsync();
     await this.vehicleTypesSeed.runAsync();
     await this.rolesSeed.runAsync();
+    await this.pageAccessSeed.runAsync();
     await this.emailTemplatesSeed.runAsync();
     const org = await this.orgRepo.findOne({ where: { id: SEED_ORG_ID } });
     if (!org) {
