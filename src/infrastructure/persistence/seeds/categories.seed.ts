@@ -11,7 +11,7 @@ import { SEED_ORG_ID } from "./seed.constants";
 @Injectable()
 export class CategoriesSeed extends BaseSeed<CategoryEntity> {
   public get version(): number {
-    return 5;
+    return 6;
   }
 
   public get seedingData(): Partial<CategoryEntity>[] {
