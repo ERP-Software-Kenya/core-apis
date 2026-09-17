@@ -14,7 +14,7 @@ import { GetSupplierAccountQuery, GetSupplierQuery, ListSuppliersQuery, SearchSu
 @ApiTags('Suppliers')
 @Controller({ path: 'suppliers', version: '1' })
 @UseGuards(ClerkAuthGuard, RolesGuard)
-@Roles(ERole.OrgAdmin, ERole.SuperAdmin)
+@Roles(ERole.OrgAdmin, ERole.SuperAdmin, ERole.BranchManager)
 export class SuppliersController {
   constructor(
     protected readonly mediator: CqrsMediator,
@@ -115,6 +115,7 @@ export class SuppliersController {
   @ApiOkResponse({ type: Boolean })
   @ApiParam({ name: 'id', description: 'Supplier UUID' })
   @HttpCode(HttpStatus.OK)
+  @Roles(ERole.OrgAdmin, ERole.SuperAdmin)
   @Delete(':id')
   public async delete(@Param('id') id: string, @CurrentUser() user: AuthenticatedUser): Promise<boolean> {
     const fetchQuery = new GetSupplierQuery();

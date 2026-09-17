@@ -31,7 +31,7 @@ export class BranchesController {
   @ApiOperation({ summary: 'Search branches (paginated)' })
   @ApiOkResponse({ type: BranchesPagedResponse })
   @HttpCode(HttpStatus.OK)
-  @Roles(ERole.OrgAdmin, ERole.SuperAdmin)
+  @Roles(ERole.OrgAdmin, ERole.SuperAdmin, ERole.BranchManager)
   @Get()
   public async search(
     @CurrentUser() user: AuthenticatedUser,
@@ -64,7 +64,7 @@ export class BranchesController {
   @ApiOkResponse({ type: BranchResponse })
   @ApiParam({ name: 'id', description: 'Branch UUID' })
   @HttpCode(HttpStatus.OK)
-  @Roles(ERole.OrgAdmin, ERole.SuperAdmin)
+  @Roles(ERole.OrgAdmin, ERole.SuperAdmin, ERole.BranchManager)
   @Get(':id')
   public async getById(@Param('id') id: string, @CurrentUser() user: AuthenticatedUser): Promise<BranchResponse> {
     const query = new GetBranchQuery();

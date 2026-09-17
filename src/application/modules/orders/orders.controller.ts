@@ -24,7 +24,7 @@ class OrdersPagedResponse {
 @ApiBearerAuth()
 @ApiTags('Orders')
 @UseGuards(ClerkAuthGuard, RolesGuard)
-@Roles(ERole.OrgAdmin, ERole.SuperAdmin)
+@Roles(ERole.OrgAdmin, ERole.SuperAdmin, ERole.BranchManager)
 @Controller({ path: 'orders', version: '1' })
 export class OrdersController {
   constructor(

@@ -20,7 +20,7 @@ import { GetUnpublishedStockQuery, ListMovementsByUnpublishedStockQuery, ListUnp
 @ApiTags('Unpublished Stock')
 @Controller({ path: 'unpublished-stock', version: '1' })
 @UseGuards(ClerkAuthGuard, RolesGuard)
-@Roles(ERole.OrgAdmin, ERole.SuperAdmin)
+@Roles(ERole.OrgAdmin, ERole.SuperAdmin, ERole.BranchManager)
 export class UnpublishedStockController {
   constructor(
     protected readonly mediator: CqrsMediator,
