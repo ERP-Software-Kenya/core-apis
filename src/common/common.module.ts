@@ -6,8 +6,6 @@ import { JwtService } from '@nestjs/jwt';
 import { PUSH_NOTIFICATION_SERVICE, PushNotificationService } from './push-notification';
 import { PDF_EXPORT_SERVICE, PdfExportService } from './pdf-export';
 
-import { ClerkAuthGuard } from './auth';
-
 @Global()
 @Module({
   providers: [
@@ -27,13 +25,11 @@ import { ClerkAuthGuard } from './auth';
     FileParserService,
     CentrifugalService,
     JwtService,
-    ClerkAuthGuard,
   ],
   exports: [
     CentrifugalService,
     PUSH_NOTIFICATION_SERVICE,
     PDF_EXPORT_SERVICE,
-    ClerkAuthGuard,
   ],
 })
 export class CommonModule {}
