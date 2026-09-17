@@ -15,7 +15,7 @@ import { GetNextSkuQuery, GetProductQuery, GetProductImageUploadUrlQuery, ListPr
 @ApiTags('Products')
 @Controller({ path: 'products', version: '1' })
 @UseGuards(ClerkAuthGuard, RolesGuard)
-@Roles(ERole.OrgAdmin, ERole.SuperAdmin)
+@Roles(ERole.OrgAdmin, ERole.SuperAdmin, ERole.BranchManager)
 export class ProductsController {
   constructor(
     protected readonly mediator: CqrsMediator,
@@ -116,6 +116,7 @@ export class ProductsController {
   @ApiOkResponse({ type: Boolean })
   @ApiParam({ name: 'id', description: 'Product UUID' })
   @HttpCode(HttpStatus.OK)
+  @Roles(ERole.OrgAdmin, ERole.SuperAdmin)
   @Delete(':id')
   public async delete(@Param('id') id: string, @CurrentUser() user: AuthenticatedUser): Promise<boolean> {
     const fetchQuery = new GetProductQuery();
