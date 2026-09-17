@@ -1,7 +1,8 @@
 import { AutoMap } from '@automapper/classes';
-import { EPurchaseReturnItemSourceType } from '../../../../../infrastructure/persistence/entities';
+import { EPurchaseReturnItemSourceType } from '../../../../../infrastructure';
+import { CommandBase } from 'src/common';
 
-export class CreatePurchaseReturnItemCommand {
+export class CreatePurchaseReturnItemCommand extends CommandBase {
   @AutoMap() public purchaseItemId: string;
   @AutoMap() public quantity: number;
   @AutoMap(() => String) public sourceType: EPurchaseReturnItemSourceType;
@@ -9,7 +10,7 @@ export class CreatePurchaseReturnItemCommand {
   @AutoMap() public reason?: string;
 }
 
-export class CreatePurchaseReturnCommand {
+export class CreatePurchaseReturnCommand extends CommandBase{
   @AutoMap() public purchaseOrderId: string;
   @AutoMap() public reason?: string;
   @AutoMap() public notes?: string;
