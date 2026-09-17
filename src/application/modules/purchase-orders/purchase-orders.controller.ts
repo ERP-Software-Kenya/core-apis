@@ -43,7 +43,7 @@ import { ExportPurchaseOrderQuery, GetPurchaseOrderQuery, ListPurchaseOrderPayme
 @ApiTags('PurchaseOrders')
 @Controller({ path: 'purchase-orders', version: '1' })
 @UseGuards(ClerkAuthGuard, RolesGuard)
-@Roles(ERole.OrgAdmin, ERole.SuperAdmin)
+@Roles(ERole.OrgAdmin, ERole.SuperAdmin, ERole.BranchManager)
 export class PurchaseOrdersController {
   constructor(
     protected readonly mediator: CqrsMediator,
@@ -234,6 +234,7 @@ export class PurchaseOrdersController {
   @ApiOkResponse({ type: Boolean })
   @ApiParam({ name: 'id', description: 'Purchase Order UUID' })
   @HttpCode(HttpStatus.OK)
+  @Roles(ERole.OrgAdmin, ERole.SuperAdmin)
   @Delete(':id')
   public async delete(@Param('id') id: string): Promise<boolean> {
     const command = new DeletePurchaseOrderCommand();

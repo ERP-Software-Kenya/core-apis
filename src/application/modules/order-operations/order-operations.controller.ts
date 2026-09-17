@@ -40,7 +40,7 @@ import { IPageable } from '../../../common';
 @ApiBearerAuth()
 @ApiTags('Warehouse Order Operations')
 @UseGuards(ClerkAuthGuard, RolesGuard)
-@Roles(ERole.OrgAdmin, ERole.SuperAdmin)
+@Roles(ERole.OrgAdmin, ERole.SuperAdmin, ERole.BranchManager)
 @Controller({ path: 'warehouse/orders', version: '1' })
 export class OrderOperationsController {
   public constructor(
