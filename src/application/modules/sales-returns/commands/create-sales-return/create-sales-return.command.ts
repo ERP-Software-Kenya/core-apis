@@ -1,14 +1,15 @@
 import { AutoMap } from '@automapper/classes';
 import { ESalesReturnItemCondition } from '../../../../../infrastructure/persistence/entities';
+import { CommandBase } from 'src/common';
 
-export class CreateSalesReturnItemCommand {
+export class CreateSalesReturnItemCommand extends CommandBase {
   @AutoMap() public billItemId: string;
   @AutoMap() public quantity: number;
   @AutoMap(() => String) public condition: ESalesReturnItemCondition;
   @AutoMap() public reason?: string;
 }
 
-export class CreateSalesReturnCommand {
+export class CreateSalesReturnCommand extends CommandBase {
   @AutoMap() public billId: string;
   @AutoMap() public reason?: string;
   @AutoMap() public notes?: string;
