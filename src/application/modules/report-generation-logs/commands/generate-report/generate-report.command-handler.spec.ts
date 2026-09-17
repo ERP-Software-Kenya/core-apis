@@ -14,6 +14,7 @@ jest.mock('typeorm', () => ({
 import { GenerateReportCommandHandler } from './generate-report.command-handler';
 import { GenerateReportCommand } from './generate-report.command';
 import { EReportPeriod, EReportType } from '../../domain';
+import { ReportDataAggregator } from '../../../../../infrastructure/persistence/repositories/report-data-aggregator';
 
 describe('GenerateReportCommandHandler', () => {
   let handler: GenerateReportCommandHandler;
@@ -24,6 +25,7 @@ describe('GenerateReportCommandHandler', () => {
 
   beforeEach(() => {
     mockQueryRunner = {
+      connect: jest.fn().mockResolvedValue(undefined),
       query: jest.fn(),
       release: jest.fn().mockResolvedValue(undefined),
     };
@@ -32,9 +34,12 @@ describe('GenerateReportCommandHandler', () => {
       createQueryRunner: jest.fn().mockReturnValue(mockQueryRunner),
     };
 
+    const aggregator = new ReportDataAggregator(mockDataSource as any);
+
     mockRepo = {
       createAsync: jest.fn().mockImplementation((log) => Promise.resolve({ ...log, id: 'log-123' })),
       updateAsync: jest.fn().mockImplementation((log) => Promise.resolve(log)),
+      buildReportDataAsync: jest.fn().mockImplementation((params) => aggregator.aggregate(params)),
     };
 
     mockLogger = {
@@ -42,7 +47,7 @@ describe('GenerateReportCommandHandler', () => {
       error: jest.fn(),
     };
 
-    handler = new GenerateReportCommandHandler(mockRepo, mockDataSource as any, mockLogger);
+    handler = new GenerateReportCommandHandler(mockRepo, mockLogger);
   });
 
   it('generates TotalSales report with item breakdown table and KPI cards', async () => {

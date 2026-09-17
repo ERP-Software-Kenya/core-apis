@@ -5,14 +5,8 @@
   "compilerOptions": {
     "deleteOutDir": true,
     "assets": [
-      {
-        "include": "infrastructure/persistence/seeds/data/*.json",
-        "watchAssets": true
-      },
-      {
-        "include": "common/pdf-export/templates/*.hbs",
-        "watchAssets": true
-      }
+      "infrastructure/persistence/seeds/data/*.json",
+      "common/pdf-export/templates/*.hbs"
     ]
   }
 }

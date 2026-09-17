@@ -2,7 +2,7 @@ import { BadRequestException, Inject, Injectable } from '@nestjs/common';
 import { InjectPinoLogger, PinoLogger } from 'nestjs-pino';
 import { DataSource, EntityManager } from 'typeorm';
 import { InjectDataSource } from '@nestjs/typeorm';
-import { EMovementType, EUnpublishedMovementType, StockTransferEntity, UnpublishedStockEntity } from 'src/infrastructure/persistence/entities';
+import { EMovementType, EUnpublishedMovementType, StockTransferEntity, StockTransferItemEntity, UnpublishedStockEntity } from 'src/infrastructure/persistence/entities';
 import { EProductLogAction } from '../enums/e-product-log-action.enum';
 import { EStockTransferStatus } from '../enums/e-stock-transfer-status';
 import {
@@ -158,6 +158,14 @@ export class StockOrchestrationService {
     await this.dataSource.transaction(async (manager) => {
       for (const input of inputs) {
         await this.runTransferWithManager(input, manager);
+      }
+      if (inputs.length > 0) {
+        await manager.insert(StockTransferItemEntity, inputs.map((input) => ({
+          transferId,
+          productId: input.productId,
+          quantitySent: input.quantity,
+          quantityReceived: input.quantity,
+        })));
       }
       await manager.update(StockTransferEntity, { id: transferId }, { status: EStockTransferStatus.Completed });
     });

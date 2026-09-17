@@ -30,18 +30,31 @@ export class RefLanguagesSeed extends BaseSeed<LanguageEntity> {
 
   protected createFilter(): FindOptionsWhere<LanguageEntity> { return {}; }
 
+  private static readonly FALLBACK_LANGUAGES: Partial<LanguageEntity>[] = [
+    { code: 'en', name: 'English' },
+    { code: 'sw', name: 'Swahili' },
+    { code: 'hi', name: 'Hindi' },
+  ];
+
   private async fetchFromB2(key: string): Promise<any[]> {
-    const client = new S3Client({
-      region: process.env.STORAGE_REGION,
-      endpoint: `https://${process.env.STORAGE_ENDPOINT}`,
-      credentials: {
-        accessKeyId: process.env.STORAGE_ACCESS_KEY_ID,
-        secretAccessKey: process.env.STORAGE_SECRET_ACCESS_KEY,
-      },
-    });
-    const res = await client.send(new GetObjectCommand({ Bucket: process.env.STORAGE_BUCKET, Key: key }));
-    const chunks: Buffer[] = [];
-    for await (const chunk of res.Body as Readable) chunks.push(Buffer.isBuffer(chunk) ? chunk : Buffer.from(chunk));
-    return JSON.parse(Buffer.concat(chunks).toString('utf-8'));
+    try {
+      const rawEndpoint = process.env.STORAGE_ENDPOINT || '';
+      const endpoint = rawEndpoint.startsWith('http') ? rawEndpoint : `https://${rawEndpoint}`;
+      const client = new S3Client({
+        region: process.env.STORAGE_REGION,
+        endpoint,
+        credentials: {
+          accessKeyId: process.env.STORAGE_ACCESS_KEY_ID || '',
+          secretAccessKey: process.env.STORAGE_SECRET_ACCESS_KEY || '',
+        },
+      });
+      const res = await client.send(new GetObjectCommand({ Bucket: process.env.STORAGE_BUCKET, Key: key }));
+      const chunks: Buffer[] = [];
+      for await (const chunk of res.Body as Readable) chunks.push(Buffer.isBuffer(chunk) ? chunk : Buffer.from(chunk));
+      return JSON.parse(Buffer.concat(chunks).toString('utf-8'));
+    } catch (err) {
+      this.logger.warn(`Could not fetch ${key} from storage (${(err as Error).message}) — using local fallback languages`);
+      return RefLanguagesSeed.FALLBACK_LANGUAGES;
+    }
   }
 }
