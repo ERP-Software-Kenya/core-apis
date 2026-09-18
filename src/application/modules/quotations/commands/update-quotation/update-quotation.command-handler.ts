@@ -7,7 +7,7 @@ import { QUOTATION_REPO } from '../../../../constants';
 import { IQuotationRepo } from '../../i-quotation.repo';
 import { Quotation } from '../../domain';
 import { UpdateQuotationCommand } from './update-quotation.command';
-import { calculateQuotationTotals } from '../../helpers/quotation-totals';
+import { calculateQuotationTotals } from '../../helpers';
 import { QuotationEntity, QuotationItemEntity } from '../../../../../infrastructure/persistence/entities';
 import { EQuotationStatus } from '../../../../shared/enums';
 

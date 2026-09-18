@@ -8,8 +8,10 @@ import {
   Post,
   Put,
   Query,
+  Res,
   UseGuards,
 } from '@nestjs/common';
+import type { Response } from 'express';
 import {
   ApiBearerAuth,
   ApiCreatedResponse,
@@ -28,6 +30,7 @@ import {
   RolesGuard,
   IPageable,
   requireOrganizationId,
+  PdfDocument,
 } from '../../../common';
 import { ERole } from '../../../infrastructure';
 import {
@@ -41,6 +44,7 @@ import {
   GetQuotationQuery,
   SearchQuotationsQuery,
   GetQuotationRevisionsQuery,
+  ExportQuotationQuery,
 } from './queries';
 import { Quotation } from './domain';
 import { Order } from '../orders/domain';
@@ -117,7 +121,27 @@ export class QuotationsController {
     const query = new GetQuotationQuery();
     query.id = id;
     const result = await this.mediator.execute<GetQuotationQuery, Quotation>(query);
-    return result as unknown as QuotationResponse;
+    return result;
+  }
+
+  @ApiOperation({ summary: 'Export quotation as PDF' })
+  @ApiParam({ name: 'id', description: 'Quotation UUID' })
+  @HttpCode(HttpStatus.OK)
+  @Get(':id/pdf')
+  public async exportPdf(
+    @Param('id') id: string,
+    @Res() res: Response,
+    @CurrentUser() _user: AuthenticatedUser,
+  ): Promise<void> {
+    const query = new ExportQuotationQuery();
+    query.id = id;
+    const doc: PdfDocument = await this.mediator.execute<ExportQuotationQuery, PdfDocument>(query);
+    res.set({
+      'Content-Type': 'application/pdf',
+      'Content-Disposition': `inline; filename="${doc.filename}"`,
+      'Content-Length': String(doc.buffer.byteLength),
+    });
+    res.end(doc.buffer);
   }
 
   @ApiOperation({ summary: 'Get all revisions for a quotation' })
@@ -132,7 +156,7 @@ export class QuotationsController {
     const query = new GetQuotationRevisionsQuery();
     query.id = id;
     const result = await this.mediator.execute<GetQuotationRevisionsQuery, Quotation[]>(query);
-    return result as unknown as QuotationResponse[];
+    return result;
   }
 
   @ApiOperation({ summary: 'Create a new quotation' })
@@ -152,7 +176,7 @@ export class QuotationsController {
     command.createdByUserId = user.dbUserId;
 
     const result = await this.mediator.execute<CreateQuotationCommand, Quotation>(command);
-    return result as unknown as QuotationResponse;
+    return result;
   }
 
   @ApiOperation({ summary: 'Update a draft quotation' })
@@ -173,7 +197,7 @@ export class QuotationsController {
     command.items = dto.items;
 
     const result = await this.mediator.execute<UpdateQuotationCommand, Quotation>(command);
-    return result as unknown as QuotationResponse;
+    return result;
   }
 
   @ApiOperation({ summary: 'Create a new revision from an existing quotation' })
@@ -190,7 +214,7 @@ export class QuotationsController {
     command.createdByUserId = user.dbUserId;
 
     const result = await this.mediator.execute<ReviseQuotationCommand, Quotation>(command);
-    return result as unknown as QuotationResponse;
+    return result;
   }
 
   @ApiOperation({ summary: 'Convert quotation to Sales Order' })
@@ -230,6 +254,6 @@ export class QuotationsController {
     command.pdfBase64 = dto.pdfBase64;
 
     const result = await this.mediator.execute<SendQuotationEmailCommand, Quotation>(command);
-    return result as unknown as QuotationResponse;
+    return result;
   }
 }
