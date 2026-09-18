@@ -23,6 +23,8 @@ export * from './item-return.repo';
 export * from './notification.repo';
 export * from './order.repo';
 export * from './order-item.repo';
+export * from './quotation.repo';
+export * from './quotation-item.repo';
 export * from './payment-transaction.repo';
 export * from './platform-configuration.repo';
 export * from './purchase-item.repo';

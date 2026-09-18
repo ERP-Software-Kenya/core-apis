@@ -14,6 +14,7 @@ export class Order {
   @AutoMap() public paymentStatus?: string;
   @AutoMap() public fulfillmentMode?: string;
   @AutoMap() public fulfillmentLocationId?: string;
+  @AutoMap() public sourceQuotationId?: string;
   @AutoMap() public claimedByUserId?: string;
   @AutoMap(() => Date) public claimedAt?: Date;
   @AutoMap() public packedByUserId?: string;
