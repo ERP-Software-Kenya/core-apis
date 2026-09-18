@@ -77,7 +77,6 @@ export { v4 as uuid, parse as parseUuid, stringify as stringifyUuid, validate as
 export * from "./utils";
 
 export const EMPTY_STR = "";
-export * from './common.module';
 
 export * from './db';
 export * from './cqrs';
@@ -99,3 +98,5 @@ export * from './push-notification';
 export * from './constants';
 export * from './mail';
 export * from './pdf-export';
+export * from './common.module';
+

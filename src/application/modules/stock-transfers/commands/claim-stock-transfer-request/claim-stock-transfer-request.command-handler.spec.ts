@@ -38,7 +38,7 @@ describe('ClaimStockTransferRequestCommandHandler', () => {
     findUsersForLocationAsync: jest.Mock;
   };
   let transferRepo: { getAsync: jest.Mock; updateAsync: jest.Mock };
-  let inventoryRepo: { findByOrgLocationProductAsync: jest.Mock };
+  let inventoryRepo: { findOrCreateAsync: jest.Mock };
   let orchestrator: { addStock: jest.Mock };
   let pushNotification: { sendBatchAsync: jest.Mock };
   let handler: ClaimStockTransferRequestCommandHandler;

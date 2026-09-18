@@ -12,6 +12,7 @@ import { PurchaseOrdersModule } from './modules/purchase-orders';
 import { PurchaseReturnsModule } from './modules/purchase-returns';
 import { CustomersModule } from './modules/customers';
 import { OrdersModule } from './modules/orders';
+import { QuotationsModule } from './modules/quotations';
 import { InvoicesModule } from './modules/invoices';
 import { StockTransfersModule } from './modules/stock-transfers';
 import { ExpensesModule } from './modules/expenses';
@@ -68,6 +69,7 @@ export class ApplicationModule {
         PurchaseReturnsModule,
         CustomersModule,
         OrdersModule,
+        QuotationsModule,
         InvoicesModule,
         StockTransfersModule,
         ExpensesModule,
