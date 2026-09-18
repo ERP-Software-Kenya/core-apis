@@ -19,6 +19,8 @@ import { CustomerEntity } from './customer.entity';
 import { DiscountCouponEntity } from './discount-coupon.entity';
 import { OrderEntity } from './order.entity';
 import { OrderItemEntity } from './order-item.entity';
+import { QuotationEntity } from './quotation.entity';
+import { QuotationItemEntity } from './quotation-item.entity';
 import { InvoiceEntity } from './invoice.entity';
 import { BillEntity } from './bill.entity';
 import { BillItemEntity } from './bill-item.entity';
@@ -112,6 +114,8 @@ export * from './customer.entity';
 export * from './discount-coupon.entity';
 export * from './order.entity';
 export * from './order-item.entity';
+export * from './quotation.entity';
+export * from './quotation-item.entity';
 export * from './invoice.entity';
 export * from './bill.entity';
 export * from './bill-item.entity';
@@ -204,6 +208,8 @@ export default [
   DiscountCouponEntity,
   OrderEntity,
   OrderItemEntity,
+  QuotationEntity,
+  QuotationItemEntity,
   InvoiceEntity,
   BillEntity,
   BillItemEntity,

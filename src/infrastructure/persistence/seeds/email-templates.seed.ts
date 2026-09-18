@@ -275,6 +275,50 @@ const ORDER_CONFIRMED_HTML = `
 </html>
 `;
 
+const QUOTATION_SENT_HTML = `
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <style>
+    body { font-family: 'Segoe UI', Arial, sans-serif; background: #f4f7fb; margin: 0; }
+    .wrapper { max-width: 600px; margin: 40px auto; background: #fff; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 20px rgba(0,0,0,.08); }
+    .header { background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%); padding: 36px 40px; }
+    .header h1 { color: #fff; margin: 0; font-size: 22px; }
+    .header p { color: rgba(255,255,255,.85); margin: 6px 0 0; font-size: 13px; }
+    .body { padding: 36px 40px; }
+    .status-badge { display: inline-block; background: #e0f2fe; color: #0369a1; padding: 4px 14px; border-radius: 20px; font-size: 13px; font-weight: 600; margin-bottom: 20px; }
+    .info-card { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 16px; margin: 16px 0; }
+    .footer { background: #f8fafc; padding: 20px 40px; text-align: center; font-size: 12px; color: #94a3b8; border-top: 1px solid #e5e7eb; }
+  </style>
+</head>
+<body>
+  <div class="wrapper">
+    <div class="header">
+      <h1>Quotation {{quoteNumber}}</h1>
+      <p>{{organizationName}}</p>
+    </div>
+    <div class="body">
+      <span class="status-badge">Quotation / Estimate</span>
+      <p style="color:#374151;font-size:15px;">Dear {{customerName}},</p>
+      <p style="color:#6b7280;font-size:14px;line-height:1.5;">
+        Please find attached our quotation <strong>{{quoteNumber}}</strong> for your review.
+      </p>
+      <div class="info-card">
+        <div style="font-size:12px;color:#64748b;text-transform:uppercase;font-weight:600;">Total Amount (Tax Inclusive)</div>
+        <div style="font-size:22px;font-weight:800;color:#0f172a;margin-top:4px;">{{totalAmount}}</div>
+      </div>
+      {{#if notes}}<p style="color:#6b7280;font-size:13px;">{{notes}}</p>{{/if}}
+      <p style="color:#6b7280;font-size:13px;margin-top:20px;">
+        The official quotation document has been attached to this email as a PDF.
+      </p>
+    </div>
+    <div class="footer">&copy; {{organizationName}}</div>
+  </div>
+</body>
+</html>
+`;
+
 @Injectable()
 export class EmailTemplatesSeed extends BaseSeed<EmailTemplateEntity> {
   public get version(): number {
@@ -335,6 +379,15 @@ export class EmailTemplatesSeed extends BaseSeed<EmailTemplateEntity> {
         subject: 'Order {{orderNumber}} Confirmed',
         htmlBody: ORDER_CONFIRMED_HTML,
         category: 'orders',
+        isActive: true,
+      },
+      {
+        id: '00000000-0000-4001-8000-000000000007',
+        slug: 'quotation-sent',
+        name: 'Quotation Sent',
+        subject: 'Quotation {{quoteNumber}} from {{organizationName}}',
+        htmlBody: QUOTATION_SENT_HTML,
+        category: 'quotations',
         isActive: true,
       },
     ];

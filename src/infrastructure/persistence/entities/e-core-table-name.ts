@@ -37,6 +37,8 @@ export enum ECoreTableName {
   Customers             = 'customers',
   Orders                = 'orders',
   OrderItems            = 'order_items',
+  Quotations            = 'quotations',
+  QuotationItems        = 'quotation_items',
   DiscountCoupons       = 'discount_coupons',
   Invoices              = 'invoices',
   Bills                 = 'bills',
