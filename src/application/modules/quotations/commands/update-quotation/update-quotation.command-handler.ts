@@ -43,7 +43,6 @@ export class UpdateQuotationCommandHandler
       if (command.locationId) quotation.locationId = command.locationId;
       if (command.customerId) quotation.customerId = command.customerId;
       if (command.notes !== undefined) quotation.notes = command.notes;
-      if (command.status) quotation.status = command.status as EQuotationStatus;
 
       if (command.items && command.items.length > 0) {
         const totals = calculateQuotationTotals(command.items);

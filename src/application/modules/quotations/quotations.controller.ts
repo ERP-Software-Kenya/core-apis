@@ -30,6 +30,7 @@ import {
   RolesGuard,
   IPageable,
   requireOrganizationId,
+  assertOrgOwnership,
   PdfDocument,
 } from '../../../common';
 import { ERole } from '../../../infrastructure';
@@ -116,11 +117,12 @@ export class QuotationsController {
   @Get(':id')
   public async getById(
     @Param('id') id: string,
-    @CurrentUser() _user: AuthenticatedUser,
+    @CurrentUser() user: AuthenticatedUser,
   ): Promise<QuotationResponse> {
     const query = new GetQuotationQuery();
     query.id = id;
     const result = await this.mediator.execute<GetQuotationQuery, Quotation>(query);
+    assertOrgOwnership(user, result.organizationId, 'Quotation');
     return result;
   }
 
@@ -131,8 +133,12 @@ export class QuotationsController {
   public async exportPdf(
     @Param('id') id: string,
     @Res() res: Response,
-    @CurrentUser() _user: AuthenticatedUser,
+    @CurrentUser() user: AuthenticatedUser,
   ): Promise<void> {
+    const ownershipQuery = new GetQuotationQuery();
+    ownershipQuery.id = id;
+    const quotation = await this.mediator.execute<GetQuotationQuery, Quotation>(ownershipQuery);
+    assertOrgOwnership(user, quotation.organizationId, 'Quotation');
     const query = new ExportQuotationQuery();
     query.id = id;
     const doc: PdfDocument = await this.mediator.execute<ExportQuotationQuery, PdfDocument>(query);
@@ -151,8 +157,12 @@ export class QuotationsController {
   @Get(':id/revisions')
   public async getRevisions(
     @Param('id') id: string,
-    @CurrentUser() _user: AuthenticatedUser,
+    @CurrentUser() user: AuthenticatedUser,
   ): Promise<QuotationResponse[]> {
+    const ownershipQuery = new GetQuotationQuery();
+    ownershipQuery.id = id;
+    const quotation = await this.mediator.execute<GetQuotationQuery, Quotation>(ownershipQuery);
+    assertOrgOwnership(user, quotation.organizationId, 'Quotation');
     const query = new GetQuotationRevisionsQuery();
     query.id = id;
     const result = await this.mediator.execute<GetQuotationRevisionsQuery, Quotation[]>(query);
@@ -186,9 +196,13 @@ export class QuotationsController {
   @Put(':id')
   public async update(
     @Param('id') id: string,
-    @CurrentUser() _user: AuthenticatedUser,
+    @CurrentUser() user: AuthenticatedUser,
     @Body() dto: UpdateQuotationDto,
   ): Promise<QuotationResponse> {
+    const ownershipQuery = new GetQuotationQuery();
+    ownershipQuery.id = id;
+    const existing = await this.mediator.execute<GetQuotationQuery, Quotation>(ownershipQuery);
+    assertOrgOwnership(user, existing.organizationId, 'Quotation');
     const command = new UpdateQuotationCommand();
     command.id = id;
     command.locationId = dto.locationId;
@@ -209,6 +223,10 @@ export class QuotationsController {
     @Param('id') id: string,
     @CurrentUser() user: AuthenticatedUser,
   ): Promise<QuotationResponse> {
+    const ownershipQuery = new GetQuotationQuery();
+    ownershipQuery.id = id;
+    const existing = await this.mediator.execute<GetQuotationQuery, Quotation>(ownershipQuery);
+    assertOrgOwnership(user, existing.organizationId, 'Quotation');
     const command = new ReviseQuotationCommand();
     command.id = id;
     command.createdByUserId = user.dbUserId;
@@ -227,6 +245,10 @@ export class QuotationsController {
     @CurrentUser() user: AuthenticatedUser,
     @Body() dto?: ConvertToOrderDto,
   ): Promise<Order> {
+    const ownershipQuery = new GetQuotationQuery();
+    ownershipQuery.id = id;
+    const existing = await this.mediator.execute<GetQuotationQuery, Quotation>(ownershipQuery);
+    assertOrgOwnership(user, existing.organizationId, 'Quotation');
     const command = new ConvertToOrderCommand();
     command.id = id;
     command.fulfillmentMode = dto?.fulfillmentMode;
@@ -243,9 +265,13 @@ export class QuotationsController {
   @Post(':id/send-email')
   public async sendEmail(
     @Param('id') id: string,
-    @CurrentUser() _user: AuthenticatedUser,
+    @CurrentUser() user: AuthenticatedUser,
     @Body() dto: SendQuotationEmailDto,
   ): Promise<QuotationResponse> {
+    const ownershipQuery = new GetQuotationQuery();
+    ownershipQuery.id = id;
+    const existing = await this.mediator.execute<GetQuotationQuery, Quotation>(ownershipQuery);
+    assertOrgOwnership(user, existing.organizationId, 'Quotation');
     const command = new SendQuotationEmailCommand();
     command.id = id;
     command.recipientEmail = dto.recipientEmail;
