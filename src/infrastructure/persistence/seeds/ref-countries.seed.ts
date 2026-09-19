@@ -30,18 +30,31 @@ export class RefCountriesSeed extends BaseSeed<CountryEntity> {
 
   protected createFilter(): FindOptionsWhere<CountryEntity> { return {}; }
 
+  private static readonly FALLBACK_COUNTRIES: Partial<CountryEntity>[] = [
+    { id: 1, name: 'Kenya', iso2: 'KE', iso3: 'KEN', phoneCode: '254', currency: 'KES' },
+    { id: 2, name: 'India', iso2: 'IN', iso3: 'IND', phoneCode: '91', currency: 'INR' },
+    { id: 3, name: 'United States', iso2: 'US', iso3: 'USA', phoneCode: '1', currency: 'USD' },
+  ];
+
   private async fetchFromB2(key: string): Promise<any[]> {
-    const client = new S3Client({
-      region: process.env.STORAGE_REGION,
-      endpoint: `https://${process.env.STORAGE_ENDPOINT}`,
-      credentials: {
-        accessKeyId: process.env.STORAGE_ACCESS_KEY_ID,
-        secretAccessKey: process.env.STORAGE_SECRET_ACCESS_KEY,
-      },
-    });
-    const res = await client.send(new GetObjectCommand({ Bucket: process.env.STORAGE_BUCKET, Key: key }));
-    const chunks: Buffer[] = [];
-    for await (const chunk of res.Body as Readable) chunks.push(Buffer.isBuffer(chunk) ? chunk : Buffer.from(chunk));
-    return JSON.parse(Buffer.concat(chunks).toString('utf-8'));
+    try {
+      const rawEndpoint = process.env.STORAGE_ENDPOINT || '';
+      const endpoint = rawEndpoint.startsWith('http') ? rawEndpoint : `https://${rawEndpoint}`;
+      const client = new S3Client({
+        region: process.env.STORAGE_REGION,
+        endpoint,
+        credentials: {
+          accessKeyId: process.env.STORAGE_ACCESS_KEY_ID || '',
+          secretAccessKey: process.env.STORAGE_SECRET_ACCESS_KEY || '',
+        },
+      });
+      const res = await client.send(new GetObjectCommand({ Bucket: process.env.STORAGE_BUCKET, Key: key }));
+      const chunks: Buffer[] = [];
+      for await (const chunk of res.Body as Readable) chunks.push(Buffer.isBuffer(chunk) ? chunk : Buffer.from(chunk));
+      return JSON.parse(Buffer.concat(chunks).toString('utf-8'));
+    } catch (err) {
+      this.logger.warn(`Could not fetch ${key} from storage (${(err as Error).message}) — using local fallback countries`);
+      return RefCountriesSeed.FALLBACK_COUNTRIES;
+    }
   }
 }

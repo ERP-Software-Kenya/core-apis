@@ -40,18 +40,32 @@ export class RefStatesSeed extends BaseSeed<StateEntity> {
 
   protected createFilter(): FindOptionsWhere<StateEntity> { return {}; }
 
+  private static readonly FALLBACK_STATES: any[] = [
+    { id: 1, name: 'Nairobi', country_id: 1, country_code: 'KE' },
+    { id: 2, name: 'Maharashtra', country_id: 2, country_code: 'IN' },
+    { id: 3, name: 'Delhi', country_id: 2, country_code: 'IN' },
+    { id: 4, name: 'Gujarat', country_id: 2, country_code: 'IN' },
+  ];
+
   private async fetchFromB2(key: string): Promise<any[]> {
-    const client = new S3Client({
-      region: process.env.STORAGE_REGION,
-      endpoint: `https://${process.env.STORAGE_ENDPOINT}`,
-      credentials: {
-        accessKeyId: process.env.STORAGE_ACCESS_KEY_ID,
-        secretAccessKey: process.env.STORAGE_SECRET_ACCESS_KEY,
-      },
-    });
-    const res = await client.send(new GetObjectCommand({ Bucket: process.env.STORAGE_BUCKET, Key: key }));
-    const chunks: Buffer[] = [];
-    for await (const chunk of res.Body as Readable) chunks.push(Buffer.isBuffer(chunk) ? chunk : Buffer.from(chunk));
-    return JSON.parse(Buffer.concat(chunks).toString('utf-8'));
+    try {
+      const rawEndpoint = process.env.STORAGE_ENDPOINT || '';
+      const endpoint = rawEndpoint.startsWith('http') ? rawEndpoint : `https://${rawEndpoint}`;
+      const client = new S3Client({
+        region: process.env.STORAGE_REGION,
+        endpoint,
+        credentials: {
+          accessKeyId: process.env.STORAGE_ACCESS_KEY_ID || '',
+          secretAccessKey: process.env.STORAGE_SECRET_ACCESS_KEY || '',
+        },
+      });
+      const res = await client.send(new GetObjectCommand({ Bucket: process.env.STORAGE_BUCKET, Key: key }));
+      const chunks: Buffer[] = [];
+      for await (const chunk of res.Body as Readable) chunks.push(Buffer.isBuffer(chunk) ? chunk : Buffer.from(chunk));
+      return JSON.parse(Buffer.concat(chunks).toString('utf-8'));
+    } catch (err) {
+      this.logger.warn(`Could not fetch ${key} from storage (${(err as Error).message}) — using local fallback states`);
+      return RefStatesSeed.FALLBACK_STATES;
+    }
   }
 }
