@@ -1,14 +1,14 @@
 import { Mapper } from '@automapper/core';
 import { InjectMapper } from '@automapper/nestjs';
-import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Post, Put, Query, UploadedFile, UseGuards, UseInterceptors } from '@nestjs/common';
+import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Patch, Post, Put, Query, UploadedFile, UseGuards, UseInterceptors } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { ApiBearerAuth, ApiBody, ApiConsumes, ApiCreatedResponse, ApiOkResponse, ApiOperation, ApiParam, ApiTags } from '@nestjs/swagger';
 import { InjectPinoLogger, PinoLogger } from 'nestjs-pino';
 import { ClerkAuthGuard, CqrsMediator, CurrentUser, IPageable, Roles, RolesGuard, AuthenticatedUser, assertOrgOwnership } from '../../../common';
 import { ERole } from '../../../infrastructure';
-import { AddProductImageCommand, CreateProductCommand, DeleteProductCommand, LinkProductSupplierCommand, UnlinkProductSupplierCommand, UpdateProductCommand, UpdateProductSupplierCommand } from './commands';
+import { AddProductImageCommand, CreateProductCommand, DeleteProductCommand, LinkProductSupplierCommand, UnlinkProductSupplierCommand, UpdateProductCommand, UpdateProductPriceCommand, UpdateProductSupplierCommand } from './commands';
 import { Product, ProductSupplier } from './domain';
-import { CreateProductRequest, GetNextSkuRequest, GetProductImageUploadUrlRequest, LinkProductSupplierRequest, ListProductsRequest, NextSkuResponse, ProductImageResponse, ProductImageUploadUrlResponse, ProductResponse, ProductSupplierResponse, ProductsPagedResponse, SearchProductsRequest, UpdateProductRequest, UpdateProductSupplierRequest } from './models';
+import { CreateProductRequest, GetNextSkuRequest, GetProductImageUploadUrlRequest, LinkProductSupplierRequest, ListProductsRequest, NextSkuResponse, ProductImageResponse, ProductImageUploadUrlResponse, ProductResponse, ProductSupplierResponse, ProductsPagedResponse, SearchProductsRequest, UpdateProductPriceRequest, UpdateProductRequest, UpdateProductSupplierRequest } from './models';
 import { GetNextSkuQuery, GetProductQuery, GetProductImageUploadUrlQuery, ListProductImagesQuery, ListProductSuppliersQuery, ListProductsQuery, SearchProductsQuery } from './queries';
 
 @ApiBearerAuth()
@@ -126,6 +126,26 @@ export class ProductsController {
     const command = new DeleteProductCommand();
     command.id    = id;
     return this.mediator.execute<DeleteProductCommand, boolean>(command);
+  }
+
+  @ApiOperation({ summary: 'Update pricing tiers for a product' })
+  @ApiOkResponse({ type: ProductResponse })
+  @ApiParam({ name: 'id', description: 'Product UUID' })
+  @HttpCode(HttpStatus.OK)
+  @Patch(':id/price')
+  public async updatePrice(
+    @Param('id') id: string,
+    @Body() body: UpdateProductPriceRequest,
+    @CurrentUser() user: AuthenticatedUser,
+  ): Promise<ProductResponse> {
+    const fetchQuery = new GetProductQuery();
+    fetchQuery.id = id;
+    const existing = await this.mediator.execute<GetProductQuery, Product>(fetchQuery);
+    assertOrgOwnership(user, existing.organizationId, 'Product');
+    const command = this.mapper.map(body, UpdateProductPriceRequest, UpdateProductPriceCommand);
+    command.id = id;
+    const result = await this.mediator.execute<UpdateProductPriceCommand, Product>(command);
+    return this.mapper.map(result, Product, ProductResponse);
   }
 
   @ApiOperation({ summary: 'Upload an image for a product (stored in B2; key saved to product_images)' })
