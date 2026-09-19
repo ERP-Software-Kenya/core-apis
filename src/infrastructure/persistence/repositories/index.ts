@@ -66,3 +66,7 @@ export * from './customer-type-rule.repo';
 export * from './trip-stop.repo';
 export * from './user-device-token.repo';
 export * from './vehicle-location.repo';
+export * from './unpublished-stock-po.repo';
+export * from './unpublished-stock-po-payment.repo';
+export * from './unpublished-stock-pi.repo';
+export * from './unpublished-stock-pi-allocation.repo';
