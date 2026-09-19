@@ -94,3 +94,8 @@ export const CUSTOMER_TYPE_RULE_REPO       = 'CUSTOMER_TYPE_RULE_REPO';
 // ─── Field App ───────────────────────────────────────────────────────────────
 export const TRIP_STOP_REPO                = 'TRIP_STOP_REPO';
 export const USER_DEVICE_TOKEN_REPO        = 'USER_DEVICE_TOKEN_REPO';
+
+export const UNPUBLISHED_STOCK_PO_REPO            = 'UNPUBLISHED_STOCK_PO_REPO';
+export const UNPUBLISHED_STOCK_PO_PAYMENT_REPO    = 'UNPUBLISHED_STOCK_PO_PAYMENT_REPO';
+export const UNPUBLISHED_STOCK_PI_REPO            = 'UNPUBLISHED_STOCK_PI_REPO';
+export const UNPUBLISHED_STOCK_PI_ALLOCATION_REPO = 'UNPUBLISHED_STOCK_PI_ALLOCATION_REPO';
