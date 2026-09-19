@@ -46,12 +46,12 @@ export class FinalizeSalesReturnCommandHandler implements ICommandHandler<Finali
     await this.dataSource.transaction(async (manager) => {
       const ret = await manager.findOne(SalesReturnEntity, {
         where: { id: command.id },
-        relations: { items: true },
         lock: { mode: 'pessimistic_write' },
       });
       if (!ret) throw new NotFoundException(`Sales return ${command.id} not found`);
       if (ret.status === ESalesReturnStatus.Finalized) return;
       if (ret.status === ESalesReturnStatus.Cancelled) throw new BadRequestException('Cancelled sales returns cannot be finalized');
+      ret.items = await manager.find(SalesReturnItemEntity, { where: { salesReturnId: ret.id } });
 
       const bill = await manager.findOne(BillEntity, { where: { id: ret.billId }, relations: { items: true } });
       if (!bill) throw new NotFoundException(`Bill ${ret.billId} not found`);
@@ -123,7 +123,7 @@ export class FinalizeSalesReturnCommandHandler implements ICommandHandler<Finali
         quantityReserved: 0,
         reorderLevel: 0,
       }));
-      inv = { ...entity } as never;
+      inv = { ...entity };
     }
     const before = Number(inv.quantityOnHand);
     const updated = await this.inventoryRepo.addStockAsync(inv.id, Number(item.quantity), undefined, manager);
@@ -153,7 +153,7 @@ export class FinalizeSalesReturnCommandHandler implements ICommandHandler<Finali
         quantityReserved: 0,
         reorderLevel: 0,
       }));
-      inv = { ...entity } as never;
+      inv = { ...entity };
     }
     const before = Number(inv.quantityOnHand ?? 0);
     await manager.save(StockMovementEntity, manager.create(StockMovementEntity, {
