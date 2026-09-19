@@ -4,7 +4,7 @@ export class Migration1789812283669 implements MigrationInterface {
     name = 'Migration1789812283669'
 
     public async up(queryRunner: QueryRunner): Promise<void> {
-        await queryRunner.query(`ALTER TABLE "core"."locations" DROP CONSTRAINT "FK__locations__parent"`);
+        // await queryRunner.query(`ALTER TABLE "core"."locations" DROP CONSTRAINT "FK__locations__parent"`);
         await queryRunner.query(`CREATE TABLE "core"."unpublished_stock_purchase_items" ("id" uuid NOT NULL DEFAULT uuid_generate_v4(), "purchase_order_id" uuid NOT NULL, "product_id" uuid NOT NULL, "quantity_ordered" numeric(18,4) NOT NULL, "quantity_received" numeric(18,4) NOT NULL DEFAULT '0', "quantity_allocated" numeric(18,4) NOT NULL DEFAULT '0', "unit_cost" numeric(18,4) NOT NULL, "total_cost" numeric(18,4) NOT NULL DEFAULT '0', "pack_quantity" numeric(18,4), "pack_size_snapshot" integer, "created_at" TIMESTAMP NOT NULL DEFAULT now(), "updated_at" TIMESTAMP DEFAULT now(), CONSTRAINT "PK_unpublished_stock_purchase_items" PRIMARY KEY ("id"))`);
         await queryRunner.query(`CREATE TYPE "core"."unpublished_stock_purchase_orders_status_enum" AS ENUM('draft', 'ordered', 'partially_received', 'received', 'partially_allocated', 'allocated', 'cancelled')`);
         await queryRunner.query(`CREATE TABLE "core"."unpublished_stock_purchase_orders" ("id" uuid NOT NULL DEFAULT uuid_generate_v4(), "organization_id" uuid NOT NULL, "supplier_id" uuid NOT NULL, "created_by_id" uuid, "branch_id" uuid, "po_number" character varying(50) NOT NULL, "status" "core"."unpublished_stock_purchase_orders_status_enum" NOT NULL DEFAULT 'draft', "expected_at" TIMESTAMP, "received_at" TIMESTAMP, "total_amount" numeric(18,4) NOT NULL DEFAULT '0', "amount_paid" numeric(18,4) NOT NULL DEFAULT '0', "notes" text, "created_at" TIMESTAMP NOT NULL DEFAULT now(), "updated_at" TIMESTAMP DEFAULT now(), CONSTRAINT "UQ_fc4192ac1be386dcd634e6fa90e" UNIQUE ("po_number"), CONSTRAINT "PK_unpublished_stock_purchase_orders" PRIMARY KEY ("id"))`);
@@ -38,7 +38,7 @@ export class Migration1789812283669 implements MigrationInterface {
         await queryRunner.query(`DROP TABLE "core"."unpublished_stock_purchase_orders"`);
         await queryRunner.query(`DROP TYPE "core"."unpublished_stock_purchase_orders_status_enum"`);
         await queryRunner.query(`DROP TABLE "core"."unpublished_stock_purchase_items"`);
-        await queryRunner.query(`ALTER TABLE "core"."locations" ADD CONSTRAINT "FK__locations__parent" FOREIGN KEY ("parent_id") REFERENCES "core"."locations"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`);
+        // await queryRunner.query(`ALTER TABLE "core"."locations" ADD CONSTRAINT "FK__locations__parent" FOREIGN KEY ("parent_id") REFERENCES "core"."locations"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`);
     }
 
 }
