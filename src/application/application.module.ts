@@ -35,6 +35,7 @@ import { LocationsModule } from './modules/locations';
 import { BranchesModule } from './modules/branches';
 import { ProductLogsModule } from './modules/product-logs';
 import { UnpublishedStockModule } from './modules/unpublished-stock';
+import { UnpublishedStockPurchaseOrdersModule } from './modules/unpublished-stock-purchase-orders';
 import { SharedModule } from './shared';
 import { CommonUtilityModule } from './modules/common-utility';
 import { VehiclesModule } from './modules/vehicles';
@@ -92,6 +93,7 @@ export class ApplicationModule {
         BranchesModule,
         ProductLogsModule,
         UnpublishedStockModule,
+        UnpublishedStockPurchaseOrdersModule,
         SharedModule,
         CommonUtilityModule,
         VehiclesModule,

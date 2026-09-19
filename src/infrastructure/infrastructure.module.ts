@@ -76,6 +76,10 @@ import {
   TripStopRepo,
   UserDeviceTokenRepo,
   VehicleLocationRepo,
+  UnpublishedStockPORepo,
+  UnpublishedStockPOPaymentRepo,
+  UnpublishedStockPIRepo,
+  UnpublishedStockPIAllocationRepo,
 } from './persistence';
 
 import {
@@ -147,6 +151,10 @@ import {
   TRIP_STOP_REPO,
   USER_DEVICE_TOKEN_REPO,
   VEHICLE_LOCATION_REPO,
+  UNPUBLISHED_STOCK_PO_REPO,
+  UNPUBLISHED_STOCK_PO_PAYMENT_REPO,
+  UNPUBLISHED_STOCK_PI_REPO,
+  UNPUBLISHED_STOCK_PI_ALLOCATION_REPO,
 } from '../application/constants';
 
 @Module({})
@@ -242,6 +250,10 @@ export class InfrastructureModule {
         { provide: TRIP_STOP_REPO, useClass: TripStopRepo },
         { provide: USER_DEVICE_TOKEN_REPO, useClass: UserDeviceTokenRepo },
         { provide: VEHICLE_LOCATION_REPO, useClass: VehicleLocationRepo },
+        { provide: UNPUBLISHED_STOCK_PO_REPO, useClass: UnpublishedStockPORepo },
+        { provide: UNPUBLISHED_STOCK_PO_PAYMENT_REPO, useClass: UnpublishedStockPOPaymentRepo },
+        { provide: UNPUBLISHED_STOCK_PI_REPO, useClass: UnpublishedStockPIRepo },
+        { provide: UNPUBLISHED_STOCK_PI_ALLOCATION_REPO, useClass: UnpublishedStockPIAllocationRepo },
       ],
       exports: [
         EntityMapperProfile,
@@ -312,6 +324,10 @@ export class InfrastructureModule {
         TRIP_STOP_REPO,
         USER_DEVICE_TOKEN_REPO,
         VEHICLE_LOCATION_REPO,
+        UNPUBLISHED_STOCK_PO_REPO,
+        UNPUBLISHED_STOCK_PO_PAYMENT_REPO,
+        UNPUBLISHED_STOCK_PI_REPO,
+        UNPUBLISHED_STOCK_PI_ALLOCATION_REPO,
       ],
     };
   }
