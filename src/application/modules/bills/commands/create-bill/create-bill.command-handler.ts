@@ -51,7 +51,7 @@ export class CreateBillCommandHandler implements ICommandHandler<CreateBillComma
       for (const item of bill.items ?? []) {
         const product = await this.productRepo.getAsync(item.productId);
         const officialPrice = Number(product?.retailPrice ?? 0);
-        blackAmount += (Number(item.unitPrice) - officialPrice) * Number(item.quantity);
+        blackAmount += Math.max(0, (Number(item.unitPrice) - officialPrice) * Number(item.quantity));
       }
       bill.blackAmount = blackAmount;
       if ((command.facilitatorUserId || command.facilitatorName) && command.commissionPct) {
