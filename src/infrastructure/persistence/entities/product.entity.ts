@@ -110,6 +110,11 @@ export class ProductEntity {
   @Column({ name: 'pack_size', type: 'integer', nullable: true })
   public packSize?: number;
 
+  /** Gross weight per base unit in kg (with packaging) — used for freight and delivery load calculation */
+  @AutoMap()
+  @Column({ name: 'weight_kg', type: 'decimal', precision: 10, scale: 4, nullable: true })
+  public weightKg?: number;
+
   @AutoMap()
   @Column({ type: 'boolean', default: true })
   public isActive: boolean;

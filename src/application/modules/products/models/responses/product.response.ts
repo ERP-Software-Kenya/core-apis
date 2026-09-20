@@ -73,6 +73,10 @@ export class ProductResponse {
 
   @ApiPropertyOptional()
   @AutoMap()
+  public weightKg?: number;
+
+  @ApiPropertyOptional()
+  @AutoMap()
   public isActive?: boolean;
 
   @ApiPropertyOptional()
