@@ -54,6 +54,9 @@ export class Product {
   public packSize?: number;
 
   @AutoMap()
+  public weightKg?: number;
+
+  @AutoMap()
   public isActive?: boolean;
 
   @AutoMap(() => Date)
