@@ -110,8 +110,7 @@ export class StockOrchestrationService {
         throw new BadRequestException(`Cannot publish more than available unpublished stock: ${unpublished.quantityOnHand}`);
       }
       const { organizationId, locationId, productId } = unpublished;
-      const inv = await this.inventoryRepo.findByOrgLocationProductAsync(organizationId, locationId, productId, manager);
-      if (!inv) throw new BadRequestException('No published inventory record found for this product/location. Create one first.');
+      const inv = await this.inventoryRepo.findOrCreateAsync(organizationId, locationId, productId, manager);
       const unpBefore  = Number(unpublished.quantityOnHand);
       const invBefore  = Number(inv.quantityOnHand);
       const unitCost   = unpublished.averageCost ? Number(unpublished.averageCost) : undefined;
