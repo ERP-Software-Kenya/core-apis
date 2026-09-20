@@ -50,4 +50,7 @@ export class UpdateProductCommand extends CommandBase {
 
   @AutoMap()
   public packSize?: number;
+
+  @AutoMap()
+  public weightKg?: number;
 }

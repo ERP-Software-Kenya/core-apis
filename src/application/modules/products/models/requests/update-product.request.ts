@@ -100,4 +100,11 @@ export class UpdateProductRequest {
   @Min(1)
   @AutoMap()
   public packSize?: number;
+
+  @ApiPropertyOptional()
+  @IsOptional()
+  @IsNumber()
+  @Min(0)
+  @AutoMap()
+  public weightKg?: number;
 }

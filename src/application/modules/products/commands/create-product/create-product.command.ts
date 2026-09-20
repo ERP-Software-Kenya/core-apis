@@ -46,6 +46,9 @@ export class CreateProductCommand extends CommandBase {
   public packSize?: number;
 
   @AutoMap()
+  public weightKg?: number;
+
+  @AutoMap()
   public organizationId?: string;
 
   @AutoMap()
