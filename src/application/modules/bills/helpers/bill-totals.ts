@@ -1,4 +1,5 @@
 import { randomUUID } from 'crypto';
+import { ESaleType } from '../../../../infrastructure/persistence/entities';
 import type { Bill, BillItem } from '../domain';
 
 /** Money columns are decimal(18,4) — keep every derived value at the same precision. */
@@ -41,11 +42,20 @@ export function applyBillTotals(bill: Bill): Bill {
 }
 
 /**
- * BILL-YYYYMMDD-<8 hex>. Random suffix rather than a per-org counter so no read
- * is needed before insert; the unique constraint on bill_number is the backstop.
- * ponytail: random suffix, switch to a DB sequence if a gapless daily counter is required.
+ * BILL-YYYYMMDD-<8 hex> (for white sales) or BLK-YYYYMMDD-<8 hex> (for black sales).
+ * Random suffix rather than a per-org counter so no read is needed before insert;
+ * the unique constraint on bill_number is the backstop.
  */
-export function generateBillNumber(now: Date = new Date()): string {
-  const day = now.toISOString().slice(0, 10).replace(/-/g, '');
-  return `BILL-${day}-${randomUUID().replace(/-/g, '').slice(0, 8).toUpperCase()}`;
+export function generateBillNumber(saleTypeOrDate?: ESaleType | string | Date, now: Date = new Date()): string {
+  let saleType: ESaleType | string | undefined;
+  let date = now;
+  if (saleTypeOrDate instanceof Date) {
+    date = saleTypeOrDate;
+  } else {
+    saleType = saleTypeOrDate;
+  }
+  const day = date.toISOString().slice(0, 10).replace(/-/g, '');
+  const prefix = saleType === ESaleType.Black ? 'BLK' : 'BILL';
+  return `${prefix}-${day}-${randomUUID().replace(/-/g, '').slice(0, 8).toUpperCase()}`;
 }
+

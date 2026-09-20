@@ -61,6 +61,8 @@ export class ListBillsRequest {
   @ApiPropertyOptional() @IsOptional() @IsString() @AutoMap() public billNumber?: string;
   @ApiPropertyOptional({ enum: EBillStatus }) @IsOptional() @IsEnum(EBillStatus) @AutoMap() public status?: EBillStatus;
   @ApiPropertyOptional({ enum: EPaymentMethod }) @IsOptional() @IsEnum(EPaymentMethod) @AutoMap() public paymentMethod?: EPaymentMethod;
+  @ApiPropertyOptional({ enum: ESaleType }) @IsOptional() @IsEnum(ESaleType) @AutoMap() public saleType?: ESaleType;
+  @ApiPropertyOptional({ enum: ESaleType }) @IsOptional() @IsEnum(ESaleType) @AutoMap() public saleTypeNot?: ESaleType;
   @ApiPropertyOptional() @IsOptional() @IsString() @AutoMap() public $orderBy?: string;
   @ApiPropertyOptional() @IsOptional() @IsString() @AutoMap() public $order?: string;
 }
