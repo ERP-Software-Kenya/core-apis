@@ -5,7 +5,7 @@ import { ApiBearerAuth, ApiCreatedResponse, ApiOkResponse, ApiOperation, ApiPara
 import { InjectPinoLogger, PinoLogger } from 'nestjs-pino';
 import { AuthenticatedUser, ClerkAuthGuard, CqrsMediator, CurrentUser, IPageable, Roles, RolesGuard, assertOrgOwnership } from '../../../common';
 import { ERole } from '../../../infrastructure';
-import { CreateBranchCommand, UpdateBranchCommand } from './commands';
+import { CreateBranchCommand, SetMainBranchCommand, UpdateBranchCommand } from './commands';
 import { Branch } from './domain';
 import {
   BranchResponse,
@@ -127,6 +127,20 @@ export class BranchesController {
     command.organizationId = user.organizationId;
     command.isActive = false;
     const result = await this.mediator.execute<UpdateBranchCommand, Branch>(command);
+    return this.mapper.map(result, Branch, BranchResponse);
+  }
+
+  @ApiOperation({ summary: 'Set branch as main branch for the organisation' })
+  @ApiOkResponse({ type: BranchResponse })
+  @ApiParam({ name: 'id', description: 'Branch UUID' })
+  @HttpCode(HttpStatus.OK)
+  @Roles(ERole.OrgAdmin, ERole.SuperAdmin)
+  @Patch(':id/set-main')
+  public async setMain(@Param('id') id: string, @CurrentUser() user: AuthenticatedUser): Promise<BranchResponse> {
+    const command = new SetMainBranchCommand();
+    command.id = id;
+    command.organizationId = user.organizationId;
+    const result = await this.mediator.execute<SetMainBranchCommand, Branch>(command);
     return this.mapper.map(result, Branch, BranchResponse);
   }
 }

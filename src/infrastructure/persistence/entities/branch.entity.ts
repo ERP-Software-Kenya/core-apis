@@ -59,6 +59,10 @@ export class BranchEntity {
   @Column({ name: 'is_active', type: 'boolean', default: true })
   public isActive: boolean;
 
+  @AutoMap()
+  @Column({ name: 'is_main', type: 'boolean', default: false })
+  public isMain: boolean;
+
   @AutoMap(() => Date)
   @CreateDateColumn({ name: 'created_at', type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
   public createdAt: Date;
