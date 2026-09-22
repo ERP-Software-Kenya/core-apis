@@ -101,4 +101,10 @@ export class CreateProductRequest {
   @Min(0)
   @AutoMap()
   public weightKg?: number;
+
+  @ApiPropertyOptional()
+  @IsOptional()
+  @IsUUID()
+  @AutoMap()
+  public taxId?: string;
 }

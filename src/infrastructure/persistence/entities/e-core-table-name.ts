@@ -16,6 +16,7 @@ export enum ECoreTableName {
   Permissions           = 'permissions',
   RolePermissions       = 'role_permissions',
   Categories            = 'categories',
+  Taxes                 = 'taxes',
   Products              = 'products',
   ProductImages         = 'product_images',
   ProductSuppliers      = 'product_suppliers',

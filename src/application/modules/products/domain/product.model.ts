@@ -1,5 +1,6 @@
 import { AutoMap } from '@automapper/classes';
 import { EProductUnit } from '../../../../infrastructure';
+import { Tax } from '../../taxes/domain';
 
 export class Product {
   @AutoMap()
@@ -55,6 +56,12 @@ export class Product {
 
   @AutoMap()
   public weightKg?: number;
+
+  @AutoMap()
+  public taxId?: string;
+
+  @AutoMap(() => Tax)
+  public tax?: Tax;
 
   @AutoMap()
   public isActive?: boolean;

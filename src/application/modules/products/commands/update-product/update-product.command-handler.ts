@@ -32,6 +32,11 @@ export class UpdateProductCommandHandler implements ICommandHandler<UpdateProduc
       if (patch[key] !== undefined && patch[key] !== existing[key]) {
         changedFields.push({ field: key, oldValue: existing[key], newValue: patch[key] });
         (existing as unknown as Record<string, unknown>)[key] = patch[key];
+        // Clear stale loaded relation when its FK column changes so TypeORM
+        // derives the DB FK from taxId, not from the previously-loaded object.
+        if (key === 'taxId') {
+          (existing as unknown as Record<string, unknown>)['tax'] = null;
+        }
       }
     });
 
