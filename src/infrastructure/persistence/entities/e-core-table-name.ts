@@ -109,4 +109,7 @@ export enum ECoreTableName {
 
   // ─── CI / Deploy verification ─────────────────────────────────────────────
   DeploymentChecks      = 'deployment_checks',
+
+  // ─── Branch-wise pricing ─────────────────────────────────────────────────
+  ProductBranchPrices   = 'product_branch_prices',
 }
