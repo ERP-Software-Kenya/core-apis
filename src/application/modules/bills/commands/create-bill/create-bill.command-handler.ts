@@ -48,6 +48,14 @@ export class CreateBillCommandHandler implements ICommandHandler<CreateBillComma
     bill.commissionAmount = 0;
     bill.billNumber       = generateBillNumber();
     bill.status           = EBillStatus.Initiated;
+
+    for (const item of bill.items ?? []) {
+      if (item.taxRate == null) {
+        const product = await this.productRepo.getAsync(item.productId);
+        item.taxRate = product?.tax?.rate ?? 0;
+      }
+    }
+
     applyBillTotals(bill);
 
     if (saleType === ESaleType.Black) {

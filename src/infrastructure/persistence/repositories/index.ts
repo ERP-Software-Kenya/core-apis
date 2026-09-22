@@ -71,3 +71,4 @@ export * from './unpublished-stock-po-payment.repo';
 export * from './unpublished-stock-pi.repo';
 export * from './unpublished-stock-pi-allocation.repo';
 export * from './product-branch-price.repo';
+export * from './tax.repo';

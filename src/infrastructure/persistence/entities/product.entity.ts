@@ -13,6 +13,7 @@ import {
 import { CORE_SCHEMA, ECoreTableName } from './e-core-table-name';
 import { OrganizationEntity } from './organization.entity';
 import { CategoryEntity } from './category.entity';
+import { TaxEntity } from './tax.entity';
 import { InventoryEntity } from './inventory.entity';
 import { PurchaseItemEntity } from './purchase-item.entity';
 import { UserEntity } from './user.entity';
@@ -116,6 +117,10 @@ export class ProductEntity {
   public weightKg?: number;
 
   @AutoMap()
+  @Column({ name: 'tax_id', type: 'uuid', nullable: true })
+  public taxId?: string;
+
+  @AutoMap()
   @Column({ type: 'boolean', default: true })
   public isActive: boolean;
 
@@ -150,6 +155,15 @@ export class ProductEntity {
     foreignKeyConstraintName: `FK__${ECoreTableName.Products}__${ECoreTableName.Categories}`,
   })
   public category?: CategoryEntity;
+
+  @AutoMap(() => TaxEntity)
+  @ManyToOne(() => TaxEntity, { nullable: true, eager: false })
+  @JoinColumn({
+    name: 'tax_id',
+    referencedColumnName: 'id',
+    foreignKeyConstraintName: `FK__${ECoreTableName.Products}__${ECoreTableName.Taxes}`,
+  })
+  public tax?: TaxEntity;
 
   @AutoMap(() => UserEntity)
   @ManyToOne(() => UserEntity, { nullable: true })

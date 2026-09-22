@@ -53,4 +53,7 @@ export class UpdateProductCommand extends CommandBase {
 
   @AutoMap()
   public weightKg?: number;
+
+  @AutoMap()
+  public taxId?: string;
 }

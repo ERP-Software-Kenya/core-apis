@@ -50,6 +50,7 @@ import { TripOperationsModule } from './modules/trip-operations';
 import { CqrsMediator, CommonModule } from '../common';
 import { MailTemplatesModule } from './modules/mail-templates';
 import { ProductBranchPricesModule } from './modules/product-branch-prices';
+import { TaxesModule } from './modules/taxes';
 
 
 @Module({})
@@ -108,6 +109,7 @@ export class ApplicationModule {
         CommonModule,
         MailTemplatesModule,
         ProductBranchPricesModule,
+        TaxesModule,
       ],
       controllers: [],
       providers: [CqrsMediator],
