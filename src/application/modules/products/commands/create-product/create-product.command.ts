@@ -49,6 +49,9 @@ export class CreateProductCommand extends CommandBase {
   public weightKg?: number;
 
   @AutoMap()
+  public taxId?: string;
+
+  @AutoMap()
   public organizationId?: string;
 
   @AutoMap()

@@ -1,12 +1,14 @@
-import { createMap, Mapper } from '@automapper/core';
+import { createMap, forMember, mapWith, Mapper } from '@automapper/core';
 import { AutomapperProfile, InjectMapper } from '@automapper/nestjs';
 import { Injectable } from '@nestjs/common';
-import { ProductEntity, ProductImageEntity, ProductSupplierEntity } from '../../../../infrastructure';
+import { ProductEntity, ProductImageEntity, ProductSupplierEntity, TaxEntity } from '../../../../infrastructure';
 import { Product, ProductImage, ProductSupplier } from '../domain';
 import { CreateProductRequest, UpdateProductRequest, UpdateProductPriceRequest, ProductResponse, ProductImageResponse, ListProductsRequest, SearchProductsRequest } from '../models';
 import { AddProductImageCommand, CreateProductCommand, UpdateProductCommand, UpdateProductPriceCommand, LinkProductSupplierCommand, UpdateProductSupplierCommand } from '../commands';
 import { ListProductsQuery, SearchProductsQuery } from '../queries';
 import { ProductSupplierResponse, LinkProductSupplierRequest, UpdateProductSupplierRequest } from '../models';
+import { Tax } from '../../taxes/domain';
+import { TaxResponse } from '../../taxes/models';
 
 @Injectable()
 export class ProductProfile extends AutomapperProfile {
@@ -14,7 +16,15 @@ export class ProductProfile extends AutomapperProfile {
 
   public get profile() {
     return (mapper: Mapper) => {
-      createMap(mapper, ProductEntity, Product);
+      createMap(
+        mapper,
+        ProductEntity,
+        Product,
+        forMember(
+          (dest) => dest.tax,
+          mapWith(Tax, TaxEntity, (src) => src.tax),
+        ),
+      );
       createMap(mapper, Product, ProductEntity);
       createMap(mapper, ProductImageEntity, ProductImage);
       createMap(mapper, ProductImage, ProductImageEntity);
@@ -30,7 +40,17 @@ export class ProductProfile extends AutomapperProfile {
       createMap(mapper, UpdateProductCommand, Product);
       createMap(mapper, UpdateProductPriceRequest, UpdateProductPriceCommand);
       createMap(mapper, UpdateProductPriceCommand, Product);
-      createMap(mapper, Product, ProductResponse);
+      createMap(mapper, TaxEntity, Tax);
+      createMap(mapper, Tax, TaxResponse);
+      createMap(
+        mapper,
+        Product,
+        ProductResponse,
+        forMember(
+          (dest) => dest.tax,
+          mapWith(TaxResponse, Tax, (src) => src.tax),
+        ),
+      );
       createMap(mapper, LinkProductSupplierRequest, LinkProductSupplierCommand);
       createMap(mapper, LinkProductSupplierCommand, ProductSupplier);
       createMap(mapper, UpdateProductSupplierRequest, UpdateProductSupplierCommand);

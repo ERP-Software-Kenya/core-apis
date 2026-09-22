@@ -16,6 +16,7 @@ export enum ECoreTableName {
   Permissions           = 'permissions',
   RolePermissions       = 'role_permissions',
   Categories            = 'categories',
+  Taxes                 = 'taxes',
   Products              = 'products',
   ProductImages         = 'product_images',
   ProductSuppliers      = 'product_suppliers',
@@ -109,4 +110,7 @@ export enum ECoreTableName {
 
   // ─── CI / Deploy verification ─────────────────────────────────────────────
   DeploymentChecks      = 'deployment_checks',
+
+  // ─── Branch-wise pricing ─────────────────────────────────────────────────
+  ProductBranchPrices   = 'product_branch_prices',
 }

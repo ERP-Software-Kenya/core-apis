@@ -18,6 +18,7 @@ import { CategoriesSeed } from "./categories.seed";
 import { OrganizationEntity } from "../entities";
 import { SEED_ORG_ID } from "./seed.constants";
 import { PageAccessSeed } from './page-access.seed';
+import { TaxesDefaultSeed } from './taxes-default.seed';
 
 
 /**
@@ -45,7 +46,8 @@ export class SeedingService {
     private readonly vehicleTypesSeed: VehicleTypesSeed,
     private readonly categoriesSeed: CategoriesSeed,
     private readonly productsSeed: ProductsSeed,
-    private readonly pageAccessSeed: PageAccessSeed
+    private readonly pageAccessSeed: PageAccessSeed,
+    private readonly taxesDefaultSeed: TaxesDefaultSeed,
 
     // private readonly demoOrgDataSeed: DemoOrgDataSeed,
   ) {}
@@ -71,6 +73,7 @@ export class SeedingService {
       await this.categoriesSeed.runAsync();
       await this.productsSeed.runAsync();
     }
+    await this.taxesDefaultSeed.runAsync();
     this.logger.info("All seeds applied successfully");
   }
 }

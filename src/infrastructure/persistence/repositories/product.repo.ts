@@ -3,7 +3,7 @@ import { InjectMapper } from '@automapper/nestjs';
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { InjectPinoLogger, PinoLogger } from 'nestjs-pino';
-import { FindManyOptions, FindOptionsWhere, ILike, Repository } from 'typeorm';
+import { FindManyOptions, FindOptionsWhere, ILike, IsNull, Repository } from 'typeorm';
 import { BaseRepo, isNilOrEmpty } from '../../../common';
 import { Filter, PageableFilter } from '../../../common';
 import { ProductEntity } from '../entities';
@@ -26,6 +26,17 @@ export class ProductRepo extends BaseRepo<ProductEntity, Product, string, Pageab
 
   public override get specialFilterFields(): (keyof PageableFilter<ProductFilter>)[] {
     return [...super.specialFilterFields, 'search'];
+  }
+
+  public override async getAsync(id: string): Promise<Product> {
+    const entity = await this.internalRepo.findOne({
+      where: { id, deletedAt: IsNull() } as FindOptionsWhere<ProductEntity>,
+      relations: ['tax'],
+    });
+    if (!entity) {
+      return null;
+    }
+    return this.mapper.map(entity, ProductEntity, Product);
   }
 
   protected override modifyFindOption(findOpts: FindManyOptions<ProductEntity>, filterObj: Filter<ProductFilter> | PageableFilter<ProductFilter>): void {

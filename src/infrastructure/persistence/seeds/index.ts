@@ -1,5 +1,6 @@
 // Standard barrel file
 export * from "./categories.seed";
+export * from "./taxes-default.seed";
 export * from "./inventory.seed";
 export * from "./products.seed";
 export * from "./purchase-orders.seed";
@@ -33,6 +34,7 @@ import { EmailTemplatesSeed } from "./email-templates.seed";
 import { ProductsSeed } from "./products.seed";
 import { CategoriesSeed } from "./categories.seed";
 import { PageAccessSeed } from "./page-access.seed";
+import { TaxesDefaultSeed } from "./taxes-default.seed";
 
 export default [
   SeedingService,
@@ -50,5 +52,6 @@ export default [
   EmailTemplatesSeed,
   CategoriesSeed,
   ProductsSeed,
-  PageAccessSeed
+  PageAccessSeed,
+  TaxesDefaultSeed,
 ];

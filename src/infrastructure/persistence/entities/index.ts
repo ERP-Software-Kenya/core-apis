@@ -94,6 +94,8 @@ import { UnpublishedStockPurchaseOrderEntity } from './unpublished-stock-purchas
 import { UnpublishedStockPurchaseItemEntity } from './unpublished-stock-purchase-item.entity';
 import { UnpublishedStockPurchaseItemAllocationEntity } from './unpublished-stock-purchase-item-allocation.entity';
 import { UnpublishedStockPOPaymentEntity } from './unpublished-stock-po-payment.entity';
+import { ProductBranchPriceEntity } from './product-branch-price.entity';
+import { TaxEntity } from './tax.entity';
 
 export * from './branch.entity';
 export * from './location.entity';
@@ -193,6 +195,8 @@ export * from './unpublished-stock-purchase-order.entity';
 export * from './unpublished-stock-purchase-item.entity';
 export * from './unpublished-stock-purchase-item-allocation.entity';
 export * from './unpublished-stock-po-payment.entity';
+export * from './product-branch-price.entity';
+export * from './tax.entity';
 
 export default [
   BranchEntity,
@@ -290,4 +294,6 @@ export default [
   UnpublishedStockPurchaseItemEntity,
   UnpublishedStockPurchaseItemAllocationEntity,
   UnpublishedStockPOPaymentEntity,
+  ProductBranchPriceEntity,
+  TaxEntity,
 ];

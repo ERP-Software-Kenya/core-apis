@@ -24,3 +24,5 @@ export * from './1789767169439-migration';
 export * from './1789812283669-migration';
 export * from './1789813658587-migration';
 export * from './1789923611197-migration';
+export * from './1790014638423-migration';
+export * from './1790050869233-migration';
