@@ -1,6 +1,6 @@
 import { AutoMap } from '@automapper/classes';
 import { EOrder, Filter, QueryBase } from '../../../../../common';
-import { EBillStatus, EPaymentMethod } from '../../../../../infrastructure/persistence/entities';
+import { EBillStatus, EPaymentMethod, ESaleType } from '../../../../../infrastructure/persistence/entities';
 import { BillFilter } from '../../domain';
 
 export class ListBillsQuery extends QueryBase implements Filter<BillFilter> {
@@ -12,6 +12,8 @@ export class ListBillsQuery extends QueryBase implements Filter<BillFilter> {
   @AutoMap() public billNumber?: string;
   @AutoMap(() => String) public status?: EBillStatus;
   @AutoMap(() => String) public paymentMethod?: EPaymentMethod;
+  @AutoMap(() => String) public saleType?: ESaleType;
+  @AutoMap(() => String) public saleTypeNot?: ESaleType;
 
   @AutoMap() public $orderBy?: string;
   @AutoMap(() => String) public $order?: EOrder;

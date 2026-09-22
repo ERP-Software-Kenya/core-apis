@@ -46,6 +46,7 @@ describe('bill totals', () => {
 
   it('generates a dated, unique-ish bill number', () => {
     expect(generateBillNumber(new Date('2026-08-09T10:00:00Z'))).toMatch(/^BILL-20260809-[0-9A-F]{8}$/);
+    expect(generateBillNumber('black', new Date('2026-08-09T10:00:00Z'))).toMatch(/^BLK-20260809-[0-9A-F]{8}$/);
     expect(generateBillNumber()).not.toBe(generateBillNumber());
   });
 });

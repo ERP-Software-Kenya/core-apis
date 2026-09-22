@@ -101,13 +101,13 @@ export class CreateOrderCommandHandler implements ICommandHandler<CreateOrderCom
   private async createOrderBillAsync(order: Order, organizationId: string, command: CreateOrderCommand): Promise<void> {
     if (!order.locationId) return;
     const bill = new Bill();
-    bill.billNumber = generateBillNumber();
+    bill.saleType = command.saleType ?? ESaleType.Normal;
+    bill.billNumber = generateBillNumber(bill.saleType);
     bill.organizationId = organizationId;
     bill.locationId = order.locationId;
     bill.customerId = order.customerId;
     bill.sourceOrderId = order.id;
     bill.status = EBillStatus.Initiated;
-    bill.saleType = command.saleType ?? ESaleType.Normal;
     bill.customerType = command.customerType;
     bill.paymentTiming = command.paymentTiming ?? EPaymentTiming.Cod;
     if (bill.paymentTiming === EPaymentTiming.Cod) {

@@ -46,7 +46,7 @@ export class CreateBillCommandHandler implements ICommandHandler<CreateBillComma
     bill.paymentMethod    = command.paymentMethod;
     bill.blackAmount      = 0;
     bill.commissionAmount = 0;
-    bill.billNumber       = generateBillNumber();
+    bill.billNumber       = generateBillNumber(saleType);
     bill.status           = EBillStatus.Initiated;
     applyBillTotals(bill);
 
