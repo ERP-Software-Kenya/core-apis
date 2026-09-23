@@ -1,6 +1,6 @@
 import { Mapper } from '@automapper/core';
 import { InjectMapper } from '@automapper/nestjs';
-import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Patch, Post, Put, Query, UploadedFile, UseGuards, UseInterceptors } from '@nestjs/common';
+import { BadRequestException, Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Patch, Post, Put, Query, UploadedFile, UseGuards, UseInterceptors } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { ApiBearerAuth, ApiBody, ApiConsumes, ApiCreatedResponse, ApiOkResponse, ApiOperation, ApiParam, ApiTags } from '@nestjs/swagger';
 import { InjectPinoLogger, PinoLogger } from 'nestjs-pino';
@@ -10,6 +10,8 @@ import { AddProductImageCommand, CreateProductCommand, DeleteProductCommand, Lin
 import { Product, ProductSupplier } from './domain';
 import { CreateProductRequest, GetNextSkuRequest, GetProductImageUploadUrlRequest, LinkProductSupplierRequest, ListProductsRequest, NextSkuResponse, ProductImageResponse, ProductImageUploadUrlResponse, ProductResponse, ProductSupplierResponse, ProductsPagedResponse, SearchProductsRequest, UpdateProductPriceRequest, UpdateProductRequest, UpdateProductSupplierRequest } from './models';
 import { GetNextSkuQuery, GetProductQuery, GetProductImageUploadUrlQuery, ListProductImagesQuery, ListProductSuppliersQuery, ListProductsQuery, SearchProductsQuery } from './queries';
+import { GetTaxQuery } from '../taxes/queries';
+import { Tax } from '../taxes/domain';
 
 @ApiBearerAuth()
 @ApiTags('Products')
@@ -89,6 +91,7 @@ export class ProductsController {
     @CurrentUser() user: AuthenticatedUser,
     @Body() body: CreateProductRequest,
   ): Promise<ProductResponse> {
+    await this.assertTaxOwnership(body.taxId, user);
     const command = this.mapper.map(body, CreateProductRequest, CreateProductCommand);
     command.organizationId = user.organizationId;
     command.createdById    = user.dbUserId;
@@ -106,10 +109,22 @@ export class ProductsController {
     fetchQuery.id = id;
     const existing = await this.mediator.execute<GetProductQuery, Product>(fetchQuery);
     assertOrgOwnership(user, existing.organizationId, 'Product');
+    await this.assertTaxOwnership(body.taxId, user);
     const command = this.mapper.map(body, UpdateProductRequest, UpdateProductCommand);
     command.id    = id;
     const result  = await this.mediator.execute<UpdateProductCommand, Product>(command);
     return this.mapper.map(result, Product, ProductResponse);
+  }
+
+  private async assertTaxOwnership(taxId: string | null | undefined, user: AuthenticatedUser): Promise<void> {
+    if (!taxId) return;
+    const query = new GetTaxQuery();
+    query.id = taxId;
+    const tax = await this.mediator.execute<GetTaxQuery, Tax>(query);
+    assertOrgOwnership(user, tax.organizationId, 'Tax');
+    if (!tax.isActive) {
+      throw new BadRequestException('Inactive tax cannot be assigned to a product');
+    }
   }
 
   @ApiOperation({ summary: 'Delete a product' })
