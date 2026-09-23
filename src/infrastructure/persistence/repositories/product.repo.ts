@@ -40,6 +40,7 @@ export class ProductRepo extends BaseRepo<ProductEntity, Product, string, Pageab
   }
 
   protected override modifyFindOption(findOpts: FindManyOptions<ProductEntity>, filterObj: Filter<ProductFilter> | PageableFilter<ProductFilter>): void {
+    findOpts.relations = ['tax'];
     const search = (filterObj as ProductFilter).search;
     if (isNilOrEmpty(search)) {
       return;

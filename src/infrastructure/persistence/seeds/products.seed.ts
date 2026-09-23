@@ -8,10 +8,13 @@ import { ProductEntity } from "../entities";
 import { ITEM_LIST_PRODUCT_SEED_ROWS } from "./data/item-list-products.seed-data";
 import { SEED_ORG_ID } from "./seed.constants";
 
+
+const VERSION = 7;
+
 @Injectable()
 export class ProductsSeed extends BaseSeed<ProductEntity> {
   public get version(): number {
-    return 6;
+    return VERSION;
   }
 
   public get seedingData(): Partial<ProductEntity>[] {

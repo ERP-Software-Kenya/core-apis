@@ -118,7 +118,7 @@ export class ProductEntity {
 
   @AutoMap()
   @Column({ name: 'tax_id', type: 'uuid', nullable: true })
-  public taxId?: string;
+  public taxId?: string | null;
 
   @AutoMap()
   @Column({ type: 'boolean', default: true })

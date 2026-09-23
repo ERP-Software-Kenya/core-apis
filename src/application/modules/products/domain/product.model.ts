@@ -58,7 +58,7 @@ export class Product {
   public weightKg?: number;
 
   @AutoMap()
-  public taxId?: string;
+  public taxId?: string | null;
 
   @AutoMap(() => Tax)
   public tax?: Tax;
