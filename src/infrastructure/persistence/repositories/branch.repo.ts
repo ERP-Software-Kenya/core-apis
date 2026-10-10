@@ -31,7 +31,7 @@ export class BranchRepo
   }
 
   public async findMainAsync(organizationId: string): Promise<Branch | null> {
-    const entity = await this.internalRepo.findOneBy({ organizationId, isMain: true } as any);
+    const entity = await this.internalRepo.findOneBy({ organizationId, isMain: true });
     if (!entity) return null;
     return this.mapToModel(entity);
   }

@@ -85,6 +85,6 @@ export class ActivityLogsController {
     query.id = id;
     const result = await this.mediator.execute<GetActivityLogQuery, ActivityLog>(query);
     assertOrgOwnership(user, result.organizationId, 'activity-log');
-    return result as unknown as ActivityLogResponse;
+    return result;
   }
 }

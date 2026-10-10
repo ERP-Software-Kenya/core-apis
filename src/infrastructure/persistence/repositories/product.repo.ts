@@ -30,7 +30,7 @@ export class ProductRepo extends BaseRepo<ProductEntity, Product, string, Pageab
 
   public override async getAsync(id: string): Promise<Product> {
     const entity = await this.internalRepo.findOne({
-      where: { id, deletedAt: IsNull() } as FindOptionsWhere<ProductEntity>,
+      where: { id, deletedAt: IsNull() },
       relations: ['tax'],
     });
     if (!entity) {
