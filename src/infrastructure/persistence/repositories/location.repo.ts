@@ -41,7 +41,7 @@ export class LocationRepo
       where: { branchId: In(branchIds) },
       select: ['id', 'branchId'],
     });
-    return rows.map((row) => ({ id: row.id, branchId: row.branchId! }));
+    return rows.map((row) => ({ id: row.id, branchId: row.branchId }));
   }
 
   public async findIdsByBranchIdsAsync(branchIds: string[]): Promise<string[]> {
