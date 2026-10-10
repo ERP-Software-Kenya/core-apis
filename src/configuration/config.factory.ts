@@ -55,6 +55,14 @@ export const configFactory = (): ICoreApiConfig => {
       password: process.env.MAIL_PASSWORD || '',
       from:     process.env.MAIL_FROM     || 'noreply@erp.local',
     },
+    gemini: {
+      apiKey: process.env.GEMINI_API_KEY || '',
+    },
+    qdrant: {
+      url:        process.env.QDRANT_URL        || 'http://localhost:6333',
+      apiKey:     process.env.QDRANT_API_KEY    || '',
+      collection: process.env.QDRANT_COLLECTION || 'erp-knowledge',
+    },
   };
 };
 
