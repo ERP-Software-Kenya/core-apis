@@ -17,7 +17,7 @@ export class DeleteUnpublishedStockPOCommandHandler
 
   public async execute(command: DeleteUnpublishedStockPOCommand): Promise<boolean> {
     this.logger.info(`Executing ${DeleteUnpublishedStockPOCommand.name} id=${command.id}`);
-    await this.repo.deleteAsync(command.id);
+    await this.repo.deleteDraftAsync(command.id);
     return true;
   }
 }

@@ -2,17 +2,19 @@ import { Mapper } from '@automapper/core';
 import { InjectMapper } from '@automapper/nestjs';
 import { Body, Controller, Get, HttpCode, HttpStatus, Param, Post, Put, Query, UseGuards } from '@nestjs/common';
 import { ApiBearerAuth, ApiCreatedResponse, ApiOkResponse, ApiOperation, ApiParam, ApiTags } from '@nestjs/swagger';
-import { AuthenticatedUser, ClerkAuthGuard, CqrsMediator, CurrentUser, IPageable, InventoryNotOwnedByOrgException, Roles, RolesGuard } from '../../../common';
+import { AuthenticatedUser, ClerkAuthGuard, CqrsMediator, CurrentUser, IPageable, InventoryNotOwnedByOrgException, LocationAccessDeniedException, Roles, RolesGuard } from '../../../common';
 import { ERole } from 'src/infrastructure/persistence/entities/role.entity';
 import { GetPurchaseOrderQuery } from '../purchase-orders/queries';
 import { PurchaseOrder } from '../purchase-orders/domain';
-import { CancelPurchaseReturnCommand, CreatePurchaseReturnCommand, FinalizePurchaseReturnCommand, UpdatePurchaseReturnCommand } from './commands';
+import { CancelPurchaseReturnCommand, CreatePurchaseReturnCommand, FinalizePurchaseReturnCommand, RecordPurchaseReturnRefundCommand, UpdatePurchaseReturnCommand } from './commands';
+import { PurchaseReturnRefundResult } from './i-purchase-return.repo';
 import { PurchaseReturn } from './domain';
 import {
   CreatePurchaseReturnRequest,
   ListPurchaseReturnsRequest,
   PurchaseReturnResponse,
   PurchaseReturnsPagedResponse,
+  RecordPurchaseReturnRefundRequest,
   SearchPurchaseReturnsRequest,
   UpdatePurchaseReturnRequest,
 } from './models';
@@ -36,6 +38,7 @@ export class PurchaseReturnsController {
   public async search(@CurrentUser() user: AuthenticatedUser, @Query() filter?: SearchPurchaseReturnsRequest): Promise<PurchaseReturnsPagedResponse> {
     const query = this.mapper.map(filter ?? new SearchPurchaseReturnsRequest(), SearchPurchaseReturnsRequest, SearchPurchaseReturnsQuery);
     query.organizationId = user.organizationId;
+    if (!user.hasOrgWideAccess) query.branchId = user.branchId;
     const result = await this.mediator.execute<SearchPurchaseReturnsQuery, IPageable<PurchaseReturn>>(query);
     return { ...result, items: this.mapper.mapArray(result.items, PurchaseReturn, PurchaseReturnResponse) };
   }
@@ -47,6 +50,7 @@ export class PurchaseReturnsController {
   public async list(@CurrentUser() user: AuthenticatedUser, @Query() filter?: ListPurchaseReturnsRequest): Promise<PurchaseReturnResponse[]> {
     const query = this.mapper.map(filter ?? new ListPurchaseReturnsRequest(), ListPurchaseReturnsRequest, ListPurchaseReturnsQuery);
     query.organizationId = user.organizationId;
+    if (!user.hasOrgWideAccess) query.branchId = user.branchId;
     const result = await this.mediator.execute<ListPurchaseReturnsQuery, PurchaseReturn[]>(query);
     return this.mapper.mapArray(result, PurchaseReturn, PurchaseReturnResponse);
   }
@@ -113,11 +117,32 @@ export class PurchaseReturnsController {
     return this.mapper.map(result, PurchaseReturn, PurchaseReturnResponse);
   }
 
+  @ApiOperation({ summary: 'Record a supplier refund against a finalized purchase-return credit' })
+  @HttpCode(HttpStatus.CREATED)
+  @Post(':id/refunds')
+  public async recordRefund(
+    @Param('id') id: string,
+    @CurrentUser() user: AuthenticatedUser,
+    @Body() body: RecordPurchaseReturnRefundRequest,
+  ): Promise<PurchaseReturnRefundResult> {
+    await this.getAuthorizedReturn(id, user);
+    const command = new RecordPurchaseReturnRefundCommand();
+    command.id = id;
+    command.organizationId = user.organizationId;
+    command.amount = body.amount;
+    command.paymentMethod = body.paymentMethod;
+    command.receivedAt = body.receivedAt ?? new Date();
+    command.note = body.note;
+    command.performedById = user.dbUserId;
+    return this.mediator.execute<RecordPurchaseReturnRefundCommand, PurchaseReturnRefundResult>(command);
+  }
+
   private async getAuthorizedPurchaseOrder(id: string, user: AuthenticatedUser): Promise<PurchaseOrder> {
     const query = new GetPurchaseOrderQuery();
     query.id = id;
     const po = await this.mediator.execute<GetPurchaseOrderQuery, PurchaseOrder>(query);
     if (po.organizationId !== user.organizationId) throw new InventoryNotOwnedByOrgException();
+    if (!user.hasOrgWideAccess && po.branchId !== user.branchId) throw new LocationAccessDeniedException();
     return po;
   }
 
@@ -126,6 +151,7 @@ export class PurchaseReturnsController {
     query.id = id;
     const ret = await this.mediator.execute<GetPurchaseReturnQuery, PurchaseReturn>(query);
     if (ret.organizationId !== user.organizationId) throw new InventoryNotOwnedByOrgException();
+    await this.getAuthorizedPurchaseOrder(ret.purchaseOrderId, user);
     return ret;
   }
 }

@@ -10,6 +10,8 @@ import {
   CurrentUser,
   IPageable,
   InventoryNotOwnedByOrgException,
+  LocationAccessDeniedException,
+  assertLocationAccess,
   Roles,
   RolesGuard,
 } from '../../../common';
@@ -17,6 +19,8 @@ import { ERole } from '../../../infrastructure/persistence/entities';
 import {
   AllocateUnpublishedStockPOCommand,
   CreateUnpublishedStockPOCommand,
+  CreateUnpublishedStockPurchaseReturnCommand,
+  RecordUnpublishedStockPurchaseReturnRefundCommand,
   DeleteUnpublishedStockPOCommand,
   ReceiveUnpublishedStockPOCommand,
   RecordUnpublishedStockPOPaymentCommand,
@@ -26,6 +30,8 @@ import { UnpublishedStockPOPayment, UnpublishedStockPurchaseOrder } from './doma
 import {
   AllocateUnpublishedStockPORequest,
   CreateUnpublishedStockPORequest,
+  CreateUnpublishedStockPurchaseReturnRequest,
+  RecordUnpublishedStockPurchaseReturnRefundRequest,
   ListUnpublishedStockPOsRequest,
   ReceiveUnpublishedStockPORequest,
   RecordUnpublishedStockPOPaymentRequest,
@@ -41,6 +47,7 @@ import {
   SearchUnpublishedStockPOsQuery,
 } from './queries';
 import { PurchaseOrderPaymentResponse } from '../purchase-orders/models';
+import { BlackPurchaseReturnRefundResult, BlackPurchaseReturnResult } from './i-unpublished-stock-po.repo';
 
 @ApiBearerAuth()
 @ApiTags('UnpublishedStockPurchaseOrders')
@@ -65,6 +72,7 @@ export class UnpublishedStockPurchaseOrdersController {
     if (!user.organizationId) return { items: [], page: 1, perPage: 15, totalCount: 0, totalPages: 0 };
     const query          = this.mapper.map(filter, SearchUnpublishedStockPOsRequest, SearchUnpublishedStockPOsQuery);
     query.organizationId = user.organizationId;
+    if (!user.hasOrgWideAccess) query.branchId = user.branchId;
     const result         = await this.mediator.execute<SearchUnpublishedStockPOsQuery, IPageable<UnpublishedStockPurchaseOrder>>(query);
     return { ...result, items: this.mapper.mapArray(result.items, UnpublishedStockPurchaseOrder, UnpublishedStockPOResponse) };
   }
@@ -80,6 +88,7 @@ export class UnpublishedStockPurchaseOrdersController {
     if (!user.organizationId) return [];
     const query          = this.mapper.map(filter, ListUnpublishedStockPOsRequest, ListUnpublishedStockPOsQuery);
     query.organizationId = user.organizationId;
+    if (!user.hasOrgWideAccess) query.branchId = user.branchId;
     const result         = await this.mediator.execute<ListUnpublishedStockPOsQuery, UnpublishedStockPurchaseOrder[]>(query);
     return this.mapper.mapArray(result, UnpublishedStockPurchaseOrder, UnpublishedStockPOResponse);
   }
@@ -94,6 +103,7 @@ export class UnpublishedStockPurchaseOrdersController {
     query.id     = id;
     const result = await this.mediator.execute<GetUnpublishedStockPOQuery, UnpublishedStockPurchaseOrder>(query);
     if (result.organizationId !== user.organizationId) throw new InventoryNotOwnedByOrgException();
+    if (!user.hasOrgWideAccess && result.branchId !== user.branchId) throw new LocationAccessDeniedException();
     return this.mapper.map(result, UnpublishedStockPurchaseOrder, UnpublishedStockPOResponse);
   }
 
@@ -105,6 +115,7 @@ export class UnpublishedStockPurchaseOrdersController {
     const command          = this.mapper.map(body, CreateUnpublishedStockPORequest, CreateUnpublishedStockPOCommand);
     command.organizationId = user.organizationId;
     command.createdById    = user.dbUserId;
+    command.branchId       = user.hasOrgWideAccess ? undefined : user.branchId;
     command.items          = body.items;
     const result           = await this.mediator.execute<CreateUnpublishedStockPOCommand, UnpublishedStockPurchaseOrder>(command);
     return this.mapper.map(result, UnpublishedStockPurchaseOrder, UnpublishedStockPOResponse);
@@ -115,7 +126,8 @@ export class UnpublishedStockPurchaseOrdersController {
   @ApiParam({ name: 'id', description: 'Purchase Order UUID' })
   @HttpCode(HttpStatus.OK)
   @Put(':id')
-  public async update(@Param('id') id: string, @Body() body: UpdateUnpublishedStockPORequest): Promise<UnpublishedStockPOResponse> {
+  public async update(@Param('id') id: string, @CurrentUser() user: AuthenticatedUser, @Body() body: UpdateUnpublishedStockPORequest): Promise<UnpublishedStockPOResponse> {
+    await this.assertPurchaseOrderAccess(id, user);
     const command = this.mapper.map(body, UpdateUnpublishedStockPORequest, UpdateUnpublishedStockPOCommand);
     command.id    = id;
     const result  = await this.mediator.execute<UpdateUnpublishedStockPOCommand, UnpublishedStockPurchaseOrder>(command);
@@ -128,6 +140,7 @@ export class UnpublishedStockPurchaseOrdersController {
   @HttpCode(HttpStatus.OK)
   @Post(':id/receive')
   public async receive(@Param('id') id: string, @CurrentUser() user: AuthenticatedUser, @Body() body: ReceiveUnpublishedStockPORequest): Promise<UnpublishedStockPOResponse> {
+    await this.assertPurchaseOrderAccess(id, user);
     const command           = new ReceiveUnpublishedStockPOCommand();
     command.purchaseOrderId = id;
     command.organizationId  = user.organizationId;
@@ -144,6 +157,8 @@ export class UnpublishedStockPurchaseOrdersController {
   @HttpCode(HttpStatus.OK)
   @Post(':id/allocate')
   public async allocate(@Param('id') id: string, @CurrentUser() user: AuthenticatedUser, @Body() body: AllocateUnpublishedStockPORequest): Promise<UnpublishedStockPOResponse> {
+    await this.assertPurchaseOrderAccess(id, user);
+    for (const allocation of body.allocations) assertLocationAccess(user, allocation.locationId);
     const command           = new AllocateUnpublishedStockPOCommand();
     command.purchaseOrderId = id;
     command.organizationId  = user.organizationId;
@@ -160,6 +175,7 @@ export class UnpublishedStockPurchaseOrdersController {
   @HttpCode(HttpStatus.OK)
   @Post(':id/payments')
   public async recordPayment(@Param('id') id: string, @CurrentUser() user: AuthenticatedUser, @Body() body: RecordUnpublishedStockPOPaymentRequest): Promise<UnpublishedStockPOResponse> {
+    await this.assertPurchaseOrderAccess(id, user);
     const command           = new RecordUnpublishedStockPOPaymentCommand();
     command.purchaseOrderId = id;
     command.organizationId  = user.organizationId;
@@ -178,11 +194,54 @@ export class UnpublishedStockPurchaseOrdersController {
   @HttpCode(HttpStatus.OK)
   @Get(':id/payments')
   public async listPayments(@Param('id') id: string, @CurrentUser() user: AuthenticatedUser): Promise<PurchaseOrderPaymentResponse[]> {
+    await this.assertPurchaseOrderAccess(id, user);
     const query           = new ListUnpublishedStockPOPaymentsQuery();
     query.purchaseOrderId = id;
     query.organizationId  = user.organizationId;
     const result          = await this.mediator.execute<ListUnpublishedStockPOPaymentsQuery, UnpublishedStockPOPayment[]>(query);
     return this.mapper.mapArray(result, UnpublishedStockPOPayment, PurchaseOrderPaymentResponse);
+  }
+
+  @ApiOperation({ summary: 'Return allocated unpublished stock to the supplier and create a black-ledger credit' })
+  @HttpCode(HttpStatus.CREATED)
+  @Post(':id/returns')
+  public async createReturn(
+    @Param('id') id: string,
+    @CurrentUser() user: AuthenticatedUser,
+    @Body() body: CreateUnpublishedStockPurchaseReturnRequest,
+  ): Promise<BlackPurchaseReturnResult> {
+    await this.assertPurchaseOrderAccess(id, user);
+    for (const item of body.items) assertLocationAccess(user, item.locationId);
+    const command = new CreateUnpublishedStockPurchaseReturnCommand();
+    command.purchaseOrderId = id;
+    command.organizationId = user.organizationId;
+    command.createdById = user.dbUserId;
+    command.reason = body.reason;
+    command.notes = body.notes;
+    command.items = body.items;
+    return this.mediator.execute<CreateUnpublishedStockPurchaseReturnCommand, BlackPurchaseReturnResult>(command);
+  }
+
+  @ApiOperation({ summary: 'Record money received from a supplier against a black purchase-return credit' })
+  @HttpCode(HttpStatus.CREATED)
+  @Post(':id/returns/:returnId/refunds')
+  public async recordReturnRefund(
+    @Param('id') id: string,
+    @Param('returnId') returnId: string,
+    @CurrentUser() user: AuthenticatedUser,
+    @Body() body: RecordUnpublishedStockPurchaseReturnRefundRequest,
+  ): Promise<BlackPurchaseReturnRefundResult> {
+    await this.assertPurchaseOrderAccess(id, user);
+    const command = new RecordUnpublishedStockPurchaseReturnRefundCommand();
+    command.purchaseOrderId = id;
+    command.purchaseReturnId = returnId;
+    command.organizationId = user.organizationId;
+    command.amount = body.amount;
+    command.paymentMethod = body.paymentMethod;
+    command.receivedAt = body.receivedAt ?? new Date();
+    command.note = body.note;
+    command.performedById = user.dbUserId;
+    return this.mediator.execute<RecordUnpublishedStockPurchaseReturnRefundCommand, BlackPurchaseReturnRefundResult>(command);
   }
 
   @ApiOperation({ summary: 'Delete an unpublished stock purchase order' })
@@ -191,9 +250,18 @@ export class UnpublishedStockPurchaseOrdersController {
   @HttpCode(HttpStatus.OK)
   @Roles(ERole.OrgAdmin, ERole.SuperAdmin)
   @Delete(':id')
-  public async delete(@Param('id') id: string): Promise<boolean> {
+  public async delete(@Param('id') id: string, @CurrentUser() user: AuthenticatedUser): Promise<boolean> {
+    await this.assertPurchaseOrderAccess(id, user);
     const command = new DeleteUnpublishedStockPOCommand();
     command.id    = id;
     return this.mediator.execute<DeleteUnpublishedStockPOCommand, boolean>(command);
+  }
+
+  private async assertPurchaseOrderAccess(id: string, user: AuthenticatedUser): Promise<void> {
+    const query = new GetUnpublishedStockPOQuery();
+    query.id = id;
+    const po = await this.mediator.execute<GetUnpublishedStockPOQuery, UnpublishedStockPurchaseOrder>(query);
+    if (po.organizationId !== user.organizationId) throw new InventoryNotOwnedByOrgException();
+    if (!user.hasOrgWideAccess && po.branchId !== user.branchId) throw new LocationAccessDeniedException();
   }
 }

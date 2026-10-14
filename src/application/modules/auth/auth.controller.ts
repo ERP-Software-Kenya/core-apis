@@ -43,6 +43,7 @@ import { Organization } from '../organizations/domain';
 import { ListRolesQuery } from '../roles/queries';
 import { Role } from '../roles/domain';
 import { User } from '../users/domain';
+import { OrganizationSettingsService } from '../billing-settings/currency';
 
 @ApiBearerAuth()
 @ApiTags('Auth')
@@ -53,6 +54,7 @@ export class AuthController {
     protected readonly mediator: CqrsMediator,
     @InjectMapper() protected readonly mapper: Mapper,
     @InjectPinoLogger(AuthController.name) protected readonly logger: PinoLogger,
+    private readonly organizationSettings: OrganizationSettingsService,
   ) {}
 
   // ── POST /auth/token (dev only) ─────────────────────────────────────────────
@@ -292,15 +294,7 @@ export class AuthController {
       locationIds: currentUser.locationIds ?? [],
       branchId: currentUser.branchId,
       hasOrgWideAccess: currentUser.hasOrgWideAccess ?? false,
-      currencyCode: resolveCurrencyCode(result.organization?.country),
+      currencyCode: await this.organizationSettings.currencyCode(result.organization.id),
     };
   }
-}
-
-function resolveCurrencyCode(country?: string): string {
-  const cc = (country ?? '').toLowerCase();
-  if (cc.includes('kenya') || cc === 'ke') return 'KES';
-  if (cc.includes('india') || cc === 'in') return 'INR';
-  if (cc.includes('united states') || cc === 'us' || cc === 'usa') return 'USD';
-  return 'KES';
 }

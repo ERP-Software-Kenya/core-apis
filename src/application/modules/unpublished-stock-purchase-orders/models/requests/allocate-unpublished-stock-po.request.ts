@@ -1,6 +1,6 @@
 ﻿import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { Type } from 'class-transformer';
-import { IsArray, IsNotEmpty, IsNumber, IsOptional, IsString, IsUUID, Min, ValidateNested } from 'class-validator';
+import { ArrayMaxSize, ArrayMinSize, IsArray, IsNotEmpty, IsNumber, IsOptional, IsString, IsUUID, Min, ValidateNested } from 'class-validator';
 
 export class UnpublishedStockAllocationItemRequest {
   @ApiProperty() @IsNotEmpty() @IsUUID() public purchaseItemId: string;
@@ -11,6 +11,8 @@ export class UnpublishedStockAllocationItemRequest {
 export class AllocateUnpublishedStockPORequest {
   @ApiProperty({ type: [UnpublishedStockAllocationItemRequest] })
   @IsArray()
+  @ArrayMinSize(1)
+  @ArrayMaxSize(500)
   @ValidateNested({ each: true })
   @Type(() => UnpublishedStockAllocationItemRequest)
   public allocations: UnpublishedStockAllocationItemRequest[];

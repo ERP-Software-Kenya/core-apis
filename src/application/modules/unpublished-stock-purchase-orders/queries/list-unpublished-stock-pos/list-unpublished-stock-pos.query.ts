@@ -6,6 +6,7 @@ import { EPurchaseOrderStatus } from 'src/application/shared/enums';
 export class ListUnpublishedStockPOsQuery extends QueryBase implements Filter<UnpublishedStockPOFilter> {
   @AutoMap() public organizationId?: string;
   @AutoMap() public supplierId?: string;
+  @AutoMap() public branchId?: string;
   @AutoMap(() => String) public status?: EPurchaseOrderStatus;
 
   @AutoMap(() => Array) public $ids?: string[];

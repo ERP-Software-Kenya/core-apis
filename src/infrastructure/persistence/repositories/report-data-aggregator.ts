@@ -1,21 +1,32 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable, Optional } from '@nestjs/common';
 import { InjectDataSource } from '@nestjs/typeorm';
 import { DataSource, QueryRunner } from 'typeorm';
 import { BuildReportParams, EReportType, ReportData, REPORT_TYPE_LABELS } from '../../../application/modules/report-generation-logs/domain';
 import { IReportDataAggregator } from '../../../application/modules/report-generation-logs/i-report-data-aggregator';
+import { AsyncLocalStorage } from 'async_hooks';
+import { formatOrganizationCurrency } from '../../../application/modules/billing-settings/currency';
+import { ORGANIZATION_SETTING_REPO } from '../../../application/constants';
+import { IOrganizationSettingRepo } from '../../../application/modules/billing-settings/i-organization-setting.repo';
 
 type ReportBase = Omit<ReportData, 'formattedValue' | 'tableHeaders' | 'tableRows' | 'summaryCards' | 'note'>;
 type Row = Record<string, unknown>;
 
 @Injectable()
 export class ReportDataAggregator implements IReportDataAggregator {
-  constructor(@InjectDataSource() private readonly dataSource: DataSource) {}
+  private readonly currencyContext = new AsyncLocalStorage<string>();
+  constructor(
+    @InjectDataSource() private readonly dataSource: DataSource,
+    @Optional() @Inject(ORGANIZATION_SETTING_REPO) private readonly settingsRepo?: IOrganizationSettingRepo,
+  ) {}
 
   public async aggregate(params: BuildReportParams): Promise<ReportData> {
     const qr = this.dataSource.createQueryRunner();
     await qr.connect();
     try {
-      return await this.dispatch(qr, params);
+      const currencyCode = this.settingsRepo
+        ? (await this.settingsRepo.getOrCreateAsync(params.orgId)).baseCurrencyCode
+        : 'USD';
+      return await this.currencyContext.run(currencyCode, () => this.dispatch(qr, params));
     } finally {
       await qr.release();
     }
@@ -324,7 +335,7 @@ export class ReportDataAggregator implements IReportDataAggregator {
   }
 
   private inr(value: number): string {
-    return new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR', maximumFractionDigits: 2 }).format(value);
+    return formatOrganizationCurrency(value, this.currencyContext.getStore() ?? 'USD');
   }
 
   private fmt(dt: Date): string {

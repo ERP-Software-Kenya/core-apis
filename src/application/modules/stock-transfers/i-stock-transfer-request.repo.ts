@@ -9,6 +9,8 @@ export interface StockTransferRequestFilter {
   requestingLocationId?: string;
   status?: EStockTransferRequestStatus;
 }
+export type AcceptStockTransferRequestInput = { requestId: string; organizationId: string; acceptingLocationId: string; acceptingUserId?: string };
+export type ClaimStockTransferRequestInput = { requestId: string; organizationId: string; claimingUserId?: string };
 
 export interface IStockTransferRequestRepo
   extends IBaseRepo<StockTransferRequest, string, PageableFilter<StockTransferRequestFilter>, Filter<StockTransferRequestFilter>> {
@@ -16,4 +18,6 @@ export interface IStockTransferRequestRepo
   findAllForLocationAsync(organizationId: string, locationId: string): Promise<StockTransferRequest[]>;
   findUsersForLocationAsync(organizationId: string, locationId: string): Promise<string[]>;
   findAllUserIdsInOrgAsync(organizationId: string): Promise<string[]>;
+  acceptAsync(input: AcceptStockTransferRequestInput): Promise<StockTransferRequest>;
+  claimAsync(input: ClaimStockTransferRequestInput): Promise<StockTransferRequest>;
 }

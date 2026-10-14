@@ -1,12 +1,12 @@
 ﻿import { AutoMap } from '@automapper/classes';
 import { ApiPropertyOptional } from '@nestjs/swagger';
-import { IsDateString, IsEnum, IsOptional, IsString } from 'class-validator';
+import { IsDateString, IsIn, IsOptional, IsString } from 'class-validator';
 import { EPurchaseOrderStatus } from 'src/application/shared/enums';
 
 export class UpdateUnpublishedStockPORequest {
-  @ApiPropertyOptional({ enum: EPurchaseOrderStatus })
+  @ApiPropertyOptional({ enum: [EPurchaseOrderStatus.Ordered, EPurchaseOrderStatus.Cancelled] })
   @IsOptional()
-  @IsEnum(EPurchaseOrderStatus)
+  @IsIn([EPurchaseOrderStatus.Ordered, EPurchaseOrderStatus.Cancelled])
   @AutoMap(() => String)
   public status?: EPurchaseOrderStatus;
 

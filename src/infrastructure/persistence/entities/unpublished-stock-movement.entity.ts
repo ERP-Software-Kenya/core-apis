@@ -19,6 +19,7 @@ export enum EUnpublishedMovementType {
   StockIn     = 'stock_in',
   StockOut    = 'stock_out',
   TransferOut = 'transfer_out',
+  PurchaseReturn = 'purchase_return',
 }
 
 @Entity({ schema: CORE_SCHEMA, name: ECoreTableName.UnpublishedStockMovements })

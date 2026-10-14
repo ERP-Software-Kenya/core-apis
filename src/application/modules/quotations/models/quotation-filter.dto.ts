@@ -1,6 +1,7 @@
 import { ApiPropertyOptional } from '@nestjs/swagger';
-import { Type } from 'class-transformer';
-import { IsBoolean, IsInt, IsOptional, IsString, IsUUID, Min } from 'class-validator';
+import { Transform, Type } from 'class-transformer';
+import { IsBoolean, IsEnum, IsInt, IsOptional, IsString, IsUUID, Max, MaxLength, Min } from 'class-validator';
+import { EQuotationStatus } from '../../../shared/enums';
 
 export class QuotationFilterDto {
   @ApiPropertyOptional({ default: 1 })
@@ -8,6 +9,7 @@ export class QuotationFilterDto {
   @Type(() => Number)
   @IsInt()
   @Min(1)
+  @Max(100)
   public $page?: number;
 
   @ApiPropertyOptional({ default: 20 })
@@ -29,17 +31,18 @@ export class QuotationFilterDto {
 
   @ApiPropertyOptional({ description: 'Filter by status: DRAFT, SENT, CONVERTED, SUPERSEDED, CANCELLED' })
   @IsOptional()
-  @IsString()
-  public status?: string;
+  @IsEnum(EQuotationStatus)
+  public status?: EQuotationStatus;
 
   @ApiPropertyOptional({ description: 'Filter only latest revisions' })
   @IsOptional()
-  @Type(() => Boolean)
+  @Transform(({ value }) => value === true || value === 'true')
   @IsBoolean()
   public isLatest?: boolean;
 
   @ApiPropertyOptional({ description: 'Search term for quote number, customer name or phone' })
   @IsOptional()
   @IsString()
+  @MaxLength(100)
   public search?: string;
 }

@@ -24,6 +24,8 @@ export class PurchaseReturnResponse {
   @ApiProperty({ enum: EPurchaseReturnStatus }) @AutoMap(() => String) public status: EPurchaseReturnStatus;
   @ApiProperty({ enum: EPurchaseReturnDispatchStatus }) @AutoMap(() => String) public dispatchStatus: EPurchaseReturnDispatchStatus;
   @ApiProperty() @AutoMap() public totalAmount: number;
+  @ApiProperty() @AutoMap() public supplierCreditAmount: number;
+  @ApiProperty() @AutoMap() public refundedAmount: number;
   @ApiPropertyOptional() @AutoMap() public reason?: string;
   @ApiPropertyOptional() @AutoMap() public notes?: string;
   @ApiPropertyOptional() @AutoMap() public createdById?: string;

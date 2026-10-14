@@ -45,7 +45,7 @@ export class StockTransfersController {
     const query = this.mapper.map(filter, SearchStockTransfersRequest, SearchStockTransfersQuery);
     query.organizationId = user.organizationId;
     if (!user.hasOrgWideAccess) {
-      query.accessibleLocationIds = user.locationIds;
+      query.accessibleLocationIds = user.locationIds ?? [];
     }
 
     const result = await this.mediator.execute<SearchStockTransfersQuery, IPageable<StockTransfer>>(query);

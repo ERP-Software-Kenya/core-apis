@@ -47,6 +47,11 @@ export class BillItemEntity {
   @Column({ name: 'unit_price', type: 'decimal', precision: 18, scale: 4, transformer: numericTransformer })
   public unitPrice: number;
 
+  /** Weighted-average inventory cost captured when the bill is completed. */
+  @AutoMap()
+  @Column({ name: 'unit_cost_snapshot', type: 'decimal', precision: 18, scale: 4, nullable: true, transformer: numericTransformer })
+  public unitCostSnapshot?: number;
+
   /** Tax percentage applied to this line, e.g. 18 for 18%. */
   @AutoMap()
   @Column({ name: 'tax_rate', type: 'decimal', precision: 18, scale: 4, default: 0, transformer: numericTransformer })

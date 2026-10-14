@@ -23,6 +23,7 @@ export class ListBranchProductPricesQueryHandler
       query.page,
       query.perPage,
       query.search,
+      query.status,
     );
   }
 }

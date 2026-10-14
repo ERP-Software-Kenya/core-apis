@@ -5,4 +5,5 @@ export const BRANCH_REPO = 'BRANCH_REPO';
 
 export interface IBranchRepo extends IBaseRepo<Branch, string, PageableFilter<BranchFilter>, Filter<BranchFilter>> {
   findMainAsync(organizationId: string): Promise<Branch | null>;
+  findByManagerIdAsync(userId: string): Promise<Branch | null>;
 }

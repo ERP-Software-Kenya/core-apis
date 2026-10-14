@@ -3,6 +3,7 @@ import { Quotation } from '../domain';
 export function buildQuotationPdfContext(
   quotation: Quotation,
   organizationName = 'Pramukh Digital ERP',
+  currencyCode = 'USD',
 ): Record<string, unknown> {
   const fmtDate = (d?: Date | string | null) => {
     if (!d) return '';
@@ -15,6 +16,7 @@ export function buildQuotationPdfContext(
 
   return {
     organizationName,
+    currencyCode,
     locationName: quotation.location?.name,
     locationAddress: quotation.location?.address,
     locationPhone: quotation.location?.phone,

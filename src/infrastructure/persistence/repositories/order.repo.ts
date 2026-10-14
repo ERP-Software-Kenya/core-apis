@@ -122,6 +122,15 @@ export class OrderRepo
       if (filter.fulfillmentMode) {
         qb.andWhere('o.fulfillment_mode = :fulfillmentMode', { fulfillmentMode: filter.fulfillmentMode });
       }
+      if (filter.accessibleLocationIds !== undefined) {
+        if (filter.accessibleLocationIds.length === 0) {
+          qb.andWhere('1 = 0');
+        } else {
+          qb.andWhere('o.location_id IN (:...accessibleLocationIds)', {
+            accessibleLocationIds: filter.accessibleLocationIds,
+          });
+        }
+      }
       if (filter.search?.trim()) {
         const q = `%${filter.search.trim()}%`;
         qb.andWhere('(o.order_number ILIKE :q OR c.name ILIKE :q)', { q });
