@@ -1,10 +1,8 @@
 import { BadRequestException, Inject, NotFoundException } from '@nestjs/common';
 import { ICommandHandler } from '@nestjs/cqrs';
-import { InjectDataSource } from '@nestjs/typeorm';
 import { InjectPinoLogger, PinoLogger } from 'nestjs-pino';
-import { DataSource } from 'typeorm';
 import { CommandHandlerStrict } from '../../../../../common';
-import { EBillStatus, ESaleType, ESalesReturnItemCondition, ESalesReturnStatus, SalesReturnEntity, SalesReturnItemEntity } from '../../../../../infrastructure/persistence/entities';
+import { EBillStatus, ESaleType, ESalesReturnItemCondition, ESalesReturnStatus } from '../../../../../infrastructure/persistence/entities';
 import { BILL_REPO, SALES_RETURN_ITEM_REPO, SALES_RETURN_REPO } from '../../../../constants';
 import { SalesReturn, SalesReturnItem } from '../../domain';
 import { IBillRepo } from '../../../bills';
@@ -20,7 +18,6 @@ export class UpdateSalesReturnCommandHandler implements ICommandHandler<UpdateSa
     @Inject(SALES_RETURN_REPO) private readonly repo: ISalesReturnRepo,
     @Inject(SALES_RETURN_ITEM_REPO) private readonly itemRepo: ISalesReturnItemRepo,
     @Inject(BILL_REPO) private readonly billRepo: IBillRepo,
-    @InjectDataSource() private readonly dataSource: DataSource,
     @InjectPinoLogger(UpdateSalesReturnCommandHandler.name) private readonly logger: PinoLogger,
   ) {}
 
@@ -36,28 +33,17 @@ export class UpdateSalesReturnCommandHandler implements ICommandHandler<UpdateSa
       applySalesReturnTotals(existing);
     }
 
-    await this.dataSource.transaction(async (manager) => {
-      await manager.update(SalesReturnEntity, { id: command.id }, {
-        reason: command.reason,
-        notes: command.notes,
-        refundMethod: command.refundMethod,
-        ...(replacementItems && {
-          subtotal: existing.subtotal,
-          taxAmount: existing.taxAmount,
-          discountAmount: existing.discountAmount,
-          totalAmount: existing.totalAmount,
-        }),
-        updatedAt: new Date(),
-      });
-      if (command.items) {
-        await manager.delete(SalesReturnItemEntity, { salesReturnId: command.id });
-        await manager.save(
-          SalesReturnItemEntity,
-          replacementItems.map((item) => manager.create(SalesReturnItemEntity, { ...item, salesReturnId: command.id })),
-        );
-      }
+    return this.repo.updateDraftAsync({
+      id: command.id,
+      reason: command.reason,
+      notes: command.notes,
+      refundMethod: command.refundMethod,
+      items: replacementItems,
+      subtotal: replacementItems ? existing.subtotal : undefined,
+      taxAmount: replacementItems ? existing.taxAmount : undefined,
+      discountAmount: replacementItems ? existing.discountAmount : undefined,
+      totalAmount: replacementItems ? existing.totalAmount : undefined,
     });
-    return this.repo.getWithItemsAsync(command.id);
   }
 
   private async buildItems(existing: SalesReturn, requested: UpdateSalesReturnCommand['items']): Promise<SalesReturnItem[]> {

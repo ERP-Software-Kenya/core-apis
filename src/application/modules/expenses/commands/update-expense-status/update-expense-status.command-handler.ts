@@ -8,6 +8,7 @@ import { Expense } from '../../domain';
 import { IExpenseRepo } from '../..';
 import { EExpenseStatus } from '../../../../../infrastructure/e-expense-status';
 import { UpdateExpenseStatusCommand } from './update-expense-status.command';
+import { OrganizationSettingsService } from '../../../billing-settings/currency';
 
 type StatusTransition = `${EExpenseStatus}->${EExpenseStatus}`;
 
@@ -29,6 +30,7 @@ export class UpdateExpenseStatusCommandHandler implements ICommandHandler<Update
   public constructor(
     @Inject(EXPENSE_REPO) private readonly repo: IExpenseRepo,
     private readonly mediator: CqrsMediator,
+    private readonly organizationSettings: OrganizationSettingsService,
     @InjectPinoLogger(UpdateExpenseStatusCommandHandler.name) private readonly logger: PinoLogger,
   ) {}
 
@@ -52,7 +54,7 @@ export class UpdateExpenseStatusCommandHandler implements ICommandHandler<Update
   }
 
   private async notifySubmitterAsync(command: UpdateExpenseStatusCommand, expense: Expense): Promise<void> {
-    const amount = expense.amount;
+    const amount = await this.organizationSettings.formatCurrency(expense.organizationId, expense.amount);
     const category = expense.category;
     const comment = command.comment ?? '';
     const notif = new CreateNotificationCommand();
@@ -63,19 +65,19 @@ export class UpdateExpenseStatusCommandHandler implements ICommandHandler<Update
     switch (command.status) {
       case EExpenseStatus.UnderReview:
         notif.title = 'Expense Under Review';
-        notif.body  = `Your ₹${amount} ${category} claim needs more information`;
+        notif.body  = `Your ${amount} ${category} claim needs more information`;
         break;
       case EExpenseStatus.Approved:
         notif.title = 'Expense Approved';
-        notif.body  = `Your ₹${amount} ${category} claim has been approved`;
+        notif.body  = `Your ${amount} ${category} claim has been approved`;
         break;
       case EExpenseStatus.Rejected:
         notif.title = 'Expense Rejected';
-        notif.body  = `Your ₹${amount} ${category} claim was rejected: ${comment}`;
+        notif.body  = `Your ${amount} ${category} claim was rejected: ${comment}`;
         break;
       case EExpenseStatus.Settled:
         notif.title = 'Expense Settled';
-        notif.body  = `Your ₹${amount} ${category} claim has been settled`;
+        notif.body  = `Your ${amount} ${category} claim has been settled`;
         break;
       default:
         return;

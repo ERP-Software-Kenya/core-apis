@@ -1,4 +1,4 @@
-import { roundReturnMoney } from '../../../shared/helpers/return-number';
+import { roundReturnMoney } from '../../../shared/helpers';
 import { PurchaseReturn, PurchaseReturnItem } from '../domain';
 
 export function computePurchaseReturnItemTotals(item: PurchaseReturnItem): PurchaseReturnItem {

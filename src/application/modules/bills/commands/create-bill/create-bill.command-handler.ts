@@ -10,11 +10,20 @@ import { BILL_REPO, LOCATION_REPO, PRODUCT_REPO } from '../../../../constants';
 import { ActivityLogService } from '../../../../shared';
 import { ILocationRepo } from '../../../locations';
 import { IProductRepo } from '../../../products';
+import { Product } from '../../../products/domain';
 import { IProductBranchPriceRepo, PRODUCT_BRANCH_PRICE_REPO } from '../../../product-branch-prices';
+import { ProductBranchPrice } from '../../../product-branch-prices/domain';
+import { resolveBranchPrice } from '../../../product-branch-prices/helpers';
 import { Bill, BillItem } from '../../domain';
 import { applyBillTotals, generateBillNumber } from '../../helpers';
 import { IBillRepo } from '../..';
 import { CreateBillCommand, CreateBillItemCommand } from './create-bill.command';
+
+interface ItemEnrichment {
+  item: BillItem;
+  product: Product | null;
+  branchPrice: ProductBranchPrice | null;
+}
 
 const BLACK_SALE_ROLES = new Set([ERole.OrgAdmin, ERole.SuperAdmin]);
 
@@ -39,8 +48,6 @@ export class CreateBillCommandHandler implements ICommandHandler<CreateBillComma
     }
 
     const bill = this.mapper.map(command, CreateBillCommand, Bill);
-    // CreateBillCommand → Bill ignores items (see bill.profile); map them explicitly
-    // so POS create-with-basket persists line items and header totals.
     bill.items = this.mapper.mapArray(command.items ?? [], CreateBillItemCommand, BillItem);
     bill.saleType         = saleType;
     bill.paymentMethod    = command.paymentMethod;
@@ -49,38 +56,25 @@ export class CreateBillCommandHandler implements ICommandHandler<CreateBillComma
     bill.billNumber       = generateBillNumber();
     bill.status           = EBillStatus.Initiated;
 
-    for (const item of bill.items ?? []) {
-      if (item.taxRate == null) {
-        const product = await this.productRepo.getAsync(item.productId);
-        item.taxRate = product?.tax?.rate ?? 0;
+    const branchId = await this.resolveBranchIdAsync(command.locationId);
+    const enriched = await this.fetchItemEnrichmentsAsync(bill.items ?? [], branchId);
+
+    for (const { item, product, branchPrice } of enriched) {
+      if (item.taxRate == null) item.taxRate = product?.tax?.rate ?? 0;
+      if (saleType !== ESaleType.Black && product) {
+        item.unitPrice = resolveBranchPrice(branchPrice, product, command.customerType);
       }
     }
 
     applyBillTotals(bill);
 
     if (saleType === ESaleType.Black) {
-      const location = command.locationId
-        ? await this.locationRepo.getAsync(command.locationId)
-        : null;
-      const branchId = location?.branchId ?? null;
-
-      let blackAmount = 0;
-      for (const item of bill.items ?? []) {
-        const product = await this.productRepo.getAsync(item.productId);
-        let officialPrice = Number(product?.retailPrice ?? 0);
-
-        if (branchId) {
-          const branchPrice = await this.productBranchPriceRepo.getByBranchAndProductAsync(branchId, item.productId);
-          if (branchPrice?.retailPrice !== null && branchPrice?.retailPrice !== undefined) {
-            officialPrice = branchPrice.retailPrice;
-          }
-        }
-
-        blackAmount += Math.max(0, (Number(item.unitPrice) - officialPrice) * Number(item.quantity));
-      }
-      bill.blackAmount = blackAmount;
+      bill.blackAmount = enriched.reduce((acc, { item, product: prod, branchPrice: bp }) => {
+        const officialPrice = prod ? resolveBranchPrice(bp, prod, command.customerType) : 0;
+        return acc + Math.max(0, (Number(item.unitPrice) - officialPrice) * Number(item.quantity));
+      }, 0);
       if ((command.facilitatorUserId || command.facilitatorName) && command.commissionPct) {
-        bill.commissionAmount = (blackAmount * command.commissionPct) / 100;
+        bill.commissionAmount = (bill.blackAmount * command.commissionPct) / 100;
       }
     }
 
@@ -94,5 +88,28 @@ export class CreateBillCommandHandler implements ICommandHandler<CreateBillComma
       metadata: { billNumber: created.billNumber, totalAmount: created.totalAmount, saleType: created.saleType },
     });
     return created;
+  }
+
+  private async resolveBranchIdAsync(locationId?: string): Promise<string | null> {
+    if (!locationId) return null;
+    const location = await this.locationRepo.getAsync(locationId);
+    return location?.branchId ?? null;
+  }
+
+  private async fetchItemEnrichmentsAsync(
+    items: BillItem[],
+    branchId: string | null,
+  ): Promise<ItemEnrichment[]> {
+    return Promise.all(
+      items.map(async (item): Promise<ItemEnrichment> => {
+        const [product, branchPrice] = await Promise.all([
+          this.productRepo.getAsync(item.productId),
+          branchId
+            ? this.productBranchPriceRepo.getByBranchAndProductAsync(branchId, item.productId)
+            : Promise.resolve(null),
+        ]);
+        return { item, product, branchPrice };
+      }),
+    );
   }
 }

@@ -240,18 +240,18 @@ export class DemoOrgDataSeed {
   private async seedInventoryAsync(qr: QueryRunner): Promise<void> {
     await qr.query(`
       INSERT INTO core.inventory
-        (id, organization_id, location_id, product_id, quantity_on_hand, quantity_reserved, reorder_level, max_stock, average_cost, quantity_unpublished)
+        (id, organization_id, location_id, product_id, quantity_on_hand, quantity_reserved, reorder_level, max_stock, average_cost)
       VALUES
-        ('${INV.water}',  '${ORG}', '${LOC.mainStore}', '${PRD.water}',  230, 10, 50,  500,  10, 0),
-        ('${INV.mango}',  '${ORG}', '${LOC.mainStore}', '${PRD.mango}',  210,  5, 40,  400,  12, 0),
-        ('${INV.lays}',   '${ORG}', '${LOC.mainStore}', '${PRD.lays}',   380, 20, 60,  600,   8, 0),
-        ('${INV.parleg}', '${ORG}', '${LOC.mainStore}', '${PRD.parleg}', 575, 15, 80,  800,   7, 0),
-        ('${INV.milk}',   '${ORG}', '${LOC.mainStore}', '${PRD.milk}',   115,  5, 30,  200,  52, 0),
-        ('${INV.rice}',   '${ORG}', '${LOC.mainStore}', '${PRD.rice}',    90, 10, 20,  300,  70, 0),
-        ('${INV.salt}',   '${ORG}', '${LOC.mainStore}', '${PRD.salt}',   190,  0, 40,  500,  16, 0),
-        ('${INV.dettol}', '${ORG}', '${LOC.mainStore}', '${PRD.dettol}', 168, 10, 35,  350,  28, 0),
-        ('${INV.surf}',   '${ORG}', '${LOC.mainStore}', '${PRD.surf}',    40,  5, 15,  150,  90, 0),
-        ('${INV.bread}',  '${ORG}', '${LOC.mainStore}', '${PRD.bread}',  150,  8, 25,  400,  32, 0)
+        ('${INV.water}',  '${ORG}', '${LOC.mainStore}', '${PRD.water}',  230, 10, 50,  500,  10),
+        ('${INV.mango}',  '${ORG}', '${LOC.mainStore}', '${PRD.mango}',  210,  5, 40,  400,  12),
+        ('${INV.lays}',   '${ORG}', '${LOC.mainStore}', '${PRD.lays}',   380, 20, 60,  600,   8),
+        ('${INV.parleg}', '${ORG}', '${LOC.mainStore}', '${PRD.parleg}', 575, 15, 80,  800,   7),
+        ('${INV.milk}',   '${ORG}', '${LOC.mainStore}', '${PRD.milk}',   115,  5, 30,  200,  52),
+        ('${INV.rice}',   '${ORG}', '${LOC.mainStore}', '${PRD.rice}',    90, 10, 20,  300,  70),
+        ('${INV.salt}',   '${ORG}', '${LOC.mainStore}', '${PRD.salt}',   190,  0, 40,  500,  16),
+        ('${INV.dettol}', '${ORG}', '${LOC.mainStore}', '${PRD.dettol}', 168, 10, 35,  350,  28),
+        ('${INV.surf}',   '${ORG}', '${LOC.mainStore}', '${PRD.surf}',    40,  5, 15,  150,  90),
+        ('${INV.bread}',  '${ORG}', '${LOC.mainStore}', '${PRD.bread}',  150,  8, 25,  400,  32)
       ON CONFLICT (id) DO NOTHING
     `);
   }

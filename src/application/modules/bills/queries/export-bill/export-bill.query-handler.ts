@@ -1,4 +1,4 @@
-import { Inject } from '@nestjs/common';
+import { Inject, Optional } from '@nestjs/common';
 import type { IQueryHandler } from '@nestjs/cqrs';
 import { InjectPinoLogger, PinoLogger } from 'nestjs-pino';
 import { QueryHandlerStrict } from '../../../../../common';
@@ -14,6 +14,7 @@ import { Customer } from '../../../customers/domain';
 import { ECustomerType, EPaymentMethod } from '../../../../../infrastructure/persistence/entities';
 import { ExportBillQuery } from './export-bill.query';
 import { Bill, BillItem } from '../../domain';
+import { OrganizationSettingsService } from '../../../billing-settings/currency';
 
 /** Big-customer bills print a formal sales invoice; every other customer type prints a thermal receipt. */
 function isBigCustomer(bill: Bill): boolean {
@@ -36,6 +37,7 @@ export class ExportBillQueryHandler implements IQueryHandler<ExportBillQuery, Pd
     @Inject(CUSTOMER_REPO) private readonly customerRepo: ICustomerRepo,
     @Inject(PDF_EXPORT_SERVICE) private readonly pdfService: IPdfExportService,
     @InjectPinoLogger(ExportBillQueryHandler.name) private readonly logger: PinoLogger,
+    @Optional() private readonly organizationSettings?: OrganizationSettingsService,
   ) {}
 
   public async execute(query: ExportBillQuery): Promise<PdfDocument> {
@@ -45,14 +47,17 @@ export class ExportBillQueryHandler implements IQueryHandler<ExportBillQuery, Pd
     const organization = await this.organizationRepo.getAsync(bill.organizationId);
     const filename = `bill-${bill.billNumber}.pdf`;
     const servedBy = bill.createdById ? await this.userRepo.getAsync(bill.createdById) : null;
+    const currencyCode = this.organizationSettings
+      ? await this.organizationSettings.currencyCode(bill.organizationId)
+      : 'USD';
 
     if (isBigCustomer(bill)) {
       const customer = bill.customerId ? await this.customerRepo.getAsync(bill.customerId) : null;
-      const context = this.buildInvoiceContext(bill, organization, servedBy, customer);
+      const context = this.buildInvoiceContext(bill, organization, servedBy, customer, currencyCode);
       return this.pdfService.generateFromTemplateAsync('bill-invoice', context, filename);
     }
 
-    const context = this.buildThermalContext(bill, organization, servedBy);
+    const context = this.buildThermalContext(bill, organization, servedBy, currencyCode);
     return this.pdfService.generateFromTemplateAsync('bill-thermal', context, filename, {
       width: '80mm',
     });
@@ -62,6 +67,7 @@ export class ExportBillQueryHandler implements IQueryHandler<ExportBillQuery, Pd
     bill: Bill,
     organization: Organization | null | undefined,
     servedBy: User | null,
+    currencyCode: string,
   ): Record<string, unknown> {
     const servedByName = [servedBy?.firstName, servedBy?.lastName].filter(Boolean).join(' ');
     const isCash = bill.paymentMethod === EPaymentMethod.Cash;
@@ -91,6 +97,7 @@ export class ExportBillQueryHandler implements IQueryHandler<ExportBillQuery, Pd
       totalAmount: this.formatPlainAmount(bill.totalAmount),
       isCash,
       paymentMethod: bill.paymentMethod ?? '',
+      currencyCode,
     };
   }
 
@@ -104,6 +111,7 @@ export class ExportBillQueryHandler implements IQueryHandler<ExportBillQuery, Pd
     organization: Organization | null | undefined,
     servedBy: User | null,
     customer: Customer | null,
+    currencyCode: string,
   ): Record<string, unknown> {
     const authorizedByName = [servedBy?.firstName, servedBy?.lastName].filter(Boolean).join(' ');
 
@@ -138,6 +146,7 @@ export class ExportBillQueryHandler implements IQueryHandler<ExportBillQuery, Pd
       taxAmount: this.formatPlainAmount(bill.taxAmount),
       discountAmount: this.formatPlainAmount(bill.discountAmount),
       totalAmount: this.formatPlainAmount(bill.totalAmount),
+      currencyCode,
     };
   }
 }

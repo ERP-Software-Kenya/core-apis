@@ -1,4 +1,4 @@
-import { roundReturnMoney } from '../../../shared/helpers/return-number';
+import { roundReturnMoney } from '../../../shared/helpers';
 import { SalesReturn, SalesReturnItem } from '../domain';
 
 const num = (value: unknown): number => {

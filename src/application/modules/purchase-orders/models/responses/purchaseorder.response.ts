@@ -5,6 +5,7 @@ import { EPurchaseOrderStatus } from 'src/application/shared/enums';
 export class PurchaseOrderResponse {
   @ApiProperty() @AutoMap() public id: string;
   @ApiProperty() @AutoMap() public organizationId: string;
+  @ApiPropertyOptional() @AutoMap() public branchId?: string;
   @ApiProperty() @AutoMap() public supplierId: string;
   @ApiPropertyOptional() @AutoMap() public createdById?: string;
   @ApiProperty() @AutoMap() public poNumber: string;

@@ -6,6 +6,7 @@ export class SearchOrdersQuery {
   @AutoMap() public status?: string;
   @AutoMap() public fulfillmentMode?: EFulfillmentMode;
   @AutoMap() public search?: string;
+  @AutoMap(() => [String]) public accessibleLocationIds?: string[];
   @AutoMap() public $page?: number;
   @AutoMap() public $perPage?: number;
 }

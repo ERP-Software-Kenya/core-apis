@@ -3,7 +3,7 @@ import { ICommandHandler } from '@nestjs/cqrs';
 import { InjectPinoLogger, PinoLogger } from 'nestjs-pino';
 import { CommandHandlerStrict } from '../../../../../common';
 import { BILL_REPO, SALES_RETURN_ITEM_REPO, SALES_RETURN_REPO } from '../../../../constants';
-import { generateReturnNumber } from '../../../../shared/helpers/return-number';
+import { generateReturnNumber } from '../../../../shared/helpers';
 import { EBillStatus, ESaleType, ESalesReturnItemCondition, ESalesReturnRefundStatus, ESalesReturnStatus } from '../../../../../infrastructure/persistence/entities';
 import { IBillRepo } from '../../../bills';
 import { Bill, BillItem } from '../../../bills/domain';

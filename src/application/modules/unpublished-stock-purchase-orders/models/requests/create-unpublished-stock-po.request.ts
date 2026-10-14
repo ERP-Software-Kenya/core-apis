@@ -1,7 +1,7 @@
 ﻿import { AutoMap } from '@automapper/classes';
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { Type } from 'class-transformer';
-import { IsArray, IsDateString, IsNotEmpty, IsNumber, IsOptional, IsString, IsUUID, Min, ValidateNested } from 'class-validator';
+import { ArrayMaxSize, ArrayMinSize, IsArray, IsDateString, IsNotEmpty, IsNumber, IsOptional, IsString, IsUUID, Min, ValidateNested } from 'class-validator';
 
 export class CreateUnpublishedStockPOItemRequest {
   @ApiProperty() @IsNotEmpty() @IsUUID() public productId: string;
@@ -16,6 +16,8 @@ export class CreateUnpublishedStockPORequest {
 
   @ApiProperty({ type: [CreateUnpublishedStockPOItemRequest] })
   @IsArray()
+  @ArrayMinSize(1)
+  @ArrayMaxSize(500)
   @ValidateNested({ each: true })
   @Type(() => CreateUnpublishedStockPOItemRequest)
   public items: CreateUnpublishedStockPOItemRequest[];

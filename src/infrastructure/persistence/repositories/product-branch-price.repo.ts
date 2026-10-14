@@ -7,13 +7,15 @@ import { Repository } from 'typeorm';
 import { BaseRepo, Filter, IPageable, PageableFilter } from '../../../common';
 import { ProductBranchPriceEntity } from '../entities';
 import { ProductBranchPrice } from '../../../application/modules/product-branch-prices/domain';
-import { IProductBranchPriceRepo } from 'src/application/modules/product-branch-prices';
+import { EBranchPriceStatus, IProductBranchPriceRepo } from 'src/application/modules/product-branch-prices';
 
 interface RawPriceRow {
   productId:      string;
   productName:    string;
   sku:            string | null;
   id:             string | null;
+  branchId:       string;
+  organizationId: string;
   costPrice:      string | null;
   retailPrice:    string | null;
   loyaltyPrice:   string | null;
@@ -68,6 +70,7 @@ export class ProductBranchPriceRepo
     page: number,
     perPage: number,
     search?: string,
+    status?: EBranchPriceStatus,
   ): Promise<IPageable<ProductBranchPrice>> {
     const offset = (page - 1) * perPage;
     const params: unknown[] = [organizationId, branchId];
@@ -76,6 +79,13 @@ export class ProductBranchPriceRepo
     if (search) {
       params.push(`%${search}%`);
       searchClause = `AND (p.name ILIKE $${params.length} OR p.sku ILIKE $${params.length})`;
+    }
+
+    let statusClause = '';
+    if (status === 'set') {
+      statusClause = 'AND pbp.id IS NOT NULL';
+    } else if (status === 'not_set') {
+      statusClause = 'AND pbp.id IS NULL';
     }
 
     const baseWhere = `
@@ -87,6 +97,7 @@ export class ProductBranchPriceRepo
       WHERE p.organization_id = $1
         AND p.deleted_at IS NULL
         ${searchClause}
+        ${statusClause}
     `;
 
     const countResult = await this.internalRepo.manager.query<Array<{ cnt: string }>>(
@@ -98,13 +109,15 @@ export class ProductBranchPriceRepo
     params.push(perPage, offset);
     const rows = await this.internalRepo.manager.query<RawPriceRow[]>(
       `SELECT
-         p.id               AS "productId",
-         p.name             AS "productName",
-         p.sku              AS "sku",
-         pbp.id             AS "id",
-         pbp.cost_price     AS "costPrice",
-         pbp.retail_price   AS "retailPrice",
-         pbp.loyalty_price  AS "loyaltyPrice",
+         p.id                AS "productId",
+         p.name              AS "productName",
+         p.sku               AS "sku",
+         pbp.id              AS "id",
+         $2                  AS "branchId",
+         $1                  AS "organizationId",
+         pbp.cost_price      AS "costPrice",
+         pbp.retail_price    AS "retailPrice",
+         pbp.loyalty_price   AS "loyaltyPrice",
          pbp.wholesale_price AS "wholesalePrice",
          pbp.transfer_price  AS "transferPrice"
        ${baseWhere}
@@ -114,7 +127,7 @@ export class ProductBranchPriceRepo
     );
 
     return {
-      items:      rows.map(this.fromRaw),
+      items:      rows.map((row) => this.fromRaw(row)),
       page,
       perPage,
       totalCount,
@@ -124,6 +137,12 @@ export class ProductBranchPriceRepo
 
   public async upsertAsync(model: ProductBranchPrice): Promise<ProductBranchPrice> {
     const existing = await this.internalRepo.findOneBy({ branchId: model.branchId, productId: model.productId });
+    const isReset = [model.costPrice, model.retailPrice, model.loyaltyPrice, model.wholesalePrice, model.transferPrice]
+      .every((price) => price === null || price === undefined);
+    if (isReset) {
+      if (existing) await this.internalRepo.remove(existing);
+      return model;
+    }
     if (existing) {
       existing.costPrice      = model.costPrice ?? null;
       existing.retailPrice    = model.retailPrice ?? null;
@@ -138,7 +157,7 @@ export class ProductBranchPriceRepo
     return this.mapToModel(saved);
   }
 
-  public async copyFromMainBranchAsync(targetBranchId: string, _mainBranchId: string, organizationId: string): Promise<void> {
+  public async copyFromMainBranchAsync(targetBranchId: string, organizationId: string): Promise<void> {
     await this.internalRepo.manager.query(
       `INSERT INTO core.product_branch_prices
          (id, organization_id, branch_id, product_id,
@@ -165,8 +184,8 @@ export class ProductBranchPriceRepo
   private fromRaw(row: RawPriceRow): ProductBranchPrice {
     const model          = new ProductBranchPrice();
     model.id             = row.id ?? '';
-    model.organizationId = '';
-    model.branchId       = '';
+    model.organizationId = row.organizationId;
+    model.branchId       = row.branchId;
     model.productId      = row.productId;
     model.productName    = row.productName;
     model.sku            = row.sku ?? undefined;

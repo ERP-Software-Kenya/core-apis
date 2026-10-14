@@ -1,6 +1,6 @@
 ﻿import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { Type } from 'class-transformer';
-import { IsArray, IsNotEmpty, IsNumber, IsOptional, IsString, IsUUID, Min, ValidateNested } from 'class-validator';
+import { ArrayMaxSize, ArrayMinSize, IsArray, IsNotEmpty, IsNumber, IsOptional, IsString, IsUUID, Min, ValidateNested } from 'class-validator';
 
 export class ReceiveUnpublishedStockPOItemRequest {
   @ApiProperty() @IsNotEmpty() @IsUUID() public purchaseItemId: string;
@@ -10,6 +10,8 @@ export class ReceiveUnpublishedStockPOItemRequest {
 export class ReceiveUnpublishedStockPORequest {
   @ApiProperty({ type: [ReceiveUnpublishedStockPOItemRequest] })
   @IsArray()
+  @ArrayMinSize(1)
+  @ArrayMaxSize(500)
   @ValidateNested({ each: true })
   @Type(() => ReceiveUnpublishedStockPOItemRequest)
   public items: ReceiveUnpublishedStockPOItemRequest[];

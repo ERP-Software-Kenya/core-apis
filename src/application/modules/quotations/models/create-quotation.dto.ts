@@ -2,6 +2,10 @@ import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { Type } from 'class-transformer';
 import {
   IsArray,
+  ArrayMaxSize,
+  ArrayMinSize,
+  Max,
+  MaxLength,
   IsNotEmpty,
   IsNumber,
   IsOptional,
@@ -37,6 +41,7 @@ export class CreateQuotationItemDto {
   @IsNumber()
   @IsOptional()
   @Min(0)
+  @Max(100)
   public taxRate?: number;
 }
 
@@ -54,10 +59,13 @@ export class CreateQuotationDto {
   @ApiPropertyOptional({ description: 'Notes' })
   @IsString()
   @IsOptional()
+  @MaxLength(5000)
   public notes?: string;
 
   @ApiProperty({ type: [CreateQuotationItemDto], description: 'Quotation items' })
   @IsArray()
+  @ArrayMinSize(1)
+  @ArrayMaxSize(500)
   @ValidateNested({ each: true })
   @Type(() => CreateQuotationItemDto)
   public items: CreateQuotationItemDto[];

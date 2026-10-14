@@ -1,4 +1,4 @@
-import { BadRequestException, Inject } from '@nestjs/common';
+import { BadRequestException, Inject, NotFoundException } from '@nestjs/common';
 import { ICommandHandler } from '@nestjs/cqrs';
 import { InjectPinoLogger, PinoLogger } from 'nestjs-pino';
 import { CommandHandlerStrict } from '../../../../../common';
@@ -18,11 +18,19 @@ export class CopyMainBranchPricesCommandHandler implements ICommandHandler<CopyM
   public async execute(command: CopyMainBranchPricesCommand): Promise<void> {
     this.logger.info(`Executing ${CopyMainBranchPricesCommand.name} targetBranchId=${command.targetBranchId}`);
 
-    const mainBranch = await this.branchRepo.findMainAsync(command.organizationId);
+    const [mainBranch, targetBranch] = await Promise.all([
+      this.branchRepo.findMainAsync(command.organizationId),
+      this.branchRepo.getAsync(command.targetBranchId),
+    ]);
+
     if (!mainBranch) {
       throw new BadRequestException('No main branch is set for this organisation.');
     }
 
-    await this.repo.copyFromMainBranchAsync(command.targetBranchId, mainBranch.id, command.organizationId);
+    if (!targetBranch || targetBranch.organizationId !== command.organizationId) {
+      throw new NotFoundException(`Branch ${command.targetBranchId} not found`);
+    }
+
+    await this.repo.copyFromMainBranchAsync(command.targetBranchId, command.organizationId);
   }
 }

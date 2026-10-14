@@ -11,6 +11,8 @@ export class PurchaseReturn {
   @AutoMap(() => String) public status: EPurchaseReturnStatus;
   @AutoMap(() => String) public dispatchStatus: EPurchaseReturnDispatchStatus;
   @AutoMap() public totalAmount: number;
+  @AutoMap() public supplierCreditAmount: number;
+  @AutoMap() public refundedAmount: number;
   @AutoMap() public reason?: string;
   @AutoMap() public notes?: string;
   @AutoMap() public createdById?: string;

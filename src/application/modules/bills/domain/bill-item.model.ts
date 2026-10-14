@@ -7,6 +7,7 @@ export class BillItem {
   @AutoMap() public variantId?: string;
   @AutoMap() public quantity: number;
   @AutoMap() public unitPrice: number;
+  @AutoMap() public unitCostSnapshot?: number;
   @AutoMap() public taxRate: number;
   @AutoMap() public taxAmount: number;
   @AutoMap() public discountAmount: number;

@@ -3,6 +3,8 @@ import { ProductBranchPrice } from './domain';
 
 export const PRODUCT_BRANCH_PRICE_REPO = 'PRODUCT_BRANCH_PRICE_REPO';
 
+export type EBranchPriceStatus = 'set' | 'not_set';
+
 export interface IProductBranchPriceRepo extends IBaseRepo<ProductBranchPrice, string> {
   upsertAsync(model: ProductBranchPrice): Promise<ProductBranchPrice>;
   listByBranchAsync(
@@ -11,7 +13,8 @@ export interface IProductBranchPriceRepo extends IBaseRepo<ProductBranchPrice, s
     page: number,
     perPage: number,
     search?: string,
+    status?: EBranchPriceStatus,
   ): Promise<IPageable<ProductBranchPrice>>;
-  copyFromMainBranchAsync(targetBranchId: string, mainBranchId: string, organizationId: string): Promise<void>;
+  copyFromMainBranchAsync(targetBranchId: string, organizationId: string): Promise<void>;
   getByBranchAndProductAsync(branchId: string, productId: string): Promise<ProductBranchPrice | null>;
 }

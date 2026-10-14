@@ -1,17 +1,23 @@
 import { Mapper } from '@automapper/core';
 import { InjectMapper } from '@automapper/nestjs';
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { InjectPinoLogger, PinoLogger } from 'nestjs-pino';
 import { Repository } from 'typeorm';
 import { BaseRepo, countPages, Filter, IPageable, PageableFilter } from '../../../common';
-import { CustomerCreditTransactionEntity } from '../entities';
+import { CustomerCreditTransactionEntity, CustomerEntity, ECreditTransactionType } from '../entities';
 import {
   CreditTransactionDocument,
   CustomerCreditTransaction,
   SearchCreditTransactionsFilter,
 } from '../../../application/modules/credit-approvals/domain';
-import { ICustomerCreditTransactionRepo } from '../../../application/modules/credit-approvals/i-customer-credit-transaction.repo';
+import {
+  CustomerBalanceTransactionInput,
+  ICustomerCreditTransactionRepo,
+} from '../../../application/modules/credit-approvals/i-customer-credit-transaction.repo';
+import type { Customer } from '../../../application/modules/customers/domain';
+import { OFFICIAL_ACCOUNT_CODES } from '../../../application/modules/accounting';
+import { postOfficialJournal } from './ledger-posting';
 
 @Injectable()
 export class CustomerCreditTransactionRepo
@@ -34,6 +40,113 @@ export class CustomerCreditTransactionRepo
 
   public override get idColumnName(): keyof CustomerCreditTransactionEntity {
     return 'id';
+  }
+
+  public async recordCustomerBalanceTransactionAsync(
+    input: CustomerBalanceTransactionInput,
+  ): Promise<Customer> {
+    if (!Number.isFinite(input.amount) || input.amount === 0) {
+      throw new BadRequestException('Transaction amount must be a non-zero number');
+    }
+    if (input.type === 'payment' && input.amount < 0) {
+      throw new BadRequestException('Payment amount must be greater than 0');
+    }
+
+    return this.internalRepo.manager.transaction(async (manager) => {
+      const customer = await manager.findOne(CustomerEntity, {
+        where: { id: input.customerId, organizationId: input.organizationId },
+        lock: { mode: 'pessimistic_write' },
+      });
+      if (!customer) throw new NotFoundException(`Customer ${input.customerId} not found`);
+
+      const before = Number(customer.creditBalance ?? 0);
+      if (input.type === 'payment' && input.amount > before) {
+        throw new BadRequestException(
+          `Payment amount ${input.amount} exceeds outstanding balance ${before}`,
+        );
+      }
+      const after = before + (input.type === 'payment' ? -input.amount : input.amount);
+      if (after < 0) {
+        throw new BadRequestException('Transaction would create a customer advance balance');
+      }
+
+      const transaction = await manager.save(
+        CustomerCreditTransactionEntity,
+        manager.create(CustomerCreditTransactionEntity, {
+          customerId: input.customerId,
+          type:
+            input.type === 'payment'
+              ? ECreditTransactionType.Payment
+              : ECreditTransactionType.Adjustment,
+          amount: Math.abs(input.amount),
+          balanceBefore: before,
+          balanceAfter: after,
+          paymentMethod: input.paymentMethod,
+          note: input.note,
+          performedById: input.performedById,
+        }),
+      );
+      const amount = Math.abs(input.amount);
+      const lines = input.type === 'payment'
+        ? [
+            {
+              accountCode: input.paymentMethod?.toLowerCase() === 'cash'
+                ? OFFICIAL_ACCOUNT_CODES.Cash
+                : OFFICIAL_ACCOUNT_CODES.Bank,
+              debit: amount,
+              credit: 0,
+              customerId: customer.id,
+            },
+            {
+              accountCode: OFFICIAL_ACCOUNT_CODES.AccountsReceivable,
+              debit: 0,
+              credit: amount,
+              customerId: customer.id,
+            },
+          ]
+        : input.amount > 0
+          ? [
+              {
+                accountCode: OFFICIAL_ACCOUNT_CODES.AccountsReceivable,
+                debit: amount,
+                credit: 0,
+                customerId: customer.id,
+              },
+              {
+                accountCode: OFFICIAL_ACCOUNT_CODES.OtherIncome,
+                debit: 0,
+                credit: amount,
+                customerId: customer.id,
+              },
+            ]
+          : [
+              {
+                accountCode: OFFICIAL_ACCOUNT_CODES.AdjustmentExpense,
+                debit: amount,
+                credit: 0,
+                customerId: customer.id,
+              },
+              {
+                accountCode: OFFICIAL_ACCOUNT_CODES.AccountsReceivable,
+                debit: 0,
+                credit: amount,
+                customerId: customer.id,
+              },
+            ];
+      await postOfficialJournal(manager, {
+        organizationId: input.organizationId,
+        idempotencyKey: `customer-credit-transaction:${transaction.id}`,
+        sourceType: 'customer_credit_transaction',
+        sourceId: transaction.id,
+        occurredAt: new Date(),
+        description: input.type === 'payment' ? 'Customer payment' : 'Customer balance adjustment',
+        createdBy: input.performedById,
+        lines,
+      });
+      customer.creditBalance = after;
+      const saved = await manager.save(CustomerEntity, customer);
+      return { ...saved } as Customer;
+    });
   }
 
   public async searchOrgPagedAsync(

@@ -7,6 +7,7 @@ export class SearchQuotationsQuery extends QueryBase {
   public status?: string;
   public isLatest?: boolean;
   public search?: string;
+  public accessibleLocationIds?: string[];
   public $page?: number;
   public $perPage?: number;
 }

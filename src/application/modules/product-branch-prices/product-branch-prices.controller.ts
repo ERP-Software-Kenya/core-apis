@@ -67,6 +67,7 @@ export class ProductBranchPricesController {
     query.page = filter.page ?? 1;
     query.perPage = filter.perPage ?? 20;
     query.search = filter.search;
+    query.status = filter.status;
 
     const result = await this.mediator.execute<ListBranchProductPricesQuery, IPageable<ProductBranchPrice>>(query);
     return {
