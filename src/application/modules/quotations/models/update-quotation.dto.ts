@@ -2,6 +2,9 @@ import { ApiPropertyOptional } from '@nestjs/swagger';
 import { Type } from 'class-transformer';
 import {
   IsArray,
+  ArrayMaxSize,
+  ArrayMinSize,
+  MaxLength,
   IsOptional,
   IsString,
   IsUUID,
@@ -23,10 +26,13 @@ export class UpdateQuotationDto {
   @ApiPropertyOptional({ description: 'Notes' })
   @IsString()
   @IsOptional()
+  @MaxLength(5000)
   public notes?: string;
 
   @ApiPropertyOptional({ type: [CreateQuotationItemDto], description: 'Quotation items' })
   @IsArray()
+  @ArrayMinSize(1)
+  @ArrayMaxSize(500)
   @IsOptional()
   @ValidateNested({ each: true })
   @Type(() => CreateQuotationItemDto)

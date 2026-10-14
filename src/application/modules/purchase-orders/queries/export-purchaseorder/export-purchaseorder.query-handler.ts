@@ -12,6 +12,7 @@ import { PurchaseItem } from '../../../purchase-items/domain';
 import { Product } from '../../../products/domain';
 import { Supplier } from '../../../suppliers/domain';
 import { ExportPurchaseOrderQuery } from './export-purchaseorder.query';
+import { formatOrganizationCurrency, OrganizationSettingsService } from '../../../billing-settings/currency';
 
 @QueryHandlerStrict(ExportPurchaseOrderQuery)
 export class ExportPurchaseOrderQueryHandler implements IQueryHandler<ExportPurchaseOrderQuery, PdfDocument> {
@@ -21,6 +22,7 @@ export class ExportPurchaseOrderQueryHandler implements IQueryHandler<ExportPurc
     @Inject(SUPPLIER_REPO)      private readonly supplierRepo: ISupplierRepo,
     @Inject(PRODUCT_REPO)       private readonly productRepo: IProductRepo,
     @Inject(PDF_EXPORT_SERVICE) private readonly pdfService: IPdfExportService,
+    private readonly organizationSettings: OrganizationSettingsService,
     @InjectPinoLogger(ExportPurchaseOrderQueryHandler.name) private readonly logger: PinoLogger,
   ) {}
 
@@ -41,7 +43,8 @@ export class ExportPurchaseOrderQueryHandler implements IQueryHandler<ExportPurc
       }),
     );
 
-    const context  = this.buildContext(po, items, supplier, productMap);
+    const currencyCode = await this.organizationSettings.currencyCode(po.organizationId);
+    const context  = this.buildContext(po, items, supplier, productMap, currencyCode);
     const filename = `purchase-order-${po.poNumber}.pdf`;
 
     return this.pdfService.generateFromTemplateAsync('purchase-order', context, filename);
@@ -52,9 +55,9 @@ export class ExportPurchaseOrderQueryHandler implements IQueryHandler<ExportPurc
     items: PurchaseItem[],
     supplier: Supplier | null,
     productMap: Map<string, Product>,
+    currencyCode: string,
   ): Record<string, unknown> {
-    const fmt = (v: number) =>
-      new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR', minimumFractionDigits: 2 }).format(v ?? 0);
+    const fmt = (v: number) => formatOrganizationCurrency(v, currencyCode);
 
     const fmtDate = (d?: Date | string | null) => {
       if (!d) return '';
@@ -65,6 +68,7 @@ export class ExportPurchaseOrderQueryHandler implements IQueryHandler<ExportPurc
       organizationName:    'Organization',
       organizationAddress: '',
       organizationEmail:   '',
+      currencyCode,
 
       poNumber:   po.poNumber,
       status:     po.status ?? 'Draft',

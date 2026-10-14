@@ -6,6 +6,7 @@ export type OrderFilter = {
   status?: string;
   fulfillmentMode?: string;
   search?: string;
+  accessibleLocationIds?: string[];
 };
 
 export type PackedOrderRow = {

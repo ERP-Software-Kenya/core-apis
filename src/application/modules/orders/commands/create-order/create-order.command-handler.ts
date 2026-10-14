@@ -21,6 +21,7 @@ import { ILocationRepo } from '../../../locations';
 import { IProductRepo } from '../../../products';
 import { IProductBranchPriceRepo } from '../../../product-branch-prices';
 import { resolveBranchPrice } from '../../../product-branch-prices/helpers';
+import { formatOrganizationCurrency, OrganizationSettingsService } from '../../../billing-settings/currency';
 
 @CommandHandlerStrict(CreateOrderCommand)
 export class CreateOrderCommandHandler implements ICommandHandler<CreateOrderCommand, Order> {
@@ -36,6 +37,7 @@ export class CreateOrderCommandHandler implements ICommandHandler<CreateOrderCom
     private readonly mailService: OrdersMailService,
     @Inject(PUSH_NOTIFICATION_SERVICE) private readonly pushService: IPushNotificationService,
     private readonly activityLog: ActivityLogService,
+    private readonly organizationSettings: OrganizationSettingsService,
     @InjectPinoLogger(CreateOrderCommandHandler.name) private readonly logger: PinoLogger,
   ) {}
 
@@ -167,8 +169,8 @@ export class CreateOrderCommandHandler implements ICommandHandler<CreateOrderCom
     const customer = await this.customerRepo.getAsync(order.customerId);
     if (!customer?.email) return;
 
-    const fmt = (n: number): string =>
-      new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR' }).format(Number(n));
+    const currencyCode = await this.organizationSettings.currencyCode(order.organizationId);
+    const fmt = (n: number): string => formatOrganizationCurrency(Number(n), currencyCode);
 
     await this.mailService.sendTemplatedAsync(customer.email, 'order-confirmed', {
       customerName: customer.name ?? 'Valued Customer',
@@ -181,11 +183,12 @@ export class CreateOrderCommandHandler implements ICommandHandler<CreateOrderCom
 
   private async sendOrderPushAsync(order: Order): Promise<void> {
     if (!order.organizationId) return;
+    const currencyCode = await this.organizationSettings.currencyCode(order.organizationId);
     await this.pushService.broadcastToOrgAsync(
       order.organizationId,
       'ORDER_CREATED',
       `New order ${order.orderNumber}`,
-      `Order placed — total ${new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR' }).format(Number(order.totalAmount))}`,
+      `Order placed — total ${formatOrganizationCurrency(Number(order.totalAmount), currencyCode)}`,
       { orderId: order.id },
     );
   }

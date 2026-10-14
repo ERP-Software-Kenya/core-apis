@@ -152,6 +152,6 @@ export class InventoryController {
     if (!user.locationIds.length) {
       throw new LocationAccessDeniedException(undefined, 'Filter by locationId, or use an org-wide role to list without one.');
     }
-    query.accessibleLocationIds = user.locationIds;
+    query.accessibleLocationIds = user.locationIds ?? [];
   }
 }

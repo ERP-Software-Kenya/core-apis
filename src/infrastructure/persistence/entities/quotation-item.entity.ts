@@ -1,6 +1,7 @@
 import { AutoMap } from '@automapper/classes';
 import {
   Column,
+  Check,
   Entity,
   JoinColumn,
   ManyToOne,
@@ -15,6 +16,8 @@ import { ProductVariantEntity } from './product-variant.entity';
 const PK_NAME = 'PK_' + ECoreTableName.QuotationItems;
 
 @Entity({ schema: CORE_SCHEMA, name: ECoreTableName.QuotationItems })
+@Check('CHK_quotation_items_quantity_positive', `"quantity" > 0`)
+@Check('CHK_quotation_items_amounts_nonnegative', `"unit_price_inclusive" >= 0 AND "unit_taxable" >= 0 AND "tax_rate" >= 0 AND "tax_rate" <= 100 AND "tax_amount" >= 0 AND "line_total" >= 0`)
 export class QuotationItemEntity {
   @AutoMap()
   @PrimaryGeneratedColumn('uuid', { primaryKeyConstraintName: PK_NAME })

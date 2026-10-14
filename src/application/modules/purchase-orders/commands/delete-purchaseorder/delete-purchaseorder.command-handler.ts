@@ -15,7 +15,7 @@ export class DeletePurchaseOrderCommandHandler implements ICommandHandler<Delete
 
   public async execute(command: DeletePurchaseOrderCommand): Promise<boolean> {
     this.logger.info(`Executing ${DeletePurchaseOrderCommand.name} id=${command.id}`);
-    await this.repo.deleteAsync(command.id);
+    await this.repo.deleteDraftAsync(command.id);
     return true;
   }
 }

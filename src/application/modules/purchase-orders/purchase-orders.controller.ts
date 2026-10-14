@@ -11,6 +11,8 @@ import {
   CurrentUser,
   IPageable,
   InventoryNotOwnedByOrgException,
+  LocationAccessDeniedException,
+  assertLocationAccess,
   PdfDocument,
   Roles,
   RolesGuard,
@@ -62,6 +64,7 @@ export class PurchaseOrdersController {
     if (!user.organizationId) return { items: [], page: 1, perPage: 15, totalCount: 0, totalPages: 0 };
     const query          = this.mapper.map(filter, SearchPurchaseOrdersRequest, SearchPurchaseOrdersQuery);
     query.organizationId = user.organizationId;
+    if (!user.hasOrgWideAccess) query.branchId = user.branchId;
     const result         = await this.mediator.execute<SearchPurchaseOrdersQuery, IPageable<PurchaseOrder>>(query);
     return {
       ...result,
@@ -80,6 +83,7 @@ export class PurchaseOrdersController {
     if (!user.organizationId) return [];
     const query          = this.mapper.map(filter, ListPurchaseOrdersRequest, ListPurchaseOrdersQuery);
     query.organizationId = user.organizationId;
+    if (!user.hasOrgWideAccess) query.branchId = user.branchId;
     const result         = await this.mediator.execute<ListPurchaseOrdersQuery, PurchaseOrder[]>(query);
     return this.mapper.mapArray(result, PurchaseOrder, PurchaseOrderResponse);
   }
@@ -90,10 +94,7 @@ export class PurchaseOrdersController {
   @HttpCode(HttpStatus.OK)
   @Get(':id')
   public async getById(@Param('id') id: string, @CurrentUser() user: AuthenticatedUser): Promise<PurchaseOrderResponse> {
-    const query  = new GetPurchaseOrderQuery();
-    query.id     = id;
-    const result = await this.mediator.execute<GetPurchaseOrderQuery, PurchaseOrder>(query);
-    if (result.organizationId !== user.organizationId) throw new InventoryNotOwnedByOrgException();
+    const result = await this.getAuthorizedPurchaseOrder(id, user);
     return this.mapper.map(result, PurchaseOrder, PurchaseOrderResponse);
   }
 
@@ -106,10 +107,7 @@ export class PurchaseOrdersController {
     @Res() res: Response,
     @CurrentUser() user: AuthenticatedUser,
   ): Promise<void> {
-    const fetchQuery  = new GetPurchaseOrderQuery();
-    fetchQuery.id     = id;
-    const existing    = await this.mediator.execute<GetPurchaseOrderQuery, PurchaseOrder>(fetchQuery);
-    if (existing.organizationId !== user.organizationId) throw new InventoryNotOwnedByOrgException();
+    await this.getAuthorizedPurchaseOrder(id, user);
     const query       = new ExportPurchaseOrderQuery();
     query.id          = id;
     const doc: PdfDocument = await this.mediator.execute<ExportPurchaseOrderQuery, PdfDocument>(query);
@@ -131,6 +129,7 @@ export class PurchaseOrdersController {
   ): Promise<PurchaseOrderResponse> {
     const command          = this.mapper.map(body, CreatePurchaseOrderRequest, CreatePurchaseOrderCommand);
     command.organizationId = user.organizationId;
+    command.branchId       = user.hasOrgWideAccess ? undefined : user.branchId;
     command.createdById    = user.dbUserId;
     command.items          = body.items;
     const result           = await this.mediator.execute<CreatePurchaseOrderCommand, PurchaseOrder>(command);
@@ -144,8 +143,10 @@ export class PurchaseOrdersController {
   @Put(':id')
   public async update(
     @Param('id') id: string,
+    @CurrentUser() user: AuthenticatedUser,
     @Body() body: UpdatePurchaseOrderRequest,
   ): Promise<PurchaseOrderResponse> {
+    await this.getAuthorizedPurchaseOrder(id, user);
     const command = this.mapper.map(body, UpdatePurchaseOrderRequest, UpdatePurchaseOrderCommand);
     command.id    = id;
     const result  = await this.mediator.execute<UpdatePurchaseOrderCommand, PurchaseOrder>(command);
@@ -162,6 +163,7 @@ export class PurchaseOrdersController {
     @CurrentUser() user: AuthenticatedUser,
     @Body() body: ReceivePurchaseOrderRequest,
   ): Promise<PurchaseOrderResponse> {
+    await this.getAuthorizedPurchaseOrder(id, user);
     const command           = new ReceivePurchaseOrderCommand();
     command.purchaseOrderId = id;
     command.organizationId  = user.organizationId;
@@ -182,6 +184,8 @@ export class PurchaseOrdersController {
     @CurrentUser() user: AuthenticatedUser,
     @Body() body: AllocatePurchaseOrderRequest,
   ): Promise<PurchaseOrderResponse> {
+    await this.getAuthorizedPurchaseOrder(id, user);
+    for (const allocation of body.allocations) assertLocationAccess(user, allocation.locationId);
     const command           = new AllocatePurchaseOrderCommand();
     command.purchaseOrderId = id;
     command.organizationId  = user.organizationId;
@@ -202,6 +206,7 @@ export class PurchaseOrdersController {
     @CurrentUser() user: AuthenticatedUser,
     @Body() body: RecordPurchaseOrderPaymentRequest,
   ): Promise<PurchaseOrderResponse> {
+    await this.getAuthorizedPurchaseOrder(id, user);
     const command             = new RecordPurchaseOrderPaymentCommand();
     command.purchaseOrderId   = id;
     command.organizationId    = user.organizationId;
@@ -223,6 +228,7 @@ export class PurchaseOrdersController {
     @Param('id') id: string,
     @CurrentUser() user: AuthenticatedUser,
   ): Promise<PurchaseOrderPaymentResponse[]> {
+    await this.getAuthorizedPurchaseOrder(id, user);
     const query             = new ListPurchaseOrderPaymentsQuery();
     query.purchaseOrderId   = id;
     query.organizationId    = user.organizationId;
@@ -236,9 +242,19 @@ export class PurchaseOrdersController {
   @HttpCode(HttpStatus.OK)
   @Roles(ERole.OrgAdmin, ERole.SuperAdmin)
   @Delete(':id')
-  public async delete(@Param('id') id: string): Promise<boolean> {
+  public async delete(@Param('id') id: string, @CurrentUser() user: AuthenticatedUser): Promise<boolean> {
+    await this.getAuthorizedPurchaseOrder(id, user);
     const command = new DeletePurchaseOrderCommand();
     command.id    = id;
     return this.mediator.execute<DeletePurchaseOrderCommand, boolean>(command);
+  }
+
+  private async getAuthorizedPurchaseOrder(id: string, user: AuthenticatedUser): Promise<PurchaseOrder> {
+    const query = new GetPurchaseOrderQuery();
+    query.id = id;
+    const po = await this.mediator.execute<GetPurchaseOrderQuery, PurchaseOrder>(query);
+    if (po.organizationId !== user.organizationId) throw new InventoryNotOwnedByOrgException();
+    if (!user.hasOrgWideAccess && po.branchId !== user.branchId) throw new LocationAccessDeniedException();
+    return po;
   }
 }

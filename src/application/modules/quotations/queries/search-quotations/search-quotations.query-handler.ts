@@ -26,6 +26,7 @@ export class SearchQuotationsQueryHandler
       status: query.status,
       isLatest: query.isLatest,
       search: query.search,
+      accessibleLocationIds: query.accessibleLocationIds,
       $page: query.$page,
       $perPage: query.$perPage,
     });

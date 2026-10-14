@@ -137,6 +137,12 @@ export class ProductBranchPriceRepo
 
   public async upsertAsync(model: ProductBranchPrice): Promise<ProductBranchPrice> {
     const existing = await this.internalRepo.findOneBy({ branchId: model.branchId, productId: model.productId });
+    const isReset = [model.costPrice, model.retailPrice, model.loyaltyPrice, model.wholesalePrice, model.transferPrice]
+      .every((price) => price === null || price === undefined);
+    if (isReset) {
+      if (existing) await this.internalRepo.remove(existing);
+      return model;
+    }
     if (existing) {
       existing.costPrice      = model.costPrice ?? null;
       existing.retailPrice    = model.retailPrice ?? null;

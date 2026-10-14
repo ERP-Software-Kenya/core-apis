@@ -35,4 +35,9 @@ export class BranchRepo
     if (!entity) return null;
     return this.mapToModel(entity);
   }
+
+  public async findByManagerIdAsync(userId: string): Promise<Branch | null> {
+    const entity = await this.internalRepo.findOneBy({ userId });
+    return entity ? this.mapToModel(entity) : null;
+  }
 }

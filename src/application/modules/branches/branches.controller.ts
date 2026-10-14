@@ -3,7 +3,7 @@ import { InjectMapper } from '@automapper/nestjs';
 import { Body, Controller, Get, HttpCode, HttpStatus, Param, Patch, Post, Put, Query, UseGuards } from '@nestjs/common';
 import { ApiBearerAuth, ApiCreatedResponse, ApiOkResponse, ApiOperation, ApiParam, ApiTags } from '@nestjs/swagger';
 import { InjectPinoLogger, PinoLogger } from 'nestjs-pino';
-import { AuthenticatedUser, ClerkAuthGuard, CqrsMediator, CurrentUser, IPageable, Roles, RolesGuard, assertOrgOwnership } from '../../../common';
+import { AuthenticatedUser, ClerkAuthGuard, CqrsMediator, CurrentUser, IPageable, Roles, RolesGuard, assertBranchAccess, assertOrgOwnership } from '../../../common';
 import { ERole } from '../../../infrastructure';
 import { CreateBranchCommand, SetMainBranchCommand, UpdateBranchCommand } from './commands';
 import { Branch } from './domain';
@@ -40,6 +40,7 @@ export class BranchesController {
     if (!user.organizationId) return { items: [], page: 1, perPage: 15, totalCount: 0, totalPages: 0 };
     const query = this.mapper.map(filter ?? new SearchBranchesRequest(), SearchBranchesRequest, SearchBranchesQuery);
     query.organizationId = user.organizationId;
+    if (!user.hasOrgWideAccess && user.branchId) query.$ids = [user.branchId];
     const result = await this.mediator.execute<SearchBranchesQuery, IPageable<Branch>>(query);
     return { ...result, items: this.mapper.mapArray(result.items, Branch, BranchResponse) };
   }
@@ -56,6 +57,7 @@ export class BranchesController {
     if (!user.organizationId) return [];
     const query = this.mapper.map(filter ?? new ListBranchesRequest(), ListBranchesRequest, ListBranchesQuery);
     query.organizationId = user.organizationId;
+    if (!user.hasOrgWideAccess && user.branchId) query.$ids = [user.branchId];
     const result = await this.mediator.execute<ListBranchesQuery, Branch[]>(query);
     return this.mapper.mapArray(result, Branch, BranchResponse);
   }
@@ -71,6 +73,7 @@ export class BranchesController {
     query.id = id;
     const result = await this.mediator.execute<GetBranchQuery, Branch>(query);
     assertOrgOwnership(user, result.organizationId, 'Branch');
+    assertBranchAccess(user, result.id);
     return this.mapper.map(result, Branch, BranchResponse);
   }
 

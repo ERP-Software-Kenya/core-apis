@@ -31,6 +31,7 @@ import {
   IPageable,
   requireOrganizationId,
   assertOrgOwnership,
+  assertLocationAccess,
   PdfDocument,
 } from '../../../common';
 import { ERole } from '../../../infrastructure';
@@ -86,6 +87,7 @@ export class QuotationsController {
     @CurrentUser() user: AuthenticatedUser,
     @Query() filter?: QuotationFilterDto,
   ): Promise<QuotationsPagedResponse> {
+    if (filter?.locationId) assertLocationAccess(user, filter.locationId);
     const query = new SearchQuotationsQuery();
     query.organizationId = requireOrganizationId(user);
     query.locationId = filter?.locationId;
@@ -93,6 +95,7 @@ export class QuotationsController {
     query.status = filter?.status;
     query.isLatest = filter?.isLatest;
     query.search = filter?.search?.trim() || undefined;
+    if (!user.hasOrgWideAccess) query.accessibleLocationIds = user.locationIds ?? [];
     query.$page = filter?.$page ?? 1;
     query.$perPage = filter?.$perPage ?? 20;
 
@@ -123,6 +126,7 @@ export class QuotationsController {
     query.id = id;
     const result = await this.mediator.execute<GetQuotationQuery, Quotation>(query);
     assertOrgOwnership(user, result.organizationId, 'Quotation');
+    assertLocationAccess(user, result.locationId);
     return result;
   }
 
@@ -139,6 +143,7 @@ export class QuotationsController {
     ownershipQuery.id = id;
     const quotation = await this.mediator.execute<GetQuotationQuery, Quotation>(ownershipQuery);
     assertOrgOwnership(user, quotation.organizationId, 'Quotation');
+    assertLocationAccess(user, quotation.locationId);
     const query = new ExportQuotationQuery();
     query.id = id;
     const doc: PdfDocument = await this.mediator.execute<ExportQuotationQuery, PdfDocument>(query);
@@ -163,6 +168,7 @@ export class QuotationsController {
     ownershipQuery.id = id;
     const quotation = await this.mediator.execute<GetQuotationQuery, Quotation>(ownershipQuery);
     assertOrgOwnership(user, quotation.organizationId, 'Quotation');
+    assertLocationAccess(user, quotation.locationId);
     const query = new GetQuotationRevisionsQuery();
     query.id = id;
     const result = await this.mediator.execute<GetQuotationRevisionsQuery, Quotation[]>(query);
@@ -177,6 +183,7 @@ export class QuotationsController {
     @CurrentUser() user: AuthenticatedUser,
     @Body() dto: CreateQuotationDto,
   ): Promise<QuotationResponse> {
+    assertLocationAccess(user, dto.locationId);
     const command = new CreateQuotationCommand();
     command.organizationId = requireOrganizationId(user);
     command.locationId = dto.locationId;
@@ -203,8 +210,11 @@ export class QuotationsController {
     ownershipQuery.id = id;
     const existing = await this.mediator.execute<GetQuotationQuery, Quotation>(ownershipQuery);
     assertOrgOwnership(user, existing.organizationId, 'Quotation');
+    assertLocationAccess(user, existing.locationId);
+    if (dto.locationId) assertLocationAccess(user, dto.locationId);
     const command = new UpdateQuotationCommand();
     command.id = id;
+    command.organizationId = requireOrganizationId(user);
     command.locationId = dto.locationId;
     command.customerId = dto.customerId;
     command.notes = dto.notes;
@@ -227,8 +237,10 @@ export class QuotationsController {
     ownershipQuery.id = id;
     const existing = await this.mediator.execute<GetQuotationQuery, Quotation>(ownershipQuery);
     assertOrgOwnership(user, existing.organizationId, 'Quotation');
+    assertLocationAccess(user, existing.locationId);
     const command = new ReviseQuotationCommand();
     command.id = id;
+    command.organizationId = requireOrganizationId(user);
     command.createdByUserId = user.dbUserId;
 
     const result = await this.mediator.execute<ReviseQuotationCommand, Quotation>(command);
@@ -249,8 +261,11 @@ export class QuotationsController {
     ownershipQuery.id = id;
     const existing = await this.mediator.execute<GetQuotationQuery, Quotation>(ownershipQuery);
     assertOrgOwnership(user, existing.organizationId, 'Quotation');
+    assertLocationAccess(user, existing.locationId);
+    if (dto?.fulfillmentLocationId) assertLocationAccess(user, dto.fulfillmentLocationId);
     const command = new ConvertToOrderCommand();
     command.id = id;
+    command.organizationId = requireOrganizationId(user);
     command.fulfillmentMode = dto?.fulfillmentMode;
     command.fulfillmentLocationId = dto?.fulfillmentLocationId;
     command.performedById = user.dbUserId;
@@ -272,8 +287,10 @@ export class QuotationsController {
     ownershipQuery.id = id;
     const existing = await this.mediator.execute<GetQuotationQuery, Quotation>(ownershipQuery);
     assertOrgOwnership(user, existing.organizationId, 'Quotation');
+    assertLocationAccess(user, existing.locationId);
     const command = new SendQuotationEmailCommand();
     command.id = id;
+    command.organizationId = requireOrganizationId(user);
     command.recipientEmail = dto.recipientEmail;
     command.subject = dto.subject;
     command.body = dto.body;

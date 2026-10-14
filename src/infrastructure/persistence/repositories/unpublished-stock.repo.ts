@@ -35,7 +35,7 @@ export class UnpublishedStockRepo
   }
 
   public async addStockAsync(id: string, quantity: number, unitCost: number | undefined, manager: EntityManager): Promise<UnpublishedStock> {
-    const entity = await manager.findOneOrFail(UnpublishedStockEntity, { where: { id } });
+    const entity = await this.findForUpdate(manager, id);
     const before = Number(entity.quantityOnHand);
     manager.merge(UnpublishedStockEntity, entity, {
       quantityOnHand: before + quantity,
@@ -57,7 +57,7 @@ export class UnpublishedStockRepo
   }
 
   public async deductStockAsync(id: string, quantity: number, manager: EntityManager): Promise<UnpublishedStock> {
-    const entity = await manager.findOneOrFail(UnpublishedStockEntity, { where: { id } });
+    const entity = await this.findForUpdate(manager, id);
     const onHand = Number(entity.quantityOnHand);
     if (quantity > onHand) throw new BadRequestException(`Insufficient unpublished stock. Available: ${onHand}`);
     manager.merge(UnpublishedStockEntity, entity, { quantityOnHand: onHand - quantity });
@@ -68,5 +68,12 @@ export class UnpublishedStockRepo
   private calcAvgCost(currentQty: number, currentAvg: number, addedQty: number, unitCost: number): number {
     const totalQty = currentQty + addedQty;
     return totalQty > 0 ? (currentQty * currentAvg + addedQty * unitCost) / totalQty : unitCost;
+  }
+
+  private findForUpdate(manager: EntityManager, id: string): Promise<UnpublishedStockEntity> {
+    return manager.findOneOrFail(UnpublishedStockEntity, {
+      where: { id },
+      lock: { mode: 'pessimistic_write' },
+    });
   }
 }

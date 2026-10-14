@@ -11,7 +11,6 @@ export class Inventory {
   @AutoMap() public maxStock?: number;
   @AutoMap() public averageCost?: number;
   @AutoMap() public binLocation?: string;
-  @AutoMap() public quantityUnpublished: number;
   @AutoMap() public productPackSize?: number;
   @AutoMap() public packsOnHand?: number;
   @AutoMap() public looseUnits?: number;

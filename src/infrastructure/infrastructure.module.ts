@@ -82,6 +82,10 @@ import {
   UnpublishedStockPIAllocationRepo,
   ProductBranchPriceRepo,
   TaxRepo,
+  AccountingRepo,
+  BlackLedgerRepo,
+  OrganizationSettingRepo,
+  StockOperationsRepo,
 } from './persistence';
 
 import {
@@ -159,6 +163,10 @@ import {
   UNPUBLISHED_STOCK_PI_ALLOCATION_REPO,
   PRODUCT_BRANCH_PRICE_REPO,
   TAX_REPO,
+  ACCOUNTING_REPO,
+  BLACK_LEDGER_REPO,
+  ORGANIZATION_SETTING_REPO,
+  STOCK_OPERATIONS_REPO,
 } from '../application/constants';
 
 @Module({})
@@ -260,6 +268,10 @@ export class InfrastructureModule {
         { provide: UNPUBLISHED_STOCK_PI_ALLOCATION_REPO, useClass: UnpublishedStockPIAllocationRepo },
         { provide: PRODUCT_BRANCH_PRICE_REPO, useClass: ProductBranchPriceRepo },
         { provide: TAX_REPO, useClass: TaxRepo },
+        { provide: ACCOUNTING_REPO, useClass: AccountingRepo },
+        { provide: BLACK_LEDGER_REPO, useClass: BlackLedgerRepo },
+        { provide: ORGANIZATION_SETTING_REPO, useClass: OrganizationSettingRepo },
+        { provide: STOCK_OPERATIONS_REPO, useClass: StockOperationsRepo },
       ],
       exports: [
         EntityMapperProfile,
@@ -336,6 +348,10 @@ export class InfrastructureModule {
         UNPUBLISHED_STOCK_PI_ALLOCATION_REPO,
         PRODUCT_BRANCH_PRICE_REPO,
         TAX_REPO,
+        ACCOUNTING_REPO,
+        BLACK_LEDGER_REPO,
+        ORGANIZATION_SETTING_REPO,
+        STOCK_OPERATIONS_REPO,
       ],
     };
   }

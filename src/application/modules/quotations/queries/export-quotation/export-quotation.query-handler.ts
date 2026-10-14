@@ -1,4 +1,4 @@
-import { Inject, NotFoundException } from '@nestjs/common';
+import { Inject, NotFoundException, Optional } from '@nestjs/common';
 import type { IQueryHandler } from '@nestjs/cqrs';
 import { InjectPinoLogger, PinoLogger } from 'nestjs-pino';
 import {
@@ -11,6 +11,7 @@ import { QUOTATION_REPO } from '../../../../constants';
 import type { IQuotationRepo } from '../../i-quotation.repo';
 import { ExportQuotationQuery } from './export-quotation.query';
 import { buildQuotationPdfContext } from '../../helpers';
+import { OrganizationSettingsService } from '../../../billing-settings/currency';
 
 @QueryHandlerStrict(ExportQuotationQuery)
 export class ExportQuotationQueryHandler
@@ -21,6 +22,7 @@ export class ExportQuotationQueryHandler
     @Inject(PDF_EXPORT_SERVICE) private readonly pdfService: IPdfExportService,
     @InjectPinoLogger(ExportQuotationQueryHandler.name)
     private readonly logger: PinoLogger,
+    @Optional() private readonly organizationSettings?: OrganizationSettingsService,
   ) {}
 
   public async execute(query: ExportQuotationQuery): Promise<PdfDocument> {
@@ -31,7 +33,10 @@ export class ExportQuotationQueryHandler
       throw new NotFoundException(`Quotation ${query.id} not found`);
     }
 
-    const context = buildQuotationPdfContext(quotation);
+    const currencyCode = this.organizationSettings
+      ? await this.organizationSettings.currencyCode(quotation.organizationId)
+      : 'USD';
+    const context = buildQuotationPdfContext(quotation, undefined, currencyCode);
     const filename = `Quotation_${quotation.quoteNumber}.pdf`;
 
     return this.pdfService.generateFromTemplateAsync('quotation', context, filename);

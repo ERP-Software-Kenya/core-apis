@@ -1,8 +1,16 @@
 import { AutoMap } from '@automapper/classes';
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { Type } from 'class-transformer';
-import { IsArray, IsEnum, IsInt, IsNumber, IsOptional, IsString, IsUUID, Min, ValidateNested } from 'class-validator';
-import { ESalesReturnItemCondition, ESalesReturnStatus } from '../../../../../infrastructure/persistence/entities';
+import { ArrayMaxSize, ArrayMinSize, IsArray, IsEnum, IsIn, IsInt, IsNumber, IsOptional, IsString, IsUUID, Min, ValidateNested } from 'class-validator';
+import { EPaymentMethod, ESalesReturnItemCondition, ESalesReturnStatus } from '../../../../../infrastructure/persistence/entities';
+
+const REFUND_METHODS = [
+  EPaymentMethod.Cash,
+  EPaymentMethod.Card,
+  EPaymentMethod.Upi,
+  EPaymentMethod.NetBanking,
+  EPaymentMethod.Cheque,
+] as const;
 
 export class SalesReturnItemRequest {
   @ApiProperty() @IsUUID() @AutoMap() public billItemId: string;
@@ -15,9 +23,11 @@ export class CreateSalesReturnRequest {
   @ApiProperty() @IsUUID() @AutoMap() public billId: string;
   @ApiPropertyOptional() @IsOptional() @IsString() @AutoMap() public reason?: string;
   @ApiPropertyOptional() @IsOptional() @IsString() @AutoMap() public notes?: string;
-  @ApiPropertyOptional() @IsOptional() @IsString() @AutoMap() public refundMethod?: string;
+  @ApiPropertyOptional({ enum: REFUND_METHODS }) @IsOptional() @IsIn(REFUND_METHODS) @AutoMap() public refundMethod?: string;
   @ApiProperty({ type: [SalesReturnItemRequest] })
   @IsArray()
+  @ArrayMinSize(1)
+  @ArrayMaxSize(500)
   @ValidateNested({ each: true })
   @Type(() => SalesReturnItemRequest)
   @AutoMap(() => [SalesReturnItemRequest])
@@ -27,10 +37,12 @@ export class CreateSalesReturnRequest {
 export class UpdateSalesReturnRequest {
   @ApiPropertyOptional() @IsOptional() @IsString() @AutoMap() public reason?: string;
   @ApiPropertyOptional() @IsOptional() @IsString() @AutoMap() public notes?: string;
-  @ApiPropertyOptional() @IsOptional() @IsString() @AutoMap() public refundMethod?: string;
+  @ApiPropertyOptional({ enum: REFUND_METHODS }) @IsOptional() @IsIn(REFUND_METHODS) @AutoMap() public refundMethod?: string;
   @ApiPropertyOptional({ type: [SalesReturnItemRequest] })
   @IsOptional()
   @IsArray()
+  @ArrayMinSize(1)
+  @ArrayMaxSize(500)
   @ValidateNested({ each: true })
   @Type(() => SalesReturnItemRequest)
   @AutoMap(() => [SalesReturnItemRequest])

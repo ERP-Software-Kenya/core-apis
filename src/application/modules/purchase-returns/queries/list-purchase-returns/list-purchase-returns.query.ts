@@ -4,6 +4,7 @@ import { EPurchaseReturnStatus } from '../../../../../infrastructure/persistence
 
 export class ListPurchaseReturnsQuery {
   @AutoMap() public organizationId?: string;
+  public branchId?: string;
   @AutoMap() public purchaseOrderId?: string;
   @AutoMap() public supplierId?: string;
   @AutoMap(() => String) public status?: EPurchaseReturnStatus;
