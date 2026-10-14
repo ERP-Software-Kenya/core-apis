@@ -1,4 +1,12 @@
+import { CommandBase } from '../../../../../common';
 import { RecordPurchaseReturnRefundInput } from '../../i-purchase-return.repo';
-export class RecordPurchaseReturnRefundCommand implements RecordPurchaseReturnRefundInput {
-  id: string; organizationId: string; amount: number; paymentMethod: string; receivedAt: Date; note?: string; performedById?: string;
+
+export class RecordPurchaseReturnRefundCommand extends CommandBase implements RecordPurchaseReturnRefundInput {
+  public id: string;
+  public organizationId: string;
+  public amount: number;
+  public paymentMethod: string;
+  public receivedAt: Date;
+  public note?: string;
+  public performedById?: string;
 }

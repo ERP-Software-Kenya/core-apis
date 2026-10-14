@@ -1,6 +1,6 @@
 import { Mapper } from '@automapper/core';
 import { InjectMapper } from '@automapper/nestjs';
-import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Post, Put, Query, Res, UseGuards } from '@nestjs/common';
+import { Body, Controller, Delete, Get, HttpCode, HttpStatus, NotFoundException, Param, Post, Put, Query, Res, UseGuards } from '@nestjs/common';
 import { ApiBearerAuth, ApiCreatedResponse, ApiOkResponse, ApiOperation, ApiParam, ApiTags } from '@nestjs/swagger';
 import type { Response } from 'express';
 import { InjectPinoLogger, PinoLogger } from 'nestjs-pino';
@@ -253,6 +253,7 @@ export class PurchaseOrdersController {
     const query = new GetPurchaseOrderQuery();
     query.id = id;
     const po = await this.mediator.execute<GetPurchaseOrderQuery, PurchaseOrder>(query);
+    if (!po) throw new NotFoundException(`Purchase order ${id} not found`);
     if (po.organizationId !== user.organizationId) throw new InventoryNotOwnedByOrgException();
     if (!user.hasOrgWideAccess && po.branchId !== user.branchId) throw new LocationAccessDeniedException();
     return po;

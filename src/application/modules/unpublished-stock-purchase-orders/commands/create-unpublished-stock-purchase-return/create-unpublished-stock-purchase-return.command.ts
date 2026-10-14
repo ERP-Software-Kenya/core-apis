@@ -1,5 +1,6 @@
+import { CommandBase } from '../../../../../common';
 import { CreateBlackPurchaseReturnInput } from '../../i-unpublished-stock-po.repo';
-export class CreateUnpublishedStockPurchaseReturnCommand implements CreateBlackPurchaseReturnInput {
+export class CreateUnpublishedStockPurchaseReturnCommand extends CommandBase implements CreateBlackPurchaseReturnInput {
   purchaseOrderId: string;
   organizationId: string;
   createdById?: string;

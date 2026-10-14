@@ -89,10 +89,10 @@ export class SalesReturnRepo
     await this.internalRepo.manager.transaction(async (manager) => {
       const ret = await manager.findOne(SalesReturnEntity, {
         where: { id },
-        relations: { items: true },
         lock: { mode: 'pessimistic_write' },
       });
       if (!ret) throw new NotFoundException(`Sales return ${id} not found`);
+      ret.items = await manager.find(SalesReturnItemEntity, { where: { salesReturnId: id } });
       if (ret.status === ESalesReturnStatus.Finalized) return;
       if (ret.status === ESalesReturnStatus.Cancelled) {
         throw new BadRequestException('Cancelled sales returns cannot be finalized');

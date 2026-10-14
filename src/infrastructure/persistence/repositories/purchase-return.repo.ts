@@ -79,10 +79,10 @@ export class PurchaseReturnRepo
     await this.internalRepo.manager.transaction(async (manager) => {
       const ret = await manager.findOne(PurchaseReturnEntity, {
         where: { id },
-        relations: { items: true },
         lock: { mode: 'pessimistic_write' },
       });
       if (!ret) throw new NotFoundException(`Purchase return ${id} not found`);
+      ret.items = await manager.find(PurchaseReturnItemEntity, { where: { purchaseReturnId: id } });
       if (ret.status === EPurchaseReturnStatus.Finalized) return;
       if (ret.status === EPurchaseReturnStatus.Cancelled) {
         throw new BadRequestException('Cancelled purchase returns cannot be finalized');

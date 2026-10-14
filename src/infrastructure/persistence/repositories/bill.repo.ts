@@ -7,6 +7,7 @@ import { Between, FindManyOptions, In, Not, Repository } from 'typeorm';
 import { BaseRepo, DbException, Filter, PageableFilter } from '../../../common';
 import {
   BillEntity,
+  BillItemEntity,
   CommissionPayableEntity,
   CustomerCreditTransactionEntity,
   CustomerEntity,
@@ -108,10 +109,10 @@ export class BillRepo
     return this.internalRepo.manager.transaction(async (manager) => {
       const bill = await manager.findOne(BillEntity, {
         where: { id: input.billId },
-        relations: { items: true },
         lock: { mode: 'pessimistic_write' },
       });
       if (!bill) throw new NotFoundException(`Bill ${input.billId} not found`);
+      bill.items = await manager.find(BillItemEntity, { where: { billId: bill.id } });
       if (bill.status === EBillStatus.Completed) return this.mapToModel(bill);
       if (bill.status === EBillStatus.Cancelled) {
         throw new ConflictException('A cancelled bill cannot be completed');

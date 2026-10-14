@@ -1,8 +1,8 @@
 import { AutoMap } from '@automapper/classes';
-import { EOrder } from '../../../../../common';
+import { EOrder, QueryBase } from '../../../../../common';
 import { EPurchaseReturnStatus } from '../../../../../infrastructure/persistence/entities';
 
-export class ListPurchaseReturnsQuery {
+export class ListPurchaseReturnsQuery extends QueryBase {
   @AutoMap() public organizationId?: string;
   public branchId?: string;
   @AutoMap() public purchaseOrderId?: string;

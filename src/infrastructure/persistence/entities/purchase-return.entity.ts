@@ -67,9 +67,11 @@ export class PurchaseReturnEntity {
   @Column({ name: 'total_amount', type: 'decimal', precision: 18, scale: 4, default: 0, transformer: numericTransformer })
   public totalAmount: number;
 
+  @AutoMap()
   @Column({ name: 'supplier_credit_amount', type: 'decimal', precision: 18, scale: 4, default: 0, transformer: numericTransformer })
   public supplierCreditAmount: number;
 
+  @AutoMap()
   @Column({ name: 'refunded_amount', type: 'decimal', precision: 18, scale: 4, default: 0, transformer: numericTransformer })
   public refundedAmount: number;
 
