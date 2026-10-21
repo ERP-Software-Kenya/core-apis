@@ -72,6 +72,8 @@
 
   <div class="totals">
     <div class="totals-row"><span>Subtotal</span><span>{{subtotal}}</span></div>
+    {{#if discountAmount}}<div class="totals-row"><span>Discount</span><span>-{{discountAmount}}</span></div>{{/if}}
+    {{#if taxAmount}}<div class="totals-row"><span>Tax</span><span>{{taxAmount}}</span></div>{{/if}}
     <div class="totals-row grand"><span>RECEIPT TOTAL:</span><span>{{totalAmount}}</span></div>
   </div>
 

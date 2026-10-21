@@ -94,6 +94,8 @@ export class ExportBillQueryHandler implements IQueryHandler<ExportBillQuery, Pd
         amount: this.formatPlainAmount(item.lineTotal),
       })),
       subtotal: this.formatPlainAmount(bill.subtotal),
+      taxAmount: this.formatPlainAmount(bill.taxAmount),
+      discountAmount: this.formatPlainAmount(bill.discountAmount),
       totalAmount: this.formatPlainAmount(bill.totalAmount),
       isCash,
       paymentMethod: bill.paymentMethod ?? '',
