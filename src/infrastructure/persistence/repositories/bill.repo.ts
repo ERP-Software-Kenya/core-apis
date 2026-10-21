@@ -260,13 +260,15 @@ export class BillRepo
             locationId: bill.locationId,
             customerId: bill.customerId,
           },
-          {
-            accountCode: BLACK_LEDGER_ACCOUNT_CODES.SalesRevenue,
-            debit: 0,
-            credit: total,
-            locationId: bill.locationId,
-            customerId: bill.customerId,
-          },
+          ...(total > 0
+            ? [{
+                accountCode: BLACK_LEDGER_ACCOUNT_CODES.SalesRevenue,
+                debit: 0,
+                credit: total,
+                locationId: bill.locationId,
+                customerId: bill.customerId,
+              }]
+            : []),
           ...(cost > 0
             ? [
                 {
@@ -326,13 +328,15 @@ export class BillRepo
             locationId: bill.locationId,
             customerId: bill.customerId,
           },
-          {
-            accountCode: OFFICIAL_ACCOUNT_CODES.SalesRevenue,
-            debit: 0,
-            credit: revenue,
-            locationId: bill.locationId,
-            customerId: bill.customerId,
-          },
+          ...(revenue > 0
+            ? [{
+                accountCode: OFFICIAL_ACCOUNT_CODES.SalesRevenue,
+                debit: 0,
+                credit: revenue,
+                locationId: bill.locationId,
+                customerId: bill.customerId,
+              }]
+            : []),
           ...(tax > 0
             ? [{
                 accountCode: OFFICIAL_ACCOUNT_CODES.TaxPayable,
