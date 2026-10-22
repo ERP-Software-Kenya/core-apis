@@ -17,8 +17,10 @@ WORKDIR /app
 
 COPY package*.json ./
 
+ENV PUPPETEER_SKIP_DOWNLOAD=true
 RUN npm ci --omit=dev --legacy-peer-deps
 
+COPY --from=builder /root/.cache/puppeteer /root/.cache/puppeteer
 COPY --from=builder /app/dist ./dist
 COPY --from=builder /app/docs ./docs
 
