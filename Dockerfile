@@ -11,7 +11,7 @@ COPY . .
 RUN NODE_OPTIONS="--max-old-space-size=2048" npm run build
 
 
-FROM node:22-alpine
+FROM node:22-slim
 
 WORKDIR /app
 
