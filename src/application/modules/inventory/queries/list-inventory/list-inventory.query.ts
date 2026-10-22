@@ -7,6 +7,7 @@ export class ListInventoryQuery extends QueryBase implements Filter<InventoryFil
   @AutoMap() public locationId?: string;
   @AutoMap(() => [String]) public accessibleLocationIds?: string[];
   @AutoMap() public productId?: string;
+  @AutoMap() public search?: string;
   @AutoMap(() => Array) public $ids?: string[];
   @AutoMap() public $orderBy?: string;
   @AutoMap(() => String) public $order?: EOrder;
