@@ -36,7 +36,7 @@ export class InventoryRepo
   }
 
   public override async pagedAsync(filterObj?: PageableFilter<InventoryFilter>): Promise<IPageable<Inventory>> {
-    const f = filterObj as PageableFilter<InventoryFilter> | undefined;
+    const f = filterObj as (PageableFilter<InventoryFilter> & { search?: string }) | undefined;
     if (!f?.search) return super.pagedAsync(filterObj);
 
     const page = f.$page ?? 1;
