@@ -6,7 +6,7 @@
   "private": true,
   "license": "UNLICENSED",
   "scripts": {
-    "postinstall": "npx puppeteer browsers install chrome",
+    "postinstall": "node -e \"if(!process.env.PUPPETEER_SKIP_DOWNLOAD){require('child_process').execSync('npx puppeteer browsers install chrome',{stdio:'inherit'})}\"",
     "build": "nest build",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
     "start": "nest start",
