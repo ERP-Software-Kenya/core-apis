@@ -31,6 +31,14 @@ export enum EProductUnit {
   Box    = 'box',
   Pack   = 'pack',
   Dozen  = 'dozen',
+  Bag    = 'bag',
+  Pkt    = 'pkt',
+  Meter  = 'meter',
+  Roll   = 'roll',
+  Feet   = 'feet',
+  Pcs    = 'pcs',
+  Pair   = 'pair',
+  Bundle = 'bundle',
 }
 
 @Entity({ schema: CORE_SCHEMA, name: ECoreTableName.Products })
