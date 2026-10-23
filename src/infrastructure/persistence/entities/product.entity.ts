@@ -10,6 +10,7 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
+import { ProductUnitEntity } from './product-unit.entity';
 import { CORE_SCHEMA, ECoreTableName } from './e-core-table-name';
 import { OrganizationEntity } from './organization.entity';
 import { CategoryEntity } from './category.entity';
@@ -22,24 +23,6 @@ import { ProductSupplierEntity } from './product-supplier.entity';
 
 const PK_NAME = 'PK_' + ECoreTableName.Products;
 
-export enum EProductUnit {
-  Piece  = 'piece',
-  Kg     = 'kg',
-  Gram   = 'gram',
-  Litre  = 'litre',
-  Ml     = 'ml',
-  Box    = 'box',
-  Pack   = 'pack',
-  Dozen  = 'dozen',
-  Bag    = 'bag',
-  Pkt    = 'pkt',
-  Meter  = 'meter',
-  Roll   = 'roll',
-  Feet   = 'feet',
-  Pcs    = 'pcs',
-  Pair   = 'pair',
-  Bundle = 'bundle',
-}
 
 @Entity({ schema: CORE_SCHEMA, name: ECoreTableName.Products })
 export class ProductEntity {
@@ -75,9 +58,6 @@ export class ProductEntity {
   @Column({ type: 'text', nullable: true })
   public description?: string;
 
-  @AutoMap(() => String)
-  @Column({ type: 'enum', enum: EProductUnit, default: EProductUnit.Piece })
-  public unit: EProductUnit;
 
   /** Acquisition / landed cost */
   @AutoMap()
@@ -197,4 +177,8 @@ export class ProductEntity {
   @AutoMap(() => [PurchaseItemEntity])
   @OneToMany(() => PurchaseItemEntity, (pi) => pi.product)
   public purchaseItems?: PurchaseItemEntity[];
+
+  @AutoMap(() => [ProductUnitEntity])
+  @OneToMany(() => ProductUnitEntity, (pu) => pu.product)
+  public productUnits?: ProductUnitEntity[];
 }

@@ -9,6 +9,8 @@ import { EntityMapperProfile } from './persistence/mappers';
 
 import {
   OrganizationRepo,
+  OrganizationUnitRepo,
+  ProductUnitRepo,
   CategoryRepo,
   ProductRepo,
   SupplierRepo,
@@ -96,6 +98,8 @@ import {
   SALES_RETURN_ITEM_REPO,
   PURCHASE_RETURN_REPO,
   PURCHASE_RETURN_ITEM_REPO,
+  ORGANIZATION_UNIT_REPO,
+  PRODUCT_UNIT_REPO,
   CATEGORY_REPO,
   CUSTOMER_REPO,
   EXPENSE_REPO,
@@ -195,6 +199,8 @@ export class InfrastructureModule {
         EntityMapperProfile,
         ...Seeds,
         { provide: ORGANIZATION_REPO, useClass: OrganizationRepo },
+        { provide: ORGANIZATION_UNIT_REPO, useClass: OrganizationUnitRepo },
+        { provide: PRODUCT_UNIT_REPO, useClass: ProductUnitRepo },
         { provide: CATEGORY_REPO, useClass: CategoryRepo },
         { provide: PRODUCT_REPO, useClass: ProductRepo },
         { provide: SUPPLIER_REPO, useClass: SupplierRepo },
@@ -276,6 +282,8 @@ export class InfrastructureModule {
       exports: [
         EntityMapperProfile,
         ORGANIZATION_REPO,
+        ORGANIZATION_UNIT_REPO,
+        PRODUCT_UNIT_REPO,
         CATEGORY_REPO,
         PRODUCT_REPO,
         SUPPLIER_REPO,

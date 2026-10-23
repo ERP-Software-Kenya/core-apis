@@ -108,6 +108,8 @@ import { BlackLedgerAccountEntity } from './black-ledger-account.entity';
 import { BlackLedgerEntryEntity } from './black-ledger-entry.entity';
 import { BlackLedgerLineEntity } from './black-ledger-line.entity';
 import { OrganizationSettingEntity } from './organization-setting.entity';
+import { OrganizationUnitEntity } from './organization-unit.entity';
+import { ProductUnitEntity } from './product-unit.entity';
 
 export * from './branch.entity';
 export * from './location.entity';
@@ -221,16 +223,10 @@ export * from './black-ledger-account.entity';
 export * from './black-ledger-entry.entity';
 export * from './black-ledger-line.entity';
 export * from './organization-setting.entity';
+export * from './organization-unit.entity';
+export * from './product-unit.entity';
 
 export default [
-  AccountEntity,
-  AccountingPeriodEntity,
-  JournalEntryEntity,
-  JournalLineEntity,
-  BlackLedgerAccountEntity,
-  BlackLedgerEntryEntity,
-  BlackLedgerLineEntity,
-  OrganizationSettingEntity,
   BranchEntity,
   LocationEntity,
   ProductLogEntity,
@@ -332,4 +328,14 @@ export default [
   UnpublishedStockPurchaseReturnRefundEntity,
   ProductBranchPriceEntity,
   TaxEntity,
+  AccountEntity,
+  AccountingPeriodEntity,
+  JournalEntryEntity,
+  JournalLineEntity,
+  BlackLedgerAccountEntity,
+  BlackLedgerEntryEntity,
+  BlackLedgerLineEntity,
+  OrganizationSettingEntity,
+  OrganizationUnitEntity,
+  ProductUnitEntity,
 ];
