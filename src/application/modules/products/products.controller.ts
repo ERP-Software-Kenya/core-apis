@@ -95,6 +95,8 @@ export class ProductsController {
     const command = this.mapper.map(body, CreateProductRequest, CreateProductCommand);
     command.organizationId = user.organizationId;
     command.createdById    = user.dbUserId;
+    command.unitIds        = body.unitIds;
+    command.defaultUnitId  = body.defaultUnitId;
     const result = await this.mediator.execute<CreateProductCommand, Product>(command);
     return this.mapper.map(result, Product, ProductResponse);
   }
@@ -111,7 +113,9 @@ export class ProductsController {
     assertOrgOwnership(user, existing.organizationId, 'Product');
     await this.assertTaxOwnership(body.taxId, user);
     const command = this.mapper.map(body, UpdateProductRequest, UpdateProductCommand);
-    command.id    = id;
+    command.id           = id;
+    command.unitIds      = body.unitIds;
+    command.defaultUnitId = body.defaultUnitId;
     const result  = await this.mediator.execute<UpdateProductCommand, Product>(command);
     return this.mapper.map(result, Product, ProductResponse);
   }

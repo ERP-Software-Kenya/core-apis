@@ -20,6 +20,7 @@ export class CreateInventoryCommandHandler implements ICommandHandler<CreateInve
   public async execute(command: CreateInventoryCommand): Promise<Inventory> {
     this.logger.info(`Executing ${CreateInventoryCommand.name}`);
     const inventory = this.mapper.map(command, CreateInventoryCommand, Inventory);
-    return this.repo.createAsync(inventory);
+    const created = await this.repo.createAsync(inventory);
+    return this.repo.getAsync(created.id);
   }
 }

@@ -26,6 +26,7 @@ export class UpdateInventoryCommandHandler implements ICommandHandler<UpdateInve
         existing[key] = patch[key] as never;
       }
     });
-    return this.repo.updateAsync(existing);
+    await this.repo.updateAsync(existing);
+    return this.repo.getAsync(existing.id);
   }
 }

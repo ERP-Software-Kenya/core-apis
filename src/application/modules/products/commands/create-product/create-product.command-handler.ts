@@ -4,9 +4,10 @@ import { Mapper } from '@automapper/core';
 import { InjectMapper } from '@automapper/nestjs';
 import { InjectPinoLogger, PinoLogger } from 'nestjs-pino';
 import { CommandHandlerStrict } from 'src/common';
-import { PRODUCT_REPO } from '../../../../constants';
+import { PRODUCT_REPO, PRODUCT_UNIT_REPO } from '../../../../constants';
 import { Product } from '../../domain';
 import { IProductRepo } from '../..';
+import { IProductUnitRepo } from '../../i-product-unit.repo';
 import { EProductLogAction } from 'src/application/shared/enums/e-product-log-action.enum';
 import { ActivityLogService, ProductActivityLogger, ProductLogEntry } from 'src/application/shared';
 import { EActivityAction } from 'src/infrastructure/persistence/entities/activity-log.entity';
@@ -17,6 +18,7 @@ import { CreateProductCommand } from './create-product.command';
 export class CreateProductCommandHandler implements ICommandHandler<CreateProductCommand, Product> {
   constructor(
     @Inject(PRODUCT_REPO) private readonly repo: IProductRepo,
+    @Inject(PRODUCT_UNIT_REPO) private readonly productUnitRepo: IProductUnitRepo,
     private readonly activityLogger: ProductActivityLogger,
     private readonly activityLog: ActivityLogService,
     @InjectMapper() private readonly mapper: Mapper,
@@ -31,7 +33,12 @@ export class CreateProductCommandHandler implements ICommandHandler<CreateProduc
       product.sku = generateSku(command.name ?? '', count + 1);
     }
     const created = await this.repo.createAsync(product);
-    const entry   = Object.assign(new ProductLogEntry(), {
+
+    if (command.unitIds?.length) {
+      await this.productUnitRepo.syncForProductAsync(created.id, command.unitIds, command.defaultUnitId);
+    }
+
+    const entry = Object.assign(new ProductLogEntry(), {
       action:         EProductLogAction.ProductCreated,
       organizationId: created.organizationId,
       productId:      created.id,
@@ -46,6 +53,7 @@ export class CreateProductCommandHandler implements ICommandHandler<CreateProduc
       organizationId: created.organizationId,
       metadata: { name: created.name, sku: created.sku },
     });
-    return created;
+
+    return this.repo.getAsync(created.id);
   }
 }

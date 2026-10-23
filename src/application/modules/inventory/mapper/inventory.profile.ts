@@ -18,6 +18,14 @@ export class InventoryProfile extends AutomapperProfile {
         InventoryEntity,
         Inventory,
         forMember(
+          dest => dest.unitName,
+          mapFrom(src => src.unit?.name ?? undefined),
+        ),
+        forMember(
+          dest => dest.unitSymbol,
+          mapFrom(src => src.unit?.symbol ?? undefined),
+        ),
+        forMember(
           dest => dest.productPackSize,
           mapFrom(src => src.product?.packSize ?? undefined),
         ),

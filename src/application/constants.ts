@@ -1,4 +1,6 @@
-export const AUTH_SERVICE         = 'AUTH_SERVICE';
+export const AUTH_SERVICE             = 'AUTH_SERVICE';
+export const ORGANIZATION_UNIT_REPO   = 'ORGANIZATION_UNIT_REPO';
+export const PRODUCT_UNIT_REPO        = 'PRODUCT_UNIT_REPO';
 export const LOCATION_REPO        = 'LOCATION_REPO';
 export const BRANCH_REPO          = 'BRANCH_REPO';
 export const PRODUCT_LOG_REPO     = 'PRODUCT_LOG_REPO';

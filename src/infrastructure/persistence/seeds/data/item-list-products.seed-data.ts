@@ -1,11 +1,8 @@
-import { EProductUnit } from "../../entities/product.entity";
-
-export interface ItemListProductSeedRow {
+﻿export interface ItemListProductSeedRow {
   readonly rowNumber: number;
   readonly sku: string;
   readonly name: string;
   readonly categoryId: string;
-  readonly unit: EProductUnit;
   readonly retailPrice: number;
   readonly packSize?: number;
   readonly manufacturer?: string;
@@ -18,7 +15,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "IL-0004",
     name: "SANDPAPER - 36,40,60,80,100,120",
     categoryId: "001ec5bb-56eb-5c87-97d8-01719f15cc0d",
-    unit: EProductUnit.Pack,
+
     retailPrice: 1250.0,
     packSize: 25,
     description: "Imported from ITEM LIST.xlsx row 4. Variant/size: 36,40,60,80,100,120. Base unit: ROLL. Pack size: 25. Unit/measure: MTR.",
@@ -28,7 +25,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "AW6",
     name: 'ADJUSTABLE WRENCH WITH RED GRIP - 6"',
     categoryId: "7614ade2-abfd-5392-9a57-1ee8a40ed8b6",
-    unit: EProductUnit.Piece,
+
     retailPrice: 180.0,
     description: 'Imported from ITEM LIST.xlsx row 5. Variant/size: 6". Base unit: PC.',
   },
@@ -37,7 +34,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "AW8",
     name: 'ADJUSTABLE WRENCH WITH RED GRIP - 8"',
     categoryId: "7614ade2-abfd-5392-9a57-1ee8a40ed8b6",
-    unit: EProductUnit.Piece,
+
     retailPrice: 200.0,
     description: 'Imported from ITEM LIST.xlsx row 6. Variant/size: 8". Base unit: PC.',
   },
@@ -46,7 +43,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "AW10",
     name: 'ADJUSTABLE WRENCH WITH RED GRIP - 10"',
     categoryId: "7614ade2-abfd-5392-9a57-1ee8a40ed8b6",
-    unit: EProductUnit.Piece,
+
     retailPrice: 300.0,
     description: 'Imported from ITEM LIST.xlsx row 7. Variant/size: 10". Base unit: PC.',
   },
@@ -55,7 +52,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "AW12",
     name: 'ADJUSTABLE WRENCH WITH RED GRIP - 12"',
     categoryId: "7614ade2-abfd-5392-9a57-1ee8a40ed8b6",
-    unit: EProductUnit.Piece,
+
     retailPrice: 400.0,
     description: 'Imported from ITEM LIST.xlsx row 8. Variant/size: 12". Base unit: PC.',
   },
@@ -64,7 +61,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "PW8",
     name: 'PIPE WRENCH INDIA - 8"',
     categoryId: "7614ade2-abfd-5392-9a57-1ee8a40ed8b6",
-    unit: EProductUnit.Piece,
+
     retailPrice: 250.0,
     description: 'Imported from ITEM LIST.xlsx row 9. Variant/size: 8". Base unit: PC.',
   },
@@ -73,7 +70,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "PW10",
     name: 'PIPE WRENCH INDIA - 10"',
     categoryId: "7614ade2-abfd-5392-9a57-1ee8a40ed8b6",
-    unit: EProductUnit.Piece,
+
     retailPrice: 300.0,
     description: 'Imported from ITEM LIST.xlsx row 10. Variant/size: 10". Base unit: PC.',
   },
@@ -82,7 +79,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "PW12",
     name: 'PIPE WRENCH INDIA - 12"',
     categoryId: "7614ade2-abfd-5392-9a57-1ee8a40ed8b6",
-    unit: EProductUnit.Piece,
+
     retailPrice: 350.0,
     description: 'Imported from ITEM LIST.xlsx row 11. Variant/size: 12". Base unit: PC.',
   },
@@ -91,7 +88,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "PW14",
     name: 'PIPE WRENCH INDIA - 14"',
     categoryId: "7614ade2-abfd-5392-9a57-1ee8a40ed8b6",
-    unit: EProductUnit.Piece,
+
     retailPrice: 420.0,
     description: 'Imported from ITEM LIST.xlsx row 12. Variant/size: 14". Base unit: PC.',
   },
@@ -100,7 +97,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "PW18",
     name: 'PIPE WRENCH INDIA - 18"',
     categoryId: "7614ade2-abfd-5392-9a57-1ee8a40ed8b6",
-    unit: EProductUnit.Piece,
+
     retailPrice: 600.0,
     description: 'Imported from ITEM LIST.xlsx row 13. Variant/size: 18". Base unit: PC.',
   },
@@ -109,7 +106,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "PW24",
     name: 'PIPE WRENCH INDIA - 24"',
     categoryId: "7614ade2-abfd-5392-9a57-1ee8a40ed8b6",
-    unit: EProductUnit.Piece,
+
     retailPrice: 1200.0,
     description: 'Imported from ITEM LIST.xlsx row 14. Variant/size: 24". Base unit: PC.',
   },
@@ -118,7 +115,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "PW36",
     name: 'PIPE WRENCH INDIA - 36"',
     categoryId: "7614ade2-abfd-5392-9a57-1ee8a40ed8b6",
-    unit: EProductUnit.Piece,
+
     retailPrice: 2900.0,
     description: 'Imported from ITEM LIST.xlsx row 15. Variant/size: 36". Base unit: PC.',
   },
@@ -127,7 +124,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "AI6",
     name: 'ALDROPS INDIA - 6"',
     categoryId: "e3dcaa54-8477-5dd1-8639-1e493ed3deb2",
-    unit: EProductUnit.Piece,
+
     retailPrice: 75.0,
     description: 'Imported from ITEM LIST.xlsx row 16. Variant/size: 6". Base unit: PC.',
   },
@@ -136,7 +133,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "AI8",
     name: 'ALDROPS INDIA - 8"',
     categoryId: "e3dcaa54-8477-5dd1-8639-1e493ed3deb2",
-    unit: EProductUnit.Piece,
+
     retailPrice: 80.0,
     description: 'Imported from ITEM LIST.xlsx row 17. Variant/size: 8". Base unit: PC.',
   },
@@ -145,7 +142,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "AI10",
     name: 'ALDROPS INDIA - 10"',
     categoryId: "e3dcaa54-8477-5dd1-8639-1e493ed3deb2",
-    unit: EProductUnit.Piece,
+
     retailPrice: 85.0,
     description: 'Imported from ITEM LIST.xlsx row 18. Variant/size: 10". Base unit: PC.',
   },
@@ -154,7 +151,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "AI12",
     name: 'ALDROPS INDIA - 12"',
     categoryId: "e3dcaa54-8477-5dd1-8639-1e493ed3deb2",
-    unit: EProductUnit.Piece,
+
     retailPrice: 140.0,
     description: 'Imported from ITEM LIST.xlsx row 19. Variant/size: 12". Base unit: PC.',
   },
@@ -163,7 +160,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "AY12",
     name: 'ALDROP YELLOW COLOURED HEAVY DUTY NATRAJ - 12"',
     categoryId: "e3dcaa54-8477-5dd1-8639-1e493ed3deb2",
-    unit: EProductUnit.Piece,
+
     retailPrice: 220.0,
     manufacturer: "Natraj",
     description: 'Imported from ITEM LIST.xlsx row 20. Variant/size: 12". Base unit: PC.',
@@ -173,7 +170,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "AKLS",
     name: "ALLEN KEY (blister pack) 10PCS SET KRICKWOOD - LARGE SIZE",
     categoryId: "f1ea9b90-053e-59e6-b3c1-1c1dc1addc95",
-    unit: EProductUnit.Pack,
+
     retailPrice: 100.0,
     manufacturer: "Krickwood",
     description: "Imported from ITEM LIST.xlsx row 21. Variant/size: LARGE SIZE. Base unit: SET.",
@@ -183,7 +180,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "AL6",
     name: 'ALUMINIUM LEVEL (YELLOW) - 6"',
     categoryId: "2f25bc0e-b27f-52ab-8f5b-d85cf5f6fd0f",
-    unit: EProductUnit.Piece,
+
     retailPrice: 100.0,
     description: 'Imported from ITEM LIST.xlsx row 22. Variant/size: 6". Base unit: PC.',
   },
@@ -192,7 +189,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "AL8",
     name: 'ALUMINIUM LEVEL (YELLOW) - 8"',
     categoryId: "2f25bc0e-b27f-52ab-8f5b-d85cf5f6fd0f",
-    unit: EProductUnit.Piece,
+
     retailPrice: 110.0,
     description: 'Imported from ITEM LIST.xlsx row 23. Variant/size: 8". Base unit: PC.',
   },
@@ -201,7 +198,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "AL10",
     name: 'ALUMINIUM LEVEL (YELLOW) - 10"',
     categoryId: "2f25bc0e-b27f-52ab-8f5b-d85cf5f6fd0f",
-    unit: EProductUnit.Piece,
+
     retailPrice: 120.0,
     description: 'Imported from ITEM LIST.xlsx row 24. Variant/size: 10". Base unit: PC.',
   },
@@ -210,7 +207,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "AL12",
     name: 'ALUMINIUM LEVEL (YELLOW) - 12"',
     categoryId: "2f25bc0e-b27f-52ab-8f5b-d85cf5f6fd0f",
-    unit: EProductUnit.Piece,
+
     retailPrice: 130.0,
     description: 'Imported from ITEM LIST.xlsx row 25. Variant/size: 12". Base unit: PC.',
   },
@@ -219,7 +216,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "AB14",
     name: 'AUGER BITS - 1/4"',
     categoryId: "63f4b972-41b7-58f7-a18d-6195cef5f11e",
-    unit: EProductUnit.Piece,
+
     retailPrice: 140.0,
     description: 'Imported from ITEM LIST.xlsx row 26. Variant/size: 1/4". Base unit: PC.',
   },
@@ -228,7 +225,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "AB38",
     name: 'AUGER BITS - 3/8"',
     categoryId: "63f4b972-41b7-58f7-a18d-6195cef5f11e",
-    unit: EProductUnit.Piece,
+
     retailPrice: 130.0,
     description: 'Imported from ITEM LIST.xlsx row 27. Variant/size: 3/8". Base unit: PC.',
   },
@@ -237,7 +234,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "AB516",
     name: 'AUGER BITS - 5/16"',
     categoryId: "63f4b972-41b7-58f7-a18d-6195cef5f11e",
-    unit: EProductUnit.Piece,
+
     retailPrice: 160.0,
     description: 'Imported from ITEM LIST.xlsx row 28. Variant/size: 5/16". Base unit: PC.',
   },
@@ -246,7 +243,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "AB12",
     name: 'AUGER BITS - 1/2"',
     categoryId: "63f4b972-41b7-58f7-a18d-6195cef5f11e",
-    unit: EProductUnit.Piece,
+
     retailPrice: 170.0,
     description: 'Imported from ITEM LIST.xlsx row 29. Variant/size: 1/2". Base unit: PC.',
   },
@@ -255,7 +252,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "AB58",
     name: 'AUGER BITS - 5/8"',
     categoryId: "63f4b972-41b7-58f7-a18d-6195cef5f11e",
-    unit: EProductUnit.Piece,
+
     retailPrice: 210.0,
     description: 'Imported from ITEM LIST.xlsx row 30. Variant/size: 5/8". Base unit: PC.',
   },
@@ -264,7 +261,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "AB34",
     name: 'AUGER BITS - 3/4"',
     categoryId: "63f4b972-41b7-58f7-a18d-6195cef5f11e",
-    unit: EProductUnit.Piece,
+
     retailPrice: 260.0,
     description: 'Imported from ITEM LIST.xlsx row 31. Variant/size: 3/4". Base unit: PC.',
   },
@@ -273,7 +270,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "AB1",
     name: 'AUGER BITS - 1"',
     categoryId: "63f4b972-41b7-58f7-a18d-6195cef5f11e",
-    unit: EProductUnit.Piece,
+
     retailPrice: 380.0,
     description: 'Imported from ITEM LIST.xlsx row 32. Variant/size: 1". Base unit: PC.',
   },
@@ -282,7 +279,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "IL-0033",
     name: "FLAT WOOD DRILL BIT - 10MM",
     categoryId: "63f4b972-41b7-58f7-a18d-6195cef5f11e",
-    unit: EProductUnit.Piece,
+
     retailPrice: 65.0,
     description: "Imported from ITEM LIST.xlsx row 33. Variant/size: 10MM. Base unit: PC.",
   },
@@ -291,7 +288,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "FW12",
     name: "FLAT WOOD DRILL BIT - 12MM",
     categoryId: "63f4b972-41b7-58f7-a18d-6195cef5f11e",
-    unit: EProductUnit.Piece,
+
     retailPrice: 70.0,
     description: "Imported from ITEM LIST.xlsx row 34. Variant/size: 12MM. Base unit: PC.",
   },
@@ -300,7 +297,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "IL-0035",
     name: "FLAT WOOD DRILL BIT - 16MM",
     categoryId: "63f4b972-41b7-58f7-a18d-6195cef5f11e",
-    unit: EProductUnit.Piece,
+
     retailPrice: 75.0,
     description: "Imported from ITEM LIST.xlsx row 35. Variant/size: 16MM. Base unit: PC.",
   },
@@ -309,7 +306,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "IL-0036",
     name: "FLAT WOOD DRILL BIT - 18MM",
     categoryId: "63f4b972-41b7-58f7-a18d-6195cef5f11e",
-    unit: EProductUnit.Piece,
+
     retailPrice: 80.0,
     description: "Imported from ITEM LIST.xlsx row 36. Variant/size: 18MM. Base unit: PC.",
   },
@@ -318,7 +315,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "IL-0037",
     name: "FLAT WOOD DRILL BIT - 19MM",
     categoryId: "63f4b972-41b7-58f7-a18d-6195cef5f11e",
-    unit: EProductUnit.Piece,
+
     retailPrice: 85.0,
     description: "Imported from ITEM LIST.xlsx row 37. Variant/size: 19MM. Base unit: PC.",
   },
@@ -327,7 +324,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "FW20",
     name: "FLAT WOOD DRILL BIT - 20MM",
     categoryId: "63f4b972-41b7-58f7-a18d-6195cef5f11e",
-    unit: EProductUnit.Piece,
+
     retailPrice: 90.0,
     description: "Imported from ITEM LIST.xlsx row 38. Variant/size: 20MM. Base unit: PC.",
   },
@@ -336,7 +333,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "IL-0039",
     name: "FLAT WOOD DRILL BIT - 22MM",
     categoryId: "63f4b972-41b7-58f7-a18d-6195cef5f11e",
-    unit: EProductUnit.Piece,
+
     retailPrice: 95.0,
     description: "Imported from ITEM LIST.xlsx row 39. Variant/size: 22MM. Base unit: PC.",
   },
@@ -345,7 +342,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "FW25",
     name: "FLAT WOOD DRILL BIT - 25MM",
     categoryId: "63f4b972-41b7-58f7-a18d-6195cef5f11e",
-    unit: EProductUnit.Piece,
+
     retailPrice: 100.0,
     description: "Imported from ITEM LIST.xlsx row 40. Variant/size: 25MM. Base unit: PC.",
   },
@@ -354,7 +351,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "FW32",
     name: "FLAT WOOD DRILL BIT - 32MM",
     categoryId: "63f4b972-41b7-58f7-a18d-6195cef5f11e",
-    unit: EProductUnit.Piece,
+
     retailPrice: 105.0,
     description: "Imported from ITEM LIST.xlsx row 41. Variant/size: 32MM. Base unit: PC.",
   },
@@ -363,7 +360,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "RB10",
     name: 'RATCHET BRACE CHINA HEAVY DUTY - 10"',
     categoryId: "63f4b972-41b7-58f7-a18d-6195cef5f11e",
-    unit: EProductUnit.Piece,
+
     retailPrice: 1050.0,
     description: 'Imported from ITEM LIST.xlsx row 42. Variant/size: 10". Base unit: PC.',
   },
@@ -372,7 +369,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "RB12",
     name: 'RATCHET BRACE CHINA HEAVY DUTY - 12"',
     categoryId: "63f4b972-41b7-58f7-a18d-6195cef5f11e",
-    unit: EProductUnit.Piece,
+
     retailPrice: 1100.0,
     description: 'Imported from ITEM LIST.xlsx row 43. Variant/size: 12". Base unit: PC.',
   },
@@ -381,7 +378,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "BCSS",
     name: "BALL CATCH - SMALL SIZE",
     categoryId: "e3dcaa54-8477-5dd1-8639-1e493ed3deb2",
-    unit: EProductUnit.Piece,
+
     retailPrice: 20.0,
     description: "Imported from ITEM LIST.xlsx row 44. Variant/size: SMALL SIZE. Base unit: PC.",
   },
@@ -390,7 +387,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "BCMS",
     name: "BALL CATCH - MEDIUM SIZE",
     categoryId: "e3dcaa54-8477-5dd1-8639-1e493ed3deb2",
-    unit: EProductUnit.Piece,
+
     retailPrice: 30.0,
     description: "Imported from ITEM LIST.xlsx row 45. Variant/size: MEDIUM SIZE. Base unit: PC.",
   },
@@ -399,7 +396,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "BCLS",
     name: "BALL CATCH - LARGE SIZE",
     categoryId: "e3dcaa54-8477-5dd1-8639-1e493ed3deb2",
-    unit: EProductUnit.Piece,
+
     retailPrice: 40.0,
     description: "Imported from ITEM LIST.xlsx row 46. Variant/size: LARGE SIZE. Base unit: PC.",
   },
@@ -408,7 +405,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "MBCS",
     name: "MAGNETIC BALL CATCH - SMALL NO.1",
     categoryId: "e3dcaa54-8477-5dd1-8639-1e493ed3deb2",
-    unit: EProductUnit.Piece,
+
     retailPrice: 30.0,
     description: "Imported from ITEM LIST.xlsx row 47. Variant/size: SMALL NO.1. Base unit: PC.",
   },
@@ -417,7 +414,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "MBCL",
     name: "MAGNETIC BALL CATCH - LARGE NO.2",
     categoryId: "e3dcaa54-8477-5dd1-8639-1e493ed3deb2",
-    unit: EProductUnit.Piece,
+
     retailPrice: 35.0,
     description: "Imported from ITEM LIST.xlsx row 48. Variant/size: LARGE NO.2. Base unit: PC.",
   },
@@ -426,7 +423,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "IL-0049",
     name: "CLAW HAMMER WITH STEELPIPE HANDLE WITH RUBBER GRIP - 25MM",
     categoryId: "4f18dc4c-82b0-539a-b494-9af3b878a152",
-    unit: EProductUnit.Piece,
+
     retailPrice: 280.0,
     description: "Imported from ITEM LIST.xlsx row 49. Variant/size: 25MM. Base unit: PC.",
   },
@@ -435,7 +432,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "IL-0050",
     name: "CLAW HAMMER WITH STEELPIPE HANDLE WITH RUBBER GRIP - 27MM",
     categoryId: "4f18dc4c-82b0-539a-b494-9af3b878a152",
-    unit: EProductUnit.Piece,
+
     retailPrice: 290.0,
     description: "Imported from ITEM LIST.xlsx row 50. Variant/size: 27MM. Base unit: PC.",
   },
@@ -444,7 +441,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "CH29",
     name: "CLAW HAMMER WITH STEELPIPE HANDLE WITH RUBBER GRIP - 29MM",
     categoryId: "4f18dc4c-82b0-539a-b494-9af3b878a152",
-    unit: EProductUnit.Piece,
+
     retailPrice: 300.0,
     description: "Imported from ITEM LIST.xlsx row 51. Variant/size: 29MM. Base unit: PC.",
   },
@@ -453,7 +450,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "MTH",
     name: "MAGNETIC HAMMER FOR TACKNAILS - 13MM",
     categoryId: "4f18dc4c-82b0-539a-b494-9af3b878a152",
-    unit: EProductUnit.Piece,
+
     retailPrice: 380.0,
     description: "Imported from ITEM LIST.xlsx row 52. Variant/size: 13MM. Base unit: PC.",
   },
@@ -462,7 +459,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "MH2",
     name: "MASON HAMMER - 2 LB",
     categoryId: "4f18dc4c-82b0-539a-b494-9af3b878a152",
-    unit: EProductUnit.Piece,
+
     retailPrice: 220.0,
     description: "Imported from ITEM LIST.xlsx row 53. Variant/size: 2 LB. Base unit: PC.",
   },
@@ -471,7 +468,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "MH2.5",
     name: "MASON HAMMER - 2-1/2 LB",
     categoryId: "4f18dc4c-82b0-539a-b494-9af3b878a152",
-    unit: EProductUnit.Piece,
+
     retailPrice: 250.0,
     description: "Imported from ITEM LIST.xlsx row 54. Variant/size: 2-1/2 LB. Base unit: PC.",
   },
@@ -480,7 +477,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "MH3",
     name: "MASON HAMMER - 3 LB",
     categoryId: "4f18dc4c-82b0-539a-b494-9af3b878a152",
-    unit: EProductUnit.Piece,
+
     retailPrice: 280.0,
     description: "Imported from ITEM LIST.xlsx row 55. Variant/size: 3 LB. Base unit: PC.",
   },
@@ -489,7 +486,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "IL-0056",
     name: "SLEDGE HAMMER - 2LB",
     categoryId: "4f18dc4c-82b0-539a-b494-9af3b878a152",
-    unit: EProductUnit.Piece,
+
     retailPrice: 170.0,
     description: "Imported from ITEM LIST.xlsx row 56. Variant/size: 2LB. Base unit: PC.",
   },
@@ -498,7 +495,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "SH4",
     name: "SLEDGE HAMMER - 4LB",
     categoryId: "4f18dc4c-82b0-539a-b494-9af3b878a152",
-    unit: EProductUnit.Piece,
+
     retailPrice: 340.0,
     description: "Imported from ITEM LIST.xlsx row 57. Variant/size: 4LB. Base unit: PC.",
   },
@@ -507,7 +504,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "SH6",
     name: "SLEDGE HAMMER - 6LB",
     categoryId: "4f18dc4c-82b0-539a-b494-9af3b878a152",
-    unit: EProductUnit.Piece,
+
     retailPrice: 510.0,
     description: "Imported from ITEM LIST.xlsx row 58. Variant/size: 6LB. Base unit: PC.",
   },
@@ -516,7 +513,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "SH8",
     name: "SLEDGE HAMMER - 8LB",
     categoryId: "4f18dc4c-82b0-539a-b494-9af3b878a152",
-    unit: EProductUnit.Piece,
+
     retailPrice: 680.0,
     description: "Imported from ITEM LIST.xlsx row 59. Variant/size: 8LB. Base unit: PC.",
   },
@@ -525,7 +522,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "SH10",
     name: "SLEDGE HAMMER - 10LB",
     categoryId: "4f18dc4c-82b0-539a-b494-9af3b878a152",
-    unit: EProductUnit.Piece,
+
     retailPrice: 850.0,
     description: "Imported from ITEM LIST.xlsx row 60. Variant/size: 10LB. Base unit: PC.",
   },
@@ -534,7 +531,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "SH12",
     name: "SLEDGE HAMMER - 12LB",
     categoryId: "4f18dc4c-82b0-539a-b494-9af3b878a152",
-    unit: EProductUnit.Piece,
+
     retailPrice: 1020.0,
     description: "Imported from ITEM LIST.xlsx row 61. Variant/size: 12LB. Base unit: PC.",
   },
@@ -543,7 +540,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "SH14",
     name: "SLEDGE HAMMER - 14LB",
     categoryId: "4f18dc4c-82b0-539a-b494-9af3b878a152",
-    unit: EProductUnit.Piece,
+
     retailPrice: 1190.0,
     description: "Imported from ITEM LIST.xlsx row 62. Variant/size: 14LB. Base unit: PC.",
   },
@@ -552,7 +549,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "SH16",
     name: "SLEDGE HAMMER - 16LB",
     categoryId: "4f18dc4c-82b0-539a-b494-9af3b878a152",
-    unit: EProductUnit.Piece,
+
     retailPrice: 1360.0,
     description: "Imported from ITEM LIST.xlsx row 63. Variant/size: 16LB. Base unit: PC.",
   },
@@ -561,7 +558,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "SH18",
     name: "SLEDGE HAMMER - 18LB",
     categoryId: "4f18dc4c-82b0-539a-b494-9af3b878a152",
-    unit: EProductUnit.Piece,
+
     retailPrice: 1530.0,
     description: "Imported from ITEM LIST.xlsx row 64. Variant/size: 18LB. Base unit: PC.",
   },
@@ -570,7 +567,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "SH20",
     name: "SLEDGE HAMMER - 20LB",
     categoryId: "4f18dc4c-82b0-539a-b494-9af3b878a152",
-    unit: EProductUnit.Piece,
+
     retailPrice: 1700.0,
     description: "Imported from ITEM LIST.xlsx row 65. Variant/size: 20LB. Base unit: PC.",
   },
@@ -579,7 +576,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "CT2.5*100",
     name: "CABLE TIES PVC WHITE 100PCS/BAG - 2.5X100MM",
     categoryId: "106f5b2d-bc27-55aa-b823-3a7bb07ddaa9",
-    unit: EProductUnit.Pack,
+
     retailPrice: 40.0,
     packSize: 100,
     description: "Imported from ITEM LIST.xlsx row 66. Variant/size: 2.5X100MM. Base unit: PKT. Pack size: 100. Unit/measure: PC.",
@@ -589,7 +586,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "CT2.5*150",
     name: "CABLE TIES PVC WHITE 100PCS/BAG - 2.5X150MM",
     categoryId: "106f5b2d-bc27-55aa-b823-3a7bb07ddaa9",
-    unit: EProductUnit.Pack,
+
     retailPrice: 80.0,
     packSize: 100,
     description: "Imported from ITEM LIST.xlsx row 67. Variant/size: 2.5X150MM. Base unit: PKT. Pack size: 100. Unit/measure: PC.",
@@ -599,7 +596,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "CT3.5*200",
     name: "CABLE TIES PVC WHITE 100PCS/BAG - 3.5X200MM",
     categoryId: "106f5b2d-bc27-55aa-b823-3a7bb07ddaa9",
-    unit: EProductUnit.Pack,
+
     retailPrice: 90.0,
     packSize: 100,
     description: "Imported from ITEM LIST.xlsx row 68. Variant/size: 3.5X200MM. Base unit: PKT. Pack size: 100. Unit/measure: PC.",
@@ -609,7 +606,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "CT3.5*250",
     name: "CABLE TIES PVC WHITE 100PCS/BAG - 3.5X250MM",
     categoryId: "106f5b2d-bc27-55aa-b823-3a7bb07ddaa9",
-    unit: EProductUnit.Pack,
+
     retailPrice: 100.0,
     packSize: 100,
     description: "Imported from ITEM LIST.xlsx row 69. Variant/size: 3.5X250MM. Base unit: PKT. Pack size: 100. Unit/measure: PC.",
@@ -619,7 +616,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "CT4.6*300",
     name: "CABLE TIES PVC WHITE 100PCS/BAG - 4.6X300MM",
     categoryId: "106f5b2d-bc27-55aa-b823-3a7bb07ddaa9",
-    unit: EProductUnit.Pack,
+
     retailPrice: 160.0,
     packSize: 100,
     description: "Imported from ITEM LIST.xlsx row 70. Variant/size: 4.6X300MM. Base unit: PKT. Pack size: 100. Unit/measure: PC.",
@@ -629,7 +626,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "CT4.6*380",
     name: "CABLE TIES PVC WHITE 100PCS/BAG - 4.6X380MM",
     categoryId: "106f5b2d-bc27-55aa-b823-3a7bb07ddaa9",
-    unit: EProductUnit.Pack,
+
     retailPrice: 200.0,
     packSize: 100,
     description: "Imported from ITEM LIST.xlsx row 71. Variant/size: 4.6X380MM. Base unit: PKT. Pack size: 100. Unit/measure: PC.",
@@ -639,7 +636,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "CT6*450",
     name: "CABLE TIES PVC WHITE 100PCS/BAG - 6.0X450MM",
     categoryId: "106f5b2d-bc27-55aa-b823-3a7bb07ddaa9",
-    unit: EProductUnit.Pack,
+
     retailPrice: 350.0,
     packSize: 100,
     description: "Imported from ITEM LIST.xlsx row 72. Variant/size: 6.0X450MM. Base unit: PKT. Pack size: 100. Unit/measure: PC.",
@@ -649,7 +646,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "IL-0073",
     name: 'STEEL NAIL 1",1.5",2",2.5",3" & 4" - ALL SIZES',
     categoryId: "1a846928-a148-545f-a582-3b7070ea6bcf",
-    unit: EProductUnit.Pack,
+
     retailPrice: 140.0,
     description: "Imported from ITEM LIST.xlsx row 73. Variant/size: ALL SIZES. Base unit: PKT. Unit/measure: PC.",
   },
@@ -658,7 +655,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "IL-0074",
     name: 'SHOETACK 3/4,5/8,1/2,1" - 56 PKT/CTN',
     categoryId: "1a846928-a148-545f-a582-3b7070ea6bcf",
-    unit: EProductUnit.Pack,
+
     retailPrice: 80.0,
     description: "Imported from ITEM LIST.xlsx row 74. Variant/size: 56 PKT/CTN. Base unit: PKT.",
   },
@@ -667,7 +664,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "CMH",
     name: "CURTAIN METAL HOOKS - BRASS COLOUR",
     categoryId: "d6772b6f-853f-5b8f-9d71-be6b322c0506",
-    unit: EProductUnit.Pack,
+
     retailPrice: 90.0,
     description: "Imported from ITEM LIST.xlsx row 75. Variant/size: BRASS COLOUR. Base unit: PKT.",
   },
@@ -676,7 +673,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "CR",
     name: "CURTAIN RUNNER WHITE ROSSEL (50PCS/PKT) - 9876",
     categoryId: "1891ac05-7b2e-598b-b201-0dc5b348cf78",
-    unit: EProductUnit.Pack,
+
     retailPrice: 250.0,
     manufacturer: "Rossel",
     description: "Imported from ITEM LIST.xlsx row 76. Variant/size: 9876. Base unit: PKT.",
@@ -686,7 +683,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "CRF",
     name: "CURTAIN RAIL FITTINGS #9736 - CHROME",
     categoryId: "1891ac05-7b2e-598b-b201-0dc5b348cf78",
-    unit: EProductUnit.Pack,
+
     retailPrice: 130.0,
     description: "Imported from ITEM LIST.xlsx row 77. Variant/size: CHROME. Base unit: PKT.",
   },
@@ -695,7 +692,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "IL-0078",
     name: "CURTAIN RAIL RUNNERS (ROLLERS) #9737 - CHROME",
     categoryId: "1891ac05-7b2e-598b-b201-0dc5b348cf78",
-    unit: EProductUnit.Pack,
+
     retailPrice: 130.0,
     description: "Imported from ITEM LIST.xlsx row 78. Variant/size: CHROME. Base unit: PKT.",
   },
@@ -704,7 +701,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "CRA",
     name: "CURTAIN RAIL ALUMINIUM ONLY - ALUMINIUM",
     categoryId: "1891ac05-7b2e-598b-b201-0dc5b348cf78",
-    unit: EProductUnit.Piece,
+
     retailPrice: 400.0,
     description: "Imported from ITEM LIST.xlsx row 79. Variant/size: ALUMINIUM. Base unit: PC.",
   },
@@ -713,7 +710,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "CWS",
     name: "CURTAIN WIRE STANDARD BRAND - WHITE",
     categoryId: "1891ac05-7b2e-598b-b201-0dc5b348cf78",
-    unit: EProductUnit.Pack,
+
     retailPrice: 400.0,
     description: "Imported from ITEM LIST.xlsx row 80. Variant/size: WHITE. Base unit: ROLL. Unit/measure: MTR.",
   },
@@ -722,7 +719,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "SS6",
     name: 'SHARPENING STONE KRICKWOOD - 6" 0767008',
     categoryId: "001ec5bb-56eb-5c87-97d8-01719f15cc0d",
-    unit: EProductUnit.Piece,
+
     retailPrice: 75.0,
     manufacturer: "Krickwood",
     description: 'Imported from ITEM LIST.xlsx row 81. Variant/size: 6" 0767008. Base unit: PC.',
@@ -732,7 +729,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "SS8",
     name: 'SHARPENING STONE KRICKWOOD - 8" 0767009',
     categoryId: "001ec5bb-56eb-5c87-97d8-01719f15cc0d",
-    unit: EProductUnit.Piece,
+
     retailPrice: 85.0,
     manufacturer: "Krickwood",
     description: 'Imported from ITEM LIST.xlsx row 82. Variant/size: 8" 0767009. Base unit: PC.',
@@ -742,7 +739,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "FS6X7",
     name: "FIX SPANNER - 6X7",
     categoryId: "7614ade2-abfd-5392-9a57-1ee8a40ed8b6",
-    unit: EProductUnit.Piece,
+
     retailPrice: 21.0,
     description: "Imported from ITEM LIST.xlsx row 83. Variant/size: 6X7. Base unit: PC.",
   },
@@ -751,7 +748,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "FS8X9",
     name: "FIX SPANNER - 8X9",
     categoryId: "7614ade2-abfd-5392-9a57-1ee8a40ed8b6",
-    unit: EProductUnit.Piece,
+
     retailPrice: 22.0,
     description: "Imported from ITEM LIST.xlsx row 84. Variant/size: 8X9. Base unit: PC.",
   },
@@ -760,7 +757,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "FS10X11",
     name: "FIX SPANNER - 10X11",
     categoryId: "7614ade2-abfd-5392-9a57-1ee8a40ed8b6",
-    unit: EProductUnit.Piece,
+
     retailPrice: 23.0,
     description: "Imported from ITEM LIST.xlsx row 85. Variant/size: 10X11. Base unit: PC.",
   },
@@ -769,7 +766,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "FS12X13",
     name: "FIX SPANNER - 12X13",
     categoryId: "7614ade2-abfd-5392-9a57-1ee8a40ed8b6",
-    unit: EProductUnit.Piece,
+
     retailPrice: 24.0,
     description: "Imported from ITEM LIST.xlsx row 86. Variant/size: 12X13. Base unit: PC.",
   },
@@ -778,7 +775,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "FS14X15",
     name: "FIX SPANNER - 14X15",
     categoryId: "7614ade2-abfd-5392-9a57-1ee8a40ed8b6",
-    unit: EProductUnit.Piece,
+
     retailPrice: 30.0,
     description: "Imported from ITEM LIST.xlsx row 87. Variant/size: 14X15. Base unit: PC.",
   },
@@ -787,7 +784,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "FS16X17",
     name: "FIX SPANNER - 16X17",
     categoryId: "7614ade2-abfd-5392-9a57-1ee8a40ed8b6",
-    unit: EProductUnit.Piece,
+
     retailPrice: 42.0,
     description: "Imported from ITEM LIST.xlsx row 88. Variant/size: 16X17. Base unit: PC.",
   },
@@ -796,7 +793,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "FS18X19",
     name: "FIX SPANNER - 18X19",
     categoryId: "7614ade2-abfd-5392-9a57-1ee8a40ed8b6",
-    unit: EProductUnit.Piece,
+
     retailPrice: 45.0,
     description: "Imported from ITEM LIST.xlsx row 89. Variant/size: 18X19. Base unit: PC.",
   },
@@ -805,7 +802,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "FS20X22",
     name: "FIX SPANNER - 20X22",
     categoryId: "7614ade2-abfd-5392-9a57-1ee8a40ed8b6",
-    unit: EProductUnit.Piece,
+
     retailPrice: 55.0,
     description: "Imported from ITEM LIST.xlsx row 90. Variant/size: 20X22. Base unit: PC.",
   },
@@ -814,7 +811,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "FS21X23",
     name: "FIX SPANNER - 21X23",
     categoryId: "7614ade2-abfd-5392-9a57-1ee8a40ed8b6",
-    unit: EProductUnit.Piece,
+
     retailPrice: 80.0,
     description: "Imported from ITEM LIST.xlsx row 91. Variant/size: 21X23. Base unit: PC.",
   },
@@ -823,7 +820,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "FS24X27",
     name: "FIX SPANNER - 24X27",
     categoryId: "7614ade2-abfd-5392-9a57-1ee8a40ed8b6",
-    unit: EProductUnit.Piece,
+
     retailPrice: 85.0,
     description: "Imported from ITEM LIST.xlsx row 92. Variant/size: 24X27. Base unit: PC.",
   },
@@ -832,7 +829,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "FS25X28",
     name: "FIX SPANNER - 25X28",
     categoryId: "7614ade2-abfd-5392-9a57-1ee8a40ed8b6",
-    unit: EProductUnit.Piece,
+
     retailPrice: 95.0,
     description: "Imported from ITEM LIST.xlsx row 93. Variant/size: 25X28. Base unit: PC.",
   },
@@ -841,7 +838,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "FS30X32",
     name: "FIX SPANNER - 30X32",
     categoryId: "7614ade2-abfd-5392-9a57-1ee8a40ed8b6",
-    unit: EProductUnit.Piece,
+
     retailPrice: 120.0,
     description: "Imported from ITEM LIST.xlsx row 94. Variant/size: 30X32. Base unit: PC.",
   },
@@ -850,7 +847,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "RS6X7",
     name: "RING SPANNER - 6X7",
     categoryId: "7614ade2-abfd-5392-9a57-1ee8a40ed8b6",
-    unit: EProductUnit.Piece,
+
     retailPrice: 50.0,
     description: "Imported from ITEM LIST.xlsx row 95. Variant/size: 6X7. Base unit: PC.",
   },
@@ -859,7 +856,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "RS8X9",
     name: "RING SPANNER - 8X9",
     categoryId: "7614ade2-abfd-5392-9a57-1ee8a40ed8b6",
-    unit: EProductUnit.Piece,
+
     retailPrice: 54.0,
     description: "Imported from ITEM LIST.xlsx row 96. Variant/size: 8X9. Base unit: PC.",
   },
@@ -868,7 +865,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "RS10X11",
     name: "RING SPANNER - 10X11",
     categoryId: "7614ade2-abfd-5392-9a57-1ee8a40ed8b6",
-    unit: EProductUnit.Piece,
+
     retailPrice: 56.0,
     description: "Imported from ITEM LIST.xlsx row 97. Variant/size: 10X11. Base unit: PC.",
   },
@@ -877,7 +874,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "RS12X13",
     name: "RING SPANNER - 12X13",
     categoryId: "7614ade2-abfd-5392-9a57-1ee8a40ed8b6",
-    unit: EProductUnit.Piece,
+
     retailPrice: 58.0,
     description: "Imported from ITEM LIST.xlsx row 98. Variant/size: 12X13. Base unit: PC.",
   },
@@ -886,7 +883,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "RS14X15",
     name: "RING SPANNER - 14X15",
     categoryId: "7614ade2-abfd-5392-9a57-1ee8a40ed8b6",
-    unit: EProductUnit.Piece,
+
     retailPrice: 70.0,
     description: "Imported from ITEM LIST.xlsx row 99. Variant/size: 14X15. Base unit: PC.",
   },
@@ -895,7 +892,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "RS16X17",
     name: "RING SPANNER - 16X17",
     categoryId: "7614ade2-abfd-5392-9a57-1ee8a40ed8b6",
-    unit: EProductUnit.Piece,
+
     retailPrice: 90.0,
     description: "Imported from ITEM LIST.xlsx row 100. Variant/size: 16X17. Base unit: PC.",
   },
@@ -904,7 +901,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "RS18X19",
     name: "RING SPANNER - 18X19",
     categoryId: "7614ade2-abfd-5392-9a57-1ee8a40ed8b6",
-    unit: EProductUnit.Piece,
+
     retailPrice: 105.0,
     description: "Imported from ITEM LIST.xlsx row 101. Variant/size: 18X19. Base unit: PC.",
   },
@@ -913,7 +910,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "RS20X22",
     name: "RING SPANNER - 20X22",
     categoryId: "7614ade2-abfd-5392-9a57-1ee8a40ed8b6",
-    unit: EProductUnit.Piece,
+
     retailPrice: 120.0,
     description: "Imported from ITEM LIST.xlsx row 102. Variant/size: 20X22. Base unit: PC.",
   },
@@ -922,7 +919,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "RS21X23",
     name: "RING SPANNER - 21X23",
     categoryId: "7614ade2-abfd-5392-9a57-1ee8a40ed8b6",
-    unit: EProductUnit.Piece,
+
     retailPrice: 170.0,
     description: "Imported from ITEM LIST.xlsx row 103. Variant/size: 21X23. Base unit: PC.",
   },
@@ -931,7 +928,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "RS24X27",
     name: "RING SPANNER - 24X27",
     categoryId: "7614ade2-abfd-5392-9a57-1ee8a40ed8b6",
-    unit: EProductUnit.Piece,
+
     retailPrice: 185.0,
     description: "Imported from ITEM LIST.xlsx row 104. Variant/size: 24X27. Base unit: PC.",
   },
@@ -940,7 +937,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "RS25X28",
     name: "RING SPANNER - 25X28",
     categoryId: "7614ade2-abfd-5392-9a57-1ee8a40ed8b6",
-    unit: EProductUnit.Piece,
+
     retailPrice: 310.0,
     description: "Imported from ITEM LIST.xlsx row 105. Variant/size: 25X28. Base unit: PC.",
   },
@@ -949,7 +946,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "RS30X32",
     name: "RING SPANNER - 30X32",
     categoryId: "7614ade2-abfd-5392-9a57-1ee8a40ed8b6",
-    unit: EProductUnit.Piece,
+
     retailPrice: 400.0,
     description: "Imported from ITEM LIST.xlsx row 106. Variant/size: 30X32. Base unit: PC.",
   },
@@ -958,7 +955,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "DP3",
     name: 'DOOR PULL CHROME PLATED - 3"',
     categoryId: "05c4cee7-4dfe-5686-9dfd-7d458441c450",
-    unit: EProductUnit.Dozen,
+
     retailPrice: 100.0,
     description: 'Imported from ITEM LIST.xlsx row 107. Variant/size: 3". Base unit: DOZ.',
   },
@@ -967,7 +964,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "DP4",
     name: 'DOOR PULL CHROME PLATED - 4"',
     categoryId: "05c4cee7-4dfe-5686-9dfd-7d458441c450",
-    unit: EProductUnit.Dozen,
+
     retailPrice: 130.0,
     description: 'Imported from ITEM LIST.xlsx row 108. Variant/size: 4". Base unit: DOZ.',
   },
@@ -976,7 +973,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "DP5",
     name: 'DOOR PULL CHROME PLATED - 5"',
     categoryId: "05c4cee7-4dfe-5686-9dfd-7d458441c450",
-    unit: EProductUnit.Dozen,
+
     retailPrice: 160.0,
     description: 'Imported from ITEM LIST.xlsx row 109. Variant/size: 5". Base unit: DOZ.',
   },
@@ -985,7 +982,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "DP6",
     name: 'DOOR PULL CHROME PLATED - 6"',
     categoryId: "05c4cee7-4dfe-5686-9dfd-7d458441c450",
-    unit: EProductUnit.Dozen,
+
     retailPrice: 180.0,
     description: 'Imported from ITEM LIST.xlsx row 110. Variant/size: 6". Base unit: DOZ.',
   },
@@ -994,7 +991,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "RD",
     name: "RUBBER DOOR STOPPER",
     categoryId: "05c4cee7-4dfe-5686-9dfd-7d458441c450",
-    unit: EProductUnit.Piece,
+
     retailPrice: 25.0,
     description: "Imported from ITEM LIST.xlsx row 111. Base unit: PC.",
   },
@@ -1003,7 +1000,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "DS10",
     name: 'DRAWER SLIDES - 10"',
     categoryId: "1891ac05-7b2e-598b-b201-0dc5b348cf78",
-    unit: EProductUnit.Piece,
+
     retailPrice: 150.0,
     description: 'Imported from ITEM LIST.xlsx row 112. Variant/size: 10". Base unit: PR.',
   },
@@ -1012,7 +1009,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "DS12",
     name: 'DRAWER SLIDES - 12"',
     categoryId: "1891ac05-7b2e-598b-b201-0dc5b348cf78",
-    unit: EProductUnit.Piece,
+
     retailPrice: 170.0,
     description: 'Imported from ITEM LIST.xlsx row 113. Variant/size: 12". Base unit: PR.',
   },
@@ -1021,7 +1018,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "DS14",
     name: 'DRAWER SLIDES - 14"',
     categoryId: "1891ac05-7b2e-598b-b201-0dc5b348cf78",
-    unit: EProductUnit.Piece,
+
     retailPrice: 190.0,
     description: 'Imported from ITEM LIST.xlsx row 114. Variant/size: 14". Base unit: PR.',
   },
@@ -1030,7 +1027,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "DS16",
     name: 'DRAWER SLIDES - 16"',
     categoryId: "1891ac05-7b2e-598b-b201-0dc5b348cf78",
-    unit: EProductUnit.Piece,
+
     retailPrice: 210.0,
     description: 'Imported from ITEM LIST.xlsx row 115. Variant/size: 16". Base unit: PR.',
   },
@@ -1039,7 +1036,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "DS18",
     name: 'DRAWER SLIDES - 18"',
     categoryId: "1891ac05-7b2e-598b-b201-0dc5b348cf78",
-    unit: EProductUnit.Piece,
+
     retailPrice: 230.0,
     description: 'Imported from ITEM LIST.xlsx row 116. Variant/size: 18". Base unit: PR.',
   },
@@ -1048,7 +1045,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "DS20",
     name: 'DRAWER SLIDES - 20"',
     categoryId: "1891ac05-7b2e-598b-b201-0dc5b348cf78",
-    unit: EProductUnit.Piece,
+
     retailPrice: 250.0,
     description: 'Imported from ITEM LIST.xlsx row 117. Variant/size: 20". Base unit: PR.',
   },
@@ -1057,7 +1054,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "DS22",
     name: 'DRAWER SLIDES - 22"',
     categoryId: "1891ac05-7b2e-598b-b201-0dc5b348cf78",
-    unit: EProductUnit.Piece,
+
     retailPrice: 270.0,
     description: 'Imported from ITEM LIST.xlsx row 118. Variant/size: 22". Base unit: PR.',
   },
@@ -1066,7 +1063,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "DC20",
     name: "DOG CHAIN - #20",
     categoryId: "dd3d0183-5939-5d03-a874-94e95f71e263",
-    unit: EProductUnit.Piece,
+
     retailPrice: 80.0,
     description: "Imported from ITEM LIST.xlsx row 119. Variant/size: #20. Base unit: PC.",
   },
@@ -1075,7 +1072,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "DC25",
     name: "DOG CHAIN - #25",
     categoryId: "dd3d0183-5939-5d03-a874-94e95f71e263",
-    unit: EProductUnit.Piece,
+
     retailPrice: 90.0,
     description: "Imported from ITEM LIST.xlsx row 120. Variant/size: #25. Base unit: PC.",
   },
@@ -1084,7 +1081,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "DC30",
     name: "DOG CHAIN - #30",
     categoryId: "dd3d0183-5939-5d03-a874-94e95f71e263",
-    unit: EProductUnit.Piece,
+
     retailPrice: 100.0,
     description: "Imported from ITEM LIST.xlsx row 121. Variant/size: #30. Base unit: PC.",
   },
@@ -1093,7 +1090,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "DC35",
     name: "DOG CHAIN - #35",
     categoryId: "dd3d0183-5939-5d03-a874-94e95f71e263",
-    unit: EProductUnit.Piece,
+
     retailPrice: 110.0,
     description: "Imported from ITEM LIST.xlsx row 122. Variant/size: #35. Base unit: PC.",
   },
@@ -1102,7 +1099,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "DC40",
     name: "DOG CHAIN - #40",
     categoryId: "dd3d0183-5939-5d03-a874-94e95f71e263",
-    unit: EProductUnit.Piece,
+
     retailPrice: 120.0,
     description: "Imported from ITEM LIST.xlsx row 123. Variant/size: #40. Base unit: PC.",
   },
@@ -1111,7 +1108,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "DC45",
     name: "DOG CHAIN - #45",
     categoryId: "dd3d0183-5939-5d03-a874-94e95f71e263",
-    unit: EProductUnit.Piece,
+
     retailPrice: 130.0,
     description: "Imported from ITEM LIST.xlsx row 124. Variant/size: #45. Base unit: PC.",
   },
@@ -1120,7 +1117,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "LC1/8",
     name: 'LINK CHAIN 25KGS/BAG GALVANIZED - 1/8"',
     categoryId: "dd3d0183-5939-5d03-a874-94e95f71e263",
-    unit: EProductUnit.Pack,
+
     retailPrice: 5000.0,
     description: 'Imported from ITEM LIST.xlsx row 125. Variant/size: 1/8". Base unit: BAG. Unit/measure: MTR.',
   },
@@ -1129,7 +1126,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "LC3/16",
     name: 'LINK CHAIN 25KGS/BAG GALVANIZED - 3/16"',
     categoryId: "dd3d0183-5939-5d03-a874-94e95f71e263",
-    unit: EProductUnit.Pack,
+
     retailPrice: 5000.0,
     description: 'Imported from ITEM LIST.xlsx row 126. Variant/size: 3/16". Base unit: BAG. Unit/measure: MTR.',
   },
@@ -1138,7 +1135,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "LC1/4",
     name: 'LINK CHAIN 25KGS/BAG GALVANIZED - 1/4"',
     categoryId: "dd3d0183-5939-5d03-a874-94e95f71e263",
-    unit: EProductUnit.Pack,
+
     retailPrice: 5000.0,
     description: 'Imported from ITEM LIST.xlsx row 127. Variant/size: 1/4". Base unit: BAG. Unit/measure: MTR.',
   },
@@ -1147,7 +1144,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "LC3/8",
     name: 'LINK CHAIN 25KGS/BAG GALVANIZED - 3/8"',
     categoryId: "dd3d0183-5939-5d03-a874-94e95f71e263",
-    unit: EProductUnit.Pack,
+
     retailPrice: 5000.0,
     description: 'Imported from ITEM LIST.xlsx row 128. Variant/size: 3/8". Base unit: BAG. Unit/measure: MTR.',
   },
@@ -1156,7 +1153,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "LC5/16",
     name: 'LINK CHAIN 25KGS/BAG GALVANIZED - 5/16"',
     categoryId: "dd3d0183-5939-5d03-a874-94e95f71e263",
-    unit: EProductUnit.Pack,
+
     retailPrice: 5000.0,
     description: 'Imported from ITEM LIST.xlsx row 129. Variant/size: 5/16". Base unit: BAG. Unit/measure: MTR.',
   },
@@ -1165,7 +1162,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "LC1/2",
     name: 'LINK CHAIN 25KGS/BAG GALVANIZED - 1/2"',
     categoryId: "dd3d0183-5939-5d03-a874-94e95f71e263",
-    unit: EProductUnit.Pack,
+
     retailPrice: 5000.0,
     description: 'Imported from ITEM LIST.xlsx row 130. Variant/size: 1/2". Base unit: BAG. Unit/measure: MTR.',
   },
@@ -1174,7 +1171,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "LC5/8",
     name: 'LINK CHAIN 25KGS/BAG GALVANIZED - 5/8"',
     categoryId: "dd3d0183-5939-5d03-a874-94e95f71e263",
-    unit: EProductUnit.Pack,
+
     retailPrice: 5000.0,
     description: 'Imported from ITEM LIST.xlsx row 131. Variant/size: 5/8". Base unit: BAG. Unit/measure: MTR.',
   },
@@ -1183,7 +1180,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "FB",
     name: "FASTENERS BRASS - POLISHED",
     categoryId: "f1ea9b90-053e-59e6-b3c1-1c1dc1addc95",
-    unit: EProductUnit.Piece,
+
     retailPrice: 75.0,
     description: "Imported from ITEM LIST.xlsx row 132. Variant/size: POLISHED. Base unit: PC.",
   },
@@ -1192,7 +1189,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "SB",
     name: "STAYS BRASS - POLISHED",
     categoryId: "f1ea9b90-053e-59e6-b3c1-1c1dc1addc95",
-    unit: EProductUnit.Piece,
+
     retailPrice: 75.0,
     description: "Imported from ITEM LIST.xlsx row 133. Variant/size: POLISHED. Base unit: PC.",
   },
@@ -1201,7 +1198,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "FD80",
     name: 'FLAP DISC 4-1/2" - P80',
     categoryId: "c0819a94-c34d-52ee-9edb-6eca1a61164c",
-    unit: EProductUnit.Piece,
+
     retailPrice: 60.0,
     description: "Imported from ITEM LIST.xlsx row 134. Variant/size: P80. Base unit: PC.",
   },
@@ -1210,7 +1207,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "IL-0135",
     name: "SCREW HOOK AND EYE SCREW - #2",
     categoryId: "3000537c-f33d-591a-b80d-45832234948f",
-    unit: EProductUnit.Pack,
+
     retailPrice: 100.0,
     packSize: 144,
     description: "Imported from ITEM LIST.xlsx row 135. Variant/size: #2. Base unit: PKT. Pack size: 144. Unit/measure: PC.",
@@ -1220,7 +1217,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "IL-0136",
     name: "SCREW HOOK AND EYE SCREW - #3",
     categoryId: "3000537c-f33d-591a-b80d-45832234948f",
-    unit: EProductUnit.Pack,
+
     retailPrice: 110.0,
     packSize: 144,
     description: "Imported from ITEM LIST.xlsx row 136. Variant/size: #3. Base unit: PKT. Pack size: 144. Unit/measure: PC.",
@@ -1230,7 +1227,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "IL-0137",
     name: "SCREW HOOK AND EYE SCREW - #4",
     categoryId: "3000537c-f33d-591a-b80d-45832234948f",
-    unit: EProductUnit.Pack,
+
     retailPrice: 130.0,
     packSize: 144,
     description: "Imported from ITEM LIST.xlsx row 137. Variant/size: #4. Base unit: PKT. Pack size: 144. Unit/measure: PC.",
@@ -1240,7 +1237,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "IL-0138",
     name: "SCREW HOOK AND EYE SCREW - #6",
     categoryId: "3000537c-f33d-591a-b80d-45832234948f",
-    unit: EProductUnit.Pack,
+
     retailPrice: 250.0,
     packSize: 144,
     description: "Imported from ITEM LIST.xlsx row 138. Variant/size: #6. Base unit: PKT. Pack size: 144. Unit/measure: PC.",
@@ -1250,7 +1247,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "IL-0139",
     name: "SCREW HOOK AND EYE SCREW - #8",
     categoryId: "3000537c-f33d-591a-b80d-45832234948f",
-    unit: EProductUnit.Pack,
+
     retailPrice: 350.0,
     packSize: 144,
     description: "Imported from ITEM LIST.xlsx row 139. Variant/size: #8. Base unit: PKT. Pack size: 144. Unit/measure: PC.",
@@ -1260,7 +1257,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "IL-0140",
     name: "SCREW HOOK AND EYE SCREW - #10",
     categoryId: "3000537c-f33d-591a-b80d-45832234948f",
-    unit: EProductUnit.Pack,
+
     retailPrice: 450.0,
     packSize: 144,
     description: "Imported from ITEM LIST.xlsx row 140. Variant/size: #10. Base unit: PKT. Pack size: 144. Unit/measure: PC.",
@@ -1270,7 +1267,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "IL-0141",
     name: "SCREW HOOK AND EYE SCREW - #12",
     categoryId: "3000537c-f33d-591a-b80d-45832234948f",
-    unit: EProductUnit.Pack,
+
     retailPrice: 600.0,
     packSize: 144,
     description: "Imported from ITEM LIST.xlsx row 141. Variant/size: #12. Base unit: PKT. Pack size: 144. Unit/measure: PC.",
@@ -1280,7 +1277,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "IL-0142",
     name: "SCREW HOOK AND EYE SCREW - #14",
     categoryId: "3000537c-f33d-591a-b80d-45832234948f",
-    unit: EProductUnit.Pack,
+
     retailPrice: 800.0,
     packSize: 144,
     description: "Imported from ITEM LIST.xlsx row 142. Variant/size: #14. Base unit: PKT. Pack size: 144. Unit/measure: PC.",
@@ -1290,7 +1287,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "IL-0143",
     name: "GREASE GUN NEW PECKER MEDIUM DUTY - CHINA",
     categoryId: "f1ea9b90-053e-59e6-b3c1-1c1dc1addc95",
-    unit: EProductUnit.Piece,
+
     retailPrice: 650.0,
     manufacturer: "Pecker",
     description: "Imported from ITEM LIST.xlsx row 143. Variant/size: CHINA. Base unit: PC.",
@@ -1300,7 +1297,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "IL-0144",
     name: "GYPSUM SCREWS BLACK (1000PCS/PKT) - 3.5X25",
     categoryId: "3000537c-f33d-591a-b80d-45832234948f",
-    unit: EProductUnit.Pack,
+
     retailPrice: 450.0,
     description: "Imported from ITEM LIST.xlsx row 144. Variant/size: 3.5X25. Base unit: PKT.",
   },
@@ -1309,7 +1306,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "IL-0145",
     name: "GYPSUM SCREWS BLACK(200PCS/PKT) - 3.5X25",
     categoryId: "3000537c-f33d-591a-b80d-45832234948f",
-    unit: EProductUnit.Pack,
+
     retailPrice: 100.0,
     description: "Imported from ITEM LIST.xlsx row 145. Variant/size: 3.5X25. Base unit: PKT.",
   },
@@ -1318,7 +1315,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "IL-0146",
     name: "GYPSUM SCREWS BLACK (200PCS/PKT) - 3.5X30",
     categoryId: "3000537c-f33d-591a-b80d-45832234948f",
-    unit: EProductUnit.Pack,
+
     retailPrice: 130.0,
     description: "Imported from ITEM LIST.xlsx row 146. Variant/size: 3.5X30. Base unit: PKT.",
   },
@@ -1327,7 +1324,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "IL-0147",
     name: "GYPSUM SCREWS BLACK (200PCS/PKT) - 3.5X40",
     categoryId: "3000537c-f33d-591a-b80d-45832234948f",
-    unit: EProductUnit.Pack,
+
     retailPrice: 140.0,
     description: "Imported from ITEM LIST.xlsx row 147. Variant/size: 3.5X40. Base unit: PKT.",
   },
@@ -1336,7 +1333,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "IL-0148",
     name: "GYPSUM SCREWS BLACK(200PCS/PKT) - 3.5X50",
     categoryId: "3000537c-f33d-591a-b80d-45832234948f",
-    unit: EProductUnit.Pack,
+
     retailPrice: 170.0,
     description: "Imported from ITEM LIST.xlsx row 148. Variant/size: 3.5X50. Base unit: PKT.",
   },
@@ -1345,7 +1342,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "GFT",
     name: "GYPSUM FIBRE GLASS TAPE - 50X90METRES",
     categoryId: "64ca0214-7e5a-5c57-bd6c-e29d2a7516f2",
-    unit: EProductUnit.Pack,
+
     retailPrice: 180.0,
     description: "Imported from ITEM LIST.xlsx row 149. Variant/size: 50X90METRES. Base unit: ROLL.",
   },
@@ -1354,7 +1351,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "IL-0150",
     name: "GYPSUM STUD - 50MM",
     categoryId: "64ca0214-7e5a-5c57-bd6c-e29d2a7516f2",
-    unit: EProductUnit.Pack,
+
     retailPrice: 1200.0,
     description: "Imported from ITEM LIST.xlsx row 150. Variant/size: 50MM. Base unit: 10PCS/BUNDLE.",
   },
@@ -1363,7 +1360,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "IL-0151",
     name: "GYPSUM CHANNEL - 50MM",
     categoryId: "64ca0214-7e5a-5c57-bd6c-e29d2a7516f2",
-    unit: EProductUnit.Pack,
+
     retailPrice: 1200.0,
     description: "Imported from ITEM LIST.xlsx row 151. Variant/size: 50MM. Base unit: 10PCS/BUNDLE.",
   },
@@ -1372,7 +1369,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "IL-0152",
     name: "GYPSUM BOARD 9MM - HADA",
     categoryId: "64ca0214-7e5a-5c57-bd6c-e29d2a7516f2",
-    unit: EProductUnit.Piece,
+
     retailPrice: 900.0,
     description: "Imported from ITEM LIST.xlsx row 152. Variant/size: HADA. Base unit: PC.",
   },
@@ -1381,7 +1378,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "IL-0153",
     name: "MDF SCREWS YELLOW PLATED 200PCS/PKT - 3.5X25",
     categoryId: "3000537c-f33d-591a-b80d-45832234948f",
-    unit: EProductUnit.Pack,
+
     retailPrice: 95.0,
     description: "Imported from ITEM LIST.xlsx row 153. Variant/size: 3.5X25. Base unit: PKT.",
   },
@@ -1390,7 +1387,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "IL-0154",
     name: "MDF SCREWS YELLOW PLATED 200PCS/PKT - 3.5X30",
     categoryId: "3000537c-f33d-591a-b80d-45832234948f",
-    unit: EProductUnit.Pack,
+
     retailPrice: 115.0,
     description: "Imported from ITEM LIST.xlsx row 154. Variant/size: 3.5X30. Base unit: PKT.",
   },
@@ -1399,7 +1396,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "IL-0155",
     name: "MDF SCREWS YELLOW PLATED 200PCS/PKT - 4X40",
     categoryId: "3000537c-f33d-591a-b80d-45832234948f",
-    unit: EProductUnit.Pack,
+
     retailPrice: 150.0,
     description: "Imported from ITEM LIST.xlsx row 155. Variant/size: 4X40. Base unit: PKT.",
   },
@@ -1408,7 +1405,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "IL-0156",
     name: "MDF SCREWS YELLOW PLATED 200PCS/PKT - 4X50",
     categoryId: "3000537c-f33d-591a-b80d-45832234948f",
-    unit: EProductUnit.Pack,
+
     retailPrice: 170.0,
     description: "Imported from ITEM LIST.xlsx row 156. Variant/size: 4X50. Base unit: PKT.",
   },
@@ -1417,7 +1414,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "HB",
     name: "HACKSAW BLADES SANDFLEX - ORIGINAL SWEDEN",
     categoryId: "4659a867-4dd0-545f-bb1b-5266ef7c7db2",
-    unit: EProductUnit.Piece,
+
     retailPrice: 100.0,
     description: "Imported from ITEM LIST.xlsx row 157. Variant/size: ORIGINAL SWEDEN. Base unit: PC.",
   },
@@ -1426,7 +1423,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "IL-0158",
     name: "HACKSAW FRAME HEAVY DUTY POLAND - FULL METAL",
     categoryId: "4659a867-4dd0-545f-bb1b-5266ef7c7db2",
-    unit: EProductUnit.Piece,
+
     retailPrice: 270.0,
     description: "Imported from ITEM LIST.xlsx row 158. Variant/size: FULL METAL. Base unit: PC.",
   },
@@ -1435,7 +1432,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "JB",
     name: "JIGSAW BLADE FOR METAL - T118A",
     categoryId: "4659a867-4dd0-545f-bb1b-5266ef7c7db2",
-    unit: EProductUnit.Pack,
+
     retailPrice: 250.0,
     description: "Imported from ITEM LIST.xlsx row 159. Variant/size: T118A. Base unit: SET.",
   },
@@ -1444,7 +1441,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "HS12",
     name: 'HANDSAW STEIGO BRAND WOODEN - CODE 9609 12"',
     categoryId: "4659a867-4dd0-545f-bb1b-5266ef7c7db2",
-    unit: EProductUnit.Piece,
+
     retailPrice: 190.0,
     manufacturer: "Steigo",
     description: 'Imported from ITEM LIST.xlsx row 160. Variant/size: CODE 9609 12". Base unit: PC.',
@@ -1454,7 +1451,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "HS14",
     name: 'HANDSAW STEIGO BRAND WOODEN - CODE 9609 14"',
     categoryId: "4659a867-4dd0-545f-bb1b-5266ef7c7db2",
-    unit: EProductUnit.Piece,
+
     retailPrice: 200.0,
     manufacturer: "Steigo",
     description: 'Imported from ITEM LIST.xlsx row 161. Variant/size: CODE 9609 14". Base unit: PC.',
@@ -1464,7 +1461,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "HS16",
     name: 'HANDSAW STEIGO BRAND WOODEN - CODE 9609 16"',
     categoryId: "4659a867-4dd0-545f-bb1b-5266ef7c7db2",
-    unit: EProductUnit.Piece,
+
     retailPrice: 210.0,
     manufacturer: "Steigo",
     description: 'Imported from ITEM LIST.xlsx row 162. Variant/size: CODE 9609 16". Base unit: PC.',
@@ -1474,7 +1471,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "HS18",
     name: 'HANDSAW STEIGO BRAND WOODEN - CODE 9609 18"',
     categoryId: "4659a867-4dd0-545f-bb1b-5266ef7c7db2",
-    unit: EProductUnit.Piece,
+
     retailPrice: 220.0,
     manufacturer: "Steigo",
     description: 'Imported from ITEM LIST.xlsx row 163. Variant/size: CODE 9609 18". Base unit: PC.',
@@ -1484,7 +1481,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "HS20",
     name: 'HANDSAW STEIGO BRAND WOODEN - 20"',
     categoryId: "4659a867-4dd0-545f-bb1b-5266ef7c7db2",
-    unit: EProductUnit.Piece,
+
     retailPrice: 230.0,
     manufacturer: "Steigo",
     description: 'Imported from ITEM LIST.xlsx row 164. Variant/size: 20". Base unit: PC.',
@@ -1494,7 +1491,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "HS22",
     name: 'HANDSAW STEIGO BRAND WOODEN - 22"',
     categoryId: "4659a867-4dd0-545f-bb1b-5266ef7c7db2",
-    unit: EProductUnit.Piece,
+
     retailPrice: 240.0,
     manufacturer: "Steigo",
     description: 'Imported from ITEM LIST.xlsx row 165. Variant/size: 22". Base unit: PC.',
@@ -1504,7 +1501,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "HS24",
     name: 'HANDSAW STEIGO BRAND WOODEN - 24"',
     categoryId: "4659a867-4dd0-545f-bb1b-5266ef7c7db2",
-    unit: EProductUnit.Piece,
+
     retailPrice: 250.0,
     manufacturer: "Steigo",
     description: 'Imported from ITEM LIST.xlsx row 166. Variant/size: 24". Base unit: PC.',
@@ -1514,7 +1511,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "HS12P",
     name: 'HANDSAW STEIGO PLASTIC HANDLE - 12"',
     categoryId: "4659a867-4dd0-545f-bb1b-5266ef7c7db2",
-    unit: EProductUnit.Piece,
+
     retailPrice: 190.0,
     manufacturer: "Steigo",
     description: 'Imported from ITEM LIST.xlsx row 167. Variant/size: 12". Base unit: PC.',
@@ -1524,7 +1521,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "HS14P",
     name: 'HANDSAW STEIGO PLASTIC HANDLE - CODE 9610 14"',
     categoryId: "4659a867-4dd0-545f-bb1b-5266ef7c7db2",
-    unit: EProductUnit.Piece,
+
     retailPrice: 200.0,
     manufacturer: "Steigo",
     description: 'Imported from ITEM LIST.xlsx row 168. Variant/size: CODE 9610 14". Base unit: PC.',
@@ -1534,7 +1531,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "HS16P",
     name: 'HANDSAW STEIGO PLASTIC HANDLE - 16"',
     categoryId: "4659a867-4dd0-545f-bb1b-5266ef7c7db2",
-    unit: EProductUnit.Piece,
+
     retailPrice: 210.0,
     manufacturer: "Steigo",
     description: 'Imported from ITEM LIST.xlsx row 169. Variant/size: 16". Base unit: PC.',
@@ -1544,7 +1541,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "HS18P",
     name: 'HANDSAW STEIGO PLASTIC HANDLE - CODE 9610 18"',
     categoryId: "4659a867-4dd0-545f-bb1b-5266ef7c7db2",
-    unit: EProductUnit.Piece,
+
     retailPrice: 220.0,
     manufacturer: "Steigo",
     description: 'Imported from ITEM LIST.xlsx row 170. Variant/size: CODE 9610 18". Base unit: PC.',
@@ -1554,7 +1551,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "HS20P",
     name: 'HANDSAW STEIGO PLASTIC HANDLE - 20"',
     categoryId: "4659a867-4dd0-545f-bb1b-5266ef7c7db2",
-    unit: EProductUnit.Piece,
+
     retailPrice: 230.0,
     manufacturer: "Steigo",
     description: 'Imported from ITEM LIST.xlsx row 171. Variant/size: 20". Base unit: PC.',
@@ -1564,7 +1561,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "HS22P",
     name: 'HANDSAW STEIGO PLASTIC HANDLE - 22"',
     categoryId: "4659a867-4dd0-545f-bb1b-5266ef7c7db2",
-    unit: EProductUnit.Piece,
+
     retailPrice: 240.0,
     manufacturer: "Steigo",
     description: 'Imported from ITEM LIST.xlsx row 172. Variant/size: 22". Base unit: PC.',
@@ -1574,7 +1571,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "HS24P",
     name: 'HANDSAW STEIGO PLASTIC HANDLE - 24"',
     categoryId: "4659a867-4dd0-545f-bb1b-5266ef7c7db2",
-    unit: EProductUnit.Piece,
+
     retailPrice: 250.0,
     manufacturer: "Steigo",
     description: 'Imported from ITEM LIST.xlsx row 173. Variant/size: 24". Base unit: PC.',
@@ -1584,7 +1581,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "IL-0174",
     name: "HOSE CLIPS CHINA 100PCS/PKT - 10-16MM",
     categoryId: "86acb3cb-1541-5046-b823-acabbd4683f6",
-    unit: EProductUnit.Piece,
+
     retailPrice: 1500.0,
     description: "Imported from ITEM LIST.xlsx row 174. Variant/size: 10-16MM. Base unit: PC.",
   },
@@ -1593,7 +1590,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "IL-0175",
     name: "HOSE CLIPS CHINA 100PCS/PKT - 16-25MM",
     categoryId: "86acb3cb-1541-5046-b823-acabbd4683f6",
-    unit: EProductUnit.Piece,
+
     retailPrice: 1600.0,
     description: "Imported from ITEM LIST.xlsx row 175. Variant/size: 16-25MM. Base unit: PC.",
   },
@@ -1602,7 +1599,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "IL-0176",
     name: 'HOSE CLIPS CHINA 100PCS/PKT - 3/4" (19-29MM)',
     categoryId: "86acb3cb-1541-5046-b823-acabbd4683f6",
-    unit: EProductUnit.Piece,
+
     retailPrice: 1700.0,
     description: 'Imported from ITEM LIST.xlsx row 176. Variant/size: 3/4" (19-29MM). Base unit: PC.',
   },
@@ -1611,7 +1608,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "IL-0177",
     name: 'HOSE CLIPS CHINA 100PCS/PKT - 1" (25-38MM)',
     categoryId: "86acb3cb-1541-5046-b823-acabbd4683f6",
-    unit: EProductUnit.Piece,
+
     retailPrice: 1800.0,
     description: 'Imported from ITEM LIST.xlsx row 177. Variant/size: 1" (25-38MM). Base unit: PC.',
   },
@@ -1620,7 +1617,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "IL-0178",
     name: 'HOSE CLIPS CHINA 100PCS/PKT - 1-1/2"(38-57mm)',
     categoryId: "86acb3cb-1541-5046-b823-acabbd4683f6",
-    unit: EProductUnit.Piece,
+
     retailPrice: 1900.0,
     description: 'Imported from ITEM LIST.xlsx row 178. Variant/size: 1-1/2"(38-57mm). Base unit: PC.',
   },
@@ -1629,7 +1626,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "IL-0179",
     name: 'HOSE CLIPS CHINA 100PCS/PKT - 2"(51-70mm)',
     categoryId: "86acb3cb-1541-5046-b823-acabbd4683f6",
-    unit: EProductUnit.Piece,
+
     retailPrice: 2000.0,
     description: 'Imported from ITEM LIST.xlsx row 179. Variant/size: 2"(51-70mm). Base unit: PC.',
   },
@@ -1638,7 +1635,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "IL-0180",
     name: 'HOSE CLIPS CHINA 100PCS/PKT - 2-1/2"(64-76mm)',
     categoryId: "86acb3cb-1541-5046-b823-acabbd4683f6",
-    unit: EProductUnit.Piece,
+
     retailPrice: 2200.0,
     description: 'Imported from ITEM LIST.xlsx row 180. Variant/size: 2-1/2"(64-76mm). Base unit: PC.',
   },
@@ -1647,7 +1644,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "IL-0181",
     name: 'HOSE CLIPS CHINA 100PCS/PKT - 3"(76-92mm)',
     categoryId: "86acb3cb-1541-5046-b823-acabbd4683f6",
-    unit: EProductUnit.Piece,
+
     retailPrice: 2500.0,
     description: 'Imported from ITEM LIST.xlsx row 181. Variant/size: 3"(76-92mm). Base unit: PC.',
   },
@@ -1656,7 +1653,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "IL-0182",
     name: 'HOSE CLIPS CHINA 100PCS/PKT - 4"(100-120mm)',
     categoryId: "86acb3cb-1541-5046-b823-acabbd4683f6",
-    unit: EProductUnit.Piece,
+
     retailPrice: 3000.0,
     description: 'Imported from ITEM LIST.xlsx row 182. Variant/size: 4"(100-120mm). Base unit: PC.',
   },
@@ -1665,7 +1662,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "HS100",
     name: "HANSON SCALE ORIGINAL INDIA - 100KGS",
     categoryId: "2f25bc0e-b27f-52ab-8f5b-d85cf5f6fd0f",
-    unit: EProductUnit.Piece,
+
     retailPrice: 1800.0,
     manufacturer: "Hanson",
     description: "Imported from ITEM LIST.xlsx row 183. Variant/size: 100KGS. Base unit: PC.",
@@ -1675,7 +1672,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "HS150",
     name: "HANSON SCALE ORIGINAL INDIA - 150KGS",
     categoryId: "2f25bc0e-b27f-52ab-8f5b-d85cf5f6fd0f",
-    unit: EProductUnit.Piece,
+
     retailPrice: 2100.0,
     manufacturer: "Hanson",
     description: "Imported from ITEM LIST.xlsx row 184. Variant/size: 150KGS. Base unit: PC.",
@@ -1685,7 +1682,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "HS200",
     name: "HANSON SCALE ORIGINAL INDIA - 200KGS",
     categoryId: "2f25bc0e-b27f-52ab-8f5b-d85cf5f6fd0f",
-    unit: EProductUnit.Piece,
+
     retailPrice: 3600.0,
     manufacturer: "Hanson",
     description: "Imported from ITEM LIST.xlsx row 185. Variant/size: 200KGS. Base unit: PC.",
@@ -1695,7 +1692,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "SP25",
     name: "SPRING POCKET BALANCE ROSSEL CHINA - 25KGS",
     categoryId: "2f25bc0e-b27f-52ab-8f5b-d85cf5f6fd0f",
-    unit: EProductUnit.Piece,
+
     retailPrice: 140.0,
     manufacturer: "Rossel",
     description: "Imported from ITEM LIST.xlsx row 186. Variant/size: 25KGS. Base unit: PC.",
@@ -1705,7 +1702,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "SP50",
     name: "SPRING POCKET BALANCE ROSSEL CHINA - 50KGS",
     categoryId: "2f25bc0e-b27f-52ab-8f5b-d85cf5f6fd0f",
-    unit: EProductUnit.Piece,
+
     retailPrice: 180.0,
     manufacturer: "Rossel",
     description: "Imported from ITEM LIST.xlsx row 187. Variant/size: 50KGS. Base unit: PC.",
@@ -1715,7 +1712,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "JP4",
     name: "JACK PLANE SCHNEEBERG BRAND CHINA - NO.4",
     categoryId: "63f4b972-41b7-58f7-a18d-6195cef5f11e",
-    unit: EProductUnit.Piece,
+
     retailPrice: 800.0,
     manufacturer: "Schneeberg",
     description: "Imported from ITEM LIST.xlsx row 189. Variant/size: NO.4. Base unit: PC.",
@@ -1725,7 +1722,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "JP5",
     name: "JACK PLANE SCHNEEBERG BRAND CHINA - NO.5",
     categoryId: "63f4b972-41b7-58f7-a18d-6195cef5f11e",
-    unit: EProductUnit.Piece,
+
     retailPrice: 1000.0,
     manufacturer: "Schneeberg",
     description: "Imported from ITEM LIST.xlsx row 190. Variant/size: NO.5. Base unit: PC.",
@@ -1735,7 +1732,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "IL-0191",
     name: "MANHOLE COVER - 12X12",
     categoryId: "2dfb8e92-01fa-5bf8-97fe-91215b34507e",
-    unit: EProductUnit.Piece,
+
     retailPrice: 450.0,
     description: "Imported from ITEM LIST.xlsx row 191. Variant/size: 12X12. Base unit: PC.",
   },
@@ -1744,7 +1741,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "IL-0192",
     name: "MANHOLE COVER - 15X15",
     categoryId: "2dfb8e92-01fa-5bf8-97fe-91215b34507e",
-    unit: EProductUnit.Piece,
+
     retailPrice: 550.0,
     description: "Imported from ITEM LIST.xlsx row 192. Variant/size: 15X15. Base unit: PC.",
   },
@@ -1753,7 +1750,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "IL-0193",
     name: "MANHOLE COVER - 18X18",
     categoryId: "2dfb8e92-01fa-5bf8-97fe-91215b34507e",
-    unit: EProductUnit.Piece,
+
     retailPrice: 650.0,
     description: "Imported from ITEM LIST.xlsx row 193. Variant/size: 18X18. Base unit: PC.",
   },
@@ -1762,7 +1759,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "IL-0194",
     name: "MANHOLE COVER - 18X24",
     categoryId: "2dfb8e92-01fa-5bf8-97fe-91215b34507e",
-    unit: EProductUnit.Piece,
+
     retailPrice: 1250.0,
     description: "Imported from ITEM LIST.xlsx row 194. Variant/size: 18X24. Base unit: PC.",
   },
@@ -1771,7 +1768,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "IL-0195",
     name: "MANHOLE COVER - 24X24",
     categoryId: "2dfb8e92-01fa-5bf8-97fe-91215b34507e",
-    unit: EProductUnit.Piece,
+
     retailPrice: 3400.0,
     description: "Imported from ITEM LIST.xlsx row 195. Variant/size: 24X24. Base unit: PC.",
   },
@@ -1780,7 +1777,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "MS",
     name: "MASON SQUARE polished H/D PECKER - HEAVY",
     categoryId: "2f25bc0e-b27f-52ab-8f5b-d85cf5f6fd0f",
-    unit: EProductUnit.Piece,
+
     retailPrice: 290.0,
     manufacturer: "Pecker",
     description: "Imported from ITEM LIST.xlsx row 196. Variant/size: HEAVY. Base unit: PC.",
@@ -1790,7 +1787,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "MB4",
     name: "MASONARY BIT CHINA - 4MM",
     categoryId: "2dfb8e92-01fa-5bf8-97fe-91215b34507e",
-    unit: EProductUnit.Piece,
+
     retailPrice: 10.0,
     description: "Imported from ITEM LIST.xlsx row 197. Variant/size: 4MM. Base unit: PC.",
   },
@@ -1799,7 +1796,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "MB6",
     name: "MASONARY BIT CHINA - 6MM",
     categoryId: "2dfb8e92-01fa-5bf8-97fe-91215b34507e",
-    unit: EProductUnit.Piece,
+
     retailPrice: 15.0,
     description: "Imported from ITEM LIST.xlsx row 198. Variant/size: 6MM. Base unit: PC.",
   },
@@ -1808,7 +1805,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "MB8",
     name: "MASONARY BIT CHINA - 8MM",
     categoryId: "2dfb8e92-01fa-5bf8-97fe-91215b34507e",
-    unit: EProductUnit.Piece,
+
     retailPrice: 20.0,
     description: "Imported from ITEM LIST.xlsx row 199. Variant/size: 8MM. Base unit: PC.",
   },
@@ -1817,7 +1814,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "MB10",
     name: "MASONARY BIT CHINA - 10MM",
     categoryId: "2dfb8e92-01fa-5bf8-97fe-91215b34507e",
-    unit: EProductUnit.Piece,
+
     retailPrice: 25.0,
     description: "Imported from ITEM LIST.xlsx row 200. Variant/size: 10MM. Base unit: PC.",
   },
@@ -1826,7 +1823,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "MB12",
     name: "MASONARY BIT CHINA - 12MM",
     categoryId: "2dfb8e92-01fa-5bf8-97fe-91215b34507e",
-    unit: EProductUnit.Piece,
+
     retailPrice: 30.0,
     description: "Imported from ITEM LIST.xlsx row 201. Variant/size: 12MM. Base unit: PC.",
   },
@@ -1835,7 +1832,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "MD3",
     name: "METAL DRILL BIT CHINA - 3MM",
     categoryId: "2dfb8e92-01fa-5bf8-97fe-91215b34507e",
-    unit: EProductUnit.Piece,
+
     retailPrice: 10.0,
     description: "Imported from ITEM LIST.xlsx row 202. Variant/size: 3MM. Base unit: PC.",
   },
@@ -1844,7 +1841,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "MD4",
     name: "METAL DRILL BIT CHINA - 4MM",
     categoryId: "2dfb8e92-01fa-5bf8-97fe-91215b34507e",
-    unit: EProductUnit.Piece,
+
     retailPrice: 15.0,
     description: "Imported from ITEM LIST.xlsx row 203. Variant/size: 4MM. Base unit: PC.",
   },
@@ -1853,7 +1850,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "MD3/16",
     name: 'METAL DRILL BIT CHINA - 3/16"',
     categoryId: "2dfb8e92-01fa-5bf8-97fe-91215b34507e",
-    unit: EProductUnit.Piece,
+
     retailPrice: 20.0,
     description: 'Imported from ITEM LIST.xlsx row 204. Variant/size: 3/16". Base unit: PC.',
   },
@@ -1862,7 +1859,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "MD6",
     name: "METAL DRILL BIT CHINA - 6MM",
     categoryId: "2dfb8e92-01fa-5bf8-97fe-91215b34507e",
-    unit: EProductUnit.Piece,
+
     retailPrice: 25.0,
     description: "Imported from ITEM LIST.xlsx row 205. Variant/size: 6MM. Base unit: PC.",
   },
@@ -1871,7 +1868,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "MD8",
     name: "METAL DRILL BIT CHINA - 8MM",
     categoryId: "2dfb8e92-01fa-5bf8-97fe-91215b34507e",
-    unit: EProductUnit.Piece,
+
     retailPrice: 30.0,
     description: "Imported from ITEM LIST.xlsx row 206. Variant/size: 8MM. Base unit: PC.",
   },
@@ -1880,7 +1877,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "MD10",
     name: "METAL DRILL BIT CHINA - 10MM",
     categoryId: "2dfb8e92-01fa-5bf8-97fe-91215b34507e",
-    unit: EProductUnit.Piece,
+
     retailPrice: 40.0,
     description: "Imported from ITEM LIST.xlsx row 207. Variant/size: 10MM. Base unit: PC.",
   },
@@ -1889,7 +1886,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "MD12",
     name: "METAL DRILL BIT CHINA - 12MM",
     categoryId: "2dfb8e92-01fa-5bf8-97fe-91215b34507e",
-    unit: EProductUnit.Piece,
+
     retailPrice: 70.0,
     description: "Imported from ITEM LIST.xlsx row 208. Variant/size: 12MM. Base unit: PC.",
   },
@@ -1898,7 +1895,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "MD16",
     name: "METAL DRILL BIT CHINA - 16MM",
     categoryId: "2dfb8e92-01fa-5bf8-97fe-91215b34507e",
-    unit: EProductUnit.Piece,
+
     retailPrice: 150.0,
     description: "Imported from ITEM LIST.xlsx row 209. Variant/size: 16MM. Base unit: PC.",
   },
@@ -1907,7 +1904,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "MD19",
     name: "METAL DRILL BIT CHINA - 19MM",
     categoryId: "2dfb8e92-01fa-5bf8-97fe-91215b34507e",
-    unit: EProductUnit.Piece,
+
     retailPrice: 250.0,
     description: "Imported from ITEM LIST.xlsx row 210. Variant/size: 19MM. Base unit: PC.",
   },
@@ -1916,7 +1913,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "MD25",
     name: "METAL DRILL BIT CHINA - 25MM",
     categoryId: "2dfb8e92-01fa-5bf8-97fe-91215b34507e",
-    unit: EProductUnit.Piece,
+
     retailPrice: 300.0,
     description: "Imported from ITEM LIST.xlsx row 211. Variant/size: 25MM. Base unit: PC.",
   },
@@ -1925,7 +1922,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "IL-0212",
     name: 'METAL DOOR BUSH HINGES - 3/8" X 40MM',
     categoryId: "b18e92d6-02bb-5b03-b2da-ebacc3beac22",
-    unit: EProductUnit.Piece,
+
     retailPrice: 13.0,
     description: 'Imported from ITEM LIST.xlsx row 212. Variant/size: 3/8" X 40MM. Base unit: PC.',
   },
@@ -1934,7 +1931,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "DB1/2",
     name: 'METAL DOOR BUSH HINGES - 1/2" X 39MM',
     categoryId: "b18e92d6-02bb-5b03-b2da-ebacc3beac22",
-    unit: EProductUnit.Piece,
+
     retailPrice: 14.0,
     description: 'Imported from ITEM LIST.xlsx row 213. Variant/size: 1/2" X 39MM. Base unit: PC.',
   },
@@ -1943,7 +1940,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "DB5/8",
     name: 'METAL DOOR BUSH HINGES - 5/8" X 39MM',
     categoryId: "b18e92d6-02bb-5b03-b2da-ebacc3beac22",
-    unit: EProductUnit.Piece,
+
     retailPrice: 20.0,
     description: 'Imported from ITEM LIST.xlsx row 214. Variant/size: 5/8" X 39MM. Base unit: PC.',
   },
@@ -1952,7 +1949,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "DB3/4",
     name: 'METAL DOOR BUSH HINGES - 3/4" X 48MM',
     categoryId: "b18e92d6-02bb-5b03-b2da-ebacc3beac22",
-    unit: EProductUnit.Piece,
+
     retailPrice: 35.0,
     description: 'Imported from ITEM LIST.xlsx row 215. Variant/size: 3/4" X 48MM. Base unit: PC.',
   },
@@ -1961,7 +1958,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "DB1",
     name: 'METAL DOOR BUSH HINGES - 1" X 58MM',
     categoryId: "b18e92d6-02bb-5b03-b2da-ebacc3beac22",
-    unit: EProductUnit.Piece,
+
     retailPrice: 55.0,
     description: 'Imported from ITEM LIST.xlsx row 216. Variant/size: 1" X 58MM. Base unit: PC.',
   },
@@ -1970,7 +1967,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "DB1.25",
     name: 'METAL DOOR BUSH HINGES - 1-1/4" X 65MM',
     categoryId: "b18e92d6-02bb-5b03-b2da-ebacc3beac22",
-    unit: EProductUnit.Piece,
+
     retailPrice: 120.0,
     description: 'Imported from ITEM LIST.xlsx row 217. Variant/size: 1-1/4" X 65MM. Base unit: PC.',
   },
@@ -1979,7 +1976,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "DB1.5",
     name: 'METAL DOOR BUSH HINGES - 1-1/2" X 80MM',
     categoryId: "b18e92d6-02bb-5b03-b2da-ebacc3beac22",
-    unit: EProductUnit.Piece,
+
     retailPrice: 180.0,
     description: 'Imported from ITEM LIST.xlsx row 218. Variant/size: 1-1/2" X 80MM. Base unit: PC.',
   },
@@ -1988,7 +1985,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "DB2",
     name: 'METAL DOOR BUSH HINGES - 2" X 85MM',
     categoryId: "b18e92d6-02bb-5b03-b2da-ebacc3beac22",
-    unit: EProductUnit.Piece,
+
     retailPrice: 300.0,
     description: 'Imported from ITEM LIST.xlsx row 219. Variant/size: 2" X 85MM. Base unit: PC.',
   },
@@ -1997,7 +1994,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "IL-0220",
     name: 'BALL TYPE DESIGN HINGES - 3/4" X 90MM',
     categoryId: "b18e92d6-02bb-5b03-b2da-ebacc3beac22",
-    unit: EProductUnit.Piece,
+
     retailPrice: 70.0,
     description: 'Imported from ITEM LIST.xlsx row 220. Variant/size: 3/4" X 90MM. Base unit: PC.',
   },
@@ -2006,7 +2003,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "IL-0221",
     name: 'BALL TYPE DESIGN HINGES - 1" X 110MM',
     categoryId: "b18e92d6-02bb-5b03-b2da-ebacc3beac22",
-    unit: EProductUnit.Piece,
+
     retailPrice: 115.0,
     description: 'Imported from ITEM LIST.xlsx row 221. Variant/size: 1" X 110MM. Base unit: PC.',
   },
@@ -2015,7 +2012,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "IL-0222",
     name: 'MILD STEEL HINGES - 1"',
     categoryId: "b18e92d6-02bb-5b03-b2da-ebacc3beac22",
-    unit: EProductUnit.Pack,
+
     retailPrice: 140.0,
     description: 'Imported from ITEM LIST.xlsx row 222. Variant/size: 1". Base unit: PKT.',
   },
@@ -2024,7 +2021,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "IL-0223",
     name: 'MILD STEEL HINGES - 1-1/2"',
     categoryId: "b18e92d6-02bb-5b03-b2da-ebacc3beac22",
-    unit: EProductUnit.Dozen,
+
     retailPrice: 80.0,
     description: 'Imported from ITEM LIST.xlsx row 223. Variant/size: 1-1/2". Base unit: DZ/PR.',
   },
@@ -2033,7 +2030,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "IL-0224",
     name: 'MILD STEEL HINGES - 2"',
     categoryId: "b18e92d6-02bb-5b03-b2da-ebacc3beac22",
-    unit: EProductUnit.Dozen,
+
     retailPrice: 130.0,
     description: 'Imported from ITEM LIST.xlsx row 224. Variant/size: 2". Base unit: DZ/PR.',
   },
@@ -2042,7 +2039,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "IL-0225",
     name: 'MILD STEEL HINGES - 2-1/2"',
     categoryId: "b18e92d6-02bb-5b03-b2da-ebacc3beac22",
-    unit: EProductUnit.Dozen,
+
     retailPrice: 170.0,
     description: 'Imported from ITEM LIST.xlsx row 225. Variant/size: 2-1/2". Base unit: DZ/PR.',
   },
@@ -2051,7 +2048,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "IL-0226",
     name: 'MILD STEEL HINGES - 3" H/D',
     categoryId: "b18e92d6-02bb-5b03-b2da-ebacc3beac22",
-    unit: EProductUnit.Dozen,
+
     retailPrice: 330.0,
     description: 'Imported from ITEM LIST.xlsx row 226. Variant/size: 3" H/D. Base unit: DZ/PR.',
   },
@@ -2060,7 +2057,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "IL-0227",
     name: 'MILD STEEL HINGES - 4" HEAVY CHINA',
     categoryId: "b18e92d6-02bb-5b03-b2da-ebacc3beac22",
-    unit: EProductUnit.Dozen,
+
     retailPrice: 540.0,
     description: 'Imported from ITEM LIST.xlsx row 227. Variant/size: 4" HEAVY CHINA. Base unit: DZ/PR.',
   },
@@ -2069,7 +2066,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "IL-0228",
     name: "MALPA HINGES HYDRAULIC - PAIR",
     categoryId: "b18e92d6-02bb-5b03-b2da-ebacc3beac22",
-    unit: EProductUnit.Piece,
+
     retailPrice: 70.0,
     manufacturer: "Malpa",
     description: "Imported from ITEM LIST.xlsx row 228. Variant/size: PAIR. Base unit: PAIR.",
@@ -2079,7 +2076,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "MHB",
     name: "MALPA HINGES BIT - HIGH QUALITY",
     categoryId: "b18e92d6-02bb-5b03-b2da-ebacc3beac22",
-    unit: EProductUnit.Piece,
+
     retailPrice: 300.0,
     manufacturer: "Malpa",
     description: "Imported from ITEM LIST.xlsx row 229. Variant/size: HIGH QUALITY. Base unit: PC.",
@@ -2089,7 +2086,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "HS2",
     name: 'SAFETY (HASP & STAPLES) - 2"',
     categoryId: "e3dcaa54-8477-5dd1-8639-1e493ed3deb2",
-    unit: EProductUnit.Dozen,
+
     retailPrice: 120.0,
     packSize: 12,
     description: 'Imported from ITEM LIST.xlsx row 230. Variant/size: 2". Base unit: DOZ. Pack size: 12. Unit/measure: PC.',
@@ -2099,7 +2096,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "HS2.5",
     name: 'SAFETY (HASP & STAPLES) - 2-1/2"',
     categoryId: "e3dcaa54-8477-5dd1-8639-1e493ed3deb2",
-    unit: EProductUnit.Dozen,
+
     retailPrice: 132.0,
     packSize: 12,
     description: 'Imported from ITEM LIST.xlsx row 231. Variant/size: 2-1/2". Base unit: DOZ. Pack size: 12. Unit/measure: PC.',
@@ -2109,7 +2106,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "HS3",
     name: 'SAFETY (HASP & STAPLES) - 3"',
     categoryId: "e3dcaa54-8477-5dd1-8639-1e493ed3deb2",
-    unit: EProductUnit.Dozen,
+
     retailPrice: 144.0,
     packSize: 12,
     description: 'Imported from ITEM LIST.xlsx row 232. Variant/size: 3". Base unit: DOZ. Pack size: 12. Unit/measure: PC.',
@@ -2119,7 +2116,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "HS4",
     name: 'SAFETY (HASP & STAPLES) - 4"',
     categoryId: "e3dcaa54-8477-5dd1-8639-1e493ed3deb2",
-    unit: EProductUnit.Dozen,
+
     retailPrice: 164.0,
     packSize: 12,
     description: 'Imported from ITEM LIST.xlsx row 233. Variant/size: 4". Base unit: DOZ. Pack size: 12. Unit/measure: PC.',
@@ -2129,7 +2126,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "K",
     name: "KONJI - HD",
     categoryId: "e3dcaa54-8477-5dd1-8639-1e493ed3deb2",
-    unit: EProductUnit.Pack,
+
     retailPrice: 90.0,
     description: "Imported from ITEM LIST.xlsx row 234. Variant/size: HD. Base unit: SET.",
   },
@@ -2138,7 +2135,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "P6",
     name: 'PLIERS MASSAGE GRIP XPRO - 6"',
     categoryId: "ebcd4c22-0bfb-5849-8b0a-2f60ecc4669d",
-    unit: EProductUnit.Piece,
+
     retailPrice: 180.0,
     manufacturer: "XPRO",
     description: 'Imported from ITEM LIST.xlsx row 235. Variant/size: 6". Base unit: PC.',
@@ -2148,7 +2145,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "P7",
     name: 'PLIERS MASSAGE GRIP XPRO - 7"',
     categoryId: "ebcd4c22-0bfb-5849-8b0a-2f60ecc4669d",
-    unit: EProductUnit.Piece,
+
     retailPrice: 190.0,
     manufacturer: "XPRO",
     description: 'Imported from ITEM LIST.xlsx row 236. Variant/size: 7". Base unit: PC.',
@@ -2158,7 +2155,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "P8",
     name: 'PLIERS MASSAGE GRIP XPRO - 8"',
     categoryId: "ebcd4c22-0bfb-5849-8b0a-2f60ecc4669d",
-    unit: EProductUnit.Piece,
+
     retailPrice: 200.0,
     manufacturer: "XPRO",
     description: 'Imported from ITEM LIST.xlsx row 237. Variant/size: 8". Base unit: PC.',
@@ -2168,7 +2165,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "IL-0238",
     name: 'TINMAN SNIPS HEAVY DUTY CHINA BLISTER PACK (SCISSOR) - 8"',
     categoryId: "ebcd4c22-0bfb-5849-8b0a-2f60ecc4669d",
-    unit: EProductUnit.Piece,
+
     retailPrice: 500.0,
     description: 'Imported from ITEM LIST.xlsx row 238. Variant/size: 8". Base unit: PC.',
   },
@@ -2177,7 +2174,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "IL-0239",
     name: 'TINMAN SNIPS HEAVY DUTY CHINA BLISTER PACK (SCISSOR) - 10"',
     categoryId: "ebcd4c22-0bfb-5849-8b0a-2f60ecc4669d",
-    unit: EProductUnit.Piece,
+
     retailPrice: 550.0,
     description: 'Imported from ITEM LIST.xlsx row 239. Variant/size: 10". Base unit: PC.',
   },
@@ -2186,7 +2183,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "IL-0240",
     name: 'TINMAN SNIPS HEAVY DUTY CHINA BLISTER PACK (SCISSOR) - 12"',
     categoryId: "ebcd4c22-0bfb-5849-8b0a-2f60ecc4669d",
-    unit: EProductUnit.Piece,
+
     retailPrice: 600.0,
     description: 'Imported from ITEM LIST.xlsx row 240. Variant/size: 12". Base unit: PC.',
   },
@@ -2195,7 +2192,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "IL-0241",
     name: 'TINMAN SNIPS MEDIUM DUTY CHINA - 8"',
     categoryId: "ebcd4c22-0bfb-5849-8b0a-2f60ecc4669d",
-    unit: EProductUnit.Piece,
+
     retailPrice: 400.0,
     description: 'Imported from ITEM LIST.xlsx row 241. Variant/size: 8". Base unit: PC.',
   },
@@ -2204,7 +2201,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "IL-0242",
     name: 'TINMAN SNIPS MEDIUM DUTY CHINA - 10"',
     categoryId: "ebcd4c22-0bfb-5849-8b0a-2f60ecc4669d",
-    unit: EProductUnit.Piece,
+
     retailPrice: 450.0,
     description: 'Imported from ITEM LIST.xlsx row 242. Variant/size: 10". Base unit: PC.',
   },
@@ -2213,7 +2210,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "IL-0243",
     name: 'TINMAN SNIPS MEDIUM DUTY CHINA - 12"',
     categoryId: "ebcd4c22-0bfb-5849-8b0a-2f60ecc4669d",
-    unit: EProductUnit.Piece,
+
     retailPrice: 550.0,
     description: 'Imported from ITEM LIST.xlsx row 243. Variant/size: 12". Base unit: PC.',
   },
@@ -2222,7 +2219,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "PB",
     name: "PLUMB BOB (KABIRO) - NATRAJ INDIA",
     categoryId: "2f25bc0e-b27f-52ab-8f5b-d85cf5f6fd0f",
-    unit: EProductUnit.Piece,
+
     retailPrice: 140.0,
     manufacturer: "Natraj",
     description: "Imported from ITEM LIST.xlsx row 244. Variant/size: NATRAJ INDIA. Base unit: PC.",
@@ -2232,7 +2229,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "PR3/16*1/2",
     name: 'POP RIVETS PECKER BRAND 3/16 X 1/2" - EXACT 500PCS/PKT',
     categoryId: "c9ddecae-e3be-50ee-842c-56f65d2a2825",
-    unit: EProductUnit.Pack,
+
     retailPrice: 575.0,
     packSize: 500,
     manufacturer: "Pecker",
@@ -2243,7 +2240,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "PR3/16*3/4",
     name: 'POP RIVETS PECKER BRAND 3/16 X 3/4" - EXACT 500PCS/PKT',
     categoryId: "c9ddecae-e3be-50ee-842c-56f65d2a2825",
-    unit: EProductUnit.Pack,
+
     retailPrice: 675.0,
     packSize: 500,
     manufacturer: "Pecker",
@@ -2254,7 +2251,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "PR3/16*1",
     name: 'POP RIVETS PECKER BRAND 3/16 X 1" - EXACT 250PCS/PKT',
     categoryId: "c9ddecae-e3be-50ee-842c-56f65d2a2825",
-    unit: EProductUnit.Pack,
+
     retailPrice: 575.0,
     packSize: 250,
     manufacturer: "Pecker",
@@ -2265,7 +2262,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "PR1/8*1/2",
     name: 'POP RIVETS PECKER BRAND 1/8 X 1/2" - EXACT 1000PCS/PKT',
     categoryId: "c9ddecae-e3be-50ee-842c-56f65d2a2825",
-    unit: EProductUnit.Pack,
+
     retailPrice: 725.0,
     packSize: 1000,
     manufacturer: "Pecker",
@@ -2276,7 +2273,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "PR1/8*3/4",
     name: 'POP RIVETS PECKER BRAND 1/8 X 3/4" - EXACT 1000PCS/PKT',
     categoryId: "c9ddecae-e3be-50ee-842c-56f65d2a2825",
-    unit: EProductUnit.Pack,
+
     retailPrice: 875.0,
     packSize: 1000,
     manufacturer: "Pecker",
@@ -2287,7 +2284,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "PR1/8*1",
     name: 'POP RIVETS PECKER BRAND 1/8 X 1" - EXACT 500PCS/PKT',
     categoryId: "c9ddecae-e3be-50ee-842c-56f65d2a2825",
-    unit: EProductUnit.Pack,
+
     retailPrice: 500.0,
     packSize: 500,
     manufacturer: "Pecker",
@@ -2298,7 +2295,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "RG",
     name: "RIVET GUN - KNICKER",
     categoryId: "c9ddecae-e3be-50ee-842c-56f65d2a2825",
-    unit: EProductUnit.Piece,
+
     retailPrice: 1600.0,
     description: "Imported from ITEM LIST.xlsx row 251. Variant/size: KNICKER. Base unit: PC.",
   },
@@ -2307,7 +2304,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "IL-0252",
     name: "PVC WHITE WALL PLUGS 100PC/PKT - 6X30MM",
     categoryId: "47a03ef0-4cff-5dc1-9b07-1455cc79493c",
-    unit: EProductUnit.Pack,
+
     retailPrice: 55.0,
     packSize: 100,
     description: "Imported from ITEM LIST.xlsx row 252. Variant/size: 6X30MM. Base unit: PKT. Pack size: 100. Unit/measure: PC.",
@@ -2317,7 +2314,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "IL-0253",
     name: "PVC WHITE WALL PLUGS 100PC/PKT - 8X40MM",
     categoryId: "47a03ef0-4cff-5dc1-9b07-1455cc79493c",
-    unit: EProductUnit.Pack,
+
     retailPrice: 100.0,
     packSize: 100,
     description: "Imported from ITEM LIST.xlsx row 253. Variant/size: 8X40MM. Base unit: PKT. Pack size: 100. Unit/measure: PC.",
@@ -2327,7 +2324,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "IL-0254",
     name: "PVC WHITE WALL PLUGS 50PC/PKT - 10X50MM",
     categoryId: "47a03ef0-4cff-5dc1-9b07-1455cc79493c",
-    unit: EProductUnit.Pack,
+
     retailPrice: 80.0,
     packSize: 50,
     description: "Imported from ITEM LIST.xlsx row 254. Variant/size: 10X50MM. Base unit: PKT. Pack size: 50. Unit/measure: PC.",
@@ -2337,7 +2334,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "IL-0255",
     name: "PVC WHITE WALL PLUGS 25PC/PKT - 12X60MM",
     categoryId: "47a03ef0-4cff-5dc1-9b07-1455cc79493c",
-    unit: EProductUnit.Pack,
+
     retailPrice: 75.0,
     packSize: 25,
     description: "Imported from ITEM LIST.xlsx row 255. Variant/size: 12X60MM. Base unit: PKT. Pack size: 25. Unit/measure: PC.",
@@ -2347,7 +2344,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "IL-0256",
     name: "PADBOLTS HEAVY - COLORED INDIA",
     categoryId: "e3dcaa54-8477-5dd1-8639-1e493ed3deb2",
-    unit: EProductUnit.Dozen,
+
     retailPrice: 1620.0,
     packSize: 12,
     description: "Imported from ITEM LIST.xlsx row 256. Variant/size: COLORED INDIA. Base unit: DOZ. Pack size: 12. Unit/measure: PC.",
@@ -2357,7 +2354,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "IL-0257",
     name: "TOWER BOLTS HEAVY - INDIA",
     categoryId: "e3dcaa54-8477-5dd1-8639-1e493ed3deb2",
-    unit: EProductUnit.Dozen,
+
     retailPrice: 1440.0,
     packSize: 12,
     description: "Imported from ITEM LIST.xlsx row 257. Variant/size: INDIA. Base unit: DOZ. Pack size: 12. Unit/measure: PC.",
@@ -2367,7 +2364,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "TB2",
     name: 'TOWER BOLT BRASS - 2"',
     categoryId: "e3dcaa54-8477-5dd1-8639-1e493ed3deb2",
-    unit: EProductUnit.Piece,
+
     retailPrice: 60.0,
     description: 'Imported from ITEM LIST.xlsx row 258. Variant/size: 2". Base unit: PC.',
   },
@@ -2376,7 +2373,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "TB3",
     name: 'TOWER BOLT BRASS - 3"',
     categoryId: "e3dcaa54-8477-5dd1-8639-1e493ed3deb2",
-    unit: EProductUnit.Piece,
+
     retailPrice: 80.0,
     description: 'Imported from ITEM LIST.xlsx row 259. Variant/size: 3". Base unit: PC.',
   },
@@ -2385,7 +2382,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "TB4",
     name: 'TOWER BOLT BRASS - 4"',
     categoryId: "e3dcaa54-8477-5dd1-8639-1e493ed3deb2",
-    unit: EProductUnit.Piece,
+
     retailPrice: 95.0,
     description: 'Imported from ITEM LIST.xlsx row 260. Variant/size: 4". Base unit: PC.',
   },
@@ -2394,7 +2391,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "TB5",
     name: 'TOWER BOLT BRASS - 5"',
     categoryId: "e3dcaa54-8477-5dd1-8639-1e493ed3deb2",
-    unit: EProductUnit.Piece,
+
     retailPrice: 105.0,
     description: 'Imported from ITEM LIST.xlsx row 261. Variant/size: 5". Base unit: PC.',
   },
@@ -2403,7 +2400,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "TB6",
     name: 'TOWER BOLT BRASS - 6"',
     categoryId: "e3dcaa54-8477-5dd1-8639-1e493ed3deb2",
-    unit: EProductUnit.Piece,
+
     retailPrice: 125.0,
     description: 'Imported from ITEM LIST.xlsx row 262. Variant/size: 6". Base unit: PC.',
   },
@@ -2412,7 +2409,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "TBA3",
     name: 'TOWER BOLT "A" TYPE - 3"',
     categoryId: "e3dcaa54-8477-5dd1-8639-1e493ed3deb2",
-    unit: EProductUnit.Dozen,
+
     retailPrice: 160.0,
     packSize: 12,
     description: 'Imported from ITEM LIST.xlsx row 263. Variant/size: 3". Base unit: DOZ. Pack size: 12. Unit/measure: PC.',
@@ -2422,7 +2419,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "TBA4",
     name: 'TOWER BOLT "A" TYPE - 4"',
     categoryId: "e3dcaa54-8477-5dd1-8639-1e493ed3deb2",
-    unit: EProductUnit.Dozen,
+
     retailPrice: 180.0,
     packSize: 12,
     description: 'Imported from ITEM LIST.xlsx row 264. Variant/size: 4". Base unit: DOZ. Pack size: 12. Unit/measure: PC.',
@@ -2432,7 +2429,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "TBA5",
     name: 'TOWER BOLT "A" TYPE - 5"',
     categoryId: "e3dcaa54-8477-5dd1-8639-1e493ed3deb2",
-    unit: EProductUnit.Dozen,
+
     retailPrice: 220.0,
     packSize: 12,
     description: 'Imported from ITEM LIST.xlsx row 265. Variant/size: 5". Base unit: DOZ. Pack size: 12. Unit/measure: PC.',
@@ -2442,7 +2439,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "TBA6",
     name: 'TOWER BOLT "A" TYPE - 6"',
     categoryId: "e3dcaa54-8477-5dd1-8639-1e493ed3deb2",
-    unit: EProductUnit.Dozen,
+
     retailPrice: 260.0,
     packSize: 12,
     description: 'Imported from ITEM LIST.xlsx row 266. Variant/size: 6". Base unit: DOZ. Pack size: 12. Unit/measure: PC.',
@@ -2452,7 +2449,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "TA2",
     name: 'TOWER BOLT ALUMINIUM - 2"',
     categoryId: "e3dcaa54-8477-5dd1-8639-1e493ed3deb2",
-    unit: EProductUnit.Piece,
+
     retailPrice: 55.0,
     description: 'Imported from ITEM LIST.xlsx row 267. Variant/size: 2". Base unit: PC.',
   },
@@ -2461,7 +2458,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "TA3",
     name: 'TOWER BOLT ALUMINIUM - 3"',
     categoryId: "e3dcaa54-8477-5dd1-8639-1e493ed3deb2",
-    unit: EProductUnit.Piece,
+
     retailPrice: 65.0,
     description: 'Imported from ITEM LIST.xlsx row 268. Variant/size: 3". Base unit: PC.',
   },
@@ -2470,7 +2467,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "TA4",
     name: 'TOWER BOLT ALUMINIUM - 4"',
     categoryId: "e3dcaa54-8477-5dd1-8639-1e493ed3deb2",
-    unit: EProductUnit.Piece,
+
     retailPrice: 75.0,
     description: 'Imported from ITEM LIST.xlsx row 269. Variant/size: 4". Base unit: PC.',
   },
@@ -2479,7 +2476,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "TA6",
     name: 'TOWER BOLT ALUMINIUM - 6"',
     categoryId: "e3dcaa54-8477-5dd1-8639-1e493ed3deb2",
-    unit: EProductUnit.Piece,
+
     retailPrice: 95.0,
     description: 'Imported from ITEM LIST.xlsx row 270. Variant/size: 6". Base unit: PC.',
   },
@@ -2488,7 +2485,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "DL",
     name: "DRAWER LOCK LIKE XIABOSHI",
     categoryId: "edacd144-a7e3-520a-935b-2759cd127209",
-    unit: EProductUnit.Piece,
+
     retailPrice: 55.0,
     description: "Imported from ITEM LIST.xlsx row 271. Base unit: PC.",
   },
@@ -2497,7 +2494,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "IL-0272",
     name: "MINDY PADLOCKS - 40MM",
     categoryId: "edacd144-a7e3-520a-935b-2759cd127209",
-    unit: EProductUnit.Piece,
+
     retailPrice: 450.0,
     manufacturer: "Mindy",
     description: "Imported from ITEM LIST.xlsx row 272. Variant/size: 40MM. Base unit: PC.",
@@ -2507,7 +2504,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "IL-0273",
     name: "MINDY PADLOCKS - 50MM",
     categoryId: "edacd144-a7e3-520a-935b-2759cd127209",
-    unit: EProductUnit.Piece,
+
     retailPrice: 500.0,
     manufacturer: "Mindy",
     description: "Imported from ITEM LIST.xlsx row 273. Variant/size: 50MM. Base unit: PC.",
@@ -2517,7 +2514,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "IL-0274",
     name: "MINDY PADLOCKS - 60MM",
     categoryId: "edacd144-a7e3-520a-935b-2759cd127209",
-    unit: EProductUnit.Piece,
+
     retailPrice: 550.0,
     manufacturer: "Mindy",
     description: "Imported from ITEM LIST.xlsx row 274. Variant/size: 60MM. Base unit: PC.",
@@ -2527,7 +2524,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "IL-0275",
     name: "MINDY PADLOCKS - 70MM",
     categoryId: "edacd144-a7e3-520a-935b-2759cd127209",
-    unit: EProductUnit.Piece,
+
     retailPrice: 650.0,
     manufacturer: "Mindy",
     description: "Imported from ITEM LIST.xlsx row 275. Variant/size: 70MM. Base unit: PC.",
@@ -2537,7 +2534,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "IL-0276",
     name: "TRI CIRCLE - 261",
     categoryId: "f1ea9b90-053e-59e6-b3c1-1c1dc1addc95",
-    unit: EProductUnit.Piece,
+
     retailPrice: 110.0,
     manufacturer: "Tri Circle",
     description: "Imported from ITEM LIST.xlsx row 276. Variant/size: 261. Base unit: PC.",
@@ -2547,7 +2544,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "IL-0277",
     name: "TRI CIRCLE - 262",
     categoryId: "f1ea9b90-053e-59e6-b3c1-1c1dc1addc95",
-    unit: EProductUnit.Piece,
+
     retailPrice: 145.0,
     manufacturer: "Tri Circle",
     description: "Imported from ITEM LIST.xlsx row 277. Variant/size: 262. Base unit: PC.",
@@ -2557,7 +2554,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "IL-0278",
     name: "TRI CIRCLE - 263",
     categoryId: "f1ea9b90-053e-59e6-b3c1-1c1dc1addc95",
-    unit: EProductUnit.Piece,
+
     retailPrice: 215.0,
     manufacturer: "Tri Circle",
     description: "Imported from ITEM LIST.xlsx row 278. Variant/size: 263. Base unit: PC.",
@@ -2567,7 +2564,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "IL-0279",
     name: "TRI CIRCLE - 264",
     categoryId: "f1ea9b90-053e-59e6-b3c1-1c1dc1addc95",
-    unit: EProductUnit.Piece,
+
     retailPrice: 315.0,
     manufacturer: "Tri Circle",
     description: "Imported from ITEM LIST.xlsx row 279. Variant/size: 264. Base unit: PC.",
@@ -2577,7 +2574,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "IL-0280",
     name: "TRI CIRCLE - 265",
     categoryId: "f1ea9b90-053e-59e6-b3c1-1c1dc1addc95",
-    unit: EProductUnit.Piece,
+
     retailPrice: 540.0,
     manufacturer: "Tri Circle",
     description: "Imported from ITEM LIST.xlsx row 280. Variant/size: 265. Base unit: PC.",
@@ -2587,7 +2584,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "IL-0281",
     name: "TRI CIRCLE - 266",
     categoryId: "f1ea9b90-053e-59e6-b3c1-1c1dc1addc95",
-    unit: EProductUnit.Piece,
+
     retailPrice: 940.0,
     manufacturer: "Tri Circle",
     description: "Imported from ITEM LIST.xlsx row 281. Variant/size: 266. Base unit: PC.",
@@ -2597,7 +2594,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "IL-0282",
     name: "TRI CIRCLE - 267",
     categoryId: "f1ea9b90-053e-59e6-b3c1-1c1dc1addc95",
-    unit: EProductUnit.Piece,
+
     retailPrice: 1450.0,
     manufacturer: "Tri Circle",
     description: "Imported from ITEM LIST.xlsx row 282. Variant/size: 267. Base unit: PC.",
@@ -2607,7 +2604,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "IL-0283",
     name: "VIRO PADLOCKS - 102 50MM",
     categoryId: "edacd144-a7e3-520a-935b-2759cd127209",
-    unit: EProductUnit.Piece,
+
     retailPrice: 3675.0,
     manufacturer: "Viro",
     description: "Imported from ITEM LIST.xlsx row 283. Variant/size: 102 50MM. Base unit: PC.",
@@ -2617,7 +2614,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "IL-0284",
     name: "VIRO PADLOCKS - 103 60MM",
     categoryId: "edacd144-a7e3-520a-935b-2759cd127209",
-    unit: EProductUnit.Piece,
+
     retailPrice: 4900.0,
     manufacturer: "Viro",
     description: "Imported from ITEM LIST.xlsx row 284. Variant/size: 103 60MM. Base unit: PC.",
@@ -2627,7 +2624,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "IL-0285",
     name: "VIRO PADLOCKS - 104 70MM",
     categoryId: "edacd144-a7e3-520a-935b-2759cd127209",
-    unit: EProductUnit.Piece,
+
     retailPrice: 6125.0,
     manufacturer: "Viro",
     description: "Imported from ITEM LIST.xlsx row 285. Variant/size: 104 70MM. Base unit: PC.",
@@ -2637,7 +2634,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "IL-0286",
     name: "VIRO PADLOCKS - 105 80MM",
     categoryId: "edacd144-a7e3-520a-935b-2759cd127209",
-    unit: EProductUnit.Piece,
+
     retailPrice: 6860.0,
     manufacturer: "Viro",
     description: "Imported from ITEM LIST.xlsx row 286. Variant/size: 105 80MM. Base unit: PC.",
@@ -2647,7 +2644,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "IL-0287",
     name: "VIRO STEEL DOOR LOCKS - RIGHT OR LEFT",
     categoryId: "edacd144-a7e3-520a-935b-2759cd127209",
-    unit: EProductUnit.Piece,
+
     retailPrice: 3960.0,
     manufacturer: "Viro",
     description: "Imported from ITEM LIST.xlsx row 287. Variant/size: RIGHT OR LEFT. Base unit: PC.",
@@ -2657,7 +2654,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "IL-0288",
     name: "PIANO HINGES - BRASS COLOURED",
     categoryId: "b18e92d6-02bb-5b03-b2da-ebacc3beac22",
-    unit: EProductUnit.Piece,
+
     retailPrice: 135.0,
     description: "Imported from ITEM LIST.xlsx row 288. Variant/size: BRASS COLOURED. Base unit: LENGTH.",
   },
@@ -2666,7 +2663,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "RBM6",
     name: "RAWL BOLT - M6X50MM",
     categoryId: "47a03ef0-4cff-5dc1-9b07-1455cc79493c",
-    unit: EProductUnit.Piece,
+
     retailPrice: 15.0,
     description: "Imported from ITEM LIST.xlsx row 289. Variant/size: M6X50MM. Base unit: PC.",
   },
@@ -2675,7 +2672,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "RBM8",
     name: "RAWL BOLT CHINA - M8X60MM",
     categoryId: "47a03ef0-4cff-5dc1-9b07-1455cc79493c",
-    unit: EProductUnit.Piece,
+
     retailPrice: 20.0,
     description: "Imported from ITEM LIST.xlsx row 290. Variant/size: M8X60MM. Base unit: PC.",
   },
@@ -2684,7 +2681,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "RBM10",
     name: "RAWL BOLT CHINA - M10X70MM",
     categoryId: "47a03ef0-4cff-5dc1-9b07-1455cc79493c",
-    unit: EProductUnit.Piece,
+
     retailPrice: 30.0,
     description: "Imported from ITEM LIST.xlsx row 291. Variant/size: M10X70MM. Base unit: PC.",
   },
@@ -2693,7 +2690,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "RBM12",
     name: "RAWL BOLT CHINA - M12X90MM",
     categoryId: "47a03ef0-4cff-5dc1-9b07-1455cc79493c",
-    unit: EProductUnit.Piece,
+
     retailPrice: 50.0,
     description: "Imported from ITEM LIST.xlsx row 292. Variant/size: M12X90MM. Base unit: PC.",
   },
@@ -2702,7 +2699,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "RBM16",
     name: "RAWL BOLT CHINA - M16X110MM",
     categoryId: "47a03ef0-4cff-5dc1-9b07-1455cc79493c",
-    unit: EProductUnit.Piece,
+
     retailPrice: 130.0,
     description: "Imported from ITEM LIST.xlsx row 293. Variant/size: M16X110MM. Base unit: PC.",
   },
@@ -2711,7 +2708,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "RBM20",
     name: "RAWL BOLT CHINA - M20X150MM",
     categoryId: "47a03ef0-4cff-5dc1-9b07-1455cc79493c",
-    unit: EProductUnit.Piece,
+
     retailPrice: 350.0,
     description: "Imported from ITEM LIST.xlsx row 294. Variant/size: M20X150MM. Base unit: PC.",
   },
@@ -2720,7 +2717,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "IL-0295",
     name: 'SCREW DRIVER MAGNETIC TIP FLAT & STAR - 4"',
     categoryId: "631c1eaa-de97-5d0d-9f11-14aa8eab385e",
-    unit: EProductUnit.Piece,
+
     retailPrice: 900.0,
     description: 'Imported from ITEM LIST.xlsx row 295. Variant/size: 4". Base unit: PC.',
   },
@@ -2729,7 +2726,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "SD5",
     name: 'SCREW DRIVER MAGNETIC TIP FLAT & STAR - 5"',
     categoryId: "631c1eaa-de97-5d0d-9f11-14aa8eab385e",
-    unit: EProductUnit.Piece,
+
     retailPrice: 960.0,
     description: 'Imported from ITEM LIST.xlsx row 296. Variant/size: 5". Base unit: PC.',
   },
@@ -2738,7 +2735,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "SD6",
     name: 'SCREW DRIVER MAGNETIC TIP FLAT & STAR - 6"',
     categoryId: "631c1eaa-de97-5d0d-9f11-14aa8eab385e",
-    unit: EProductUnit.Piece,
+
     retailPrice: 1020.0,
     description: 'Imported from ITEM LIST.xlsx row 297. Variant/size: 6". Base unit: PC.',
   },
@@ -2747,7 +2744,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "SD8",
     name: 'SCREW DRIVER MAGNETIC TIP FLAT & STAR - 8"',
     categoryId: "631c1eaa-de97-5d0d-9f11-14aa8eab385e",
-    unit: EProductUnit.Piece,
+
     retailPrice: 1080.0,
     description: 'Imported from ITEM LIST.xlsx row 298. Variant/size: 8". Base unit: PC.',
   },
@@ -2756,7 +2753,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "IL-0299",
     name: 'SCREW DRIVERS YELLOW HANDLE +THICK ROD FLAT & STAR - 4"',
     categoryId: "631c1eaa-de97-5d0d-9f11-14aa8eab385e",
-    unit: EProductUnit.Piece,
+
     retailPrice: 480.0,
     description: 'Imported from ITEM LIST.xlsx row 299. Variant/size: 4". Base unit: PC.',
   },
@@ -2765,7 +2762,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "IL-0300",
     name: 'SCREW DRIVERS YELLOW HANDLE +THICK ROD FLAT & STAR - 5"',
     categoryId: "631c1eaa-de97-5d0d-9f11-14aa8eab385e",
-    unit: EProductUnit.Piece,
+
     retailPrice: 540.0,
     description: 'Imported from ITEM LIST.xlsx row 300. Variant/size: 5". Base unit: PC.',
   },
@@ -2774,7 +2771,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "IL-0301",
     name: 'SCREW DRIVERS YELLOW HANDLE +THICK ROD FLAT & STAR - 6"',
     categoryId: "631c1eaa-de97-5d0d-9f11-14aa8eab385e",
-    unit: EProductUnit.Piece,
+
     retailPrice: 600.0,
     description: 'Imported from ITEM LIST.xlsx row 301. Variant/size: 6". Base unit: PC.',
   },
@@ -2783,7 +2780,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "IL-0302",
     name: 'SCREW DRIVERS YELLOW HANDLE +THICK ROD FLAT & STAR - 8"',
     categoryId: "631c1eaa-de97-5d0d-9f11-14aa8eab385e",
-    unit: EProductUnit.Piece,
+
     retailPrice: 660.0,
     description: 'Imported from ITEM LIST.xlsx row 302. Variant/size: 8". Base unit: PC.',
   },
@@ -2792,7 +2789,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "IL-0303",
     name: 'SCREW DRIVERS YELLOW HANDLE +THICK ROD FLAT & STAR - 10"',
     categoryId: "631c1eaa-de97-5d0d-9f11-14aa8eab385e",
-    unit: EProductUnit.Piece,
+
     retailPrice: 720.0,
     description: 'Imported from ITEM LIST.xlsx row 303. Variant/size: 10". Base unit: PC.',
   },
@@ -2801,7 +2798,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "SW1",
     name: 'SCRAPPER WOODEN HANDLE - 1"',
     categoryId: "dd69b32d-eea5-5765-a0e4-bb6ab06b187b",
-    unit: EProductUnit.Piece,
+
     retailPrice: 18.0,
     description: 'Imported from ITEM LIST.xlsx row 304. Variant/size: 1". Base unit: PC.',
   },
@@ -2810,7 +2807,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "SW1.5",
     name: 'SCRAPPER WOODEN HANDLE - 1-1/2"',
     categoryId: "dd69b32d-eea5-5765-a0e4-bb6ab06b187b",
-    unit: EProductUnit.Piece,
+
     retailPrice: 20.0,
     description: 'Imported from ITEM LIST.xlsx row 305. Variant/size: 1-1/2". Base unit: PC.',
   },
@@ -2819,7 +2816,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "SW2",
     name: 'SCRAPPER WOODEN HANDLE - 2"',
     categoryId: "dd69b32d-eea5-5765-a0e4-bb6ab06b187b",
-    unit: EProductUnit.Piece,
+
     retailPrice: 23.0,
     description: 'Imported from ITEM LIST.xlsx row 306. Variant/size: 2". Base unit: PC.',
   },
@@ -2828,7 +2825,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "SW2.5",
     name: 'SCRAPPER WOODEN HANDLE - 2-1/2"',
     categoryId: "dd69b32d-eea5-5765-a0e4-bb6ab06b187b",
-    unit: EProductUnit.Piece,
+
     retailPrice: 25.0,
     description: 'Imported from ITEM LIST.xlsx row 307. Variant/size: 2-1/2". Base unit: PC.',
   },
@@ -2837,7 +2834,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "SW3",
     name: 'SCRAPPER WOODEN HANDLE - 3"',
     categoryId: "dd69b32d-eea5-5765-a0e4-bb6ab06b187b",
-    unit: EProductUnit.Piece,
+
     retailPrice: 30.0,
     description: 'Imported from ITEM LIST.xlsx row 308. Variant/size: 3". Base unit: PC.',
   },
@@ -2846,7 +2843,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "SW4",
     name: 'SCRAPPER WOODEN HANDLE - 4"',
     categoryId: "dd69b32d-eea5-5765-a0e4-bb6ab06b187b",
-    unit: EProductUnit.Piece,
+
     retailPrice: 33.0,
     description: 'Imported from ITEM LIST.xlsx row 309. Variant/size: 4". Base unit: PC.',
   },
@@ -2855,7 +2852,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "SB1",
     name: 'SCRAPPER BLUE PLASTIC HANDLE - 1"',
     categoryId: "dd69b32d-eea5-5765-a0e4-bb6ab06b187b",
-    unit: EProductUnit.Piece,
+
     retailPrice: 23.0,
     description: 'Imported from ITEM LIST.xlsx row 310. Variant/size: 1". Base unit: PC.',
   },
@@ -2864,7 +2861,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "SB1.5",
     name: 'SCRAPPER BLUE PLASTIC HANDLE - 1-1/2"',
     categoryId: "dd69b32d-eea5-5765-a0e4-bb6ab06b187b",
-    unit: EProductUnit.Piece,
+
     retailPrice: 25.0,
     description: 'Imported from ITEM LIST.xlsx row 311. Variant/size: 1-1/2". Base unit: PC.',
   },
@@ -2873,7 +2870,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "SB2",
     name: 'SCRAPPER BLUE PLASTIC HANDLE - 2"',
     categoryId: "dd69b32d-eea5-5765-a0e4-bb6ab06b187b",
-    unit: EProductUnit.Piece,
+
     retailPrice: 30.0,
     description: 'Imported from ITEM LIST.xlsx row 312. Variant/size: 2". Base unit: PC.',
   },
@@ -2882,7 +2879,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "SB2.5",
     name: 'SCRAPPER BLUE PLASTIC HANDLE - 2-1/2"',
     categoryId: "dd69b32d-eea5-5765-a0e4-bb6ab06b187b",
-    unit: EProductUnit.Piece,
+
     retailPrice: 33.0,
     description: 'Imported from ITEM LIST.xlsx row 313. Variant/size: 2-1/2". Base unit: PC.',
   },
@@ -2891,7 +2888,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "SB3",
     name: 'SCRAPPER BLUE PLASTIC HANDLE - 3"',
     categoryId: "dd69b32d-eea5-5765-a0e4-bb6ab06b187b",
-    unit: EProductUnit.Piece,
+
     retailPrice: 35.0,
     description: 'Imported from ITEM LIST.xlsx row 314. Variant/size: 3". Base unit: PC.',
   },
@@ -2900,7 +2897,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "SB4",
     name: 'SCRAPPER BLUE PLASTIC HANDLE - 4"',
     categoryId: "dd69b32d-eea5-5765-a0e4-bb6ab06b187b",
-    unit: EProductUnit.Piece,
+
     retailPrice: 40.0,
     description: 'Imported from ITEM LIST.xlsx row 315. Variant/size: 4". Base unit: PC.',
   },
@@ -2909,7 +2906,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "SB5",
     name: 'SCRAPPER BLUE PLASTIC HANDLE - 5"',
     categoryId: "dd69b32d-eea5-5765-a0e4-bb6ab06b187b",
-    unit: EProductUnit.Piece,
+
     retailPrice: 45.0,
     description: 'Imported from ITEM LIST.xlsx row 316. Variant/size: 5". Base unit: PC.',
   },
@@ -2918,7 +2915,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "SB6",
     name: 'SCRAPPER BLUE PLASTIC HANDLE - 6"',
     categoryId: "dd69b32d-eea5-5765-a0e4-bb6ab06b187b",
-    unit: EProductUnit.Piece,
+
     retailPrice: 60.0,
     description: 'Imported from ITEM LIST.xlsx row 317. Variant/size: 6". Base unit: PC.',
   },
@@ -2927,7 +2924,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "SR1",
     name: 'SCRAPPER RUBBER GRIP HEAVY DUTY - 1"',
     categoryId: "dd69b32d-eea5-5765-a0e4-bb6ab06b187b",
-    unit: EProductUnit.Piece,
+
     retailPrice: 40.0,
     description: 'Imported from ITEM LIST.xlsx row 318. Variant/size: 1". Base unit: PC.',
   },
@@ -2936,7 +2933,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "SR1.5",
     name: 'SCRAPPER RUBBER GRIP HEAVY DUTY - 1-1/2"',
     categoryId: "dd69b32d-eea5-5765-a0e4-bb6ab06b187b",
-    unit: EProductUnit.Piece,
+
     retailPrice: 43.0,
     description: 'Imported from ITEM LIST.xlsx row 319. Variant/size: 1-1/2". Base unit: PC.',
   },
@@ -2945,7 +2942,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "SR2",
     name: 'SCRAPPER RUBBER GRIP HEAVY DUTY - 2"',
     categoryId: "dd69b32d-eea5-5765-a0e4-bb6ab06b187b",
-    unit: EProductUnit.Piece,
+
     retailPrice: 45.0,
     description: 'Imported from ITEM LIST.xlsx row 320. Variant/size: 2". Base unit: PC.',
   },
@@ -2954,7 +2951,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "SR2.5",
     name: 'SCRAPPER RUBBER GRIP HEAVY DUTY - 2-1/2"',
     categoryId: "dd69b32d-eea5-5765-a0e4-bb6ab06b187b",
-    unit: EProductUnit.Piece,
+
     retailPrice: 50.0,
     description: 'Imported from ITEM LIST.xlsx row 321. Variant/size: 2-1/2". Base unit: PC.',
   },
@@ -2963,7 +2960,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "SR3",
     name: 'SCRAPPER RUBBER GRIP HEAVY DUTY - 3"',
     categoryId: "dd69b32d-eea5-5765-a0e4-bb6ab06b187b",
-    unit: EProductUnit.Piece,
+
     retailPrice: 55.0,
     description: 'Imported from ITEM LIST.xlsx row 322. Variant/size: 3". Base unit: PC.',
   },
@@ -2972,7 +2969,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "SR4",
     name: 'SCRAPPER RUBBER GRIP HEAVY DUTY - 4"',
     categoryId: "dd69b32d-eea5-5765-a0e4-bb6ab06b187b",
-    unit: EProductUnit.Piece,
+
     retailPrice: 60.0,
     description: 'Imported from ITEM LIST.xlsx row 323. Variant/size: 4". Base unit: PC.',
   },
@@ -2981,7 +2978,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "SR5",
     name: 'SCRAPPER RUBBER GRIP HEAVY DUTY - 5"',
     categoryId: "dd69b32d-eea5-5765-a0e4-bb6ab06b187b",
-    unit: EProductUnit.Piece,
+
     retailPrice: 65.0,
     description: 'Imported from ITEM LIST.xlsx row 324. Variant/size: 5". Base unit: PC.',
   },
@@ -2990,7 +2987,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "SR6",
     name: 'SCRAPPER RUBBER GRIP HEAVY DUTY - 6"',
     categoryId: "dd69b32d-eea5-5765-a0e4-bb6ab06b187b",
-    unit: EProductUnit.Piece,
+
     retailPrice: 85.0,
     description: 'Imported from ITEM LIST.xlsx row 325. Variant/size: 6". Base unit: PC.',
   },
@@ -2999,7 +2996,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "ETP",
     name: "ELECTRIC TESTER PEN TYPE SMALL - PEN TYPE",
     categoryId: "631c1eaa-de97-5d0d-9f11-14aa8eab385e",
-    unit: EProductUnit.Piece,
+
     retailPrice: 55.0,
     description: "Imported from ITEM LIST.xlsx row 326. Variant/size: PEN TYPE. Base unit: PC.",
   },
@@ -3008,7 +3005,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "ETB",
     name: "ELECTRIC TESTER PEN TYPE SMALL - BIG",
     categoryId: "631c1eaa-de97-5d0d-9f11-14aa8eab385e",
-    unit: EProductUnit.Piece,
+
     retailPrice: 70.0,
     description: "Imported from ITEM LIST.xlsx row 327. Variant/size: BIG. Base unit: PC.",
   },
@@ -3017,7 +3014,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "SB3X4",
     name: "SHELF BRACKET - 3X4",
     categoryId: "d6772b6f-853f-5b8f-9d71-be6b322c0506",
-    unit: EProductUnit.Piece,
+
     retailPrice: 360.0,
     description: "Imported from ITEM LIST.xlsx row 328. Variant/size: 3X4. Base unit: PC.",
   },
@@ -3026,7 +3023,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "SB6X8",
     name: "SHELF BRACKET - 6X8",
     categoryId: "d6772b6f-853f-5b8f-9d71-be6b322c0506",
-    unit: EProductUnit.Piece,
+
     retailPrice: 480.0,
     description: "Imported from ITEM LIST.xlsx row 329. Variant/size: 6X8. Base unit: PC.",
   },
@@ -3035,7 +3032,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "SB8X10",
     name: "SHELF BRACKET - 8X10",
     categoryId: "d6772b6f-853f-5b8f-9d71-be6b322c0506",
-    unit: EProductUnit.Piece,
+
     retailPrice: 640.0,
     description: "Imported from ITEM LIST.xlsx row 330. Variant/size: 8X10. Base unit: PC.",
   },
@@ -3044,7 +3041,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "SB10X12",
     name: "SHELF BRACKET - 10X12",
     categoryId: "d6772b6f-853f-5b8f-9d71-be6b322c0506",
-    unit: EProductUnit.Piece,
+
     retailPrice: 940.0,
     description: "Imported from ITEM LIST.xlsx row 331. Variant/size: 10X12. Base unit: PC.",
   },
@@ -3053,7 +3050,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "SB12X14",
     name: "SHELF BRACKET - 12X14",
     categoryId: "d6772b6f-853f-5b8f-9d71-be6b322c0506",
-    unit: EProductUnit.Piece,
+
     retailPrice: 1140.0,
     description: "Imported from ITEM LIST.xlsx row 332. Variant/size: 12X14. Base unit: PC.",
   },
@@ -3062,7 +3059,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "TR6",
     name: 'TROWEL RED/BLACK HANDLE - 6"',
     categoryId: "2f25bc0e-b27f-52ab-8f5b-d85cf5f6fd0f",
-    unit: EProductUnit.Piece,
+
     retailPrice: 65.0,
     description: 'Imported from ITEM LIST.xlsx row 333. Variant/size: 6". Base unit: PC.',
   },
@@ -3071,7 +3068,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "TR7",
     name: 'TROWEL RED/BLACK HANDLE - 7"',
     categoryId: "2f25bc0e-b27f-52ab-8f5b-d85cf5f6fd0f",
-    unit: EProductUnit.Piece,
+
     retailPrice: 70.0,
     description: 'Imported from ITEM LIST.xlsx row 334. Variant/size: 7". Base unit: PC.',
   },
@@ -3080,7 +3077,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "TR8",
     name: 'TROWEL RED/BLACK HANDLE - 8"',
     categoryId: "2f25bc0e-b27f-52ab-8f5b-d85cf5f6fd0f",
-    unit: EProductUnit.Piece,
+
     retailPrice: 75.0,
     description: 'Imported from ITEM LIST.xlsx row 335. Variant/size: 8". Base unit: PC.',
   },
@@ -3089,7 +3086,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "TR9",
     name: 'TROWEL RED/BLACK HANDLE - 9"',
     categoryId: "2f25bc0e-b27f-52ab-8f5b-d85cf5f6fd0f",
-    unit: EProductUnit.Piece,
+
     retailPrice: 80.0,
     description: 'Imported from ITEM LIST.xlsx row 336. Variant/size: 9". Base unit: PC.',
   },
@@ -3098,7 +3095,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "TR10",
     name: 'TROWEL RED/BLACK HANDLE - 10"',
     categoryId: "2f25bc0e-b27f-52ab-8f5b-d85cf5f6fd0f",
-    unit: EProductUnit.Piece,
+
     retailPrice: 85.0,
     description: 'Imported from ITEM LIST.xlsx row 337. Variant/size: 10". Base unit: PC.',
   },
@@ -3107,7 +3104,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "PTBW",
     name: "PLASTERING TROWEL WOODEN HANDLE - BANANA WOODEN",
     categoryId: "2f25bc0e-b27f-52ab-8f5b-d85cf5f6fd0f",
-    unit: EProductUnit.Piece,
+
     retailPrice: 180.0,
     description: "Imported from ITEM LIST.xlsx row 338. Variant/size: BANANA WOODEN. Base unit: PC.",
   },
@@ -3116,7 +3113,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "PTBH",
     name: "PLASTERING TROWEL BLACK HANDLE LIGHT DUTY - BLACK HANDLE",
     categoryId: "2f25bc0e-b27f-52ab-8f5b-d85cf5f6fd0f",
-    unit: EProductUnit.Piece,
+
     retailPrice: 350.0,
     description: "Imported from ITEM LIST.xlsx row 339. Variant/size: BLACK HANDLE. Base unit: PC.",
   },
@@ -3125,7 +3122,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "PTBH2",
     name: "PLASTERING TROWEL BLACK HANDLE HEAVY - BLACK HANDLE",
     categoryId: "2f25bc0e-b27f-52ab-8f5b-d85cf5f6fd0f",
-    unit: EProductUnit.Piece,
+
     retailPrice: 400.0,
     description: "Imported from ITEM LIST.xlsx row 340. Variant/size: BLACK HANDLE. Base unit: PC.",
   },
@@ -3134,7 +3131,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "PTRB",
     name: "PLASTERING TROWEL RUBBER GRIP - RED/BLACK",
     categoryId: "2f25bc0e-b27f-52ab-8f5b-d85cf5f6fd0f",
-    unit: EProductUnit.Piece,
+
     retailPrice: 250.0,
     description: "Imported from ITEM LIST.xlsx row 341. Variant/size: RED/BLACK. Base unit: PC.",
   },
@@ -3143,7 +3140,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "PTP",
     name: "PLASTERING TROWEL PLASTIC 280X130X3MM - 9676",
     categoryId: "2f25bc0e-b27f-52ab-8f5b-d85cf5f6fd0f",
-    unit: EProductUnit.Piece,
+
     retailPrice: 250.0,
     description: "Imported from ITEM LIST.xlsx row 342. Variant/size: 9676. Base unit: PC.",
   },
@@ -3152,7 +3149,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "TS6",
     name: 'TRY SQUARE YELLOW - 6"',
     categoryId: "2f25bc0e-b27f-52ab-8f5b-d85cf5f6fd0f",
-    unit: EProductUnit.Piece,
+
     retailPrice: 85.0,
     description: 'Imported from ITEM LIST.xlsx row 343. Variant/size: 6". Base unit: PC.',
   },
@@ -3161,7 +3158,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "IL-0344",
     name: 'TRY SQUARE YELLOW - 8"',
     categoryId: "2f25bc0e-b27f-52ab-8f5b-d85cf5f6fd0f",
-    unit: EProductUnit.Piece,
+
     retailPrice: 90.0,
     description: 'Imported from ITEM LIST.xlsx row 344. Variant/size: 8". Base unit: PC.',
   },
@@ -3170,7 +3167,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "IL-0345",
     name: 'TRY SQUARE YELLOW - 10"',
     categoryId: "2f25bc0e-b27f-52ab-8f5b-d85cf5f6fd0f",
-    unit: EProductUnit.Piece,
+
     retailPrice: 95.0,
     description: 'Imported from ITEM LIST.xlsx row 345. Variant/size: 10". Base unit: PC.',
   },
@@ -3179,7 +3176,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "IL-0346",
     name: 'TRY SQUARE YELLOW - 12"',
     categoryId: "2f25bc0e-b27f-52ab-8f5b-d85cf5f6fd0f",
-    unit: EProductUnit.Piece,
+
     retailPrice: 100.0,
     description: 'Imported from ITEM LIST.xlsx row 346. Variant/size: 12". Base unit: PC.',
   },
@@ -3188,7 +3185,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "MT3",
     name: "MEASURE TAPE - 3M",
     categoryId: "2f25bc0e-b27f-52ab-8f5b-d85cf5f6fd0f",
-    unit: EProductUnit.Piece,
+
     retailPrice: 50.0,
     description: "Imported from ITEM LIST.xlsx row 347. Variant/size: 3M. Base unit: PC.",
   },
@@ -3197,7 +3194,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "MT5",
     name: "MEASURE TAPE - 5M",
     categoryId: "2f25bc0e-b27f-52ab-8f5b-d85cf5f6fd0f",
-    unit: EProductUnit.Piece,
+
     retailPrice: 75.0,
     description: "Imported from ITEM LIST.xlsx row 348. Variant/size: 5M. Base unit: PC.",
   },
@@ -3206,7 +3203,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "IL-0349",
     name: "MEASURE TAPE - 5.5",
     categoryId: "2f25bc0e-b27f-52ab-8f5b-d85cf5f6fd0f",
-    unit: EProductUnit.Piece,
+
     retailPrice: 85.0,
     description: "Imported from ITEM LIST.xlsx row 349. Variant/size: 5.5. Base unit: PC.",
   },
@@ -3215,7 +3212,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "MT7.5",
     name: "MEASURE TAPE - 7.5M",
     categoryId: "2f25bc0e-b27f-52ab-8f5b-d85cf5f6fd0f",
-    unit: EProductUnit.Piece,
+
     retailPrice: 130.0,
     description: "Imported from ITEM LIST.xlsx row 350. Variant/size: 7.5M. Base unit: PC.",
   },
@@ -3224,7 +3221,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "MT10",
     name: "MEASURE TAPE - 10M",
     categoryId: "2f25bc0e-b27f-52ab-8f5b-d85cf5f6fd0f",
-    unit: EProductUnit.Piece,
+
     retailPrice: 180.0,
     description: "Imported from ITEM LIST.xlsx row 351. Variant/size: 10M. Base unit: PC.",
   },
@@ -3233,7 +3230,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "MT15",
     name: "MEASURE TAPE - 15M",
     categoryId: "2f25bc0e-b27f-52ab-8f5b-d85cf5f6fd0f",
-    unit: EProductUnit.Piece,
+
     retailPrice: 220.0,
     description: "Imported from ITEM LIST.xlsx row 352. Variant/size: 15M. Base unit: PC.",
   },
@@ -3242,7 +3239,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "MT20",
     name: "MEASURE TAPE - 20M",
     categoryId: "2f25bc0e-b27f-52ab-8f5b-d85cf5f6fd0f",
-    unit: EProductUnit.Piece,
+
     retailPrice: 280.0,
     description: "Imported from ITEM LIST.xlsx row 353. Variant/size: 20M. Base unit: PC.",
   },
@@ -3251,7 +3248,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "MT30",
     name: "MEASURE TAPE - 30M",
     categoryId: "2f25bc0e-b27f-52ab-8f5b-d85cf5f6fd0f",
-    unit: EProductUnit.Piece,
+
     retailPrice: 320.0,
     description: "Imported from ITEM LIST.xlsx row 354. Variant/size: 30M. Base unit: PC.",
   },
@@ -3260,7 +3257,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "MT50",
     name: "MEASURE TAPE - 50M",
     categoryId: "2f25bc0e-b27f-52ab-8f5b-d85cf5f6fd0f",
-    unit: EProductUnit.Piece,
+
     retailPrice: 430.0,
     description: "Imported from ITEM LIST.xlsx row 355. Variant/size: 50M. Base unit: PC.",
   },
@@ -3269,7 +3266,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "MT100",
     name: "MEASURE TAPE - 100M",
     categoryId: "2f25bc0e-b27f-52ab-8f5b-d85cf5f6fd0f",
-    unit: EProductUnit.Piece,
+
     retailPrice: 850.0,
     description: "Imported from ITEM LIST.xlsx row 356. Variant/size: 100M. Base unit: PC.",
   },
@@ -3278,7 +3275,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "GC",
     name: "GLASS CUTTER OIL TYPE - ROSSEL",
     categoryId: "ebcd4c22-0bfb-5849-8b0a-2f60ecc4669d",
-    unit: EProductUnit.Piece,
+
     retailPrice: 130.0,
     manufacturer: "Rossel",
     description: "Imported from ITEM LIST.xlsx row 357. Variant/size: ROSSEL. Base unit: PC.",
@@ -3288,7 +3285,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "TGCP",
     name: "TILE / GLASS CUTTER - PEN / ETCHING",
     categoryId: "ebcd4c22-0bfb-5849-8b0a-2f60ecc4669d",
-    unit: EProductUnit.Piece,
+
     retailPrice: 100.0,
     description: "Imported from ITEM LIST.xlsx row 358. Variant/size: PEN / ETCHING. Base unit: PC. Unit/measure: 120PCS/CTN.",
   },
@@ -3297,7 +3294,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "TCU",
     name: "TILE CUTTER U TYPE - U TYPE",
     categoryId: "ebcd4c22-0bfb-5849-8b0a-2f60ecc4669d",
-    unit: EProductUnit.Piece,
+
     retailPrice: 120.0,
     description: "Imported from ITEM LIST.xlsx row 359. Variant/size: U TYPE. Base unit: PC.",
   },
@@ -3306,7 +3303,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "TCM12",
     name: 'TILE CUTTER BASE TYPE LIGHT KRICKWOOD BRAND - 12"',
     categoryId: "ebcd4c22-0bfb-5849-8b0a-2f60ecc4669d",
-    unit: EProductUnit.Piece,
+
     retailPrice: 1400.0,
     manufacturer: "Krickwood",
     description: 'Imported from ITEM LIST.xlsx row 360. Variant/size: 12". Base unit: PC.',
@@ -3316,7 +3313,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "TCR16",
     name: "TILE CUTTER BASE TYPE ROLLER BLADE UNIVERSAL - 16MM",
     categoryId: "ebcd4c22-0bfb-5849-8b0a-2f60ecc4669d",
-    unit: EProductUnit.Piece,
+
     retailPrice: 90.0,
     description: "Imported from ITEM LIST.xlsx row 361. Variant/size: 16MM. Base unit: PC.",
   },
@@ -3325,7 +3322,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "TCR22",
     name: "TILE CUTTER BASE TYPE ROLLER BLADE UNIVERSAL - 22MM",
     categoryId: "ebcd4c22-0bfb-5849-8b0a-2f60ecc4669d",
-    unit: EProductUnit.Piece,
+
     retailPrice: 120.0,
     description: "Imported from ITEM LIST.xlsx row 362. Variant/size: 22MM. Base unit: PC.",
   },
@@ -3334,7 +3331,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "TS2",
     name: "TILE SPACER - 2MM",
     categoryId: "f1ea9b90-053e-59e6-b3c1-1c1dc1addc95",
-    unit: EProductUnit.Pack,
+
     retailPrice: 22.0,
     description: "Imported from ITEM LIST.xlsx row 363. Variant/size: 2MM. Base unit: PKT.",
   },
@@ -3343,7 +3340,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "TS2.5",
     name: "TILE SPACER - 2.5MM",
     categoryId: "f1ea9b90-053e-59e6-b3c1-1c1dc1addc95",
-    unit: EProductUnit.Pack,
+
     retailPrice: 25.0,
     description: "Imported from ITEM LIST.xlsx row 364. Variant/size: 2.5MM. Base unit: PKT.",
   },
@@ -3352,7 +3349,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "TS3",
     name: "TILE SPACER - 3MM",
     categoryId: "f1ea9b90-053e-59e6-b3c1-1c1dc1addc95",
-    unit: EProductUnit.Pack,
+
     retailPrice: 30.0,
     description: "Imported from ITEM LIST.xlsx row 365. Variant/size: 3MM. Base unit: PKT.",
   },
@@ -3361,7 +3358,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "RS3/4",
     name: 'ROOFING SCREW SELF DRILLING 200PCS/PKT - 5.5X3/4"',
     categoryId: "3000537c-f33d-591a-b80d-45832234948f",
-    unit: EProductUnit.Pack,
+
     retailPrice: 400.0,
     description: 'Imported from ITEM LIST.xlsx row 366. Variant/size: 5.5X3/4". Base unit: PKT. Unit/measure: PCS.',
   },
@@ -3370,7 +3367,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "RS1",
     name: 'ROOFING SCREW SELF DRILLING 200PCS/PKT - 5.5X1"',
     categoryId: "3000537c-f33d-591a-b80d-45832234948f",
-    unit: EProductUnit.Pack,
+
     retailPrice: 450.0,
     description: 'Imported from ITEM LIST.xlsx row 367. Variant/size: 5.5X1". Base unit: PKT. Unit/measure: PCS.',
   },
@@ -3379,7 +3376,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "RS1.25",
     name: 'ROOFING SCREW SELF DRILLING 200PCS/PKT - 5.5X1-1/4"',
     categoryId: "3000537c-f33d-591a-b80d-45832234948f",
-    unit: EProductUnit.Pack,
+
     retailPrice: 475.0,
     description: 'Imported from ITEM LIST.xlsx row 368. Variant/size: 5.5X1-1/4". Base unit: PKT. Unit/measure: PCS.',
   },
@@ -3388,7 +3385,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "RS1.5",
     name: 'ROOFING SCREW SELF DRILLING 200PCS/PKT - 5.5X1-1/2" (200PCS/PKT)',
     categoryId: "3000537c-f33d-591a-b80d-45832234948f",
-    unit: EProductUnit.Pack,
+
     retailPrice: 500.0,
     description: 'Imported from ITEM LIST.xlsx row 369. Variant/size: 5.5X1-1/2" (200PCS/PKT). Base unit: PKT. Unit/measure: PCS.',
   },
@@ -3397,7 +3394,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "IL-0370",
     name: 'ROOFING SCREW SELF DRILLING 200PCS/PKT - 5.5X1-1/2" (150PCS/PKT)',
     categoryId: "3000537c-f33d-591a-b80d-45832234948f",
-    unit: EProductUnit.Pack,
+
     retailPrice: 375.0,
     description: 'Imported from ITEM LIST.xlsx row 370. Variant/size: 5.5X1-1/2" (150PCS/PKT). Base unit: PKT. Unit/measure: PCS.',
   },
@@ -3406,7 +3403,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "RS2",
     name: 'ROOFING SCREW SELF DRILLING 200PCS/PKT - 5.5X2" (100PCS/PKT)',
     categoryId: "3000537c-f33d-591a-b80d-45832234948f",
-    unit: EProductUnit.Pack,
+
     retailPrice: 300.0,
     description: 'Imported from ITEM LIST.xlsx row 371. Variant/size: 5.5X2" (100PCS/PKT). Base unit: PKT. Unit/measure: PCS.',
   },
@@ -3415,7 +3412,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "RS2.5",
     name: 'ROOFING SCREW SELF DRILLING 200PCS/PKT - 5.5X2-1/2" (80PCS/PKT)',
     categoryId: "3000537c-f33d-591a-b80d-45832234948f",
-    unit: EProductUnit.Pack,
+
     retailPrice: 350.0,
     description: 'Imported from ITEM LIST.xlsx row 372. Variant/size: 5.5X2-1/2" (80PCS/PKT). Base unit: PKT. Unit/measure: PCS.',
   },
@@ -3424,7 +3421,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "RS3",
     name: 'ROOFING SCREW SELF DRILLING 200PCS/PKT - 5.5X3" (80PCS/PKT)',
     categoryId: "3000537c-f33d-591a-b80d-45832234948f",
-    unit: EProductUnit.Pack,
+
     retailPrice: 360.0,
     description: 'Imported from ITEM LIST.xlsx row 373. Variant/size: 5.5X3" (80PCS/PKT). Base unit: PKT. Unit/measure: PCS.',
   },
@@ -3433,7 +3430,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "RS4",
     name: 'ROOFING SCREW SELF DRILLING 200PCS/PKT - 5.5X4"',
     categoryId: "3000537c-f33d-591a-b80d-45832234948f",
-    unit: EProductUnit.Pack,
+
     retailPrice: 1200.0,
     description: 'Imported from ITEM LIST.xlsx row 374. Variant/size: 5.5X4". Base unit: PKT. Unit/measure: PCS.',
   },
@@ -3442,7 +3439,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "SD1",
     name: 'SELF DRILLING SCREW STAR HEAD 200PCS/PKT - 4.2X1"',
     categoryId: "3000537c-f33d-591a-b80d-45832234948f",
-    unit: EProductUnit.Pack,
+
     retailPrice: 200.0,
     description: 'Imported from ITEM LIST.xlsx row 375. Variant/size: 4.2X1". Base unit: PKT. Unit/measure: PCS.',
   },
@@ -3451,7 +3448,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "SD1.5",
     name: 'SELF DRILLING SCREW STAR HEAD 200PCS/PKT - 3.9X1-1/2"',
     categoryId: "3000537c-f33d-591a-b80d-45832234948f",
-    unit: EProductUnit.Pack,
+
     retailPrice: 300.0,
     description: 'Imported from ITEM LIST.xlsx row 376. Variant/size: 3.9X1-1/2". Base unit: PKT. Unit/measure: PCS.',
   },
@@ -3460,7 +3457,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "SD2",
     name: 'SELF DRILLING SCREW STAR HEAD 200PCS/PKT - 3.9X2"',
     categoryId: "3000537c-f33d-591a-b80d-45832234948f",
-    unit: EProductUnit.Pack,
+
     retailPrice: 300.0,
     description: 'Imported from ITEM LIST.xlsx row 377. Variant/size: 3.9X2". Base unit: PKT. Unit/measure: PCS.',
   },
@@ -3469,7 +3466,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "IL-0378",
     name: 'SELF DRILLING SCREW STAR HEAD 200PCS/PKT - 4.2X1-1/2"',
     categoryId: "3000537c-f33d-591a-b80d-45832234948f",
-    unit: EProductUnit.Pack,
+
     retailPrice: 250.0,
     description: 'Imported from ITEM LIST.xlsx row 378. Variant/size: 4.2X1-1/2". Base unit: PKT. Unit/measure: PCS.',
   },
@@ -3478,7 +3475,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "IL-0379",
     name: 'SELF DRILLING SCREW STAR HEAD 200PCS/PKT - 4.2X2"',
     categoryId: "3000537c-f33d-591a-b80d-45832234948f",
-    unit: EProductUnit.Pack,
+
     retailPrice: 330.0,
     description: 'Imported from ITEM LIST.xlsx row 379. Variant/size: 4.2X2". Base unit: PKT. Unit/measure: PCS.',
   },
@@ -3487,7 +3484,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "SD2.5",
     name: 'SELF DRILLING SCREW STAR HEAD 200PCS/PKT - 4.2X2-1/2"',
     categoryId: "3000537c-f33d-591a-b80d-45832234948f",
-    unit: EProductUnit.Pack,
+
     retailPrice: 400.0,
     description: 'Imported from ITEM LIST.xlsx row 380. Variant/size: 4.2X2-1/2". Base unit: PKT. Unit/measure: PCS.',
   },
@@ -3496,7 +3493,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "SD3",
     name: 'SELF DRILLING SCREW STAR HEAD 200PCS/PKT - 4.2X3"',
     categoryId: "3000537c-f33d-591a-b80d-45832234948f",
-    unit: EProductUnit.Pack,
+
     retailPrice: 500.0,
     description: 'Imported from ITEM LIST.xlsx row 381. Variant/size: 4.2X3". Base unit: PKT. Unit/measure: PCS.',
   },
@@ -3505,7 +3502,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "IL-0382",
     name: 'SELF DRILLING SCREW STAR HEAD 200PCS/PKT - 4.2X4"',
     categoryId: "3000537c-f33d-591a-b80d-45832234948f",
-    unit: EProductUnit.Pack,
+
     retailPrice: 750.0,
     description: 'Imported from ITEM LIST.xlsx row 382. Variant/size: 4.2X4". Base unit: PKT. Unit/measure: PCS.',
   },
@@ -3514,7 +3511,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "RSB8",
     name: "ROOFING SCREW BIT MAGNETIC 8MM (MAGNETIC NUT SETTER) - 10PCS/PKT",
     categoryId: "631c1eaa-de97-5d0d-9f11-14aa8eab385e",
-    unit: EProductUnit.Pack,
+
     retailPrice: 300.0,
     description: "Imported from ITEM LIST.xlsx row 383. Variant/size: 10PCS/PKT. Base unit: PKT. Unit/measure: PCS.",
   },
@@ -3523,7 +3520,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "IL-0384",
     name: "ROOFING SCREW BIT MAGNETIC 10MM (MAGNETIC NUT SETTER) - 5PCS/PKT",
     categoryId: "631c1eaa-de97-5d0d-9f11-14aa8eab385e",
-    unit: EProductUnit.Pack,
+
     retailPrice: 175.0,
     description: "Imported from ITEM LIST.xlsx row 384. Variant/size: 5PCS/PKT. Base unit: PKT. Unit/measure: PCS.",
   },
@@ -3532,7 +3529,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "IL-0385",
     name: "ROOFING SCREW BIT MAGNETIC 10MM (MAGNETIC NUT SETTER) PR555 - 10PCS/PKT",
     categoryId: "631c1eaa-de97-5d0d-9f11-14aa8eab385e",
-    unit: EProductUnit.Pack,
+
     retailPrice: 350.0,
     description: "Imported from ITEM LIST.xlsx row 385. Variant/size: 10PCS/PKT. Base unit: PKT. Unit/measure: PCS.",
   },
@@ -3541,7 +3538,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "PBSS",
     name: "POWER BIT FOR SCREWS MAGNETIC - STAR+STAR",
     categoryId: "631c1eaa-de97-5d0d-9f11-14aa8eab385e",
-    unit: EProductUnit.Pack,
+
     retailPrice: 250.0,
     description: "Imported from ITEM LIST.xlsx row 386. Variant/size: STAR+STAR. Base unit: PKT.",
   },
@@ -3550,7 +3547,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "WS3/4",
     name: "WOOD SCREW - 3/4X4",
     categoryId: "3000537c-f33d-591a-b80d-45832234948f",
-    unit: EProductUnit.Pack,
+
     retailPrice: 45.0,
     description: "Imported from ITEM LIST.xlsx row 387. Variant/size: 3/4X4. Base unit: PKT.",
   },
@@ -3559,7 +3556,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "WS1",
     name: "WOOD SCREW - 1X6",
     categoryId: "3000537c-f33d-591a-b80d-45832234948f",
-    unit: EProductUnit.Pack,
+
     retailPrice: 70.0,
     description: "Imported from ITEM LIST.xlsx row 388. Variant/size: 1X6. Base unit: PKT.",
   },
@@ -3568,7 +3565,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "WS112",
     name: "WOOD SCREW - 1-1/2X7",
     categoryId: "3000537c-f33d-591a-b80d-45832234948f",
-    unit: EProductUnit.Pack,
+
     retailPrice: 100.0,
     description: "Imported from ITEM LIST.xlsx row 389. Variant/size: 1-1/2X7. Base unit: PKT.",
   },
@@ -3577,7 +3574,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "WS2",
     name: "WOOD SCREW - 2X8",
     categoryId: "3000537c-f33d-591a-b80d-45832234948f",
-    unit: EProductUnit.Pack,
+
     retailPrice: 160.0,
     description: "Imported from ITEM LIST.xlsx row 390. Variant/size: 2X8. Base unit: PKT.",
   },
@@ -3586,7 +3583,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "WH600",
     name: "WELDING ELECTRODE HOLDER HEAVY DUTY - 600 AMPS",
     categoryId: "f1ea9b90-053e-59e6-b3c1-1c1dc1addc95",
-    unit: EProductUnit.Piece,
+
     retailPrice: 220.0,
     description: "Imported from ITEM LIST.xlsx row 391. Variant/size: 600 AMPS. Base unit: PC.",
   },
@@ -3595,7 +3592,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "WH800",
     name: "WELDING ELECTRODE HOLDER HEAVY DUTY - 800 AMPS",
     categoryId: "f1ea9b90-053e-59e6-b3c1-1c1dc1addc95",
-    unit: EProductUnit.Piece,
+
     retailPrice: 260.0,
     description: "Imported from ITEM LIST.xlsx row 392. Variant/size: 800 AMPS. Base unit: PC.",
   },
@@ -3604,7 +3601,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "IL-0393",
     name: "CHICKEN WIRE - 1/2X3",
     categoryId: "63852482-e02e-5a7b-b26d-a55ef8f734f4",
-    unit: EProductUnit.Pack,
+
     retailPrice: 1000.0,
     packSize: 25,
     description: "Imported from ITEM LIST.xlsx row 393. Variant/size: 1/2X3. Base unit: ROLL. Pack size: 25. Unit/measure: MTR.",
@@ -3614,7 +3611,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "IL-0394",
     name: "CHICKEN WIRE - 1/2X6",
     categoryId: "63852482-e02e-5a7b-b26d-a55ef8f734f4",
-    unit: EProductUnit.Pack,
+
     retailPrice: 2000.0,
     packSize: 25,
     description: "Imported from ITEM LIST.xlsx row 394. Variant/size: 1/2X6. Base unit: ROLL. Pack size: 25. Unit/measure: MTR.",
@@ -3624,7 +3621,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "IL-0395",
     name: "CHICKEN WIRE - 3/4X3",
     categoryId: "63852482-e02e-5a7b-b26d-a55ef8f734f4",
-    unit: EProductUnit.Pack,
+
     retailPrice: 950.0,
     packSize: 25,
     description: "Imported from ITEM LIST.xlsx row 395. Variant/size: 3/4X3. Base unit: ROLL. Pack size: 25. Unit/measure: MTR.",
@@ -3634,7 +3631,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "IL-0396",
     name: "CHICKEN WIRE - 3/4X6",
     categoryId: "63852482-e02e-5a7b-b26d-a55ef8f734f4",
-    unit: EProductUnit.Pack,
+
     retailPrice: 1900.0,
     packSize: 25,
     description: "Imported from ITEM LIST.xlsx row 396. Variant/size: 3/4X6. Base unit: ROLL. Pack size: 25. Unit/measure: MTR.",
@@ -3644,7 +3641,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "IL-0397",
     name: "CHICKEN WIRE - 1X3",
     categoryId: "63852482-e02e-5a7b-b26d-a55ef8f734f4",
-    unit: EProductUnit.Pack,
+
     retailPrice: 800.0,
     packSize: 25,
     description: "Imported from ITEM LIST.xlsx row 397. Variant/size: 1X3. Base unit: ROLL. Pack size: 25. Unit/measure: MTR.",
@@ -3654,7 +3651,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "IL-0398",
     name: "CHICKEN WIRE - 1X6",
     categoryId: "63852482-e02e-5a7b-b26d-a55ef8f734f4",
-    unit: EProductUnit.Pack,
+
     retailPrice: 1900.0,
     packSize: 25,
     description: "Imported from ITEM LIST.xlsx row 398. Variant/size: 1X6. Base unit: ROLL. Pack size: 25. Unit/measure: MTR.",
@@ -3664,7 +3661,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "IL-0399",
     name: 'CHICKEN WIRE - 1-1/2"X3',
     categoryId: "63852482-e02e-5a7b-b26d-a55ef8f734f4",
-    unit: EProductUnit.Pack,
+
     retailPrice: 750.0,
     packSize: 25,
     description: 'Imported from ITEM LIST.xlsx row 399. Variant/size: 1-1/2"X3. Base unit: ROLL. Pack size: 25. Unit/measure: MTR.',
@@ -3674,7 +3671,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "IL-0400",
     name: "POULTRY CAGE MESH 1MX25M - BLUE",
     categoryId: "63852482-e02e-5a7b-b26d-a55ef8f734f4",
-    unit: EProductUnit.Pack,
+
     retailPrice: 3800.0,
     packSize: 25,
     description: "Imported from ITEM LIST.xlsx row 400. Variant/size: BLUE. Base unit: ROLL. Pack size: 25. Unit/measure: MTR.",
@@ -3684,7 +3681,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "IL-0401",
     name: "POULTRY CAGE MESH 1MX25M - GREEN",
     categoryId: "63852482-e02e-5a7b-b26d-a55ef8f734f4",
-    unit: EProductUnit.Pack,
+
     retailPrice: 3800.0,
     packSize: 25,
     description: "Imported from ITEM LIST.xlsx row 401. Variant/size: GREEN. Base unit: ROLL. Pack size: 25. Unit/measure: MTR.",
@@ -3694,7 +3691,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "IL-0402",
     name: "POULTRY CAGE MESH 1MX25M - GREY",
     categoryId: "63852482-e02e-5a7b-b26d-a55ef8f734f4",
-    unit: EProductUnit.Pack,
+
     retailPrice: 3800.0,
     packSize: 25,
     description: "Imported from ITEM LIST.xlsx row 402. Variant/size: GREY. Base unit: ROLL. Pack size: 25. Unit/measure: MTR.",
@@ -3704,7 +3701,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "IL-0403",
     name: "GREEN GAUZE WIRE - 3FEET",
     categoryId: "63852482-e02e-5a7b-b26d-a55ef8f734f4",
-    unit: EProductUnit.Pack,
+
     retailPrice: 1500.0,
     packSize: 25,
     description: "Imported from ITEM LIST.xlsx row 403. Variant/size: 3FEET. Base unit: ROLL. Pack size: 25. Unit/measure: MTR.",
@@ -3714,7 +3711,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "IL-0404",
     name: "COFFEE TRAY WIRE WEAVED & SOLDERED - 5X5X3FX30MM",
     categoryId: "63852482-e02e-5a7b-b26d-a55ef8f734f4",
-    unit: EProductUnit.Pack,
+
     retailPrice: 4800.0,
     packSize: 25,
     description: "Imported from ITEM LIST.xlsx row 404. Variant/size: 5X5X3FX30MM. Base unit: ROLL. Pack size: 25. Unit/measure: MTR.",
@@ -3724,7 +3721,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "IL-0405",
     name: 'COFFEE TRAY WIRE UNSOLDERED - 1/4"X3FTX30MM',
     categoryId: "63852482-e02e-5a7b-b26d-a55ef8f734f4",
-    unit: EProductUnit.Pack,
+
     retailPrice: 3600.0,
     packSize: 25,
     description: 'Imported from ITEM LIST.xlsx row 405. Variant/size: 1/4"X3FTX30MM. Base unit: ROLL. Pack size: 25. Unit/measure: MTR.',
@@ -3734,7 +3731,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "SRP",
     name: "SHOWER ROSE PLASTIC - 192PCS/CTN",
     categoryId: "bc1a3d14-e045-50c5-89cc-6b63c344a3d9",
-    unit: EProductUnit.Piece,
+
     retailPrice: 30.0,
     description: "Imported from ITEM LIST.xlsx row 407. Variant/size: 192PCS/CTN. Base unit: PC.",
   },
@@ -3743,7 +3740,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "SD",
     name: "SOAP DISH LR6002B BLACK - LIRLEE",
     categoryId: "bc1a3d14-e045-50c5-89cc-6b63c344a3d9",
-    unit: EProductUnit.Piece,
+
     retailPrice: 300.0,
     description: "Imported from ITEM LIST.xlsx row 408. Variant/size: LIRLEE. Base unit: PC.",
   },
@@ -3752,7 +3749,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "TRH",
     name: "TISSUE ROLL HOLDER FLAP TYPE - LIRLEE",
     categoryId: "bc1a3d14-e045-50c5-89cc-6b63c344a3d9",
-    unit: EProductUnit.Piece,
+
     retailPrice: 250.0,
     description: "Imported from ITEM LIST.xlsx row 409. Variant/size: LIRLEE. Base unit: PC.",
   },
@@ -3761,7 +3758,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "BTC1.25",
     name: 'BOTTLE TRAP CHROME COMPLETE - 1-1/4"',
     categoryId: "86acb3cb-1541-5046-b823-acabbd4683f6",
-    unit: EProductUnit.Piece,
+
     retailPrice: 950.0,
     description: 'Imported from ITEM LIST.xlsx row 410. Variant/size: 1-1/4". Base unit: PC.',
   },
@@ -3770,7 +3767,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "BTC1.5",
     name: 'BOTTLE TRAP CHROME COMPLETE - 1-1/2"',
     categoryId: "86acb3cb-1541-5046-b823-acabbd4683f6",
-    unit: EProductUnit.Piece,
+
     retailPrice: 1200.0,
     description: 'Imported from ITEM LIST.xlsx row 411. Variant/size: 1-1/2". Base unit: PC.',
   },
@@ -3779,7 +3776,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "IL-0412",
     name: "FLEXIBLE HOSE PVC BRAZIL TYPE PVC BRAIDED B.NUT WITH NIPPLE - 1/2X30",
     categoryId: "86acb3cb-1541-5046-b823-acabbd4683f6",
-    unit: EProductUnit.Piece,
+
     retailPrice: 50.0,
     description: "Imported from ITEM LIST.xlsx row 412. Variant/size: 1/2X30. Base unit: PC.",
   },
@@ -3788,7 +3785,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "IL-0413",
     name: "FLEXIBLE HOSE PVC BRAZIL TYPE PVC BRAIDED B.NUT WITH NIPPLE - 1/2X45",
     categoryId: "86acb3cb-1541-5046-b823-acabbd4683f6",
-    unit: EProductUnit.Piece,
+
     retailPrice: 55.0,
     description: "Imported from ITEM LIST.xlsx row 413. Variant/size: 1/2X45. Base unit: PC.",
   },
@@ -3797,7 +3794,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "IL-0414",
     name: "FLEXIBLE HOSE PVC BRAZIL TYPE PVC BRAIDED B.NUT WITH NIPPLE - 1/2X60",
     categoryId: "86acb3cb-1541-5046-b823-acabbd4683f6",
-    unit: EProductUnit.Piece,
+
     retailPrice: 60.0,
     description: "Imported from ITEM LIST.xlsx row 414. Variant/size: 1/2X60. Base unit: PC.",
   },
@@ -3806,7 +3803,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "FP",
     name: "FORCE PUMP - LARGE SIZE",
     categoryId: "6282abb2-703e-514a-bf9b-2cd4a1a746d2",
-    unit: EProductUnit.Piece,
+
     retailPrice: 70.0,
     description: "Imported from ITEM LIST.xlsx row 415. Variant/size: LARGE SIZE. Base unit: PC.",
   },
@@ -3815,7 +3812,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "IL-0416",
     name: "TOP FLUSH CISTERN - KP 11",
     categoryId: "0b9f0d73-df85-59a4-9a14-98e38f2d0aaf",
-    unit: EProductUnit.Piece,
+
     retailPrice: 1000.0,
     description: "Imported from ITEM LIST.xlsx row 416. Variant/size: KP 11. Base unit: PC.",
   },
@@ -3824,7 +3821,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "IL-0417",
     name: "CISTERN - HIGH LEVEL",
     categoryId: "2f25bc0e-b27f-52ab-8f5b-d85cf5f6fd0f",
-    unit: EProductUnit.Piece,
+
     retailPrice: 900.0,
     description: "Imported from ITEM LIST.xlsx row 417. Variant/size: HIGH LEVEL. Base unit: PC.",
   },
@@ -3833,7 +3830,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "IL-0418",
     name: "CISTERN - LOW LEVEL",
     categoryId: "2f25bc0e-b27f-52ab-8f5b-d85cf5f6fd0f",
-    unit: EProductUnit.Piece,
+
     retailPrice: 900.0,
     description: "Imported from ITEM LIST.xlsx row 418. Variant/size: LOW LEVEL. Base unit: PC.",
   },
@@ -3842,7 +3839,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "SLL",
     name: "SYPHON - LOW LEVEL",
     categoryId: "2f25bc0e-b27f-52ab-8f5b-d85cf5f6fd0f",
-    unit: EProductUnit.Piece,
+
     retailPrice: 450.0,
     description: "Imported from ITEM LIST.xlsx row 419. Variant/size: LOW LEVEL. Base unit: PC.",
   },
@@ -3851,7 +3848,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "SHL",
     name: "SYPHON - HIGH LEVEL",
     categoryId: "2f25bc0e-b27f-52ab-8f5b-d85cf5f6fd0f",
-    unit: EProductUnit.Piece,
+
     retailPrice: 450.0,
     description: "Imported from ITEM LIST.xlsx row 420. Variant/size: HIGH LEVEL. Base unit: PC.",
   },
@@ -3860,7 +3857,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "STF",
     name: "SYPHON - TOP FLUSH",
     categoryId: "0b9f0d73-df85-59a4-9a14-98e38f2d0aaf",
-    unit: EProductUnit.Piece,
+
     retailPrice: 450.0,
     description: "Imported from ITEM LIST.xlsx row 421. Variant/size: TOP FLUSH. Base unit: PC.",
   },
@@ -3869,7 +3866,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "IL-0422",
     name: "FLOAT VALVE FOR CISTERN - PECKER #8668",
     categoryId: "0b9f0d73-df85-59a4-9a14-98e38f2d0aaf",
-    unit: EProductUnit.Piece,
+
     retailPrice: 160.0,
     manufacturer: "Pecker",
     description: "Imported from ITEM LIST.xlsx row 422. Variant/size: PECKER #8668. Base unit: PC.",
@@ -3879,7 +3876,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "IL-0423",
     name: 'W.C CONNECTOR (MAGIC BEND) - 4" WITH WIRE (PECKER)',
     categoryId: "63852482-e02e-5a7b-b26d-a55ef8f734f4",
-    unit: EProductUnit.Piece,
+
     retailPrice: 170.0,
     manufacturer: "Pecker",
     description: 'Imported from ITEM LIST.xlsx row 423. Variant/size: 4" WITH WIRE (PECKER). Base unit: PC.',
@@ -3889,7 +3886,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "IL-0424",
     name: 'STRAIGHT CONNECTOR - 4"',
     categoryId: "86acb3cb-1541-5046-b823-acabbd4683f6",
-    unit: EProductUnit.Piece,
+
     retailPrice: 150.0,
     description: 'Imported from ITEM LIST.xlsx row 424. Variant/size: 4". Base unit: PC.',
   },
@@ -3898,7 +3895,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "RC",
     name: "RUBBER CONNECTOR (CISTERN TO WC PAN) - WHITE RUBBER",
     categoryId: "86acb3cb-1541-5046-b823-acabbd4683f6",
-    unit: EProductUnit.Piece,
+
     retailPrice: 35.0,
     description: "Imported from ITEM LIST.xlsx row 425. Variant/size: WHITE RUBBER. Base unit: PC.",
   },
@@ -3907,7 +3904,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "FHHP",
     name: "FLUSHING HANDLES - H/L PLAST",
     categoryId: "0b9f0d73-df85-59a4-9a14-98e38f2d0aaf",
-    unit: EProductUnit.Piece,
+
     retailPrice: 60.0,
     description: "Imported from ITEM LIST.xlsx row 426. Variant/size: H/L PLAST. Base unit: PC.",
   },
@@ -3916,7 +3913,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "FHHM",
     name: "FLUSHING HANDLES - H/L METAL",
     categoryId: "0b9f0d73-df85-59a4-9a14-98e38f2d0aaf",
-    unit: EProductUnit.Piece,
+
     retailPrice: 110.0,
     description: "Imported from ITEM LIST.xlsx row 427. Variant/size: H/L METAL. Base unit: PC.",
   },
@@ -3925,7 +3922,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "BS",
     name: "BASIN SCREW M10X95MM - ROSSEL",
     categoryId: "f1ea9b90-053e-59e6-b3c1-1c1dc1addc95",
-    unit: EProductUnit.Pack,
+
     retailPrice: 50.0,
     manufacturer: "Rossel",
     description: "Imported from ITEM LIST.xlsx row 428. Variant/size: ROSSEL. Base unit: SET.",
@@ -3935,7 +3932,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "TS",
     name: "TOILET (WC SCREW) M6X85MM - ROSSEL",
     categoryId: "0b9f0d73-df85-59a4-9a14-98e38f2d0aaf",
-    unit: EProductUnit.Pack,
+
     retailPrice: 40.0,
     manufacturer: "Rossel",
     description: "Imported from ITEM LIST.xlsx row 429. Variant/size: ROSSEL. Base unit: SET.",
@@ -3945,7 +3942,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "IL-0430",
     name: 'CHROME PIPES - 3/4"',
     categoryId: "86acb3cb-1541-5046-b823-acabbd4683f6",
-    unit: EProductUnit.Pack,
+
     retailPrice: 4800.0,
     description: 'Imported from ITEM LIST.xlsx row 430. Variant/size: 3/4". Base unit: 20PCS.',
   },
@@ -3954,7 +3951,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "IL-0431",
     name: 'CHROME PIPES - 1"',
     categoryId: "86acb3cb-1541-5046-b823-acabbd4683f6",
-    unit: EProductUnit.Pack,
+
     retailPrice: 2600.0,
     description: 'Imported from ITEM LIST.xlsx row 431. Variant/size: 1". Base unit: 10PCS.',
   },
@@ -3963,7 +3960,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "CB3/4",
     name: 'CUPBOARD BRACKET FOR CHROME PIPE - 3/4"',
     categoryId: "d6772b6f-853f-5b8f-9d71-be6b322c0506",
-    unit: EProductUnit.Piece,
+
     retailPrice: 480.0,
     description: 'Imported from ITEM LIST.xlsx row 432. Variant/size: 3/4". Base unit: PC.',
   },
@@ -3972,7 +3969,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "CB1",
     name: 'CUPBOARD BRACKET FOR CHROME PIPE - 1"',
     categoryId: "d6772b6f-853f-5b8f-9d71-be6b322c0506",
-    unit: EProductUnit.Piece,
+
     retailPrice: 600.0,
     description: 'Imported from ITEM LIST.xlsx row 433. Variant/size: 1". Base unit: PC.',
   },
@@ -3981,7 +3978,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "CF3/4",
     name: 'CUPBOARD BRACKET FLANGES TYPE - 3/4"',
     categoryId: "d6772b6f-853f-5b8f-9d71-be6b322c0506",
-    unit: EProductUnit.Piece,
+
     retailPrice: 40.0,
     description: 'Imported from ITEM LIST.xlsx row 434. Variant/size: 3/4". Base unit: PAIR.',
   },
@@ -3990,7 +3987,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "CF1",
     name: 'CUPBOARD BRACKET FLANGES TYPE - 1"',
     categoryId: "d6772b6f-853f-5b8f-9d71-be6b322c0506",
-    unit: EProductUnit.Piece,
+
     retailPrice: 45.0,
     description: 'Imported from ITEM LIST.xlsx row 435. Variant/size: 1". Base unit: PAIR.',
   },
@@ -3999,7 +3996,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "TR3/4",
     name: 'TOWEL RAIL BRACKET CLOSE/OPEN - 3/4"',
     categoryId: "d6772b6f-853f-5b8f-9d71-be6b322c0506",
-    unit: EProductUnit.Piece,
+
     retailPrice: 95.0,
     description: 'Imported from ITEM LIST.xlsx row 436. Variant/size: 3/4". Base unit: PAIR.',
   },
@@ -4008,7 +4005,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "TR1",
     name: 'TOWEL RAIL BRACKET CLOSE/OPEN - 1"',
     categoryId: "d6772b6f-853f-5b8f-9d71-be6b322c0506",
-    unit: EProductUnit.Piece,
+
     retailPrice: 140.0,
     description: 'Imported from ITEM LIST.xlsx row 437. Variant/size: 1". Base unit: PAIR.',
   },
@@ -4017,7 +4014,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "FV1/2",
     name: 'FOOT VALVE YORK BRASS ITALY NET TYPE - 1/2"',
     categoryId: "6282abb2-703e-514a-bf9b-2cd4a1a746d2",
-    unit: EProductUnit.Piece,
+
     retailPrice: 250.0,
     manufacturer: "York",
     description: 'Imported from ITEM LIST.xlsx row 438. Variant/size: 1/2". Base unit: PC.',
@@ -4027,7 +4024,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "FV3/4",
     name: 'FOOT VALVE YORK BRASS ITALY NET TYPE - 3/4"',
     categoryId: "6282abb2-703e-514a-bf9b-2cd4a1a746d2",
-    unit: EProductUnit.Piece,
+
     retailPrice: 300.0,
     manufacturer: "York",
     description: 'Imported from ITEM LIST.xlsx row 439. Variant/size: 3/4". Base unit: PC.',
@@ -4037,7 +4034,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "FV1",
     name: 'FOOT VALVE YORK BRASS ITALY NET TYPE - 1"',
     categoryId: "6282abb2-703e-514a-bf9b-2cd4a1a746d2",
-    unit: EProductUnit.Piece,
+
     retailPrice: 400.0,
     manufacturer: "York",
     description: 'Imported from ITEM LIST.xlsx row 440. Variant/size: 1". Base unit: PC.',
@@ -4047,7 +4044,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "FV1.25",
     name: 'FOOT VALVE YORK BRASS ITALY NET TYPE - 1-1/4"',
     categoryId: "6282abb2-703e-514a-bf9b-2cd4a1a746d2",
-    unit: EProductUnit.Piece,
+
     retailPrice: 600.0,
     manufacturer: "York",
     description: 'Imported from ITEM LIST.xlsx row 441. Variant/size: 1-1/4". Base unit: PC.',
@@ -4057,7 +4054,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "FV1.5",
     name: 'FOOT VALVE YORK BRASS ITALY NET TYPE - 1-1/2"',
     categoryId: "6282abb2-703e-514a-bf9b-2cd4a1a746d2",
-    unit: EProductUnit.Piece,
+
     retailPrice: 700.0,
     manufacturer: "York",
     description: 'Imported from ITEM LIST.xlsx row 442. Variant/size: 1-1/2". Base unit: PC.',
@@ -4067,7 +4064,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "FV2",
     name: 'FOOT VALVE YORK BRASS ITALY NET TYPE - 2"',
     categoryId: "6282abb2-703e-514a-bf9b-2cd4a1a746d2",
-    unit: EProductUnit.Piece,
+
     retailPrice: 1100.0,
     manufacturer: "York",
     description: 'Imported from ITEM LIST.xlsx row 443. Variant/size: 2". Base unit: PC.',
@@ -4077,7 +4074,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "IL-0444",
     name: 'NON RETURN VALVE FLAP TYPE - 1/2"',
     categoryId: "6282abb2-703e-514a-bf9b-2cd4a1a746d2",
-    unit: EProductUnit.Piece,
+
     retailPrice: 1600.0,
     description: 'Imported from ITEM LIST.xlsx row 444. Variant/size: 1/2". Base unit: PC.',
   },
@@ -4086,7 +4083,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "IL-0445",
     name: 'NON RETURN VALVE FLAP TYPE - 3/4"',
     categoryId: "6282abb2-703e-514a-bf9b-2cd4a1a746d2",
-    unit: EProductUnit.Piece,
+
     retailPrice: 2100.0,
     description: 'Imported from ITEM LIST.xlsx row 445. Variant/size: 3/4". Base unit: PC.',
   },
@@ -4095,7 +4092,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "IL-0446",
     name: 'NON RETURN VALVE FLAP TYPE - 1"',
     categoryId: "6282abb2-703e-514a-bf9b-2cd4a1a746d2",
-    unit: EProductUnit.Piece,
+
     retailPrice: 2750.0,
     description: 'Imported from ITEM LIST.xlsx row 446. Variant/size: 1". Base unit: PC.',
   },
@@ -4104,7 +4101,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "IL-0447",
     name: "STEEL SHOVEL - 12PCS/BUNDLE",
     categoryId: "29468044-55b9-5c0d-831f-ef520a61f0f9",
-    unit: EProductUnit.Piece,
+
     retailPrice: 330.0,
     description: "Imported from ITEM LIST.xlsx row 447. Variant/size: 12PCS/BUNDLE. Base unit: PC.",
   },
@@ -4113,7 +4110,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "IL-0448",
     name: "RAZOR WIRE - 5.5KG/ROLL",
     categoryId: "63852482-e02e-5a7b-b26d-a55ef8f734f4",
-    unit: EProductUnit.Pack,
+
     retailPrice: 1000.0,
     description: "Imported from ITEM LIST.xlsx row 448. Variant/size: 5.5KG/ROLL. Base unit: ROLL.",
   },
@@ -4122,7 +4119,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "RWG",
     name: "RAZOR WIRE - GREEN",
     categoryId: "63852482-e02e-5a7b-b26d-a55ef8f734f4",
-    unit: EProductUnit.Pack,
+
     retailPrice: 1500.0,
     description: "Imported from ITEM LIST.xlsx row 449. Variant/size: GREEN. Base unit: ROLL.",
   },
@@ -4131,7 +4128,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "AX2",
     name: "AXES - 2 LB",
     categoryId: "29468044-55b9-5c0d-831f-ef520a61f0f9",
-    unit: EProductUnit.Piece,
+
     retailPrice: 430.0,
     description: "Imported from ITEM LIST.xlsx row 450. Variant/size: 2 LB. Base unit: PC.",
   },
@@ -4140,7 +4137,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "AX2.5",
     name: "AXES - 2-1/2 LB",
     categoryId: "29468044-55b9-5c0d-831f-ef520a61f0f9",
-    unit: EProductUnit.Piece,
+
     retailPrice: 460.0,
     description: "Imported from ITEM LIST.xlsx row 451. Variant/size: 2-1/2 LB. Base unit: PC.",
   },
@@ -4149,7 +4146,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "AX3",
     name: "AXES - 3 LB",
     categoryId: "29468044-55b9-5c0d-831f-ef520a61f0f9",
-    unit: EProductUnit.Piece,
+
     retailPrice: 490.0,
     description: "Imported from ITEM LIST.xlsx row 452. Variant/size: 3 LB. Base unit: PC.",
   },
@@ -4158,7 +4155,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "AX3.5",
     name: "AXES - 3-1/2 LB",
     categoryId: "29468044-55b9-5c0d-831f-ef520a61f0f9",
-    unit: EProductUnit.Piece,
+
     retailPrice: 530.0,
     description: "Imported from ITEM LIST.xlsx row 453. Variant/size: 3-1/2 LB. Base unit: PC.",
   },
@@ -4167,7 +4164,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "AX4",
     name: "AXES - 4 LB",
     categoryId: "29468044-55b9-5c0d-831f-ef520a61f0f9",
-    unit: EProductUnit.Piece,
+
     retailPrice: 560.0,
     description: "Imported from ITEM LIST.xlsx row 454. Variant/size: 4 LB. Base unit: PC.",
   },
@@ -4176,7 +4173,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "FJ1.5",
     name: "FORK JEMBE - SMALL SIZE 1.5LB",
     categoryId: "29468044-55b9-5c0d-831f-ef520a61f0f9",
-    unit: EProductUnit.Piece,
+
     retailPrice: 400.0,
     description: "Imported from ITEM LIST.xlsx row 455. Variant/size: SMALL SIZE 1.5LB. Base unit: PC.",
   },
@@ -4185,7 +4182,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "FJ2.5",
     name: "FORK JEMBE - MEDIUM SIZE 2.5LB",
     categoryId: "29468044-55b9-5c0d-831f-ef520a61f0f9",
-    unit: EProductUnit.Piece,
+
     retailPrice: 450.0,
     description: "Imported from ITEM LIST.xlsx row 456. Variant/size: MEDIUM SIZE 2.5LB. Base unit: PC.",
   },
@@ -4194,7 +4191,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "FJ3.5",
     name: "FORK JEMBE - LARGE SIZE 3.5LB",
     categoryId: "29468044-55b9-5c0d-831f-ef520a61f0f9",
-    unit: EProductUnit.Piece,
+
     retailPrice: 500.0,
     description: "Imported from ITEM LIST.xlsx row 457. Variant/size: LARGE SIZE 3.5LB. Base unit: PC.",
   },
@@ -4203,7 +4200,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "J1.5",
     name: "JEMBE 1-1/2 LBS - SMALL SIZE",
     categoryId: "29468044-55b9-5c0d-831f-ef520a61f0f9",
-    unit: EProductUnit.Piece,
+
     retailPrice: 270.0,
     description: "Imported from ITEM LIST.xlsx row 458. Variant/size: SMALL SIZE. Base unit: PC.",
   },
@@ -4212,7 +4209,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "J2",
     name: "JEMBE 2 LBS - MEDIUM SIZE",
     categoryId: "29468044-55b9-5c0d-831f-ef520a61f0f9",
-    unit: EProductUnit.Piece,
+
     retailPrice: 280.0,
     description: "Imported from ITEM LIST.xlsx row 459. Variant/size: MEDIUM SIZE. Base unit: PC.",
   },
@@ -4221,7 +4218,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "J2.5",
     name: "JEMBE 2-1/2 LBS - MEDIUM SIZE",
     categoryId: "29468044-55b9-5c0d-831f-ef520a61f0f9",
-    unit: EProductUnit.Piece,
+
     retailPrice: 290.0,
     description: "Imported from ITEM LIST.xlsx row 460. Variant/size: MEDIUM SIZE. Base unit: PC.",
   },
@@ -4230,7 +4227,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "J3",
     name: "JEMBE 3 LBS - LARGE SIZE",
     categoryId: "29468044-55b9-5c0d-831f-ef520a61f0f9",
-    unit: EProductUnit.Piece,
+
     retailPrice: 300.0,
     description: "Imported from ITEM LIST.xlsx row 461. Variant/size: LARGE SIZE. Base unit: PC.",
   },
@@ -4239,7 +4236,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "P16R",
     name: 'PANGA STRAIGHT/CURVED 16" - RUBBER',
     categoryId: "29468044-55b9-5c0d-831f-ef520a61f0f9",
-    unit: EProductUnit.Piece,
+
     retailPrice: 220.0,
     description: "Imported from ITEM LIST.xlsx row 462. Variant/size: RUBBER. Base unit: PC.",
   },
@@ -4248,7 +4245,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "P18R",
     name: 'PANGA STRAIGHT/CURVED 18" - RUBBER',
     categoryId: "29468044-55b9-5c0d-831f-ef520a61f0f9",
-    unit: EProductUnit.Piece,
+
     retailPrice: 230.0,
     description: "Imported from ITEM LIST.xlsx row 463. Variant/size: RUBBER. Base unit: PC.",
   },
@@ -4257,7 +4254,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "P16WP",
     name: 'PANGA STRAIGHT/CURVED 16" - WOODEN/PLASTIC',
     categoryId: "29468044-55b9-5c0d-831f-ef520a61f0f9",
-    unit: EProductUnit.Piece,
+
     retailPrice: 165.0,
     description: "Imported from ITEM LIST.xlsx row 464. Variant/size: WOODEN/PLASTIC. Base unit: PC.",
   },
@@ -4266,7 +4263,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "P18WP",
     name: 'PANGA STRAIGHT/CURVED 18" - WOODEN/PLASTIC',
     categoryId: "29468044-55b9-5c0d-831f-ef520a61f0f9",
-    unit: EProductUnit.Piece,
+
     retailPrice: 175.0,
     description: "Imported from ITEM LIST.xlsx row 465. Variant/size: WOODEN/PLASTIC. Base unit: PC.",
   },
@@ -4275,7 +4272,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "PX5",
     name: "PICK AXE SURURU - 5 LBS BLUE",
     categoryId: "29468044-55b9-5c0d-831f-ef520a61f0f9",
-    unit: EProductUnit.Piece,
+
     retailPrice: 400.0,
     description: "Imported from ITEM LIST.xlsx row 466. Variant/size: 5 LBS BLUE. Base unit: PC.",
   },
@@ -4284,7 +4281,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "PX7",
     name: "PICK AXE SURURU - 7 LBS BLUE",
     categoryId: "29468044-55b9-5c0d-831f-ef520a61f0f9",
-    unit: EProductUnit.Piece,
+
     retailPrice: 530.0,
     description: "Imported from ITEM LIST.xlsx row 467. Variant/size: 7 LBS BLUE. Base unit: PC.",
   },
@@ -4293,7 +4290,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "PM",
     name: "PICK MATTOCK - 5LBS RED",
     categoryId: "29468044-55b9-5c0d-831f-ef520a61f0f9",
-    unit: EProductUnit.Piece,
+
     retailPrice: 550.0,
     description: "Imported from ITEM LIST.xlsx row 468. Variant/size: 5LBS RED. Base unit: PC.",
   },
@@ -4302,7 +4299,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "CM",
     name: "CUTTER MATTOCK (JEMBE SHOKA) - 5LBS GREEN",
     categoryId: "ebcd4c22-0bfb-5849-8b0a-2f60ecc4669d",
-    unit: EProductUnit.Piece,
+
     retailPrice: 550.0,
     description: "Imported from ITEM LIST.xlsx row 469. Variant/size: 5LBS GREEN. Base unit: PC.",
   },
@@ -4311,7 +4308,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "SI12",
     name: 'SICKLES - 12"',
     categoryId: "29468044-55b9-5c0d-831f-ef520a61f0f9",
-    unit: EProductUnit.Piece,
+
     retailPrice: 80.0,
     description: 'Imported from ITEM LIST.xlsx row 470. Variant/size: 12". Base unit: PC.',
   },
@@ -4320,7 +4317,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "SI14",
     name: 'SICKLES - 14"',
     categoryId: "29468044-55b9-5c0d-831f-ef520a61f0f9",
-    unit: EProductUnit.Piece,
+
     retailPrice: 85.0,
     description: 'Imported from ITEM LIST.xlsx row 471. Variant/size: 14". Base unit: PC.',
   },
@@ -4329,7 +4326,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "SI16",
     name: 'SICKLES - 16"',
     categoryId: "29468044-55b9-5c0d-831f-ef520a61f0f9",
-    unit: EProductUnit.Piece,
+
     retailPrice: 90.0,
     description: 'Imported from ITEM LIST.xlsx row 472. Variant/size: 16". Base unit: PC.',
   },
@@ -4338,7 +4335,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "SLPW",
     name: "SLASHER - PLASTIC/WOODEN",
     categoryId: "29468044-55b9-5c0d-831f-ef520a61f0f9",
-    unit: EProductUnit.Piece,
+
     retailPrice: 160.0,
     description: "Imported from ITEM LIST.xlsx row 473. Variant/size: PLASTIC/WOODEN. Base unit: PC.",
   },
@@ -4347,7 +4344,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "IL-0474",
     name: "GARDEN RAKE RED - 10TEETH",
     categoryId: "a826b428-68f6-5737-9b2e-f37b2737f77a",
-    unit: EProductUnit.Piece,
+
     retailPrice: 140.0,
     description: "Imported from ITEM LIST.xlsx row 474. Variant/size: 10TEETH. Base unit: PC.",
   },
@@ -4356,7 +4353,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "IL-0475",
     name: "GARDEN RAKE RED - 12TEETH",
     categoryId: "a826b428-68f6-5737-9b2e-f37b2737f77a",
-    unit: EProductUnit.Piece,
+
     retailPrice: 150.0,
     description: "Imported from ITEM LIST.xlsx row 475. Variant/size: 12TEETH. Base unit: PC.",
   },
@@ -4365,7 +4362,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "IL-0476",
     name: "GARDEN RAKE RED - 14TEETH",
     categoryId: "a826b428-68f6-5737-9b2e-f37b2737f77a",
-    unit: EProductUnit.Piece,
+
     retailPrice: 160.0,
     description: "Imported from ITEM LIST.xlsx row 476. Variant/size: 14TEETH. Base unit: PC.",
   },
@@ -4374,7 +4371,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "IL-0477",
     name: "GARDEN RAKE RED - 16TEETH",
     categoryId: "a826b428-68f6-5737-9b2e-f37b2737f77a",
-    unit: EProductUnit.Piece,
+
     retailPrice: 170.0,
     description: "Imported from ITEM LIST.xlsx row 477. Variant/size: 16TEETH. Base unit: PC.",
   },
@@ -4383,7 +4380,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "LRG",
     name: "LEAF RAKE GREEN - CODE 7811",
     categoryId: "a826b428-68f6-5737-9b2e-f37b2737f77a",
-    unit: EProductUnit.Piece,
+
     retailPrice: 260.0,
     description: "Imported from ITEM LIST.xlsx row 478. Variant/size: CODE 7811. Base unit: PC.",
   },
@@ -4392,7 +4389,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "NR1/2",
     name: 'NON RETURN FLAP TYPE WITH RUBBER - 1/2"',
     categoryId: "f1ea9b90-053e-59e6-b3c1-1c1dc1addc95",
-    unit: EProductUnit.Piece,
+
     retailPrice: 500.0,
     description: 'Imported from ITEM LIST.xlsx row 479. Variant/size: 1/2". Base unit: PC.',
   },
@@ -4401,7 +4398,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "NR3/4",
     name: 'NON RETURN FLAP TYPE WITH RUBBER - 3/4"',
     categoryId: "f1ea9b90-053e-59e6-b3c1-1c1dc1addc95",
-    unit: EProductUnit.Piece,
+
     retailPrice: 600.0,
     description: 'Imported from ITEM LIST.xlsx row 480. Variant/size: 3/4". Base unit: PC.',
   },
@@ -4410,7 +4407,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "NR1",
     name: 'NON RETURN FLAP TYPE WITH RUBBER - 1"',
     categoryId: "f1ea9b90-053e-59e6-b3c1-1c1dc1addc95",
-    unit: EProductUnit.Piece,
+
     retailPrice: 750.0,
     description: 'Imported from ITEM LIST.xlsx row 481. Variant/size: 1". Base unit: PC.',
   },
@@ -4419,7 +4416,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "NR1.25",
     name: 'NON RETURN FLAP TYPE WITH RUBBER - 1-1/4"',
     categoryId: "f1ea9b90-053e-59e6-b3c1-1c1dc1addc95",
-    unit: EProductUnit.Piece,
+
     retailPrice: 1350.0,
     description: 'Imported from ITEM LIST.xlsx row 482. Variant/size: 1-1/4". Base unit: PC.',
   },
@@ -4428,7 +4425,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "NR1.5",
     name: 'NON RETURN FLAP TYPE WITH RUBBER - 1-1/2"',
     categoryId: "f1ea9b90-053e-59e6-b3c1-1c1dc1addc95",
-    unit: EProductUnit.Piece,
+
     retailPrice: 1800.0,
     description: 'Imported from ITEM LIST.xlsx row 483. Variant/size: 1-1/2". Base unit: PC.',
   },
@@ -4437,7 +4434,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "NR2",
     name: 'NON RETURN FLAP TYPE WITH RUBBER - 2"',
     categoryId: "f1ea9b90-053e-59e6-b3c1-1c1dc1addc95",
-    unit: EProductUnit.Piece,
+
     retailPrice: 2200.0,
     description: 'Imported from ITEM LIST.xlsx row 484. Variant/size: 2". Base unit: PC.',
   },
@@ -4446,7 +4443,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "M18",
     name: "MANILLA - 18PLY",
     categoryId: "7087a444-48a0-5fcd-af7a-ddc0942fac5d",
-    unit: EProductUnit.Dozen,
+
     retailPrice: 340.0,
     description: "Imported from ITEM LIST.xlsx row 486. Variant/size: 18PLY. Base unit: DOZ.",
   },
@@ -4455,7 +4452,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "M42",
     name: "MANILLA - 42PLY",
     categoryId: "7087a444-48a0-5fcd-af7a-ddc0942fac5d",
-    unit: EProductUnit.Dozen,
+
     retailPrice: 480.0,
     description: "Imported from ITEM LIST.xlsx row 487. Variant/size: 42PLY. Base unit: DOZ.",
   },
@@ -4464,7 +4461,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "IL-0488",
     name: "NYLON ROPES - 10M - 200M",
     categoryId: "7087a444-48a0-5fcd-af7a-ddc0942fac5d",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     packSize: 200,
     description: "Imported from ITEM LIST.xlsx row 488. Variant/size: 10M / 200M. Packing/measurement: 200M.",
@@ -4474,7 +4471,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "IL-0489",
     name: "NYLON ROPES - 6MM - 1020",
     categoryId: "7087a444-48a0-5fcd-af7a-ddc0942fac5d",
-    unit: EProductUnit.Pack,
+
     retailPrice: 1400.0,
     description: "Imported from ITEM LIST.xlsx row 489. Variant/size: 6MM / 1020. Base unit: ROLL.",
   },
@@ -4483,7 +4480,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "IL-0490",
     name: "NYLON ROPES - 7MM - 1350",
     categoryId: "7087a444-48a0-5fcd-af7a-ddc0942fac5d",
-    unit: EProductUnit.Pack,
+
     retailPrice: 1875.0,
     description: "Imported from ITEM LIST.xlsx row 490. Variant/size: 7MM / 1350. Base unit: ROLL.",
   },
@@ -4492,7 +4489,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "IL-0491",
     name: "NYLON ROPES - 8MM - 1655",
     categoryId: "7087a444-48a0-5fcd-af7a-ddc0942fac5d",
-    unit: EProductUnit.Pack,
+
     retailPrice: 2300.0,
     description: "Imported from ITEM LIST.xlsx row 491. Variant/size: 8MM / 1655. Base unit: ROLL.",
   },
@@ -4501,7 +4498,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "IL-0492",
     name: "NYLON ROPES - 9MM - 2295",
     categoryId: "7087a444-48a0-5fcd-af7a-ddc0942fac5d",
-    unit: EProductUnit.Pack,
+
     retailPrice: 3190.0,
     description: "Imported from ITEM LIST.xlsx row 492. Variant/size: 9MM / 2295. Base unit: ROLL.",
   },
@@ -4510,7 +4507,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "IL-0493",
     name: "NYLON ROPES - 10MM - 2760",
     categoryId: "7087a444-48a0-5fcd-af7a-ddc0942fac5d",
-    unit: EProductUnit.Pack,
+
     retailPrice: 3825.0,
     description: "Imported from ITEM LIST.xlsx row 493. Variant/size: 10MM / 2760. Base unit: ROLL.",
   },
@@ -4519,7 +4516,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "IL-0494",
     name: "NYLON ROPES - 12MM - 3825",
     categoryId: "7087a444-48a0-5fcd-af7a-ddc0942fac5d",
-    unit: EProductUnit.Pack,
+
     retailPrice: 5315.0,
     description: "Imported from ITEM LIST.xlsx row 494. Variant/size: 12MM / 3825. Base unit: ROLL.",
   },
@@ -4528,7 +4525,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "MMS",
     name: "MOPS MEDIUM SIZE HARRIS - L2",
     categoryId: "91c8a243-d159-5b34-aa4a-a3775108dad9",
-    unit: EProductUnit.Piece,
+
     retailPrice: 115.0,
     manufacturer: "Harris",
     description: "Imported from ITEM LIST.xlsx row 495. Variant/size: L2. Base unit: PC.",
@@ -4538,7 +4535,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "PB1/2",
     name: 'PAINT BRUSHES - 1/2"',
     categoryId: "5bc31bc1-880b-569c-9745-514df89a991a",
-    unit: EProductUnit.Piece,
+
     retailPrice: 18.0,
     description: 'Imported from ITEM LIST.xlsx row 497. Variant/size: 1/2". Base unit: PC.',
   },
@@ -4547,7 +4544,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "PB3/4",
     name: 'PAINT BRUSHES - 3/4"',
     categoryId: "5bc31bc1-880b-569c-9745-514df89a991a",
-    unit: EProductUnit.Piece,
+
     retailPrice: 20.0,
     description: 'Imported from ITEM LIST.xlsx row 498. Variant/size: 3/4". Base unit: PC.',
   },
@@ -4556,7 +4553,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "PB1",
     name: 'PAINT BRUSHES - 1"',
     categoryId: "5bc31bc1-880b-569c-9745-514df89a991a",
-    unit: EProductUnit.Piece,
+
     retailPrice: 25.0,
     description: 'Imported from ITEM LIST.xlsx row 499. Variant/size: 1". Base unit: PC.',
   },
@@ -4565,7 +4562,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "PB1.5",
     name: 'PAINT BRUSHES - 1-1/2"',
     categoryId: "5bc31bc1-880b-569c-9745-514df89a991a",
-    unit: EProductUnit.Piece,
+
     retailPrice: 30.0,
     description: 'Imported from ITEM LIST.xlsx row 500. Variant/size: 1-1/2". Base unit: PC.',
   },
@@ -4574,7 +4571,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "PB2",
     name: 'PAINT BRUSHES - 2"',
     categoryId: "5bc31bc1-880b-569c-9745-514df89a991a",
-    unit: EProductUnit.Piece,
+
     retailPrice: 40.0,
     description: 'Imported from ITEM LIST.xlsx row 501. Variant/size: 2". Base unit: PC.',
   },
@@ -4583,7 +4580,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "PB2.5",
     name: 'PAINT BRUSHES - 2-1/2"',
     categoryId: "5bc31bc1-880b-569c-9745-514df89a991a",
-    unit: EProductUnit.Piece,
+
     retailPrice: 45.0,
     description: 'Imported from ITEM LIST.xlsx row 502. Variant/size: 2-1/2". Base unit: PC.',
   },
@@ -4592,7 +4589,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "PB3",
     name: 'PAINT BRUSHES - 3"',
     categoryId: "5bc31bc1-880b-569c-9745-514df89a991a",
-    unit: EProductUnit.Piece,
+
     retailPrice: 55.0,
     description: 'Imported from ITEM LIST.xlsx row 503. Variant/size: 3". Base unit: PC.',
   },
@@ -4601,7 +4598,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "PB4",
     name: 'PAINT BRUSHES - 4"',
     categoryId: "5bc31bc1-880b-569c-9745-514df89a991a",
-    unit: EProductUnit.Piece,
+
     retailPrice: 65.0,
     description: 'Imported from ITEM LIST.xlsx row 504. Variant/size: 4". Base unit: PC.',
   },
@@ -4610,7 +4607,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "PB5",
     name: 'PAINT BRUSHES - 5"',
     categoryId: "5bc31bc1-880b-569c-9745-514df89a991a",
-    unit: EProductUnit.Piece,
+
     retailPrice: 90.0,
     description: 'Imported from ITEM LIST.xlsx row 505. Variant/size: 5". Base unit: PC.',
   },
@@ -4619,7 +4616,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "PB6",
     name: 'PAINT BRUSHES - 6"',
     categoryId: "5bc31bc1-880b-569c-9745-514df89a991a",
-    unit: EProductUnit.Piece,
+
     retailPrice: 100.0,
     description: 'Imported from ITEM LIST.xlsx row 506. Variant/size: 6". Base unit: PC.',
   },
@@ -4628,7 +4625,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "PBR1",
     name: 'PAINT BRUSH RED TIP - 1"',
     categoryId: "5bc31bc1-880b-569c-9745-514df89a991a",
-    unit: EProductUnit.Piece,
+
     retailPrice: 40.0,
     description: 'Imported from ITEM LIST.xlsx row 507. Variant/size: 1". Base unit: PC.',
   },
@@ -4637,7 +4634,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "PBR1.5",
     name: 'PAINT BRUSH RED TIP - 1-1/2"',
     categoryId: "5bc31bc1-880b-569c-9745-514df89a991a",
-    unit: EProductUnit.Piece,
+
     retailPrice: 45.0,
     description: 'Imported from ITEM LIST.xlsx row 508. Variant/size: 1-1/2". Base unit: PC.',
   },
@@ -4646,7 +4643,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "PBR2",
     name: 'PAINT BRUSH RED TIP - 2"',
     categoryId: "5bc31bc1-880b-569c-9745-514df89a991a",
-    unit: EProductUnit.Piece,
+
     retailPrice: 60.0,
     description: 'Imported from ITEM LIST.xlsx row 509. Variant/size: 2". Base unit: PC.',
   },
@@ -4655,7 +4652,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "PBR2.5",
     name: 'PAINT BRUSH RED TIP - 2-1/2"',
     categoryId: "5bc31bc1-880b-569c-9745-514df89a991a",
-    unit: EProductUnit.Piece,
+
     retailPrice: 75.0,
     description: 'Imported from ITEM LIST.xlsx row 510. Variant/size: 2-1/2". Base unit: PC.',
   },
@@ -4664,7 +4661,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "PBR3",
     name: 'PAINT BRUSH RED TIP - 3"',
     categoryId: "5bc31bc1-880b-569c-9745-514df89a991a",
-    unit: EProductUnit.Piece,
+
     retailPrice: 90.0,
     description: 'Imported from ITEM LIST.xlsx row 511. Variant/size: 3". Base unit: PC.',
   },
@@ -4673,7 +4670,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "PBR4",
     name: 'PAINT BRUSH RED TIP - 4"',
     categoryId: "5bc31bc1-880b-569c-9745-514df89a991a",
-    unit: EProductUnit.Piece,
+
     retailPrice: 115.0,
     description: 'Imported from ITEM LIST.xlsx row 512. Variant/size: 4". Base unit: PC.',
   },
@@ -4682,7 +4679,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "PBR5",
     name: 'PAINT BRUSH RED TIP - 5"',
     categoryId: "5bc31bc1-880b-569c-9745-514df89a991a",
-    unit: EProductUnit.Piece,
+
     retailPrice: 165.0,
     description: 'Imported from ITEM LIST.xlsx row 513. Variant/size: 5". Base unit: PC.',
   },
@@ -4691,7 +4688,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "PBR6",
     name: 'PAINT BRUSH RED TIP - 6"',
     categoryId: "5bc31bc1-880b-569c-9745-514df89a991a",
-    unit: EProductUnit.Piece,
+
     retailPrice: 185.0,
     description: 'Imported from ITEM LIST.xlsx row 514. Variant/size: 6". Base unit: PC.',
   },
@@ -4700,7 +4697,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "IL-0515",
     name: 'PAINT BRUSH FINLAY (HARIS) - 1/2"',
     categoryId: "5bc31bc1-880b-569c-9745-514df89a991a",
-    unit: EProductUnit.Piece,
+
     retailPrice: 50.0,
     manufacturer: "Finlay",
     description: 'Imported from ITEM LIST.xlsx row 515. Variant/size: 1/2". Base unit: PC.',
@@ -4710,7 +4707,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "IL-0516",
     name: 'PAINT BRUSH FINLAY (HARIS) - 3/4"',
     categoryId: "5bc31bc1-880b-569c-9745-514df89a991a",
-    unit: EProductUnit.Piece,
+
     retailPrice: 55.0,
     manufacturer: "Finlay",
     description: 'Imported from ITEM LIST.xlsx row 516. Variant/size: 3/4". Base unit: PC.',
@@ -4720,7 +4717,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "GT1",
     name: 'PAINT BRUSH FINLAY (HARIS) - 1"',
     categoryId: "5bc31bc1-880b-569c-9745-514df89a991a",
-    unit: EProductUnit.Piece,
+
     retailPrice: 70.0,
     manufacturer: "Finlay",
     description: 'Imported from ITEM LIST.xlsx row 517. Variant/size: 1". Base unit: PC.',
@@ -4730,7 +4727,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "GT1.5",
     name: 'PAINT BRUSH FINLAY (HARIS) - 1-1/2"',
     categoryId: "5bc31bc1-880b-569c-9745-514df89a991a",
-    unit: EProductUnit.Piece,
+
     retailPrice: 95.0,
     manufacturer: "Finlay",
     description: 'Imported from ITEM LIST.xlsx row 518. Variant/size: 1-1/2". Base unit: PC.',
@@ -4740,7 +4737,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "GT2",
     name: 'PAINT BRUSH FINLAY (HARIS) - 2"',
     categoryId: "5bc31bc1-880b-569c-9745-514df89a991a",
-    unit: EProductUnit.Piece,
+
     retailPrice: 115.0,
     manufacturer: "Finlay",
     description: 'Imported from ITEM LIST.xlsx row 519. Variant/size: 2". Base unit: PC.',
@@ -4750,7 +4747,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "GT2.5",
     name: 'PAINT BRUSH FINLAY (HARIS) - 2-1/2"',
     categoryId: "5bc31bc1-880b-569c-9745-514df89a991a",
-    unit: EProductUnit.Piece,
+
     retailPrice: 150.0,
     manufacturer: "Finlay",
     description: 'Imported from ITEM LIST.xlsx row 520. Variant/size: 2-1/2". Base unit: PC.',
@@ -4760,7 +4757,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "GT3",
     name: 'PAINT BRUSH FINLAY (HARIS) - 3"',
     categoryId: "5bc31bc1-880b-569c-9745-514df89a991a",
-    unit: EProductUnit.Piece,
+
     retailPrice: 180.0,
     manufacturer: "Finlay",
     description: 'Imported from ITEM LIST.xlsx row 521. Variant/size: 3". Base unit: PC.',
@@ -4770,7 +4767,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "GT4",
     name: 'PAINT BRUSH FINLAY (HARIS) - 4"',
     categoryId: "5bc31bc1-880b-569c-9745-514df89a991a",
-    unit: EProductUnit.Piece,
+
     retailPrice: 250.0,
     manufacturer: "Finlay",
     description: 'Imported from ITEM LIST.xlsx row 522. Variant/size: 4". Base unit: PC.',
@@ -4780,7 +4777,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "GT5",
     name: 'PAINT BRUSH FINLAY (HARIS) - 5"',
     categoryId: "5bc31bc1-880b-569c-9745-514df89a991a",
-    unit: EProductUnit.Piece,
+
     retailPrice: 315.0,
     manufacturer: "Finlay",
     description: 'Imported from ITEM LIST.xlsx row 523. Variant/size: 5". Base unit: PC.',
@@ -4790,7 +4787,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "GT6",
     name: 'PAINT BRUSH FINLAY (HARIS) - 6"',
     categoryId: "5bc31bc1-880b-569c-9745-514df89a991a",
-    unit: EProductUnit.Piece,
+
     retailPrice: 420.0,
     manufacturer: "Finlay",
     description: 'Imported from ITEM LIST.xlsx row 524. Variant/size: 6". Base unit: PC.',
@@ -4800,7 +4797,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "IL-0525",
     name: 'PAINT ROLLER PLASTIC - 9"',
     categoryId: "5bc31bc1-880b-569c-9745-514df89a991a",
-    unit: EProductUnit.Piece,
+
     retailPrice: 90.0,
     description: 'Imported from ITEM LIST.xlsx row 525. Variant/size: 9". Base unit: PC.',
   },
@@ -4809,7 +4806,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "ABSS",
     name: "ARTIST BRUSHES SETS - SMALL SIZE",
     categoryId: "5bc31bc1-880b-569c-9745-514df89a991a",
-    unit: EProductUnit.Pack,
+
     retailPrice: 110.0,
     description: "Imported from ITEM LIST.xlsx row 526. Variant/size: SMALL SIZE. Base unit: SET.",
   },
@@ -4818,7 +4815,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "ABLS",
     name: "ARTIST BRUSHES SETS - LARGE SIZE",
     categoryId: "5bc31bc1-880b-569c-9745-514df89a991a",
-    unit: EProductUnit.Pack,
+
     retailPrice: 160.0,
     description: "Imported from ITEM LIST.xlsx row 527. Variant/size: LARGE SIZE. Base unit: SET.",
   },
@@ -4827,7 +4824,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "IL-0528",
     name: "BROOM SOFT - C2/C3",
     categoryId: "91c8a243-d159-5b34-aa4a-a3775108dad9",
-    unit: EProductUnit.Piece,
+
     retailPrice: 160.0,
     description: "Imported from ITEM LIST.xlsx row 528. Variant/size: C2/C3. Base unit: PC.",
   },
@@ -4836,7 +4833,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "IL-0529",
     name: "BROOM MEDIUM - C4",
     categoryId: "91c8a243-d159-5b34-aa4a-a3775108dad9",
-    unit: EProductUnit.Piece,
+
     retailPrice: 155.0,
     description: "Imported from ITEM LIST.xlsx row 529. Variant/size: C4. Base unit: PC.",
   },
@@ -4845,7 +4842,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "IL-0530",
     name: "BROOM HARD - D4",
     categoryId: "91c8a243-d159-5b34-aa4a-a3775108dad9",
-    unit: EProductUnit.Piece,
+
     retailPrice: 155.0,
     description: "Imported from ITEM LIST.xlsx row 530. Variant/size: D4. Base unit: PC.",
   },
@@ -4854,7 +4851,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "IL-0531",
     name: "WIRE BRUSH 6 ROWS - PLASTIC",
     categoryId: "63852482-e02e-5a7b-b26d-a55ef8f734f4",
-    unit: EProductUnit.Piece,
+
     retailPrice: 45.0,
     description: "Imported from ITEM LIST.xlsx row 531. Variant/size: PLASTIC. Base unit: PC.",
   },
@@ -4863,7 +4860,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "H",
     name: "HELMET - 50PCS/CTN",
     categoryId: "fed34c15-f1ef-5f9f-8080-cd7dc4357bed",
-    unit: EProductUnit.Piece,
+
     retailPrice: 480.0,
     description: "Imported from ITEM LIST.xlsx row 533. Variant/size: 50PCS/CTN. Base unit: PC.",
   },
@@ -4872,7 +4869,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "TT",
     name: "THREAD TAPE - CHINA",
     categoryId: "e3c05ee7-d758-52a3-94b6-4c6475842be3",
-    unit: EProductUnit.Piece,
+
     retailPrice: 10.0,
     description: "Imported from ITEM LIST.xlsx row 534. Variant/size: CHINA. Base unit: PC.",
   },
@@ -4881,7 +4878,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "WT",
     name: 'WARNING TAPE 2"X250 - 250 METRES',
     categoryId: "e3c05ee7-d758-52a3-94b6-4c6475842be3",
-    unit: EProductUnit.Pack,
+
     retailPrice: 300.0,
     description: "Imported from ITEM LIST.xlsx row 535. Variant/size: 250 METRES. Base unit: ROLL.",
   },
@@ -4890,7 +4887,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "IL-0536",
     name: "KITCHEN SINK BOWL ONLY - 500 X 500MM",
     categoryId: "fddc11d8-fdee-5124-a7d2-41d6a52b553b",
-    unit: EProductUnit.Piece,
+
     retailPrice: 1050.0,
     description: "Imported from ITEM LIST.xlsx row 536. Variant/size: 500 X 500MM. Base unit: PC.",
   },
@@ -4899,7 +4896,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "IL-0537",
     name: "K.SINK S.B.S.D - 800X400MM",
     categoryId: "fddc11d8-fdee-5124-a7d2-41d6a52b553b",
-    unit: EProductUnit.Piece,
+
     retailPrice: 1150.0,
     description: "Imported from ITEM LIST.xlsx row 537. Variant/size: 800X400MM. Base unit: PC.",
   },
@@ -4908,7 +4905,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "IL-0538",
     name: "K.SINK D.B.S.D - 1200X500MM",
     categoryId: "fddc11d8-fdee-5124-a7d2-41d6a52b553b",
-    unit: EProductUnit.Piece,
+
     retailPrice: 3500.0,
     description: "Imported from ITEM LIST.xlsx row 538. Variant/size: 1200X500MM. Base unit: PC.",
   },
@@ -4917,7 +4914,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "IL-0539",
     name: "K.SINK D.B.D.D - 1500X500MM",
     categoryId: "fddc11d8-fdee-5124-a7d2-41d6a52b553b",
-    unit: EProductUnit.Piece,
+
     retailPrice: 4000.0,
     description: "Imported from ITEM LIST.xlsx row 539. Variant/size: 1500X500MM. Base unit: PC.",
   },
@@ -4926,7 +4923,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "IL-0540",
     name: "SPRINKLER ZINC ALLOY - 9704",
     categoryId: "a826b428-68f6-5737-9b2e-f37b2737f77a",
-    unit: EProductUnit.Piece,
+
     retailPrice: 380.0,
     description: "Imported from ITEM LIST.xlsx row 540. Variant/size: 9704. Base unit: PC.",
   },
@@ -4935,7 +4932,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "IL-0541",
     name: "SPRINKLER PLASTIC HEAVY - HEART",
     categoryId: "a826b428-68f6-5737-9b2e-f37b2737f77a",
-    unit: EProductUnit.Piece,
+
     retailPrice: 55.0,
     description: "Imported from ITEM LIST.xlsx row 541. Variant/size: HEART. Base unit: PC.",
   },
@@ -4944,7 +4941,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "SJTP",
     name: "SPRINKLER PLASTIC JET TYPE - CARD PACK",
     categoryId: "a826b428-68f6-5737-9b2e-f37b2737f77a",
-    unit: EProductUnit.Piece,
+
     retailPrice: 140.0,
     description: "Imported from ITEM LIST.xlsx row 542. Variant/size: CARD PACK. Base unit: PC.",
   },
@@ -4953,7 +4950,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "IL-0543",
     name: "PLASTIC SPIKES - YELLOW #9708",
     categoryId: "a826b428-68f6-5737-9b2e-f37b2737f77a",
-    unit: EProductUnit.Piece,
+
     retailPrice: 50.0,
     description: "Imported from ITEM LIST.xlsx row 543. Variant/size: YELLOW #9708. Base unit: PC.",
   },
@@ -4962,7 +4959,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "IL-0544",
     name: "PLASTIC SPIKES - GREEN #9709",
     categoryId: "a826b428-68f6-5737-9b2e-f37b2737f77a",
-    unit: EProductUnit.Piece,
+
     retailPrice: 50.0,
     description: "Imported from ITEM LIST.xlsx row 544. Variant/size: GREEN #9709. Base unit: PC.",
   },
@@ -4971,7 +4968,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "BW400",
     name: "SKY BOSS WHITE - 400GRAMS",
     categoryId: "e3c05ee7-d758-52a3-94b6-4c6475842be3",
-    unit: EProductUnit.Pack,
+
     retailPrice: 85.0,
     manufacturer: "Sky Boss",
     description: "Imported from ITEM LIST.xlsx row 545. Variant/size: 400GRAMS. Base unit: TIN.",
@@ -4981,7 +4978,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "BW200",
     name: "SKY BOSS WHITE - 200GRAMS",
     categoryId: "e3c05ee7-d758-52a3-94b6-4c6475842be3",
-    unit: EProductUnit.Pack,
+
     retailPrice: 55.0,
     manufacturer: "Sky Boss",
     description: "Imported from ITEM LIST.xlsx row 546. Variant/size: 200GRAMS. Base unit: TIN.",
@@ -4991,7 +4988,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "SGL",
     name: "SILICON GUN LIGHT DUTY BLUE - 9845",
     categoryId: "f1ea9b90-053e-59e6-b3c1-1c1dc1addc95",
-    unit: EProductUnit.Piece,
+
     retailPrice: 150.0,
     description: "Imported from ITEM LIST.xlsx row 547. Variant/size: 9845. Base unit: PC.",
   },
@@ -5000,7 +4997,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "SGH",
     name: "SILICON GUN MEDIUM DUTY ORANGE - 9669",
     categoryId: "f1ea9b90-053e-59e6-b3c1-1c1dc1addc95",
-    unit: EProductUnit.Piece,
+
     retailPrice: 160.0,
     description: "Imported from ITEM LIST.xlsx row 548. Variant/size: 9669. Base unit: PC.",
   },
@@ -5009,7 +5006,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "IL-0549",
     name: "OXIDES - BLACK - 12PKTS/CTN",
     categoryId: "74184d9d-0b66-59f3-8c62-d927da338197",
-    unit: EProductUnit.Pack,
+
     retailPrice: 0.0,
     packSize: 12,
     description: "Imported from ITEM LIST.xlsx row 549. Variant/size: BLACK / 12PKTS/CTN. Packing/measurement: 12PKTS/CTN. Base unit: PKT. Unit/measure: PKT.",
@@ -5019,7 +5016,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "IL-0550",
     name: "OXIDES - YELLOW - 12PKTS/CTN",
     categoryId: "74184d9d-0b66-59f3-8c62-d927da338197",
-    unit: EProductUnit.Pack,
+
     retailPrice: 0.0,
     packSize: 12,
     description: "Imported from ITEM LIST.xlsx row 550. Variant/size: YELLOW / 12PKTS/CTN. Packing/measurement: 12PKTS/CTN. Base unit: PKT. Unit/measure: PKT.",
@@ -5029,7 +5026,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "IL-0551",
     name: "OXIDES - RED - 12PKTS/CTN",
     categoryId: "74184d9d-0b66-59f3-8c62-d927da338197",
-    unit: EProductUnit.Pack,
+
     retailPrice: 0.0,
     packSize: 12,
     description: "Imported from ITEM LIST.xlsx row 551. Variant/size: RED / 12PKTS/CTN. Packing/measurement: 12PKTS/CTN. Base unit: PKT. Unit/measure: PKT.",
@@ -5039,7 +5036,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "IL-0552",
     name: "OXIDES - GREEN - 12PKTS/CTN",
     categoryId: "74184d9d-0b66-59f3-8c62-d927da338197",
-    unit: EProductUnit.Pack,
+
     retailPrice: 0.0,
     packSize: 12,
     description: "Imported from ITEM LIST.xlsx row 552. Variant/size: GREEN / 12PKTS/CTN. Packing/measurement: 12PKTS/CTN. Base unit: PKT. Unit/measure: PKT.",
@@ -5049,7 +5046,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "IL-0553",
     name: "OXIDES - BLUE - 12PKTS/CTN",
     categoryId: "74184d9d-0b66-59f3-8c62-d927da338197",
-    unit: EProductUnit.Pack,
+
     retailPrice: 0.0,
     packSize: 12,
     description: "Imported from ITEM LIST.xlsx row 553. Variant/size: BLUE / 12PKTS/CTN. Packing/measurement: 12PKTS/CTN. Base unit: PKT. Unit/measure: PKT.",
@@ -5059,7 +5056,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "IL-0554",
     name: "OXIDES - GREY - 12PKTS/CTN",
     categoryId: "74184d9d-0b66-59f3-8c62-d927da338197",
-    unit: EProductUnit.Pack,
+
     retailPrice: 0.0,
     packSize: 12,
     description: "Imported from ITEM LIST.xlsx row 554. Variant/size: GREY / 12PKTS/CTN. Packing/measurement: 12PKTS/CTN. Base unit: PKT. Unit/measure: PKT.",
@@ -5069,7 +5066,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "IL-0555",
     name: "CONTA - 50ML",
     categoryId: "e3c05ee7-d758-52a3-94b6-4c6475842be3",
-    unit: EProductUnit.Piece,
+
     retailPrice: 100.0,
     packSize: 36,
     manufacturer: "Conta",
@@ -5080,7 +5077,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "IL-0556",
     name: "CONTA - 100ML",
     categoryId: "e3c05ee7-d758-52a3-94b6-4c6475842be3",
-    unit: EProductUnit.Piece,
+
     retailPrice: 210.0,
     packSize: 24,
     manufacturer: "Conta",
@@ -5091,7 +5088,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "C250",
     name: "CONTA - 250 GRAMS",
     categoryId: "e3c05ee7-d758-52a3-94b6-4c6475842be3",
-    unit: EProductUnit.Piece,
+
     retailPrice: 315.0,
     packSize: 24,
     manufacturer: "Conta",
@@ -5102,7 +5099,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "C500",
     name: "CONTA - 500 GRAMS",
     categoryId: "e3c05ee7-d758-52a3-94b6-4c6475842be3",
-    unit: EProductUnit.Piece,
+
     retailPrice: 530.0,
     packSize: 24,
     manufacturer: "Conta",
@@ -5113,7 +5110,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "C1000",
     name: "CONTA - 1 LITRE",
     categoryId: "e3c05ee7-d758-52a3-94b6-4c6475842be3",
-    unit: EProductUnit.Piece,
+
     retailPrice: 1100.0,
     packSize: 12,
     manufacturer: "Conta",
@@ -5124,7 +5121,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "C4",
     name: "CONTA - 4 LITRE",
     categoryId: "e3c05ee7-d758-52a3-94b6-4c6475842be3",
-    unit: EProductUnit.Piece,
+
     retailPrice: 3600.0,
     packSize: 4,
     manufacturer: "Conta",
@@ -5135,7 +5132,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "IL-0561",
     name: "CONTA - 20 LITRE",
     categoryId: "e3c05ee7-d758-52a3-94b6-4c6475842be3",
-    unit: EProductUnit.Piece,
+
     retailPrice: 13000.0,
     packSize: 1,
     manufacturer: "Conta",
@@ -5146,7 +5143,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "PP250",
     name: "PONAL PROFFESSIONAL - 250 GRAMS",
     categoryId: "e3c05ee7-d758-52a3-94b6-4c6475842be3",
-    unit: EProductUnit.Piece,
+
     retailPrice: 180.0,
     packSize: 24,
     manufacturer: "Ponal",
@@ -5157,7 +5154,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "PP500",
     name: "PONAL PROFFESSIONAL - 500 GRAMS",
     categoryId: "e3c05ee7-d758-52a3-94b6-4c6475842be3",
-    unit: EProductUnit.Piece,
+
     retailPrice: 350.0,
     packSize: 24,
     manufacturer: "Ponal",
@@ -5168,7 +5165,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "PP1000",
     name: "PONAL PROFFESSIONAL - 1 KG",
     categoryId: "e3c05ee7-d758-52a3-94b6-4c6475842be3",
-    unit: EProductUnit.Piece,
+
     retailPrice: 580.0,
     packSize: 12,
     manufacturer: "Ponal",
@@ -5179,7 +5176,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "IL-0565",
     name: "PONAL PROFFESSIONAL - 4KGS",
     categoryId: "e3c05ee7-d758-52a3-94b6-4c6475842be3",
-    unit: EProductUnit.Piece,
+
     retailPrice: 2050.0,
     packSize: 4,
     manufacturer: "Ponal",
@@ -5190,7 +5187,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "T50",
     name: "TANGIT - 50 GRAMS",
     categoryId: "e3c05ee7-d758-52a3-94b6-4c6475842be3",
-    unit: EProductUnit.Piece,
+
     retailPrice: 170.0,
     packSize: 36,
     manufacturer: "Tangit",
@@ -5201,7 +5198,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "T100",
     name: "TANGIT - 100 GRAMS",
     categoryId: "e3c05ee7-d758-52a3-94b6-4c6475842be3",
-    unit: EProductUnit.Piece,
+
     retailPrice: 270.0,
     packSize: 30,
     manufacturer: "Tangit",
@@ -5212,7 +5209,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "T250",
     name: "TANGIT - 250 GRAMS",
     categoryId: "e3c05ee7-d758-52a3-94b6-4c6475842be3",
-    unit: EProductUnit.Piece,
+
     retailPrice: 480.0,
     packSize: 24,
     manufacturer: "Tangit",
@@ -5223,7 +5220,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "T500",
     name: "TANGIT - 500 GRAMS",
     categoryId: "e3c05ee7-d758-52a3-94b6-4c6475842be3",
-    unit: EProductUnit.Piece,
+
     retailPrice: 800.0,
     packSize: 24,
     manufacturer: "Tangit",
@@ -5234,7 +5231,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "T1000",
     name: "TANGIT - 1 KG",
     categoryId: "e3c05ee7-d758-52a3-94b6-4c6475842be3",
-    unit: EProductUnit.Piece,
+
     retailPrice: 1380.0,
     packSize: 12,
     manufacturer: "Tangit",
@@ -5245,7 +5242,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "IL-0571",
     name: "PATTEX - 50G",
     categoryId: "e3c05ee7-d758-52a3-94b6-4c6475842be3",
-    unit: EProductUnit.Piece,
+
     retailPrice: 160.0,
     packSize: 60,
     manufacturer: "Pattex",
@@ -5256,7 +5253,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "P500",
     name: "PATTEX - 500 GRAMS",
     categoryId: "e3c05ee7-d758-52a3-94b6-4c6475842be3",
-    unit: EProductUnit.Piece,
+
     retailPrice: 570.0,
     packSize: 24,
     manufacturer: "Pattex",
@@ -5267,7 +5264,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "P1000",
     name: "PATTEX - 1 LITRE",
     categoryId: "e3c05ee7-d758-52a3-94b6-4c6475842be3",
-    unit: EProductUnit.Piece,
+
     retailPrice: 1100.0,
     packSize: 12,
     manufacturer: "Pattex",
@@ -5278,7 +5275,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "P4",
     name: "PATTEX - 4 LITRE",
     categoryId: "e3c05ee7-d758-52a3-94b6-4c6475842be3",
-    unit: EProductUnit.Piece,
+
     retailPrice: 3650.0,
     packSize: 4,
     manufacturer: "Pattex",
@@ -5289,7 +5286,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "IL-0575",
     name: "PATTEX - 20 LITRE",
     categoryId: "e3c05ee7-d758-52a3-94b6-4c6475842be3",
-    unit: EProductUnit.Piece,
+
     retailPrice: 13000.0,
     packSize: 1,
     manufacturer: "Pattex",
@@ -5300,7 +5297,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "IL-0576",
     name: "PATTEX SILICONE 280ML - BLACK - 24PCS/CTN",
     categoryId: "e3c05ee7-d758-52a3-94b6-4c6475842be3",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     packSize: 24,
     manufacturer: "Pattex",
@@ -5311,7 +5308,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "IL-0577",
     name: "PATTEX SILICONE 280ML - WHITE - 24PCS/CTN",
     categoryId: "e3c05ee7-d758-52a3-94b6-4c6475842be3",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     packSize: 24,
     manufacturer: "Pattex",
@@ -5322,7 +5319,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "IL-0578",
     name: "PATTEX SILICONE 280ML - TRANSPARENT - 24PCS/CTN",
     categoryId: "e3c05ee7-d758-52a3-94b6-4c6475842be3",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     packSize: 24,
     manufacturer: "Pattex",
@@ -5333,7 +5330,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "IL-0581",
     name: "METAL CUTTING DISCS - 115X3.2X22.2MM",
     categoryId: "6f1a519b-6735-58ca-ab44-32c0ba69a6ef",
-    unit: EProductUnit.Piece,
+
     retailPrice: 50.0,
     packSize: 200,
     description: 'Imported from ITEM LIST.xlsx row 581. Variant/size: 115X3.2X22.2MM. Base unit: 200. Unit/measure: 4-1/2".',
@@ -5343,7 +5340,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "IL-0582",
     name: "METAL CUTTING DISCS - 180X3.2X22.2MM",
     categoryId: "6f1a519b-6735-58ca-ab44-32c0ba69a6ef",
-    unit: EProductUnit.Piece,
+
     retailPrice: 25.0,
     packSize: 100,
     description: 'Imported from ITEM LIST.xlsx row 582. Variant/size: 180X3.2X22.2MM. Base unit: 100. Unit/measure: 7".',
@@ -5353,7 +5350,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "IL-0583",
     name: "METAL CUTTING DISCS - 230X3.2X22.2MM",
     categoryId: "6f1a519b-6735-58ca-ab44-32c0ba69a6ef",
-    unit: EProductUnit.Piece,
+
     retailPrice: 25.0,
     packSize: 50,
     description: 'Imported from ITEM LIST.xlsx row 583. Variant/size: 230X3.2X22.2MM. Base unit: 50. Unit/measure: 9".',
@@ -5363,7 +5360,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "IL-0585",
     name: "METAL GRINDING DISCS - 180X6.4X22.2MM",
     categoryId: "c0819a94-c34d-52ee-9edb-6eca1a61164c",
-    unit: EProductUnit.Piece,
+
     retailPrice: 15.0,
     packSize: 60,
     description: 'Imported from ITEM LIST.xlsx row 585. Variant/size: 180X6.4X22.2MM. Base unit: 60. Unit/measure: 7".',
@@ -5373,7 +5370,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "IL-0586",
     name: "METAL GRINDING DISCS - 230X6.4X22.2MM",
     categoryId: "c0819a94-c34d-52ee-9edb-6eca1a61164c",
-    unit: EProductUnit.Piece,
+
     retailPrice: 10.0,
     packSize: 30,
     description: 'Imported from ITEM LIST.xlsx row 586. Variant/size: 230X6.4X22.2MM. Base unit: 30. Unit/measure: 9".',
@@ -5383,7 +5380,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "DC4.5",
     name: "DIAMOND CUTTING - 4.5X10MM",
     categoryId: "6f1a519b-6735-58ca-ab44-32c0ba69a6ef",
-    unit: EProductUnit.Piece,
+
     retailPrice: 250.0,
     description: "Imported from ITEM LIST.xlsx row 587. Variant/size: 4.5X10MM. Base unit: PC.",
   },
@@ -5392,7 +5389,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "DC7",
     name: "DIAMOND CUTTING - 7X10MM",
     categoryId: "6f1a519b-6735-58ca-ab44-32c0ba69a6ef",
-    unit: EProductUnit.Piece,
+
     retailPrice: 500.0,
     description: "Imported from ITEM LIST.xlsx row 588. Variant/size: 7X10MM. Base unit: PC.",
   },
@@ -5401,7 +5398,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "DC9",
     name: "DIAMOND CUTTING - 9X10MM",
     categoryId: "6f1a519b-6735-58ca-ab44-32c0ba69a6ef",
-    unit: EProductUnit.Piece,
+
     retailPrice: 800.0,
     description: "Imported from ITEM LIST.xlsx row 589. Variant/size: 9X10MM. Base unit: PC.",
   },
@@ -5410,7 +5407,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "DLSS",
     name: "DRAWER LOCK SPIDER SINGLE TURN - RMP",
     categoryId: "edacd144-a7e3-520a-935b-2759cd127209",
-    unit: EProductUnit.Piece,
+
     retailPrice: 180.0,
     manufacturer: "Spider",
     description: "Imported from ITEM LIST.xlsx row 591. Variant/size: RMP. Base unit: PC.",
@@ -5420,7 +5417,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "DLSD",
     name: "DRAWER LOCK SPIDER DOUBLE TURN - UMP",
     categoryId: "edacd144-a7e3-520a-935b-2759cd127209",
-    unit: EProductUnit.Piece,
+
     retailPrice: 200.0,
     manufacturer: "Spider",
     description: "Imported from ITEM LIST.xlsx row 592. Variant/size: UMP. Base unit: PC.",
@@ -5430,7 +5427,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "IL-0594",
     name: 'JK FLAT FILE MILL BASTARD TSE - TSE - 6"',
     categoryId: "ff68f66d-c904-5572-8e66-bcf275602741",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     packSize: 6,
     manufacturer: "JK",
@@ -5441,7 +5438,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "JK8",
     name: 'JK FLAT FILE MILL BASTARD TSE - TSE - 8"',
     categoryId: "ff68f66d-c904-5572-8e66-bcf275602741",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     packSize: 8,
     manufacturer: "JK",
@@ -5452,7 +5449,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "JK10",
     name: 'JK FLAT FILE MILL BASTARD TSE - TSE - 10"',
     categoryId: "ff68f66d-c904-5572-8e66-bcf275602741",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     packSize: 10,
     manufacturer: "JK",
@@ -5463,7 +5460,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "JK12",
     name: 'JK FLAT FILE MILL BASTARD TSE - TSE - 12"',
     categoryId: "ff68f66d-c904-5572-8e66-bcf275602741",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     packSize: 12,
     manufacturer: "JK",
@@ -5474,7 +5471,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "RF8",
     name: 'JK FILE ROUND BASTARD - BASTARD - 8"',
     categoryId: "ff68f66d-c904-5572-8e66-bcf275602741",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     packSize: 8,
     manufacturer: "JK",
@@ -5485,7 +5482,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "IL-0599",
     name: 'JK FILE ROUND BASTARD - BASTARD - 10"',
     categoryId: "ff68f66d-c904-5572-8e66-bcf275602741",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     packSize: 10,
     manufacturer: "JK",
@@ -5496,7 +5493,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "PLY6",
     name: "6 Ply",
     categoryId: "283bd5ee-df29-5c45-8874-4dddd29a6143",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 1. Category: WOOD / BOARDS / DOORS. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -5505,7 +5502,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "PLY9",
     name: "9 PLY",
     categoryId: "283bd5ee-df29-5c45-8874-4dddd29a6143",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 2. Category: WOOD / BOARDS / DOORS. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -5514,7 +5511,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "A480",
     name: "Abyssinia 480",
     categoryId: "63852482-e02e-5a7b-b26d-a55ef8f734f4",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 3. Category: FENCING MATERIAL. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -5523,7 +5520,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "A610",
     name: "Abyssinia 610",
     categoryId: "63852482-e02e-5a7b-b26d-a55ef8f734f4",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 4. Category: FENCING MATERIAL. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -5532,7 +5529,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "AL11214",
     name: "Angle Line 1 1/2*1/4",
     categoryId: "772b30b0-697e-570a-a260-756d74a0929b",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 5. Category: STEEL / METAL. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -5541,7 +5538,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "AL11218",
     name: "Angle Line 1 1/2*1/8",
     categoryId: "772b30b0-697e-570a-a260-756d74a0929b",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 6. Category: STEEL / METAL. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -5550,7 +5547,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "AL118",
     name: "Angle Line 1*1/8",
     categoryId: "772b30b0-697e-570a-a260-756d74a0929b",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 7. Category: STEEL / METAL. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -5559,7 +5556,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "AL218",
     name: "Angle Line 2*1/8",
     categoryId: "772b30b0-697e-570a-a260-756d74a0929b",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 8. Category: STEEL / METAL. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -5568,7 +5565,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "AST",
     name: "Asian Step Toilet",
     categoryId: "ccc45332-e8ae-5cca-8670-158fd1ee40e0",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 9. Category: PLUMBING / SANITARY. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -5577,7 +5574,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "AT",
     name: "Asian Toilet",
     categoryId: "ccc45332-e8ae-5cca-8670-158fd1ee40e0",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 10. Category: PLUMBING / SANITARY. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -5586,7 +5583,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "BFR1",
     name: "Basco Floor Red 1ltr",
     categoryId: "3c03fe75-8e49-582b-b553-7ef8cbfd0c94",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 11. Category: PAINT / COATINGS. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -5595,7 +5592,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "BFR4",
     name: "Basco Floor Red 4ltrs",
     categoryId: "3c03fe75-8e49-582b-b553-7ef8cbfd0c94",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 12. Category: PAINT / COATINGS. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -5604,7 +5601,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "BFBB1",
     name: "Basco PF Bermuda Blue 1ltr",
     categoryId: "3c03fe75-8e49-582b-b553-7ef8cbfd0c94",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 13. Category: PAINT / COATINGS. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -5613,7 +5610,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "BFBB4",
     name: "Basco PF Bermuda Blue 4ltr",
     categoryId: "3c03fe75-8e49-582b-b553-7ef8cbfd0c94",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 14. Category: PAINT / COATINGS. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -5622,7 +5619,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "BFBR4",
     name: "Basco PF Brick Red 4ltrs",
     categoryId: "3c03fe75-8e49-582b-b553-7ef8cbfd0c94",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 15. Category: PAINT / COATINGS. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -5631,7 +5628,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "BFCP4",
     name: "Basco PF Caterpillar 4Ltr",
     categoryId: "3c03fe75-8e49-582b-b553-7ef8cbfd0c94",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 16. Category: PAINT / COATINGS. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -5640,7 +5637,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "BFC1",
     name: "Basco PF Cream 1ltr",
     categoryId: "3c03fe75-8e49-582b-b553-7ef8cbfd0c94",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 17. Category: PAINT / COATINGS. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -5649,7 +5646,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "BFC20",
     name: "Basco PF Cream 20Ltr",
     categoryId: "3c03fe75-8e49-582b-b553-7ef8cbfd0c94",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 18. Category: PAINT / COATINGS. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -5658,7 +5655,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "BFC4",
     name: "Basco PF Cream 4Ltr",
     categoryId: "3c03fe75-8e49-582b-b553-7ef8cbfd0c94",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 19. Category: PAINT / COATINGS. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -5667,7 +5664,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "BFDG4",
     name: "Basco PF Dove Grey 4ltr",
     categoryId: "3c03fe75-8e49-582b-b553-7ef8cbfd0c94",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 20. Category: PAINT / COATINGS. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -5676,7 +5673,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "BFPP1",
     name: "Basco PF Powder Pink 1ltr",
     categoryId: "3c03fe75-8e49-582b-b553-7ef8cbfd0c94",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 21. Category: PAINT / COATINGS. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -5685,7 +5682,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "BFPP4",
     name: "Basco PF Powder Pink 4ltr",
     categoryId: "3c03fe75-8e49-582b-b553-7ef8cbfd0c94",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 22. Category: PAINT / COATINGS. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -5694,7 +5691,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "BFSW4",
     name: "Basco PF Soft White 4ltr",
     categoryId: "3c03fe75-8e49-582b-b553-7ef8cbfd0c94",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 23. Category: PAINT / COATINGS. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -5703,7 +5700,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "BFT4",
     name: "Basco PF Tango 4ltrs",
     categoryId: "3c03fe75-8e49-582b-b553-7ef8cbfd0c94",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 24. Category: PAINT / COATINGS. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -5712,7 +5709,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "BFW1",
     name: "Basco PF White 1ltr",
     categoryId: "3c03fe75-8e49-582b-b553-7ef8cbfd0c94",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 25. Category: PAINT / COATINGS. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -5721,7 +5718,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "BFW20",
     name: "Basco PF White 20ltrs",
     categoryId: "3c03fe75-8e49-582b-b553-7ef8cbfd0c94",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 26. Category: PAINT / COATINGS. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -5730,7 +5727,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "BFW4",
     name: "Basco PF White 4Ltr",
     categoryId: "3c03fe75-8e49-582b-b553-7ef8cbfd0c94",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 27. Category: PAINT / COATINGS. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -5739,7 +5736,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "BGBB1/2",
     name: "Basco PG Bermuda Blue 1/2",
     categoryId: "3c03fe75-8e49-582b-b553-7ef8cbfd0c94",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 28. Category: PAINT / COATINGS. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -5748,7 +5745,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "BGBB1/4",
     name: "Basco PG Bermuda Blue 1/4",
     categoryId: "3c03fe75-8e49-582b-b553-7ef8cbfd0c94",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 29. Category: PAINT / COATINGS. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -5757,7 +5754,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "BGBB1",
     name: "Basco PG Bermuda Blue 1Ltr",
     categoryId: "3c03fe75-8e49-582b-b553-7ef8cbfd0c94",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 30. Category: PAINT / COATINGS. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -5766,7 +5763,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "BGBB4",
     name: "Basco PG Bermuda Blue 4ltrs",
     categoryId: "3c03fe75-8e49-582b-b553-7ef8cbfd0c94",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 31. Category: PAINT / COATINGS. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -5775,7 +5772,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "BGB1/2",
     name: "Basco PG Black 1/2ltr",
     categoryId: "3c03fe75-8e49-582b-b553-7ef8cbfd0c94",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 32. Category: PAINT / COATINGS. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -5784,7 +5781,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "BGB1/4",
     name: "Basco PG Black 1/4",
     categoryId: "3c03fe75-8e49-582b-b553-7ef8cbfd0c94",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 33. Category: PAINT / COATINGS. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -5793,7 +5790,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "BGB1",
     name: "Basco PG Black 1ltr",
     categoryId: "3c03fe75-8e49-582b-b553-7ef8cbfd0c94",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 34. Category: PAINT / COATINGS. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -5802,7 +5799,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "BGB4",
     name: "Basco PG Black 4ltrs",
     categoryId: "3c03fe75-8e49-582b-b553-7ef8cbfd0c94",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 35. Category: PAINT / COATINGS. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -5811,7 +5808,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "BGBM1",
     name: "Basco PG Black Matt 1ltr",
     categoryId: "3c03fe75-8e49-582b-b553-7ef8cbfd0c94",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 36. Category: PAINT / COATINGS. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -5820,7 +5817,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "BGBM4",
     name: "Basco PG Black Matt 4ltrs",
     categoryId: "3c03fe75-8e49-582b-b553-7ef8cbfd0c94",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 37. Category: PAINT / COATINGS. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -5829,7 +5826,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "BGBL4",
     name: "Basco PG Blue Lagoon 4ltrs",
     categoryId: "3c03fe75-8e49-582b-b553-7ef8cbfd0c94",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 38. Category: PAINT / COATINGS. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -5838,7 +5835,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "BGCP1",
     name: "Basco PG caterpillar 1ltr",
     categoryId: "3c03fe75-8e49-582b-b553-7ef8cbfd0c94",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 39. Category: PAINT / COATINGS. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -5847,7 +5844,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "BGCP4",
     name: "Basco PG Caterpillar 4ltr",
     categoryId: "3c03fe75-8e49-582b-b553-7ef8cbfd0c94",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 40. Category: PAINT / COATINGS. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -5856,7 +5853,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "BGCL1",
     name: "Basco PG CHocolate 1Ltrs",
     categoryId: "3c03fe75-8e49-582b-b553-7ef8cbfd0c94",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 41. Category: PAINT / COATINGS. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -5865,7 +5862,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "BGCL4",
     name: "Basco PG Chocolate 4Ltrs",
     categoryId: "3c03fe75-8e49-582b-b553-7ef8cbfd0c94",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 42. Category: PAINT / COATINGS. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -5874,7 +5871,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "BGC1",
     name: "Basco PG Cream 1ltr",
     categoryId: "3c03fe75-8e49-582b-b553-7ef8cbfd0c94",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 43. Category: PAINT / COATINGS. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -5883,7 +5880,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "BGC4",
     name: "Basco PG Cream 4ltrs",
     categoryId: "3c03fe75-8e49-582b-b553-7ef8cbfd0c94",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 44. Category: PAINT / COATINGS. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -5892,7 +5889,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "BGDB1/2",
     name: "Basco PG Deep Blue 1/2ltr",
     categoryId: "3c03fe75-8e49-582b-b553-7ef8cbfd0c94",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 45. Category: PAINT / COATINGS. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -5901,7 +5898,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "BGDB1",
     name: "Basco PG Deep Blue 1ltrs",
     categoryId: "3c03fe75-8e49-582b-b553-7ef8cbfd0c94",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 46. Category: PAINT / COATINGS. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -5910,7 +5907,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "BGDB4",
     name: "Basco PG Deep Blue 4ltrs",
     categoryId: "3c03fe75-8e49-582b-b553-7ef8cbfd0c94",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 47. Category: PAINT / COATINGS. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -5919,7 +5916,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "BGDB1/4",
     name: "Basco PG Deep Blue1/4",
     categoryId: "3c03fe75-8e49-582b-b553-7ef8cbfd0c94",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 48. Category: PAINT / COATINGS. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -5928,7 +5925,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "BGDG1",
     name: "Basco PG Dove Grey 1ltrs",
     categoryId: "3c03fe75-8e49-582b-b553-7ef8cbfd0c94",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 49. Category: PAINT / COATINGS. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -5937,7 +5934,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "BGDG4",
     name: "Basco PG Dove Grey 4ltrs",
     categoryId: "3c03fe75-8e49-582b-b553-7ef8cbfd0c94",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 50. Category: PAINT / COATINGS. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -5946,7 +5943,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "BGDUB1/2",
     name: "Basco PG Dutch Blue 1/2",
     categoryId: "3c03fe75-8e49-582b-b553-7ef8cbfd0c94",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 51. Category: PAINT / COATINGS. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -5955,7 +5952,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "BGDUB1/4",
     name: "Basco PG Dutch Blue 1/4",
     categoryId: "3c03fe75-8e49-582b-b553-7ef8cbfd0c94",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 52. Category: PAINT / COATINGS. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -5964,7 +5961,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "BGDUB1",
     name: "Basco PG Dutch Blue 1ltr",
     categoryId: "3c03fe75-8e49-582b-b553-7ef8cbfd0c94",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 53. Category: PAINT / COATINGS. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -5973,7 +5970,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "BGDUB4",
     name: "Basco PG Dutch Blue 4ltr",
     categoryId: "3c03fe75-8e49-582b-b553-7ef8cbfd0c94",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 54. Category: PAINT / COATINGS. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -5982,7 +5979,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "BGG1/2",
     name: "Basco PG Green 1/2",
     categoryId: "3c03fe75-8e49-582b-b553-7ef8cbfd0c94",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 55. Category: PAINT / COATINGS. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -5991,7 +5988,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "BGG1/4",
     name: "Basco PG Green 1/4",
     categoryId: "3c03fe75-8e49-582b-b553-7ef8cbfd0c94",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 56. Category: PAINT / COATINGS. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -6000,7 +5997,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "BGG1",
     name: "Basco PG Green 1ltr",
     categoryId: "3c03fe75-8e49-582b-b553-7ef8cbfd0c94",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 57. Category: PAINT / COATINGS. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -6009,7 +6006,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "BGG4",
     name: "Basco PG Green 4ltrs",
     categoryId: "3c03fe75-8e49-582b-b553-7ef8cbfd0c94",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 58. Category: PAINT / COATINGS. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -6018,7 +6015,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "BGGO4",
     name: "Basco PG Grey oxide 4ltrs",
     categoryId: "3c03fe75-8e49-582b-b553-7ef8cbfd0c94",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 59. Category: PAINT / COATINGS. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -6027,7 +6024,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "BGJG1",
     name: "Basco PG Jungle Green 1",
     categoryId: "3c03fe75-8e49-582b-b553-7ef8cbfd0c94",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 60. Category: PAINT / COATINGS. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -6036,7 +6033,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "BGJG4",
     name: "Basco PG Jungle Green 4ltrs",
     categoryId: "3c03fe75-8e49-582b-b553-7ef8cbfd0c94",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 61. Category: PAINT / COATINGS. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -6045,7 +6042,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "BGPP1",
     name: "Basco PG Powder Pink 1",
     categoryId: "3c03fe75-8e49-582b-b553-7ef8cbfd0c94",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 62. Category: PAINT / COATINGS. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -6054,7 +6051,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "BGPP1/2",
     name: "Basco PG Powder Pink 1/2",
     categoryId: "3c03fe75-8e49-582b-b553-7ef8cbfd0c94",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 63. Category: PAINT / COATINGS. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -6063,7 +6060,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "BGPP4",
     name: "Basco PG Powder Pink 4ltrs",
     categoryId: "3c03fe75-8e49-582b-b553-7ef8cbfd0c94",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 64. Category: PAINT / COATINGS. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -6072,7 +6069,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "BGRO1/2",
     name: "Basco PG Redoxide 1/2ltrs",
     categoryId: "3c03fe75-8e49-582b-b553-7ef8cbfd0c94",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 65. Category: PAINT / COATINGS. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -6081,7 +6078,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "BGRO1/4",
     name: "Basco PG Redoxide 1/4",
     categoryId: "3c03fe75-8e49-582b-b553-7ef8cbfd0c94",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 66. Category: PAINT / COATINGS. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -6090,7 +6087,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "BGRO1",
     name: "Basco PG Redoxide 1ltrs",
     categoryId: "3c03fe75-8e49-582b-b553-7ef8cbfd0c94",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 67. Category: PAINT / COATINGS. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -6099,7 +6096,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "BGRO4",
     name: "Basco PG Redoxide 4ltrs",
     categoryId: "3c03fe75-8e49-582b-b553-7ef8cbfd0c94",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 68. Category: PAINT / COATINGS. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -6108,7 +6105,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "BGRG1",
     name: "Basco PG Ripple Green 1ltrs",
     categoryId: "3c03fe75-8e49-582b-b553-7ef8cbfd0c94",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 69. Category: PAINT / COATINGS. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -6117,7 +6114,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "BGRG4",
     name: "Basco PG Ripple Green 4ltrs",
     categoryId: "3c03fe75-8e49-582b-b553-7ef8cbfd0c94",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 70. Category: PAINT / COATINGS. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -6126,7 +6123,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "BGRR1/2",
     name: "Basco PG Ruby Red 1/2ltr",
     categoryId: "3c03fe75-8e49-582b-b553-7ef8cbfd0c94",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 71. Category: PAINT / COATINGS. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -6135,7 +6132,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "BGRR1/4",
     name: "Basco PG Ruby Red 1/4",
     categoryId: "3c03fe75-8e49-582b-b553-7ef8cbfd0c94",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 72. Category: PAINT / COATINGS. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -6144,7 +6141,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "BGRR1",
     name: "Basco PG Ruby Red 1ltrs",
     categoryId: "3c03fe75-8e49-582b-b553-7ef8cbfd0c94",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 73. Category: PAINT / COATINGS. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -6153,7 +6150,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "BGRR4",
     name: "Basco PG Ruby Red 4ltrs",
     categoryId: "3c03fe75-8e49-582b-b553-7ef8cbfd0c94",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 74. Category: PAINT / COATINGS. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -6162,7 +6159,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "BGSG1/2",
     name: "Basco PG Safaricom Green 1/2 ltrs",
     categoryId: "3c03fe75-8e49-582b-b553-7ef8cbfd0c94",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 75. Category: PAINT / COATINGS. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -6171,7 +6168,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "BGSG1/4",
     name: "Basco PG Safaricom Green 1/4",
     categoryId: "3c03fe75-8e49-582b-b553-7ef8cbfd0c94",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 76. Category: PAINT / COATINGS. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -6180,7 +6177,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "BGSG1",
     name: "Basco PG Safaricom Green 1Ltrs",
     categoryId: "3c03fe75-8e49-582b-b553-7ef8cbfd0c94",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 77. Category: PAINT / COATINGS. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -6189,7 +6186,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "BGSG4",
     name: "Basco PG Safaricom Green 4Ltrs",
     categoryId: "3c03fe75-8e49-582b-b553-7ef8cbfd0c94",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 78. Category: PAINT / COATINGS. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -6198,7 +6195,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "BGS1/2",
     name: "Basco PG Silver 1/2",
     categoryId: "3c03fe75-8e49-582b-b553-7ef8cbfd0c94",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 79. Category: PAINT / COATINGS. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -6207,7 +6204,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "BGS1",
     name: "Basco PG silver 1ltrs",
     categoryId: "3c03fe75-8e49-582b-b553-7ef8cbfd0c94",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 80. Category: PAINT / COATINGS. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -6216,7 +6213,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "BGS4",
     name: "Basco PG Silver 4ltrs",
     categoryId: "3c03fe75-8e49-582b-b553-7ef8cbfd0c94",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 81. Category: PAINT / COATINGS. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -6225,7 +6222,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "BGSW4",
     name: "Basco PG Soft White 4Ltrs",
     categoryId: "3c03fe75-8e49-582b-b553-7ef8cbfd0c94",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 82. Category: PAINT / COATINGS. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -6234,7 +6231,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "BGSB4",
     name: "Basco PG Summer Blue 4ltrs",
     categoryId: "3c03fe75-8e49-582b-b553-7ef8cbfd0c94",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 83. Category: PAINT / COATINGS. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -6243,7 +6240,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "BGT1/2",
     name: "Basco PG Tango 1/2ltr",
     categoryId: "3c03fe75-8e49-582b-b553-7ef8cbfd0c94",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 84. Category: PAINT / COATINGS. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -6252,7 +6249,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "BGT1",
     name: "Basco PG Tango 1ltr",
     categoryId: "3c03fe75-8e49-582b-b553-7ef8cbfd0c94",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 85. Category: PAINT / COATINGS. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -6261,7 +6258,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "BGT4",
     name: "Basco PG Tango 4Ltrs",
     categoryId: "3c03fe75-8e49-582b-b553-7ef8cbfd0c94",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 86. Category: PAINT / COATINGS. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -6270,7 +6267,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "BGTY1/2",
     name: "Basco PG Tibet yellow 1/2ltr",
     categoryId: "3c03fe75-8e49-582b-b553-7ef8cbfd0c94",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 87. Category: PAINT / COATINGS. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -6279,7 +6276,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "BGTY1/4",
     name: "Basco PG Tibet yellow 1/4",
     categoryId: "3c03fe75-8e49-582b-b553-7ef8cbfd0c94",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 88. Category: PAINT / COATINGS. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -6288,7 +6285,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "BGTY1",
     name: "Basco PG Tibet Yellow 1ltrs",
     categoryId: "3c03fe75-8e49-582b-b553-7ef8cbfd0c94",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 89. Category: PAINT / COATINGS. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -6297,7 +6294,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "BGTY4",
     name: "Basco PG Tibet Yellow 4ltrs",
     categoryId: "3c03fe75-8e49-582b-b553-7ef8cbfd0c94",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 90. Category: PAINT / COATINGS. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -6306,7 +6303,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "BGTB1/2",
     name: "Basco PG True Blue 1/2ltr",
     categoryId: "3c03fe75-8e49-582b-b553-7ef8cbfd0c94",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 91. Category: PAINT / COATINGS. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -6315,7 +6312,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "BGTB1/4",
     name: "Basco PG True Blue 1/4",
     categoryId: "3c03fe75-8e49-582b-b553-7ef8cbfd0c94",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 92. Category: PAINT / COATINGS. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -6324,7 +6321,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "BGTB1",
     name: "Basco PG True Blue 1ltr",
     categoryId: "3c03fe75-8e49-582b-b553-7ef8cbfd0c94",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 93. Category: PAINT / COATINGS. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -6333,7 +6330,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "BGTB4",
     name: "Basco PG True Blue 4ltrs",
     categoryId: "3c03fe75-8e49-582b-b553-7ef8cbfd0c94",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 94. Category: PAINT / COATINGS. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -6342,7 +6339,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "BGUC1",
     name: "Basco PG Under Coat 1ltr",
     categoryId: "3c03fe75-8e49-582b-b553-7ef8cbfd0c94",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 95. Category: PAINT / COATINGS. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -6351,7 +6348,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "BGUC4",
     name: "Basco PG Under Coat 4Ltr",
     categoryId: "3c03fe75-8e49-582b-b553-7ef8cbfd0c94",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 96. Category: PAINT / COATINGS. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -6360,7 +6357,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "BGW1/2",
     name: "Basco PG white 1/2ltr",
     categoryId: "3c03fe75-8e49-582b-b553-7ef8cbfd0c94",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 97. Category: PAINT / COATINGS. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -6369,7 +6366,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "BGW1/4",
     name: "Basco PG White 1/4",
     categoryId: "3c03fe75-8e49-582b-b553-7ef8cbfd0c94",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 98. Category: PAINT / COATINGS. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -6378,7 +6375,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "BGW1",
     name: "Basco PG White 1ltr",
     categoryId: "3c03fe75-8e49-582b-b553-7ef8cbfd0c94",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 99. Category: PAINT / COATINGS. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -6387,7 +6384,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "BGW4",
     name: "Basco PG White 4ltr",
     categoryId: "3c03fe75-8e49-582b-b553-7ef8cbfd0c94",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 100. Category: PAINT / COATINGS. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -6396,7 +6393,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "BRB4",
     name: "Basco Roof Blue 4Ltrs",
     categoryId: "3c03fe75-8e49-582b-b553-7ef8cbfd0c94",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 101. Category: PAINT / COATINGS. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -6405,7 +6402,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "BRG4",
     name: "Basco Roof Green 4ltrs",
     categoryId: "3c03fe75-8e49-582b-b553-7ef8cbfd0c94",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 102. Category: PAINT / COATINGS. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -6414,7 +6411,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "BRR4",
     name: "Basco Roof Red 4ltrs",
     categoryId: "3c03fe75-8e49-582b-b553-7ef8cbfd0c94",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 103. Category: PAINT / COATINGS. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -6423,7 +6420,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "BSS1",
     name: "Basco Sanding Sealer 1",
     categoryId: "3c03fe75-8e49-582b-b553-7ef8cbfd0c94",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 104. Category: PAINT / COATINGS. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -6432,7 +6429,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "BSS1/2",
     name: "Basco Sanding Sealer 1/2",
     categoryId: "3c03fe75-8e49-582b-b553-7ef8cbfd0c94",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 105. Category: PAINT / COATINGS. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -6441,7 +6438,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "BSS4",
     name: "Basco Sanding Sealer 4",
     categoryId: "3c03fe75-8e49-582b-b553-7ef8cbfd0c94",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 106. Category: PAINT / COATINGS. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -6450,7 +6447,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "BSFC20",
     name: "Basco Superfast Cream_20ltr",
     categoryId: "3c03fe75-8e49-582b-b553-7ef8cbfd0c94",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 107. Category: PAINT / COATINGS. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -6459,7 +6456,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "BSFW20",
     name: "Basco Superfast White 20ltr",
     categoryId: "3c03fe75-8e49-582b-b553-7ef8cbfd0c94",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 108. Category: PAINT / COATINGS. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -6468,7 +6465,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "BSFW4",
     name: "Basco SuperFast White 4ltr",
     categoryId: "3c03fe75-8e49-582b-b553-7ef8cbfd0c94",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 109. Category: PAINT / COATINGS. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -6477,7 +6474,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "BVC1/2",
     name: "Basco Varnish Clear 1/2",
     categoryId: "3c03fe75-8e49-582b-b553-7ef8cbfd0c94",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 110. Category: PAINT / COATINGS. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -6486,7 +6483,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "BVC1/4",
     name: "Basco Varnish Clear 1/4ltr",
     categoryId: "3c03fe75-8e49-582b-b553-7ef8cbfd0c94",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 111. Category: PAINT / COATINGS. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -6495,7 +6492,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "BVC1",
     name: "Basco Varnish Clear 1ltr",
     categoryId: "3c03fe75-8e49-582b-b553-7ef8cbfd0c94",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 112. Category: PAINT / COATINGS. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -6504,7 +6501,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "BVC4",
     name: "Basco Varnish Clear 4ltrs",
     categoryId: "3c03fe75-8e49-582b-b553-7ef8cbfd0c94",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 113. Category: PAINT / COATINGS. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -6513,7 +6510,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "BVM1/2",
     name: "Basco Varnish Mahogany 1/2",
     categoryId: "3c03fe75-8e49-582b-b553-7ef8cbfd0c94",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 114. Category: PAINT / COATINGS. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -6522,7 +6519,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "BVM1/4",
     name: "Basco Varnish Mahogany 1/4",
     categoryId: "3c03fe75-8e49-582b-b553-7ef8cbfd0c94",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 115. Category: PAINT / COATINGS. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -6531,7 +6528,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "BVM1",
     name: "Basco Varnish Mahogany 1ltr",
     categoryId: "3c03fe75-8e49-582b-b553-7ef8cbfd0c94",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 116. Category: PAINT / COATINGS. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -6540,7 +6537,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "BVM4",
     name: "Basco Varnish Mahogany 4Ltr",
     categoryId: "3c03fe75-8e49-582b-b553-7ef8cbfd0c94",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 117. Category: PAINT / COATINGS. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -6549,7 +6546,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "BB",
     name: "Bed Bolt 50kg",
     categoryId: "106b8bb0-faeb-5876-b551-6e4d24423fcb",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 118. Category: HARDWARE / FASTENERS. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -6558,7 +6555,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "BW",
     name: "Binding Wire",
     categoryId: "f1ea9b90-053e-59e6-b3c1-1c1dc1addc95",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 119. Category: GENERAL / OTHER. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -6567,7 +6564,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "BP1",
     name: "Black Pipe 1",
     categoryId: "772b30b0-697e-570a-a260-756d74a0929b",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 120. Category: STEEL / METAL. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -6576,7 +6573,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "BP1.5",
     name: "Black Pipe 1 1/2",
     categoryId: "772b30b0-697e-570a-a260-756d74a0929b",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 121. Category: STEEL / METAL. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -6585,7 +6582,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "BP1.25",
     name: "Black Pipe 1 1/4",
     categoryId: "772b30b0-697e-570a-a260-756d74a0929b",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 122. Category: STEEL / METAL. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -6594,7 +6591,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "BP2",
     name: "Black Pipe 2",
     categoryId: "772b30b0-697e-570a-a260-756d74a0929b",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 123. Category: STEEL / METAL. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -6603,7 +6600,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "BP3",
     name: "Black Pipe 3",
     categoryId: "772b30b0-697e-570a-a260-756d74a0929b",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 124. Category: STEEL / METAL. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -6612,7 +6609,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "BP25",
     name: "Black Polythene 25Kg",
     categoryId: "f1ea9b90-053e-59e6-b3c1-1c1dc1addc95",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 125. Category: GENERAL / OTHER. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -6621,7 +6618,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "BP50",
     name: "black polythene 50kg",
     categoryId: "f1ea9b90-053e-59e6-b3c1-1c1dc1addc95",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 126. Category: GENERAL / OTHER. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -6630,7 +6627,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "BP",
     name: "Black Polythine",
     categoryId: "f1ea9b90-053e-59e6-b3c1-1c1dc1addc95",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 127. Category: GENERAL / OTHER. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -6639,7 +6636,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "BB3/4",
     name: "Block Board 3/4",
     categoryId: "283bd5ee-df29-5c45-8874-4dddd29a6143",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 128. Category: WOOD / BOARDS / DOORS. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -6648,7 +6645,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "BT1.5",
     name: "Bottle Trap 1 1/2",
     categoryId: "ccc45332-e8ae-5cca-8670-158fd1ee40e0",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 129. Category: PLUMBING / SANITARY. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -6657,7 +6654,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "BT1.25",
     name: "Bottle Trap 1 1/4",
     categoryId: "ccc45332-e8ae-5cca-8670-158fd1ee40e0",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 130. Category: PLUMBING / SANITARY. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -6666,7 +6663,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "BRCA142",
     name: "BRC A142",
     categoryId: "772b30b0-697e-570a-a260-756d74a0929b",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 131. Category: STEEL / METAL. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -6675,7 +6672,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "BRCA98",
     name: "BRC A98",
     categoryId: "772b30b0-697e-570a-a260-756d74a0929b",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 132. Category: STEEL / METAL. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -6684,7 +6681,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "CN1",
     name: "Ceiling Nails 1",
     categoryId: "1a846928-a148-545f-a582-3b7070ea6bcf",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 133. Category: NAILS. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -6693,7 +6690,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "CN1.5",
     name: "Ceiling Nails 1.5",
     categoryId: "1a846928-a148-545f-a582-3b7070ea6bcf",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 134. Category: NAILS. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -6702,7 +6699,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "CL4",
     name: "Chainlink 4Ft",
     categoryId: "63852482-e02e-5a7b-b26d-a55ef8f734f4",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 135. Category: FENCING. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -6711,7 +6708,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "CL4H",
     name: "Chainlink 4ft heavy",
     categoryId: "63852482-e02e-5a7b-b26d-a55ef8f734f4",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 136. Category: FENCING. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -6720,7 +6717,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "CL5",
     name: "Chainlink 5Ft",
     categoryId: "63852482-e02e-5a7b-b26d-a55ef8f734f4",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 137. Category: FENCING. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -6729,7 +6726,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "CL5H",
     name: "Chainlink 5ft Heavy",
     categoryId: "63852482-e02e-5a7b-b26d-a55ef8f734f4",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 138. Category: FENCING. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -6738,7 +6735,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "CL6",
     name: "Chainlink 6Ft",
     categoryId: "63852482-e02e-5a7b-b26d-a55ef8f734f4",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 139. Category: FENCING. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -6747,7 +6744,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "CL6H",
     name: "Chainlink 6FT Heavy",
     categoryId: "63852482-e02e-5a7b-b26d-a55ef8f734f4",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 140. Category: FENCING. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -6756,7 +6753,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "CP",
     name: "Checker Plate",
     categoryId: "772b30b0-697e-570a-a260-756d74a0929b",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 141. Category: STEEL / METAL. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -6765,7 +6762,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "CW1.5*3",
     name: "Chicken Wire 1 1/2*3",
     categoryId: "63852482-e02e-5a7b-b26d-a55ef8f734f4",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 142. Category: FENCING. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -6774,7 +6771,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "CW1.5*6",
     name: "Chicken Wire 1 1/2*6",
     categoryId: "63852482-e02e-5a7b-b26d-a55ef8f734f4",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 143. Category: FENCING. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -6783,7 +6780,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "CW1*3",
     name: "Chicken Wire 1*3",
     categoryId: "63852482-e02e-5a7b-b26d-a55ef8f734f4",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 144. Category: FENCING. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -6792,7 +6789,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "CW1*6",
     name: "Chicken Wire 1*6",
     categoryId: "63852482-e02e-5a7b-b26d-a55ef8f734f4",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 145. Category: FENCING. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -6801,7 +6798,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "CW1/2*3",
     name: "Chicken Wire 1/2*3",
     categoryId: "63852482-e02e-5a7b-b26d-a55ef8f734f4",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 146. Category: FENCING. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -6810,7 +6807,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "CW1/2*6",
     name: "Chicken Wire 1/2*6",
     categoryId: "63852482-e02e-5a7b-b26d-a55ef8f734f4",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 147. Category: FENCING. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -6819,7 +6816,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "CW3/4*3",
     name: "Chicken Wire 3/4*3",
     categoryId: "63852482-e02e-5a7b-b26d-a55ef8f734f4",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 148. Category: FENCING. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -6828,7 +6825,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "CW3/4*6",
     name: "Chicken Wire 3/4*6",
     categoryId: "63852482-e02e-5a7b-b26d-a55ef8f734f4",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 149. Category: FENCING. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -6837,7 +6834,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "CS1.5",
     name: "Chipboard screw 1 1/2(40mm)",
     categoryId: "106b8bb0-faeb-5876-b551-6e4d24423fcb",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 150. Category: HARDWARE / FASTENERS. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -6846,7 +6843,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "CS1.25",
     name: "Chipboard Screw 1 1/4(30mm)",
     categoryId: "106b8bb0-faeb-5876-b551-6e4d24423fcb",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 151. Category: HARDWARE / FASTENERS. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -6855,7 +6852,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "CS2",
     name: "Chipboard Screw 2 (50mm)",
     categoryId: "106b8bb0-faeb-5876-b551-6e4d24423fcb",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 152. Category: HARDWARE / FASTENERS. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -6864,7 +6861,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "CP1",
     name: "Chrome Pipe 1",
     categoryId: "f1ea9b90-053e-59e6-b3c1-1c1dc1addc95",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 153. Category: GENERAL / OTHER. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -6873,7 +6870,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "CP3/4",
     name: "Chrome Pipe 3/4",
     categoryId: "f1ea9b90-053e-59e6-b3c1-1c1dc1addc95",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 154. Category: GENERAL / OTHER. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -6882,7 +6879,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "CHL",
     name: "Cistern H/L",
     categoryId: "ccc45332-e8ae-5cca-8670-158fd1ee40e0",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 155. Category: PLUMBING / SANITARY. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -6891,7 +6888,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "CLL",
     name: "Cistern L/L",
     categoryId: "ccc45332-e8ae-5cca-8670-158fd1ee40e0",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 156. Category: PLUMBING / SANITARY. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -6900,7 +6897,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "CTW",
     name: "Coffee Tray Wire",
     categoryId: "63852482-e02e-5a7b-b26d-a55ef8f734f4",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 157. Category: FENCING. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -6909,7 +6906,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "C20H",
     name: "Conduit 20mm HG",
     categoryId: "9181252d-4b1f-5dad-a8e5-a79b2aa07f99",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 158. Category: ELECTRICAL. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -6918,7 +6915,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "C20L",
     name: "Conduit 20mm LG",
     categoryId: "9181252d-4b1f-5dad-a8e5-a79b2aa07f99",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 159. Category: ELECTRICAL. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -6927,7 +6924,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "C25H",
     name: "Conduit 25mm HG",
     categoryId: "9181252d-4b1f-5dad-a8e5-a79b2aa07f99",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 160. Category: ELECTRICAL. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -6936,7 +6933,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "C25L",
     name: "Conduit 25mm LG",
     categoryId: "9181252d-4b1f-5dad-a8e5-a79b2aa07f99",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 161. Category: ELECTRICAL. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -6945,7 +6942,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "C32H",
     name: "Conduit 32mm HG",
     categoryId: "9181252d-4b1f-5dad-a8e5-a79b2aa07f99",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 162. Category: ELECTRICAL. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -6954,7 +6951,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "CT",
     name: "CONSTRUCTION NET",
     categoryId: "4f1345d3-6c2f-5423-9192-3d60a89ac06d",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 163. Category: CEMENT / BUILDING MATERIALS. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -6963,7 +6960,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "C",
     name: "Cornice",
     categoryId: "283bd5ee-df29-5c45-8874-4dddd29a6143",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 164. Category: WOOD / BOARDS / DOORS. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -6972,7 +6969,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "CCC20",
     name: "Crown Covermatt Cream 20Ltr",
     categoryId: "3c03fe75-8e49-582b-b553-7ef8cbfd0c94",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 165. Category: PAINT / COATINGS. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -6981,7 +6978,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "CCW20",
     name: "Crown Covermatt White 20ltrs",
     categoryId: "3c03fe75-8e49-582b-b553-7ef8cbfd0c94",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 166. Category: PAINT / COATINGS. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -6990,7 +6987,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "CCW4",
     name: "Crown Covermatt White 4ltr",
     categoryId: "3c03fe75-8e49-582b-b553-7ef8cbfd0c94",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 167. Category: PAINT / COATINGS. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -6999,7 +6996,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "CFR4",
     name: "Crown Floor Red 4ltr",
     categoryId: "3c03fe75-8e49-582b-b553-7ef8cbfd0c94",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 168. Category: PAINT / COATINGS. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -7008,7 +7005,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "CGF",
     name: "CROWN GYPSUM FILLER",
     categoryId: "3c03fe75-8e49-582b-b553-7ef8cbfd0c94",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 169. Category: PAINT / COATINGS. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -7017,7 +7014,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "CFC20",
     name: "Crown PF Cream 20Ltr",
     categoryId: "3c03fe75-8e49-582b-b553-7ef8cbfd0c94",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 170. Category: PAINT / COATINGS. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -7026,7 +7023,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "CFC4",
     name: "Crown PF Cream 4ltrs",
     categoryId: "3c03fe75-8e49-582b-b553-7ef8cbfd0c94",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 171. Category: PAINT / COATINGS. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -7035,7 +7032,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "CFDP4",
     name: "Crown PF Dawn Pink 4Ltrs",
     categoryId: "3c03fe75-8e49-582b-b553-7ef8cbfd0c94",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 172. Category: PAINT / COATINGS. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -7044,7 +7041,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "CFPG4",
     name: "Crown PF Paris Grey 4ltrs",
     categoryId: "3c03fe75-8e49-582b-b553-7ef8cbfd0c94",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 173. Category: PAINT / COATINGS. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -7053,7 +7050,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "CFSW20",
     name: "Crown PF Soft White 20ltrs",
     categoryId: "3c03fe75-8e49-582b-b553-7ef8cbfd0c94",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 174. Category: PAINT / COATINGS. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -7062,7 +7059,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "CFW20",
     name: "Crown PF White 20ltr",
     categoryId: "3c03fe75-8e49-582b-b553-7ef8cbfd0c94",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 175. Category: PAINT / COATINGS. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -7071,7 +7068,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "CFW4",
     name: "Crown PF White 4ltr",
     categoryId: "3c03fe75-8e49-582b-b553-7ef8cbfd0c94",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 176. Category: PAINT / COATINGS. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -7080,7 +7077,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "CGBB4",
     name: "Crown PG Bermuda blue 4Ltrs",
     categoryId: "3c03fe75-8e49-582b-b553-7ef8cbfd0c94",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 177. Category: PAINT / COATINGS. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -7089,7 +7086,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "CGB4",
     name: "Crown PG Black 4ltrs",
     categoryId: "3c03fe75-8e49-582b-b553-7ef8cbfd0c94",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 178. Category: PAINT / COATINGS. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -7098,7 +7095,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "CGC4",
     name: "Crown PG Cream 4ltr",
     categoryId: "3c03fe75-8e49-582b-b553-7ef8cbfd0c94",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 179. Category: PAINT / COATINGS. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -7107,7 +7104,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "CGDP4",
     name: "Crown PG Dawn Pink 4ltr",
     categoryId: "3c03fe75-8e49-582b-b553-7ef8cbfd0c94",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 180. Category: PAINT / COATINGS. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -7116,7 +7113,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "CGRO4",
     name: "Crown PG Redoxide 4ltr",
     categoryId: "3c03fe75-8e49-582b-b553-7ef8cbfd0c94",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 181. Category: PAINT / COATINGS. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -7125,7 +7122,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "CGRB4",
     name: "Crown PG Royal Blue 4ltrs",
     categoryId: "3c03fe75-8e49-582b-b553-7ef8cbfd0c94",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 182. Category: PAINT / COATINGS. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -7134,7 +7131,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "CGSW4",
     name: "Crown PG Soft White 4ltr",
     categoryId: "3c03fe75-8e49-582b-b553-7ef8cbfd0c94",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 183. Category: PAINT / COATINGS. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -7143,7 +7140,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "CGT4",
     name: "Crown PG Tangrine 4ltr",
     categoryId: "3c03fe75-8e49-582b-b553-7ef8cbfd0c94",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 184. Category: PAINT / COATINGS. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -7152,7 +7149,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "CGTB4",
     name: "Crown PG True Blue 4ltr",
     categoryId: "3c03fe75-8e49-582b-b553-7ef8cbfd0c94",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 185. Category: PAINT / COATINGS. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -7161,7 +7158,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "CGUC4",
     name: "Crown PG U/Coat 4ltr",
     categoryId: "3c03fe75-8e49-582b-b553-7ef8cbfd0c94",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 186. Category: PAINT / COATINGS. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -7170,7 +7167,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "CGW4",
     name: "Crown PG White 4ltrs",
     categoryId: "3c03fe75-8e49-582b-b553-7ef8cbfd0c94",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 187. Category: PAINT / COATINGS. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -7179,7 +7176,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "CP-2",
     name: "Crown Polyfiller",
     categoryId: "3c03fe75-8e49-582b-b553-7ef8cbfd0c94",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 188. Category: PAINT / COATINGS. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -7188,7 +7185,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "CP25",
     name: "Crown Putty 25Kg",
     categoryId: "3c03fe75-8e49-582b-b553-7ef8cbfd0c94",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 189. Category: PAINT / COATINGS. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -7197,7 +7194,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "CP40",
     name: "Crown Putty 40kg",
     categoryId: "3c03fe75-8e49-582b-b553-7ef8cbfd0c94",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 190. Category: PAINT / COATINGS. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -7206,7 +7203,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "CRB4",
     name: "Crown Roof Blue 4ltrs",
     categoryId: "3c03fe75-8e49-582b-b553-7ef8cbfd0c94",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 191. Category: PAINT / COATINGS. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -7215,7 +7212,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "CRG4",
     name: "Crown Roof Green 4Ltrs",
     categoryId: "3c03fe75-8e49-582b-b553-7ef8cbfd0c94",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 192. Category: PAINT / COATINGS. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -7224,7 +7221,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "CRR4",
     name: "Crown Roof Red 4Ltr",
     categoryId: "3c03fe75-8e49-582b-b553-7ef8cbfd0c94",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 193. Category: PAINT / COATINGS. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -7233,7 +7230,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "CSGC4",
     name: "Crown SG Cream 4ltr",
     categoryId: "3c03fe75-8e49-582b-b553-7ef8cbfd0c94",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 194. Category: PAINT / COATINGS. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -7242,7 +7239,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "CSGW4",
     name: "Crown SG White 4Ltrs",
     categoryId: "3c03fe75-8e49-582b-b553-7ef8cbfd0c94",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 195. Category: PAINT / COATINGS. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -7251,7 +7248,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "CSC",
     name: "CROWN SKIMCOAT 25KG",
     categoryId: "3c03fe75-8e49-582b-b553-7ef8cbfd0c94",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 196. Category: PAINT / COATINGS. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -7260,7 +7257,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "CWP",
     name: "Crown Wall putty",
     categoryId: "3c03fe75-8e49-582b-b553-7ef8cbfd0c94",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 197. Category: PAINT / COATINGS. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -7269,7 +7266,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "CD7",
     name: "Cutting Disc 7",
     categoryId: "f1ea9b90-053e-59e6-b3c1-1c1dc1addc95",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 198. Category: GENERAL / OTHER. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -7278,7 +7275,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "CD9",
     name: "Cutting Disk 9",
     categoryId: "f1ea9b90-053e-59e6-b3c1-1c1dc1addc95",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 199. Category: GENERAL / OTHER. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -7287,7 +7284,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "D10",
     name: "D10",
     categoryId: "772b30b0-697e-570a-a260-756d74a0929b",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 200. Category: STEEL / METAL. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -7296,7 +7293,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "D12",
     name: "D12",
     categoryId: "772b30b0-697e-570a-a260-756d74a0929b",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 201. Category: STEEL / METAL. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -7305,7 +7302,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "D16",
     name: "D16",
     categoryId: "772b30b0-697e-570a-a260-756d74a0929b",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 202. Category: STEEL / METAL. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -7314,7 +7311,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "D20",
     name: "D20",
     categoryId: "772b30b0-697e-570a-a260-756d74a0929b",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 203. Category: STEEL / METAL. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -7323,7 +7320,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "D25",
     name: "D25",
     categoryId: "772b30b0-697e-570a-a260-756d74a0929b",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 204. Category: STEEL / METAL. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -7332,7 +7329,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "D8",
     name: "D8",
     categoryId: "772b30b0-697e-570a-a260-756d74a0929b",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 205. Category: STEEL / METAL. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -7341,7 +7338,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "D480",
     name: "Devki 480",
     categoryId: "63852482-e02e-5a7b-b26d-a55ef8f734f4",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 206. Category: FENCING MATERIAL. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -7350,7 +7347,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "D610",
     name: "Devki 610",
     categoryId: "63852482-e02e-5a7b-b26d-a55ef8f734f4",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 207. Category: FENCING MATERIAL. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -7359,7 +7356,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "DCW1.5*3",
     name: "DEVKI Chicken Wire 1.5*3",
     categoryId: "63852482-e02e-5a7b-b26d-a55ef8f734f4",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 208. Category: FENCING. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -7368,7 +7365,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "DLBG",
     name: "Door Lock Bathroom Gold",
     categoryId: "edacd144-a7e3-520a-935b-2759cd127209",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 209. Category: LOCKS. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -7377,7 +7374,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "DLBS",
     name: "Door Lock Bathroom Silver",
     categoryId: "edacd144-a7e3-520a-935b-2759cd127209",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 210. Category: LOCKS. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -7386,7 +7383,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "DLG",
     name: "Door Lock Gold",
     categoryId: "edacd144-a7e3-520a-935b-2759cd127209",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 211. Category: LOCKS. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -7395,7 +7392,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "DLMC",
     name: "DOOR LOCK MOMENT CYL",
     categoryId: "edacd144-a7e3-520a-935b-2759cd127209",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 212. Category: LOCKS. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -7404,7 +7401,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "DLS",
     name: "Door Lock Silver",
     categoryId: "edacd144-a7e3-520a-935b-2759cd127209",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 213. Category: LOCKS. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -7413,7 +7410,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "DLU",
     name: "Door Lock Union",
     categoryId: "edacd144-a7e3-520a-935b-2759cd127209",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 214. Category: LOCKS. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -7422,7 +7419,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "DS2*6",
     name: "Door Skin 2*6",
     categoryId: "772b30b0-697e-570a-a260-756d74a0929b",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 215. Category: STEEL / METAL. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -7431,7 +7428,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "DS3*6",
     name: "Door Skin 3*6",
     categoryId: "772b30b0-697e-570a-a260-756d74a0929b",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 216. Category: STEEL / METAL. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -7440,7 +7437,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "DPC",
     name: "DPC",
     categoryId: "4f1345d3-6c2f-5423-9192-3d60a89ac06d",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 217. Category: CEMENT / BUILDING MATERIALS. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -7449,7 +7446,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "DF1",
     name: "Dr Fixit 1ltr",
     categoryId: "4f1345d3-6c2f-5423-9192-3d60a89ac06d",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 218. Category: CEMENT / BUILDING MATERIALS. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -7458,7 +7455,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "DF20",
     name: "Dr Fixit 20ltr",
     categoryId: "4f1345d3-6c2f-5423-9192-3d60a89ac06d",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 219. Category: CEMENT / BUILDING MATERIALS. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -7467,7 +7464,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "DF5",
     name: "Dr Fixit 5ltr",
     categoryId: "4f1345d3-6c2f-5423-9192-3d60a89ac06d",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 220. Category: CEMENT / BUILDING MATERIALS. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -7476,7 +7473,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "DFP",
     name: "Dr Fixit Powder",
     categoryId: "4f1345d3-6c2f-5423-9192-3d60a89ac06d",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 221. Category: CEMENT / BUILDING MATERIALS. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -7485,7 +7482,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "ET",
     name: "English Toilet",
     categoryId: "ccc45332-e8ae-5cca-8670-158fd1ee40e0",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 222. Category: PLUMBING / SANITARY. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -7494,7 +7491,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "FP-2",
     name: "Fire Proof",
     categoryId: "4f1345d3-6c2f-5423-9192-3d60a89ac06d",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 223. Category: CEMENT / BUILDING MATERIALS. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -7503,7 +7500,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "F1",
     name: "Flat 1",
     categoryId: "772b30b0-697e-570a-a260-756d74a0929b",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 224. Category: STEEL / METAL. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -7512,7 +7509,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "F1.5",
     name: "Flat 1 1/2",
     categoryId: "772b30b0-697e-570a-a260-756d74a0929b",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 225. Category: STEEL / METAL. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -7521,7 +7518,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "F1.5*6",
     name: "Flat 1 1/2 * 6mm",
     categoryId: "772b30b0-697e-570a-a260-756d74a0929b",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 226. Category: STEEL / METAL. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -7530,7 +7527,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "F1*6",
     name: "Flat 1*1/4",
     categoryId: "772b30b0-697e-570a-a260-756d74a0929b",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 227. Category: STEEL / METAL. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -7539,7 +7536,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "F2",
     name: "Flat 2",
     categoryId: "772b30b0-697e-570a-a260-756d74a0929b",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 228. Category: STEEL / METAL. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -7548,7 +7545,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "F3/4",
     name: "Flat 3/4",
     categoryId: "772b30b0-697e-570a-a260-756d74a0929b",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 229. Category: STEEL / METAL. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -7557,7 +7554,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "F3/4*6",
     name: "Flat 3/4*1/4",
     categoryId: "772b30b0-697e-570a-a260-756d74a0929b",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 230. Category: STEEL / METAL. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -7566,7 +7563,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "FVC",
     name: "Float Valve Cistern",
     categoryId: "ccc45332-e8ae-5cca-8670-158fd1ee40e0",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 231. Category: PLUMBING / SANITARY. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -7575,7 +7572,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "FT4",
     name: "Floor Trap 4way",
     categoryId: "ccc45332-e8ae-5cca-8670-158fd1ee40e0",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 232. Category: PLUMBING / SANITARY. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -7584,7 +7581,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "FCR",
     name: "Flower Ceiling Rai",
     categoryId: "283bd5ee-df29-5c45-8874-4dddd29a6143",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 233. Category: WOOD / BOARDS / DOORS. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -7593,7 +7590,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "FCR7",
     name: "Flower Ceiling Rai 7mm",
     categoryId: "283bd5ee-df29-5c45-8874-4dddd29a6143",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 234. Category: WOOD / BOARDS / DOORS. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -7602,7 +7599,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "FCU7",
     name: "Flower Ceiling UG 7mm",
     categoryId: "283bd5ee-df29-5c45-8874-4dddd29a6143",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 235. Category: WOOD / BOARDS / DOORS. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -7611,7 +7608,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "FCU8",
     name: "flower Ceiling ug 8mm",
     categoryId: "283bd5ee-df29-5c45-8874-4dddd29a6143",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 236. Category: WOOD / BOARDS / DOORS. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -7620,7 +7617,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "FCU",
     name: "Flower Ceiling Uganda",
     categoryId: "283bd5ee-df29-5c45-8874-4dddd29a6143",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 237. Category: WOOD / BOARDS / DOORS. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -7629,7 +7626,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "FDO",
     name: "Flush Door Ordinary",
     categoryId: "283bd5ee-df29-5c45-8874-4dddd29a6143",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 238. Category: WOOD / BOARDS / DOORS. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -7638,7 +7635,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "FG10",
     name: "Fontrac G10",
     categoryId: "3f6914e7-665c-5937-8237-4da91c959d47",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 239. Category: WELDING. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -7647,7 +7644,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "GN1.5",
     name: "Galvanised Nails 1.5",
     categoryId: "1a846928-a148-545f-a582-3b7070ea6bcf",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 240. Category: NAILS. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -7656,7 +7653,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "GN2",
     name: "Galvanised Nails 2",
     categoryId: "1a846928-a148-545f-a582-3b7070ea6bcf",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 241. Category: NAILS. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -7665,7 +7662,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "GN2.5",
     name: "Galvanised Nails 2.5",
     categoryId: "1a846928-a148-545f-a582-3b7070ea6bcf",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 242. Category: NAILS. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -7674,7 +7671,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "GW",
     name: "Galvanised Wire",
     categoryId: "63852482-e02e-5a7b-b26d-a55ef8f734f4",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 243. Category: FENCING. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -7683,7 +7680,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "G1000",
     name: "Gladiator 1000ml",
     categoryId: "f1ea9b90-053e-59e6-b3c1-1c1dc1addc95",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 244. Category: GENERAL / OTHER. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -7692,7 +7689,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "G100",
     name: "Gladiator 100ml",
     categoryId: "f1ea9b90-053e-59e6-b3c1-1c1dc1addc95",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 245. Category: GENERAL / OTHER. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -7701,7 +7698,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "G250",
     name: "Gladiator 250ml",
     categoryId: "f1ea9b90-053e-59e6-b3c1-1c1dc1addc95",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 246. Category: GENERAL / OTHER. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -7710,7 +7707,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "G500",
     name: "Gladiator 500ml",
     categoryId: "f1ea9b90-053e-59e6-b3c1-1c1dc1addc95",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 247. Category: GENERAL / OTHER. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -7719,7 +7716,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "GG",
     name: "Grease Gun",
     categoryId: "55d303ce-17c9-5ea8-8054-02b2b05e871f",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 248. Category: TOOLS / EQUIPMENT. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -7728,7 +7725,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "GOS",
     name: "Green Oxide Superflex",
     categoryId: "f1ea9b90-053e-59e6-b3c1-1c1dc1addc95",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 249. Category: GENERAL / OTHER. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -7737,7 +7734,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "GW-2",
     name: "Green Wire",
     categoryId: "63852482-e02e-5a7b-b26d-a55ef8f734f4",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 250. Category: FENCING. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -7746,7 +7743,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "GD7",
     name: "Grinding Disk 7",
     categoryId: "f1ea9b90-053e-59e6-b3c1-1c1dc1addc95",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 251. Category: GENERAL / OTHER. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -7755,7 +7752,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "GC-2",
     name: "Grout Cream (25Kg)",
     categoryId: "4f1345d3-6c2f-5423-9192-3d60a89ac06d",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 252. Category: CEMENT / BUILDING MATERIALS. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -7764,7 +7761,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "GW-3",
     name: "Grout White (25kG)",
     categoryId: "4f1345d3-6c2f-5423-9192-3d60a89ac06d",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 253. Category: CEMENT / BUILDING MATERIALS. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -7773,7 +7770,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "GT4-2",
     name: "Gully Trap 4",
     categoryId: "ccc45332-e8ae-5cca-8670-158fd1ee40e0",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 254. Category: PLUMBING / SANITARY. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -7782,7 +7779,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "GAB",
     name: "Gutter Angle Bracket",
     categoryId: "ccc45332-e8ae-5cca-8670-158fd1ee40e0",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 255. Category: PLUMBING / SANITARY. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -7791,7 +7788,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "GAO",
     name: "Gutter Angle Outlet",
     categoryId: "ccc45332-e8ae-5cca-8670-158fd1ee40e0",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 256. Category: PLUMBING / SANITARY. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -7800,7 +7797,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "GCB",
     name: "Gutter Collection box",
     categoryId: "ccc45332-e8ae-5cca-8670-158fd1ee40e0",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 257. Category: PLUMBING / SANITARY. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -7809,7 +7806,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "GE3",
     name: "Gutter Elbow 3",
     categoryId: "ccc45332-e8ae-5cca-8670-158fd1ee40e0",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 258. Category: PLUMBING / SANITARY. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -7818,7 +7815,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "GJB",
     name: "Gutter Joint Bracket",
     categoryId: "ccc45332-e8ae-5cca-8670-158fd1ee40e0",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 259. Category: PLUMBING / SANITARY. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -7827,7 +7824,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "GO",
     name: "Gutter Outlet",
     categoryId: "ccc45332-e8ae-5cca-8670-158fd1ee40e0",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 260. Category: PLUMBING / SANITARY. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -7836,7 +7833,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "GSE",
     name: "Gutter Stop End",
     categoryId: "ccc45332-e8ae-5cca-8670-158fd1ee40e0",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 261. Category: PLUMBING / SANITARY. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -7845,7 +7842,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "GSB",
     name: "Gutter Support Bracket",
     categoryId: "ccc45332-e8ae-5cca-8670-158fd1ee40e0",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 262. Category: PLUMBING / SANITARY. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -7854,7 +7851,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "G",
     name: "Gutters",
     categoryId: "ccc45332-e8ae-5cca-8670-158fd1ee40e0",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 263. Category: PLUMBING / SANITARY. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -7863,7 +7860,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "GYF",
     name: "Gyproc Filler",
     categoryId: "4f1345d3-6c2f-5423-9192-3d60a89ac06d",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 264. Category: CEMENT / BUILDING MATERIALS. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -7872,7 +7869,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "GYB",
     name: "Gypsum Board",
     categoryId: "283bd5ee-df29-5c45-8874-4dddd29a6143",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 265. Category: WOOD / BOARDS / DOORS. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -7881,7 +7878,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "GYC",
     name: "Gypsum Channel",
     categoryId: "283bd5ee-df29-5c45-8874-4dddd29a6143",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 266. Category: WOOD / BOARDS / DOORS. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -7890,7 +7887,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "GYCO",
     name: "Gypsum Cornice",
     categoryId: "283bd5ee-df29-5c45-8874-4dddd29a6143",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 267. Category: WOOD / BOARDS / DOORS. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -7899,7 +7896,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "GS1.5",
     name: "Gypsum Screw 1 1/2 (40mm)",
     categoryId: "106b8bb0-faeb-5876-b551-6e4d24423fcb",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 268. Category: HARDWARE / FASTENERS. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -7908,7 +7905,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "GS1.25",
     name: "Gypsum Screw 1 1/4(30mm)",
     categoryId: "106b8bb0-faeb-5876-b551-6e4d24423fcb",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 269. Category: HARDWARE / FASTENERS. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -7917,7 +7914,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "GS1",
     name: "Gypsum Screw 1(25mm)",
     categoryId: "106b8bb0-faeb-5876-b551-6e4d24423fcb",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 270. Category: HARDWARE / FASTENERS. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -7926,7 +7923,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "GS2",
     name: "Gypsum Screw 2 (50mm)",
     categoryId: "106b8bb0-faeb-5876-b551-6e4d24423fcb",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 271. Category: HARDWARE / FASTENERS. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -7935,7 +7932,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "GYS",
     name: "Gypsum Stud",
     categoryId: "283bd5ee-df29-5c45-8874-4dddd29a6143",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 272. Category: WOOD / BOARDS / DOORS. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -7944,7 +7941,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "H4GP",
     name: "Handles 4 GP",
     categoryId: "106b8bb0-faeb-5876-b551-6e4d24423fcb",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 273. Category: HARDWARE / FASTENERS. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -7953,7 +7950,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "H4SS",
     name: "Handles 4 SS",
     categoryId: "106b8bb0-faeb-5876-b551-6e4d24423fcb",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 274. Category: HARDWARE / FASTENERS. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -7962,7 +7959,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "HB-2",
     name: "Hard Broom",
     categoryId: "55d303ce-17c9-5ea8-8054-02b2b05e871f",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 275. Category: TOOLS / EQUIPMENT. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -7971,7 +7968,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "HFR4",
     name: "Harmony Floor Red 4",
     categoryId: "3c03fe75-8e49-582b-b553-7ef8cbfd0c94",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 276. Category: PAINT / COATINGS. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -7980,7 +7977,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "HFC4",
     name: "Harmony PF Cream 4lt",
     categoryId: "3c03fe75-8e49-582b-b553-7ef8cbfd0c94",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 277. Category: PAINT / COATINGS. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -7989,7 +7986,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "HFC20",
     name: "Harmony PF Cream20L",
     categoryId: "3c03fe75-8e49-582b-b553-7ef8cbfd0c94",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 278. Category: PAINT / COATINGS. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -7998,7 +7995,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "HFW20",
     name: "Harmony PF White 20lt",
     categoryId: "3c03fe75-8e49-582b-b553-7ef8cbfd0c94",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 279. Category: PAINT / COATINGS. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -8007,7 +8004,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "HFW4",
     name: "Harmony PF White 4lt",
     categoryId: "3c03fe75-8e49-582b-b553-7ef8cbfd0c94",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 280. Category: PAINT / COATINGS. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -8016,7 +8013,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "HRB4",
     name: "Harmony Roof Blue 4",
     categoryId: "3c03fe75-8e49-582b-b553-7ef8cbfd0c94",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 281. Category: PAINT / COATINGS. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -8025,7 +8022,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "HRCG4",
     name: "Harmony Roof C/grey 4",
     categoryId: "3c03fe75-8e49-582b-b553-7ef8cbfd0c94",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 282. Category: PAINT / COATINGS. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -8034,7 +8031,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "HRR4",
     name: "Harmony Roof Red 4",
     categoryId: "3c03fe75-8e49-582b-b553-7ef8cbfd0c94",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 283. Category: PAINT / COATINGS. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -8043,7 +8040,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "HDPE20",
     name: "HDPE 20MM",
     categoryId: "ccc45332-e8ae-5cca-8670-158fd1ee40e0",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 284. Category: PLUMBING / SANITARY. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -8052,7 +8049,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "HDPE25",
     name: "HDPE 25MM",
     categoryId: "ccc45332-e8ae-5cca-8670-158fd1ee40e0",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 285. Category: PLUMBING / SANITARY. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -8061,7 +8058,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "HDPE32",
     name: "HDPE 32MM",
     categoryId: "ccc45332-e8ae-5cca-8670-158fd1ee40e0",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 286. Category: PLUMBING / SANITARY. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -8070,7 +8067,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "HDPE50",
     name: "HDPE 50MM",
     categoryId: "ccc45332-e8ae-5cca-8670-158fd1ee40e0",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 287. Category: PLUMBING / SANITARY. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -8079,7 +8076,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "HEFC20",
     name: "Hermosa PF Cream 20ltr",
     categoryId: "3c03fe75-8e49-582b-b553-7ef8cbfd0c94",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 288. Category: PAINT / COATINGS. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -8088,7 +8085,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "HEFW20",
     name: "Hermosa PF White20ltr",
     categoryId: "3c03fe75-8e49-582b-b553-7ef8cbfd0c94",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 289. Category: PAINT / COATINGS. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -8097,7 +8094,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "HH4",
     name: "Hinges 4",
     categoryId: "106b8bb0-faeb-5876-b551-6e4d24423fcb",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 290. Category: HARDWARE / FASTENERS. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -8106,7 +8103,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "HI",
     name: "Hoop Iron",
     categoryId: "f1ea9b90-053e-59e6-b3c1-1c1dc1addc95",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 291. Category: GENERAL / OTHER. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -8115,7 +8112,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "HP1*120",
     name: "Hose Pipe 1*120",
     categoryId: "ccc45332-e8ae-5cca-8670-158fd1ee40e0",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 292. Category: PLUMBING / SANITARY. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -8124,7 +8121,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "HP1*60",
     name: "Hose Pipe 1*60",
     categoryId: "ccc45332-e8ae-5cca-8670-158fd1ee40e0",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 293. Category: PLUMBING / SANITARY. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -8133,7 +8130,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "HP1/2*120",
     name: "Hose Pipe 1/2*120",
     categoryId: "ccc45332-e8ae-5cca-8670-158fd1ee40e0",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 294. Category: PLUMBING / SANITARY. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -8142,7 +8139,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "HP1/2*120C",
     name: "Hose Pipe 1/2*120 Clear",
     categoryId: "ccc45332-e8ae-5cca-8670-158fd1ee40e0",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 295. Category: PLUMBING / SANITARY. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -8151,7 +8148,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "HP1/2*60",
     name: "Hose Pipe 1/2*60",
     categoryId: "ccc45332-e8ae-5cca-8670-158fd1ee40e0",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 296. Category: PLUMBING / SANITARY. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -8160,7 +8157,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "HP1/2*60C",
     name: "Hose Pipe 1/2*60 Clear",
     categoryId: "ccc45332-e8ae-5cca-8670-158fd1ee40e0",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 297. Category: PLUMBING / SANITARY. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -8169,7 +8166,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "HP3/4*120",
     name: "Hose Pipe 3/4*120",
     categoryId: "ccc45332-e8ae-5cca-8670-158fd1ee40e0",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 298. Category: PLUMBING / SANITARY. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -8178,7 +8175,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "HP3/4*60",
     name: "Hose Pipe 3/4*60",
     categoryId: "ccc45332-e8ae-5cca-8670-158fd1ee40e0",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 299. Category: PLUMBING / SANITARY. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -8187,7 +8184,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "HP5/16*50C",
     name: "Hose Pipe 5/16*50 Clear",
     categoryId: "ccc45332-e8ae-5cca-8670-158fd1ee40e0",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 300. Category: PLUMBING / SANITARY. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -8196,7 +8193,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "JKWP",
     name: "JK Wall Putty",
     categoryId: "4f1345d3-6c2f-5423-9192-3d60a89ac06d",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 301. Category: CEMENT / BUILDING MATERIALS. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -8205,7 +8202,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "KD100",
     name: "KENTANK 100LTR DRUM",
     categoryId: "a154305d-abc3-561d-a574-70ad8b3567dd",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 302. Category: TANK. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -8214,7 +8211,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "KD200",
     name: "KENTANK 200LTR DRUM",
     categoryId: "a154305d-abc3-561d-a574-70ad8b3567dd",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 303. Category: TANK. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -8223,7 +8220,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "SB-2",
     name: "Kitchen Sink Bowl",
     categoryId: "ccc45332-e8ae-5cca-8670-158fd1ee40e0",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 304. Category: PLUMBING / SANITARY. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -8232,7 +8229,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "DBSD",
     name: "Kitchen Sink DBSD",
     categoryId: "ccc45332-e8ae-5cca-8670-158fd1ee40e0",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 305. Category: PLUMBING / SANITARY. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -8241,7 +8238,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "SBDD",
     name: "Kitchen Sink SBDD",
     categoryId: "ccc45332-e8ae-5cca-8670-158fd1ee40e0",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 306. Category: PLUMBING / SANITARY. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -8250,7 +8247,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "SBSD",
     name: "Kitchen Sink SBSD",
     categoryId: "ccc45332-e8ae-5cca-8670-158fd1ee40e0",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 307. Category: PLUMBING / SANITARY. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -8259,7 +8256,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "L",
     name: "Lime",
     categoryId: "4f1345d3-6c2f-5423-9192-3d60a89ac06d",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 308. Category: CEMENT / BUILDING MATERIALS. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -8268,7 +8265,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "LCSC1/2",
     name: "Lirlee Concealed Stop Cock 1/2",
     categoryId: "ccc45332-e8ae-5cca-8670-158fd1ee40e0",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 309. Category: PLUMBING / SANITARY. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -8277,7 +8274,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "LGV1",
     name: "Lirlee Gate Valve 1",
     categoryId: "ccc45332-e8ae-5cca-8670-158fd1ee40e0",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 310. Category: PLUMBING / SANITARY. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -8286,7 +8283,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "LGV1/2",
     name: "Lirlee Gate Valve 1/2",
     categoryId: "ccc45332-e8ae-5cca-8670-158fd1ee40e0",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 311. Category: PLUMBING / SANITARY. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -8295,7 +8292,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "LGV2",
     name: "Lirlee Gate Valve 2",
     categoryId: "ccc45332-e8ae-5cca-8670-158fd1ee40e0",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 312. Category: PLUMBING / SANITARY. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -8304,7 +8301,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "LGV3/4",
     name: "Lirlee Gate Valve 3/4",
     categoryId: "ccc45332-e8ae-5cca-8670-158fd1ee40e0",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 313. Category: PLUMBING / SANITARY. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -8313,7 +8310,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "LPT",
     name: "Lirlee Pillar Tap",
     categoryId: "ccc45332-e8ae-5cca-8670-158fd1ee40e0",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 314. Category: PLUMBING / SANITARY. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -8322,7 +8319,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "LSST",
     name: "Lirlee Single Sprout Tap",
     categoryId: "ccc45332-e8ae-5cca-8670-158fd1ee40e0",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 315. Category: PLUMBING / SANITARY. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -8331,7 +8328,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "LT1/2",
     name: "Lirlee Tap 1/2",
     categoryId: "ccc45332-e8ae-5cca-8670-158fd1ee40e0",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 316. Category: PLUMBING / SANITARY. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -8340,7 +8337,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "LT3/4",
     name: "Lirlee Tap 3/4",
     categoryId: "ccc45332-e8ae-5cca-8670-158fd1ee40e0",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 317. Category: PLUMBING / SANITARY. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -8349,7 +8346,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "LWT",
     name: "Lirlee Wall Tap 1/2",
     categoryId: "ccc45332-e8ae-5cca-8670-158fd1ee40e0",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 318. Category: PLUMBING / SANITARY. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -8358,7 +8355,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "MS16",
     name: "M S Plate 16G",
     categoryId: "772b30b0-697e-570a-a260-756d74a0929b",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 319. Category: STEEL / METAL. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -8367,7 +8364,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "MS18",
     name: "M S Plate 18G",
     categoryId: "772b30b0-697e-570a-a260-756d74a0929b",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 320. Category: STEEL / METAL. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -8376,7 +8373,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "MT1.5",
     name: "Magic Trap 1 1/2",
     categoryId: "ccc45332-e8ae-5cca-8670-158fd1ee40e0",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 321. Category: PLUMBING / SANITARY. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -8385,7 +8382,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "M12*12",
     name: "Main Hole 12*12",
     categoryId: "ccc45332-e8ae-5cca-8670-158fd1ee40e0",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 322. Category: PLUMBING / SANITARY. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -8394,7 +8391,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "M15*15",
     name: "Main hole 15*15",
     categoryId: "ccc45332-e8ae-5cca-8670-158fd1ee40e0",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 323. Category: PLUMBING / SANITARY. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -8403,7 +8400,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "M18*18",
     name: "Main Hole 18*18",
     categoryId: "ccc45332-e8ae-5cca-8670-158fd1ee40e0",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 324. Category: PLUMBING / SANITARY. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -8412,7 +8409,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "M18*24",
     name: "Main Hole 18*24",
     categoryId: "ccc45332-e8ae-5cca-8670-158fd1ee40e0",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 325. Category: PLUMBING / SANITARY. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -8421,7 +8418,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "M2*30",
     name: "Maisha 2*30",
     categoryId: "f3347084-a442-50be-b847-7c840ad30fee",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 326. Category: ROOFING. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -8430,7 +8427,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "M2*32",
     name: "Maisha 2*32",
     categoryId: "f3347084-a442-50be-b847-7c840ad30fee",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 327. Category: ROOFING. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -8439,7 +8436,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "M2.5*30",
     name: "Maisha 2.5*30",
     categoryId: "f3347084-a442-50be-b847-7c840ad30fee",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 328. Category: ROOFING. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -8448,7 +8445,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "M2.5*32",
     name: "Maisha 2.5*32",
     categoryId: "f3347084-a442-50be-b847-7c840ad30fee",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 329. Category: ROOFING. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -8457,7 +8454,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "M3*30",
     name: "Maisha 3*30",
     categoryId: "f3347084-a442-50be-b847-7c840ad30fee",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 330. Category: ROOFING. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -8466,7 +8463,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "M3*32",
     name: "Maisha 3*32",
     categoryId: "f3347084-a442-50be-b847-7c840ad30fee",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 331. Category: ROOFING. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -8475,7 +8472,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "MBBR2.5",
     name: "Maisha Box B/Red 2.5M",
     categoryId: "f3347084-a442-50be-b847-7c840ad30fee",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 332. Category: ROOFING. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -8484,7 +8481,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "MBBR2",
     name: "Maisha Box B/Red 2M",
     categoryId: "f3347084-a442-50be-b847-7c840ad30fee",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 333. Category: ROOFING. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -8493,7 +8490,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "MBBR3",
     name: "Maisha Box B/Red 3M",
     categoryId: "f3347084-a442-50be-b847-7c840ad30fee",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 334. Category: ROOFING. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -8502,7 +8499,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "MBB2.5",
     name: "Maisha Box Blue 2.5Mtr",
     categoryId: "f3347084-a442-50be-b847-7c840ad30fee",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 335. Category: ROOFING. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -8511,7 +8508,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "MBB2",
     name: "Maisha Box Blue 2Mtr",
     categoryId: "f3347084-a442-50be-b847-7c840ad30fee",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 336. Category: ROOFING. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -8520,7 +8517,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "MBB3",
     name: "Maisha Box Blue 3mtr",
     categoryId: "f3347084-a442-50be-b847-7c840ad30fee",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 337. Category: ROOFING. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -8529,7 +8526,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "MBCG2.5",
     name: "Maisha Box C/Grey 2.5",
     categoryId: "f3347084-a442-50be-b847-7c840ad30fee",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 338. Category: ROOFING. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -8538,7 +8535,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "MBCG2",
     name: "Maisha Box C/Grey 2mtr",
     categoryId: "f3347084-a442-50be-b847-7c840ad30fee",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 339. Category: ROOFING. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -8547,7 +8544,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "MBCG3*28",
     name: "Maisha Box C/Grey 3*28g",
     categoryId: "f3347084-a442-50be-b847-7c840ad30fee",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 340. Category: ROOFING. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -8556,7 +8553,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "MBCG3",
     name: "Maisha Box C/Grey 3m",
     categoryId: "f3347084-a442-50be-b847-7c840ad30fee",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 341. Category: ROOFING. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -8565,7 +8562,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "MBG2.5",
     name: "Maisha Box Green 2.5mtr",
     categoryId: "f3347084-a442-50be-b847-7c840ad30fee",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 342. Category: ROOFING. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -8574,7 +8571,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "MBG2",
     name: "Maisha Box Green 2m",
     categoryId: "f3347084-a442-50be-b847-7c840ad30fee",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 343. Category: ROOFING. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -8583,7 +8580,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "BGG3",
     name: "Maisha Box Green 3mtr",
     categoryId: "f3347084-a442-50be-b847-7c840ad30fee",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 344. Category: ROOFING. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -8592,7 +8589,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "MNBR2.5",
     name: "Maisha Normal B/Red 2.5Mtr",
     categoryId: "f3347084-a442-50be-b847-7c840ad30fee",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 345. Category: ROOFING. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -8601,7 +8598,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "MNBR2",
     name: "Maisha Normal B/Red 2Mtr",
     categoryId: "f3347084-a442-50be-b847-7c840ad30fee",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 346. Category: ROOFING. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -8610,7 +8607,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "MNBR3",
     name: "Maisha Normal B/Red 3Mtr",
     categoryId: "f3347084-a442-50be-b847-7c840ad30fee",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 347. Category: ROOFING. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -8619,7 +8616,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "MNB2.5",
     name: "Maisha Normal Blue 2.5Mtr",
     categoryId: "f3347084-a442-50be-b847-7c840ad30fee",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 348. Category: ROOFING. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -8628,7 +8625,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "MNB2",
     name: "Maisha Normal Blue 2Mtr",
     categoryId: "f3347084-a442-50be-b847-7c840ad30fee",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 349. Category: ROOFING. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -8637,7 +8634,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "MNB3",
     name: "Maisha Normal Blue 3Mtr",
     categoryId: "f3347084-a442-50be-b847-7c840ad30fee",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 350. Category: ROOFING. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -8646,7 +8643,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "MNCG2.5",
     name: "Maisha Normal C/Grey 2.5Mtr",
     categoryId: "f3347084-a442-50be-b847-7c840ad30fee",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 351. Category: ROOFING. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -8655,7 +8652,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "MNCG2",
     name: "Maisha Normal C/Grey 2Mtr",
     categoryId: "f3347084-a442-50be-b847-7c840ad30fee",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 352. Category: ROOFING. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -8664,7 +8661,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "MNCG3",
     name: "Maisha Normal C/Grey 3Mtr",
     categoryId: "f3347084-a442-50be-b847-7c840ad30fee",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 353. Category: ROOFING. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -8673,7 +8670,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "MNG2.5",
     name: "Maisha Normal Green 2.5Mtr",
     categoryId: "f3347084-a442-50be-b847-7c840ad30fee",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 354. Category: ROOFING. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -8682,7 +8679,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "MNG2",
     name: "Maisha Normal Green 2Mtr",
     categoryId: "f3347084-a442-50be-b847-7c840ad30fee",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 355. Category: ROOFING. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -8691,7 +8688,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "MNG3",
     name: "Maisha Normal Green 3Mtr",
     categoryId: "f3347084-a442-50be-b847-7c840ad30fee",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 356. Category: ROOFING. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -8700,7 +8697,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "MHH",
     name: "Malpha Hinges Hydrolic",
     categoryId: "106b8bb0-faeb-5876-b551-6e4d24423fcb",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 357. Category: HARDWARE / FASTENERS. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -8709,7 +8706,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "MB",
     name: "MARINE BOARD",
     categoryId: "283bd5ee-df29-5c45-8874-4dddd29a6143",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 358. Category: WOOD / BOARDS / DOORS. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -8718,7 +8715,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "MG250",
     name: "Maroo Glue 250ml",
     categoryId: "3c03fe75-8e49-582b-b553-7ef8cbfd0c94",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 359. Category: PAINT / COATINGS. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -8727,7 +8724,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "MG500",
     name: "Maroo Glue 500Ml",
     categoryId: "3c03fe75-8e49-582b-b553-7ef8cbfd0c94",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 360. Category: PAINT / COATINGS. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -8736,7 +8733,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "MDFAM",
     name: "MDF AMAYA",
     categoryId: "283bd5ee-df29-5c45-8874-4dddd29a6143",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 361. Category: WOOD / BOARDS / DOORS. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -8745,7 +8742,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "MDFAW",
     name: "MDF American Wallnut",
     categoryId: "283bd5ee-df29-5c45-8874-4dddd29a6143",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 362. Category: WOOD / BOARDS / DOORS. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -8754,7 +8751,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "MDFAS",
     name: "MDF ASH",
     categoryId: "283bd5ee-df29-5c45-8874-4dddd29a6143",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 363. Category: WOOD / BOARDS / DOORS. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -8763,7 +8760,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "MDFA",
     name: "MDF Atimo",
     categoryId: "283bd5ee-df29-5c45-8874-4dddd29a6143",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 364. Category: WOOD / BOARDS / DOORS. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -8772,7 +8769,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "MDFB",
     name: "MDF Beach",
     categoryId: "283bd5ee-df29-5c45-8874-4dddd29a6143",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 365. Category: WOOD / BOARDS / DOORS. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -8781,7 +8778,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "MDFBL",
     name: "MDF BLACK",
     categoryId: "283bd5ee-df29-5c45-8874-4dddd29a6143",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 366. Category: WOOD / BOARDS / DOORS. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -8790,7 +8787,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "MDFC",
     name: "MDF Cherry",
     categoryId: "283bd5ee-df29-5c45-8874-4dddd29a6143",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 367. Category: WOOD / BOARDS / DOORS. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -8799,7 +8796,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "MDFCO",
     name: "MDF Coimbra",
     categoryId: "283bd5ee-df29-5c45-8874-4dddd29a6143",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 368. Category: WOOD / BOARDS / DOORS. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -8808,7 +8805,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "MDFH",
     name: "MDF Honeybee",
     categoryId: "283bd5ee-df29-5c45-8874-4dddd29a6143",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 369. Category: WOOD / BOARDS / DOORS. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -8817,7 +8814,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "MDFM",
     name: "MDF MARBLE",
     categoryId: "283bd5ee-df29-5c45-8874-4dddd29a6143",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 370. Category: WOOD / BOARDS / DOORS. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -8826,7 +8823,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "MDFP",
     name: "MDF PLAIN",
     categoryId: "283bd5ee-df29-5c45-8874-4dddd29a6143",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 371. Category: WOOD / BOARDS / DOORS. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -8835,7 +8832,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "MDFRW",
     name: "MDF Reagal Wallnut",
     categoryId: "283bd5ee-df29-5c45-8874-4dddd29a6143",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 372. Category: WOOD / BOARDS / DOORS. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -8844,7 +8841,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "MDFS",
     name: "MDF SALSA",
     categoryId: "283bd5ee-df29-5c45-8874-4dddd29a6143",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 373. Category: WOOD / BOARDS / DOORS. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -8853,7 +8850,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "MDFSIG",
     name: "MDF SILK GREY",
     categoryId: "283bd5ee-df29-5c45-8874-4dddd29a6143",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 374. Category: WOOD / BOARDS / DOORS. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -8862,7 +8859,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "MDFSG",
     name: "MDF Stone Grey",
     categoryId: "283bd5ee-df29-5c45-8874-4dddd29a6143",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 375. Category: WOOD / BOARDS / DOORS. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -8871,7 +8868,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "MDFSO",
     name: "MDF STRAIGHT OAK",
     categoryId: "283bd5ee-df29-5c45-8874-4dddd29a6143",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 376. Category: WOOD / BOARDS / DOORS. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -8880,7 +8877,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "MDFW",
     name: "MDF White",
     categoryId: "283bd5ee-df29-5c45-8874-4dddd29a6143",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 377. Category: WOOD / BOARDS / DOORS. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -8889,7 +8886,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "MF610",
     name: "MESH FABRIC 610",
     categoryId: "772b30b0-697e-570a-a260-756d74a0929b",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 378. Category: STEEL / METAL. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -8898,7 +8895,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "MF65",
     name: "MESH FABRIC 65",
     categoryId: "772b30b0-697e-570a-a260-756d74a0929b",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 379. Category: STEEL / METAL. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -8907,7 +8904,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "MF66",
     name: "MESH FABRIC 66",
     categoryId: "772b30b0-697e-570a-a260-756d74a0929b",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 380. Category: STEEL / METAL. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -8916,7 +8913,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "MF98",
     name: "MESH FABRIC 98",
     categoryId: "772b30b0-697e-570a-a260-756d74a0929b",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 381. Category: STEEL / METAL. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -8925,7 +8922,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "MS-2",
     name: "Meter Stand",
     categoryId: "ccc45332-e8ae-5cca-8670-158fd1ee40e0",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 382. Category: PLUMBING / SANITARY. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -8934,7 +8931,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "M40",
     name: "Mindy AF40",
     categoryId: "edacd144-a7e3-520a-935b-2759cd127209",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 383. Category: LOCKS. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -8943,7 +8940,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "M50",
     name: "Mindy AF50",
     categoryId: "edacd144-a7e3-520a-935b-2759cd127209",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 384. Category: LOCKS. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -8952,7 +8949,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "M60",
     name: "Mindy AF60",
     categoryId: "edacd144-a7e3-520a-935b-2759cd127209",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 385. Category: LOCKS. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -8961,7 +8958,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "M70",
     name: "Mindy AF70",
     categoryId: "edacd144-a7e3-520a-935b-2759cd127209",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 386. Category: LOCKS. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -8970,7 +8967,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "M",
     name: "Mombasa Cement",
     categoryId: "4f1345d3-6c2f-5423-9192-3d60a89ac06d",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 387. Category: CEMENT / BUILDING MATERIALS. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -8979,7 +8976,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "MRMBB2",
     name: "MRM Box Blue 2Mtr",
     categoryId: "f3347084-a442-50be-b847-7c840ad30fee",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 388. Category: ROOFING. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -8988,7 +8985,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "MRMBB3",
     name: "MRM Box Blue 3Mtr",
     categoryId: "f3347084-a442-50be-b847-7c840ad30fee",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 389. Category: ROOFING. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -8997,7 +8994,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "MRMBBR2",
     name: "MRM Box Brick red 2mtr",
     categoryId: "f3347084-a442-50be-b847-7c840ad30fee",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 390. Category: ROOFING. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -9006,7 +9003,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "MRMBBR3",
     name: "MRM Box Brick red 3mtr",
     categoryId: "f3347084-a442-50be-b847-7c840ad30fee",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 391. Category: ROOFING. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -9015,7 +9012,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "MRMBCG2",
     name: "MRM Box Charcaol Grey 2Mtr",
     categoryId: "f3347084-a442-50be-b847-7c840ad30fee",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 392. Category: ROOFING. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -9024,7 +9021,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "MRMBCG3",
     name: "MRM Box Charcaol Grey 3Mtr",
     categoryId: "f3347084-a442-50be-b847-7c840ad30fee",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 393. Category: ROOFING. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -9033,7 +9030,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "MRMBG2",
     name: "MRM Box Green 2 Mtr",
     categoryId: "f3347084-a442-50be-b847-7c840ad30fee",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 394. Category: ROOFING. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -9042,7 +9039,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "MRMBG2.5",
     name: "MRM Box Green 2.5 Mtr",
     categoryId: "f3347084-a442-50be-b847-7c840ad30fee",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 395. Category: ROOFING. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -9051,7 +9048,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "MRMBG3",
     name: "MRM Box Green 3 Mtr",
     categoryId: "f3347084-a442-50be-b847-7c840ad30fee",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 396. Category: ROOFING. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -9060,7 +9057,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "MRMBTR2",
     name: "MRM Box Tile RED 2Mtr",
     categoryId: "f3347084-a442-50be-b847-7c840ad30fee",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 397. Category: ROOFING. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -9069,7 +9066,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "MRMBTR3",
     name: "MRM Box Tile RED 3Mtr",
     categoryId: "f3347084-a442-50be-b847-7c840ad30fee",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 398. Category: ROOFING. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -9078,7 +9075,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "N1",
     name: "Nails 1",
     categoryId: "1a846928-a148-545f-a582-3b7070ea6bcf",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 399. Category: NAILS. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -9087,7 +9084,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "N1.5",
     name: "Nails 1.5",
     categoryId: "1a846928-a148-545f-a582-3b7070ea6bcf",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 400. Category: NAILS. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -9096,7 +9093,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "N2",
     name: "Nails 2",
     categoryId: "1a846928-a148-545f-a582-3b7070ea6bcf",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 401. Category: NAILS. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -9105,7 +9102,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "N2.5",
     name: "Nails 2.5",
     categoryId: "1a846928-a148-545f-a582-3b7070ea6bcf",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 402. Category: NAILS. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -9114,7 +9111,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "N3",
     name: "Nails 3",
     categoryId: "1a846928-a148-545f-a582-3b7070ea6bcf",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 403. Category: NAILS. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -9123,7 +9120,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "N4",
     name: "Nails 4",
     categoryId: "1a846928-a148-545f-a582-3b7070ea6bcf",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 404. Category: NAILS. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -9132,7 +9129,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "N5",
     name: "Nails 5",
     categoryId: "1a846928-a148-545f-a582-3b7070ea6bcf",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 405. Category: NAILS. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -9141,7 +9138,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "N6",
     name: "Nails 6",
     categoryId: "1a846928-a148-545f-a582-3b7070ea6bcf",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 406. Category: NAILS. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -9150,7 +9147,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "N",
     name: "Ndovu Cement",
     categoryId: "4f1345d3-6c2f-5423-9192-3d60a89ac06d",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 407. Category: CEMENT / BUILDING MATERIALS. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -9159,7 +9156,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "N480",
     name: "Ngombe 480",
     categoryId: "63852482-e02e-5a7b-b26d-a55ef8f734f4",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 408. Category: FENCING MATERIAL. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -9168,7 +9165,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "N500",
     name: "Ngombe 500",
     categoryId: "63852482-e02e-5a7b-b26d-a55ef8f734f4",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 409. Category: FENCING MATERIAL. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -9177,7 +9174,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "N610",
     name: "Ngombe 610",
     categoryId: "63852482-e02e-5a7b-b26d-a55ef8f734f4",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 410. Category: FENCING MATERIAL. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -9186,7 +9183,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "N2*30",
     name: "Nyumba 2*30",
     categoryId: "f3347084-a442-50be-b847-7c840ad30fee",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 411. Category: ROOFING. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -9195,7 +9192,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "N2.5*30",
     name: "Nyumba 2.5*30",
     categoryId: "f3347084-a442-50be-b847-7c840ad30fee",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 412. Category: ROOFING. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -9204,7 +9201,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "N3*30",
     name: "Nyumba 3*30",
     categoryId: "f3347084-a442-50be-b847-7c840ad30fee",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 413. Category: ROOFING. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -9213,7 +9210,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "NBG2.5",
     name: "Nyumba Box Green 2.5Mtr",
     categoryId: "f3347084-a442-50be-b847-7c840ad30fee",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 414. Category: ROOFING. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -9222,7 +9219,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "NBG2",
     name: "Nyumba Box Green 2Mtr",
     categoryId: "f3347084-a442-50be-b847-7c840ad30fee",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 415. Category: ROOFING. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -9231,7 +9228,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "NBG3",
     name: "Nyumba Box Green 3Mtr",
     categoryId: "f3347084-a442-50be-b847-7c840ad30fee",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 416. Category: ROOFING. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -9240,7 +9237,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "PD",
     name: "Panel Door",
     categoryId: "283bd5ee-df29-5c45-8874-4dddd29a6143",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 417. Category: WOOD / BOARDS / DOORS. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -9249,7 +9246,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "PP1.5",
     name: "PANEL PIN 1 1/2",
     categoryId: "1a846928-a148-545f-a582-3b7070ea6bcf",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 418. Category: NAILS. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -9258,7 +9255,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "PH",
     name: "Piano Hinges",
     categoryId: "106b8bb0-faeb-5876-b551-6e4d24423fcb",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 419. Category: HARDWARE / FASTENERS. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -9267,7 +9264,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "PCR",
     name: "Plain Ceiling Rai",
     categoryId: "283bd5ee-df29-5c45-8874-4dddd29a6143",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 420. Category: WOOD / BOARDS / DOORS. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -9276,7 +9273,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "PCR7",
     name: "Plain Ceiling Rai 7mm",
     categoryId: "283bd5ee-df29-5c45-8874-4dddd29a6143",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 421. Category: WOOD / BOARDS / DOORS. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -9285,7 +9282,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "PCU8",
     name: "Plain ceiling UG 8mm",
     categoryId: "283bd5ee-df29-5c45-8874-4dddd29a6143",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 422. Category: WOOD / BOARDS / DOORS. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -9294,7 +9291,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "PCU",
     name: "Plain Ceiling Uganda",
     categoryId: "283bd5ee-df29-5c45-8874-4dddd29a6143",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 423. Category: WOOD / BOARDS / DOORS. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -9303,7 +9300,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "PCU7",
     name: "Plain Ceiling Uganda 7mm",
     categoryId: "283bd5ee-df29-5c45-8874-4dddd29a6143",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 424. Category: WOOD / BOARDS / DOORS. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -9312,7 +9309,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "PS30",
     name: "Plainsheet 30G",
     categoryId: "f3347084-a442-50be-b847-7c840ad30fee",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 425. Category: ROOFING. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -9321,7 +9318,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "PS32",
     name: "Plainsheet 32G",
     categoryId: "f3347084-a442-50be-b847-7c840ad30fee",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 426. Category: ROOFING. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -9330,7 +9327,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "PN",
     name: "PLASTIC NET",
     categoryId: "63852482-e02e-5a7b-b26d-a55ef8f734f4",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 427. Category: FENCING MATERIAL. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -9339,7 +9336,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "PN1/4",
     name: "PLASTIC NET 1/4",
     categoryId: "63852482-e02e-5a7b-b26d-a55ef8f734f4",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 428. Category: FENCING MATERIAL. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -9348,7 +9345,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "PU",
     name: "Plywood Uganda",
     categoryId: "283bd5ee-df29-5c45-8874-4dddd29a6143",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 429. Category: WOOD / BOARDS / DOORS. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -9357,7 +9354,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "P42.5",
     name: "Powermax 42.5",
     categoryId: "4f1345d3-6c2f-5423-9192-3d60a89ac06d",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 430. Category: CEMENT / BUILDING MATERIALS. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -9366,7 +9363,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "PPR1",
     name: "PPR 1",
     categoryId: "ccc45332-e8ae-5cca-8670-158fd1ee40e0",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 431. Category: PLUMBING / SANITARY. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -9375,7 +9372,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "PPR1/2",
     name: "PPR 1/2",
     categoryId: "ccc45332-e8ae-5cca-8670-158fd1ee40e0",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 432. Category: PLUMBING / SANITARY. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -9384,7 +9381,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "PPR3/4",
     name: "PPR 3/4",
     categoryId: "ccc45332-e8ae-5cca-8670-158fd1ee40e0",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 433. Category: PLUMBING / SANITARY. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -9393,7 +9390,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "PPRB1/2",
     name: "PPR Bend 1/2",
     categoryId: "ccc45332-e8ae-5cca-8670-158fd1ee40e0",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 434. Category: PLUMBING / SANITARY. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -9402,7 +9399,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "PPRB3/4",
     name: "PPR BEND3/4",
     categoryId: "ccc45332-e8ae-5cca-8670-158fd1ee40e0",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 435. Category: PLUMBING / SANITARY. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -9411,7 +9408,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "PPRE1",
     name: "PPR Elbow 1",
     categoryId: "ccc45332-e8ae-5cca-8670-158fd1ee40e0",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 436. Category: PLUMBING / SANITARY. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -9420,7 +9417,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "PPRE1/2",
     name: "PPR Elbow 1/2",
     categoryId: "ccc45332-e8ae-5cca-8670-158fd1ee40e0",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 437. Category: PLUMBING / SANITARY. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -9429,7 +9426,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "PPRE3/4",
     name: "PPR Elbow 3/4",
     categoryId: "ccc45332-e8ae-5cca-8670-158fd1ee40e0",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 438. Category: PLUMBING / SANITARY. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -9438,7 +9435,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "PPRN1",
     name: "PPR Nipple 1",
     categoryId: "ccc45332-e8ae-5cca-8670-158fd1ee40e0",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 439. Category: PLUMBING / SANITARY. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -9447,7 +9444,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "PPRN1/2",
     name: "PPR Nipple 1/2",
     categoryId: "ccc45332-e8ae-5cca-8670-158fd1ee40e0",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 440. Category: PLUMBING / SANITARY. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -9456,7 +9453,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "PPRN3/4",
     name: "PPR Nipple 3/4",
     categoryId: "ccc45332-e8ae-5cca-8670-158fd1ee40e0",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 441. Category: PLUMBING / SANITARY. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -9465,7 +9462,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "PPRR20",
     name: "PPR PIPE ROLL 20MM",
     categoryId: "ccc45332-e8ae-5cca-8670-158fd1ee40e0",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 442. Category: PLUMBING / SANITARY. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -9474,7 +9471,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "PPRR25",
     name: "PPR PIPE ROLL 25MM",
     categoryId: "ccc45332-e8ae-5cca-8670-158fd1ee40e0",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 443. Category: PLUMBING / SANITARY. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -9483,7 +9480,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "PPRR32",
     name: "PPR PIPE ROLL 32MM",
     categoryId: "ccc45332-e8ae-5cca-8670-158fd1ee40e0",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 444. Category: PLUMBING / SANITARY. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -9492,7 +9489,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "PPRRB1*1/2",
     name: "PPR Reducing Bush 1*1/2",
     categoryId: "ccc45332-e8ae-5cca-8670-158fd1ee40e0",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 445. Category: PLUMBING / SANITARY. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -9501,7 +9498,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "PPRRB1*3/4",
     name: "PPR Reducing Bush 1*3/4",
     categoryId: "ccc45332-e8ae-5cca-8670-158fd1ee40e0",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 446. Category: PLUMBING / SANITARY. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -9510,7 +9507,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "PPRRB3/4*1/2",
     name: "PPR Reducing Bush 3/4*1/2",
     categoryId: "ccc45332-e8ae-5cca-8670-158fd1ee40e0",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 447. Category: PLUMBING / SANITARY. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -9519,7 +9516,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "PPRRS1*1/2",
     name: "PPR Reducing Socket 1*1/2",
     categoryId: "ccc45332-e8ae-5cca-8670-158fd1ee40e0",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 448. Category: PLUMBING / SANITARY. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -9528,7 +9525,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "PPRRS1*3/4",
     name: "PPR Reducing Socket 1*3/4",
     categoryId: "ccc45332-e8ae-5cca-8670-158fd1ee40e0",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 449. Category: PLUMBING / SANITARY. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -9537,7 +9534,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "PPRRS3/4*1/2",
     name: "PPR Reducing Socket 3/4*1/2",
     categoryId: "ccc45332-e8ae-5cca-8670-158fd1ee40e0",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 450. Category: PLUMBING / SANITARY. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -9546,7 +9543,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "PPRS1",
     name: "PPR Socket 1",
     categoryId: "ccc45332-e8ae-5cca-8670-158fd1ee40e0",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 451. Category: PLUMBING / SANITARY. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -9555,7 +9552,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "PPRS1/2",
     name: "PPR Socket 1/2",
     categoryId: "ccc45332-e8ae-5cca-8670-158fd1ee40e0",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 452. Category: PLUMBING / SANITARY. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -9564,7 +9561,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "PPRS3/4",
     name: "PPR Socket 3/4",
     categoryId: "ccc45332-e8ae-5cca-8670-158fd1ee40e0",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 453. Category: PLUMBING / SANITARY. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -9573,7 +9570,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "PPRTC1",
     name: "PPR Tank Connector 1",
     categoryId: "ccc45332-e8ae-5cca-8670-158fd1ee40e0",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 454. Category: PLUMBING / SANITARY. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -9582,7 +9579,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "PPRTC1/2",
     name: "PPR Tank Connector 1/2",
     categoryId: "ccc45332-e8ae-5cca-8670-158fd1ee40e0",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 455. Category: PLUMBING / SANITARY. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -9591,7 +9588,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "PPRTC3/4",
     name: "PPR Tank Connector 3/4",
     categoryId: "ccc45332-e8ae-5cca-8670-158fd1ee40e0",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 456. Category: PLUMBING / SANITARY. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -9600,7 +9597,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "PPRT1",
     name: "PPR Tee 1",
     categoryId: "ccc45332-e8ae-5cca-8670-158fd1ee40e0",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 457. Category: PLUMBING / SANITARY. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -9609,7 +9606,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "PPRT1/2",
     name: "PPR Tee 1/2",
     categoryId: "ccc45332-e8ae-5cca-8670-158fd1ee40e0",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 458. Category: PLUMBING / SANITARY. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -9618,7 +9615,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "PPRT3/4",
     name: "PPR Tee 3/4",
     categoryId: "ccc45332-e8ae-5cca-8670-158fd1ee40e0",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 459. Category: PLUMBING / SANITARY. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -9627,7 +9624,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "PPRU1",
     name: "PPR Union 1",
     categoryId: "ccc45332-e8ae-5cca-8670-158fd1ee40e0",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 460. Category: PLUMBING / SANITARY. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -9636,7 +9633,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "PPRU1/2",
     name: "PPR Union 1/2",
     categoryId: "ccc45332-e8ae-5cca-8670-158fd1ee40e0",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 461. Category: PLUMBING / SANITARY. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -9645,7 +9642,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "PPRU3/4",
     name: "PPR Union 3/4",
     categoryId: "ccc45332-e8ae-5cca-8670-158fd1ee40e0",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 462. Category: PLUMBING / SANITARY. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -9654,7 +9651,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "PVCE2",
     name: "PVC Elbow 2",
     categoryId: "ccc45332-e8ae-5cca-8670-158fd1ee40e0",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 463. Category: PLUMBING / SANITARY. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -9663,7 +9660,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "PVCP1",
     name: "PVC Pipe 1",
     categoryId: "ccc45332-e8ae-5cca-8670-158fd1ee40e0",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 464. Category: PLUMBING / SANITARY. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -9672,7 +9669,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "PVCP1.5",
     name: "PVC Pipe 1.5",
     categoryId: "ccc45332-e8ae-5cca-8670-158fd1ee40e0",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 465. Category: PLUMBING / SANITARY. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -9681,7 +9678,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "PVCP1/2",
     name: "PVC Pipe 1/2",
     categoryId: "ccc45332-e8ae-5cca-8670-158fd1ee40e0",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 466. Category: PLUMBING / SANITARY. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -9690,7 +9687,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "PVCP2",
     name: "PVC pipe 2",
     categoryId: "ccc45332-e8ae-5cca-8670-158fd1ee40e0",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 467. Category: PLUMBING / SANITARY. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -9699,7 +9696,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "PVCP3/4",
     name: "PVC Pipe 3/4",
     categoryId: "ccc45332-e8ae-5cca-8670-158fd1ee40e0",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 468. Category: PLUMBING / SANITARY. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -9708,7 +9705,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "PVCRB1.5*1",
     name: "PVC Reducing Bush 1 1/2*1",
     categoryId: "ccc45332-e8ae-5cca-8670-158fd1ee40e0",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 469. Category: PLUMBING / SANITARY. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -9717,7 +9714,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "PVCRS1.5*1",
     name: "PVC Reducing Socket 1 1/2 *1",
     categoryId: "ccc45332-e8ae-5cca-8670-158fd1ee40e0",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 470. Category: PLUMBING / SANITARY. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -9726,7 +9723,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "PVCRS2*1.5",
     name: "PVC Reducing Socket 2*1 1/2",
     categoryId: "ccc45332-e8ae-5cca-8670-158fd1ee40e0",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 471. Category: PLUMBING / SANITARY. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -9735,7 +9732,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "PVCT1.5",
     name: "PVC Tee 1 1/2",
     categoryId: "ccc45332-e8ae-5cca-8670-158fd1ee40e0",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 472. Category: PLUMBING / SANITARY. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -9744,7 +9741,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "PVCT2",
     name: "PVC Tee2",
     categoryId: "ccc45332-e8ae-5cca-8670-158fd1ee40e0",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 473. Category: PLUMBING / SANITARY. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -9753,7 +9750,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "R10",
     name: "R10",
     categoryId: "772b30b0-697e-570a-a260-756d74a0929b",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 474. Category: STEEL / METAL. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -9762,7 +9759,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "R12",
     name: "R12",
     categoryId: "772b30b0-697e-570a-a260-756d74a0929b",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 475. Category: STEEL / METAL. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -9771,7 +9768,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "R16",
     name: "R16",
     categoryId: "772b30b0-697e-570a-a260-756d74a0929b",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 476. Category: STEEL / METAL. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -9780,7 +9777,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "R6",
     name: "R6",
     categoryId: "772b30b0-697e-570a-a260-756d74a0929b",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 477. Category: STEEL / METAL. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -9789,7 +9786,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "R8",
     name: "R8",
     categoryId: "772b30b0-697e-570a-a260-756d74a0929b",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 478. Category: STEEL / METAL. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -9798,7 +9795,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "RW",
     name: "Razor Wire",
     categoryId: "772b30b0-697e-570a-a260-756d74a0929b",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 479. Category: STEEL / METAL. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -9807,7 +9804,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "ROM",
     name: "Redoxide Maisha",
     categoryId: "f1ea9b90-053e-59e6-b3c1-1c1dc1addc95",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 480. Category: GENERAL / OTHER. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -9816,7 +9813,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "ROO",
     name: "Redoxide Osho",
     categoryId: "f1ea9b90-053e-59e6-b3c1-1c1dc1addc95",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 481. Category: GENERAL / OTHER. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -9825,7 +9822,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "ROO110",
     name: "Redoxide Osho 110",
     categoryId: "f1ea9b90-053e-59e6-b3c1-1c1dc1addc95",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 482. Category: GENERAL / OTHER. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -9834,7 +9831,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "ROS",
     name: "Redoxide Superflex",
     categoryId: "f1ea9b90-053e-59e6-b3c1-1c1dc1addc95",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 483. Category: GENERAL / OTHER. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -9843,7 +9840,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "ROS110",
     name: "Redoxide Superflex 110",
     categoryId: "f1ea9b90-053e-59e6-b3c1-1c1dc1addc95",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 484. Category: GENERAL / OTHER. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -9852,7 +9849,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "R30",
     name: "Ridges 30G",
     categoryId: "f3347084-a442-50be-b847-7c840ad30fee",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 485. Category: ROOFING. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -9861,7 +9858,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "R32",
     name: "RIDGES 32G",
     categoryId: "f3347084-a442-50be-b847-7c840ad30fee",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 486. Category: ROOFING. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -9870,7 +9867,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "RB",
     name: "Ridges Blue",
     categoryId: "f3347084-a442-50be-b847-7c840ad30fee",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 487. Category: ROOFING. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -9879,7 +9876,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "RBR",
     name: "Ridges Brick Red",
     categoryId: "f3347084-a442-50be-b847-7c840ad30fee",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 488. Category: ROOFING. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -9888,7 +9885,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "RCG",
     name: "Ridges Charcoal Grey",
     categoryId: "f3347084-a442-50be-b847-7c840ad30fee",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 489. Category: ROOFING. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -9897,7 +9894,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "RG-2",
     name: "Ridges Green",
     categoryId: "f3347084-a442-50be-b847-7c840ad30fee",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 490. Category: ROOFING. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -9906,7 +9903,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "RTR",
     name: "Ridges Tile Red",
     categoryId: "f3347084-a442-50be-b847-7c840ad30fee",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 491. Category: ROOFING. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -9915,7 +9912,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "RBR-2",
     name: "Roller Brush",
     categoryId: "55d303ce-17c9-5ea8-8054-02b2b05e871f",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 492. Category: TOOLS / EQUIPMENT. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -9924,7 +9921,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "RN",
     name: "Roofing Nails",
     categoryId: "1a846928-a148-545f-a582-3b7070ea6bcf",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 493. Category: NAILS. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -9933,7 +9930,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "RF1",
     name: "ROUND FERROLS 1",
     categoryId: "106b8bb0-faeb-5876-b551-6e4d24423fcb",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 494. Category: HARDWARE / FASTENERS. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -9942,7 +9939,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "RHC20",
     name: "Royal H/C Cream 20lt",
     categoryId: "3c03fe75-8e49-582b-b553-7ef8cbfd0c94",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 495. Category: PAINT / COATINGS. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -9951,7 +9948,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "RHC4",
     name: "Royal H/C Cream 4lt",
     categoryId: "3c03fe75-8e49-582b-b553-7ef8cbfd0c94",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 496. Category: PAINT / COATINGS. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -9960,7 +9957,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "RHW20",
     name: "Royal H/c White 20lt",
     categoryId: "3c03fe75-8e49-582b-b553-7ef8cbfd0c94",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 497. Category: PAINT / COATINGS. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -9969,7 +9966,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "RHW4",
     name: "Royal H/C White 4lt",
     categoryId: "3c03fe75-8e49-582b-b553-7ef8cbfd0c94",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 498. Category: PAINT / COATINGS. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -9978,7 +9975,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "RM3",
     name: "Royal Master Base 3mm 30k",
     categoryId: "3c03fe75-8e49-582b-b553-7ef8cbfd0c94",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 499. Category: PAINT / COATINGS. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -9987,7 +9984,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "RGBB1",
     name: "Royal PG B/Blue 1ltr",
     categoryId: "3c03fe75-8e49-582b-b553-7ef8cbfd0c94",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 500. Category: PAINT / COATINGS. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -9996,7 +9993,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "RGB1",
     name: "Royal PG Black 1ltr",
     categoryId: "3c03fe75-8e49-582b-b553-7ef8cbfd0c94",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 501. Category: PAINT / COATINGS. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -10005,7 +10002,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "RGB4",
     name: "Royal PG Black 4ltr",
     categoryId: "3c03fe75-8e49-582b-b553-7ef8cbfd0c94",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 502. Category: PAINT / COATINGS. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -10014,7 +10011,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "RGC4",
     name: "Royal PG Cream 4ltr",
     categoryId: "3c03fe75-8e49-582b-b553-7ef8cbfd0c94",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 503. Category: PAINT / COATINGS. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -10023,7 +10020,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "RGGY4",
     name: "Royal PG G/Yellow 4ltr",
     categoryId: "3c03fe75-8e49-582b-b553-7ef8cbfd0c94",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 504. Category: PAINT / COATINGS. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -10032,7 +10029,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "RGGO1",
     name: "Royal PG Grey Oxide 1ltr",
     categoryId: "3c03fe75-8e49-582b-b553-7ef8cbfd0c94",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 505. Category: PAINT / COATINGS. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -10041,7 +10038,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "RGGO4",
     name: "Royal PG Grey oxide 4ltr",
     categoryId: "3c03fe75-8e49-582b-b553-7ef8cbfd0c94",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 506. Category: PAINT / COATINGS. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -10050,7 +10047,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "RGTB1",
     name: "Royal PG T/Blue 1ltr",
     categoryId: "3c03fe75-8e49-582b-b553-7ef8cbfd0c94",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 507. Category: PAINT / COATINGS. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -10059,7 +10056,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "RGTB4",
     name: "Royal PG T/Blue 4ltr",
     categoryId: "3c03fe75-8e49-582b-b553-7ef8cbfd0c94",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 508. Category: PAINT / COATINGS. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -10068,7 +10065,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "RGW1",
     name: "Royal PG White 1ltr",
     categoryId: "3c03fe75-8e49-582b-b553-7ef8cbfd0c94",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 509. Category: PAINT / COATINGS. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -10077,7 +10074,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "RGW4",
     name: "Royal PG White 4ltr",
     categoryId: "3c03fe75-8e49-582b-b553-7ef8cbfd0c94",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 510. Category: PAINT / COATINGS. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -10086,7 +10083,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "SG1P1",
     name: "S/GLOSS 1P 1LT",
     categoryId: "3c03fe75-8e49-582b-b553-7ef8cbfd0c94",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 511. Category: PAINT / COATINGS. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -10095,7 +10092,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "SG1P4",
     name: "S/GLOSS 1P 4LTRS",
     categoryId: "3c03fe75-8e49-582b-b553-7ef8cbfd0c94",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 512. Category: PAINT / COATINGS. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -10104,7 +10101,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "SG2D1",
     name: "S/GLOSS 2D 1LT",
     categoryId: "3c03fe75-8e49-582b-b553-7ef8cbfd0c94",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 513. Category: PAINT / COATINGS. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -10113,7 +10110,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "SG2D4",
     name: "S/GLOSS 2D 4LT",
     categoryId: "3c03fe75-8e49-582b-b553-7ef8cbfd0c94",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 514. Category: PAINT / COATINGS. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -10122,7 +10119,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "SG3A1",
     name: "S/GLOSS 3A 1LT",
     categoryId: "3c03fe75-8e49-582b-b553-7ef8cbfd0c94",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 515. Category: PAINT / COATINGS. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -10131,7 +10128,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "SG3A4",
     name: "S/GLOSS 3A 4LT",
     categoryId: "3c03fe75-8e49-582b-b553-7ef8cbfd0c94",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 516. Category: PAINT / COATINGS. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -10140,7 +10137,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "SP100",
     name: "Sand Paper P100",
     categoryId: "f1ea9b90-053e-59e6-b3c1-1c1dc1addc95",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 517. Category: GENERAL / OTHER. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -10149,7 +10146,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "SP120",
     name: "Sand Paper P120",
     categoryId: "f1ea9b90-053e-59e6-b3c1-1c1dc1addc95",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 518. Category: GENERAL / OTHER. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -10158,7 +10155,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "SP36",
     name: "Sand Paper P36",
     categoryId: "f1ea9b90-053e-59e6-b3c1-1c1dc1addc95",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 519. Category: GENERAL / OTHER. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -10167,7 +10164,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "SP40",
     name: "Sand Paper P40",
     categoryId: "f1ea9b90-053e-59e6-b3c1-1c1dc1addc95",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 520. Category: GENERAL / OTHER. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -10176,7 +10173,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "SP60",
     name: "Sand Paper P60",
     categoryId: "f1ea9b90-053e-59e6-b3c1-1c1dc1addc95",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 521. Category: GENERAL / OTHER. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -10185,7 +10182,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "SP80",
     name: "Sand Paper P80",
     categoryId: "f1ea9b90-053e-59e6-b3c1-1c1dc1addc95",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 522. Category: GENERAL / OTHER. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -10194,7 +10191,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "SS",
     name: "Shower stand",
     categoryId: "ccc45332-e8ae-5cca-8670-158fd1ee40e0",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 523. Category: PLUMBING / SANITARY. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -10203,7 +10200,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "STG",
     name: "Shower Trap Grey",
     categoryId: "ccc45332-e8ae-5cca-8670-158fd1ee40e0",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 524. Category: PLUMBING / SANITARY. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -10212,7 +10209,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "S1P4",
     name: "Silicon 1P 4ltr",
     categoryId: "3c03fe75-8e49-582b-b553-7ef8cbfd0c94",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 525. Category: PAINT / COATINGS. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -10221,7 +10218,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "S2D4",
     name: "Silicon 2D 4ltr",
     categoryId: "3c03fe75-8e49-582b-b553-7ef8cbfd0c94",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 526. Category: PAINT / COATINGS. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -10230,7 +10227,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "S3A4",
     name: "Silicon 3A 4ltr",
     categoryId: "3c03fe75-8e49-582b-b553-7ef8cbfd0c94",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 527. Category: PAINT / COATINGS. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -10239,7 +10236,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "SIB",
     name: "Silicon Black",
     categoryId: "3c03fe75-8e49-582b-b553-7ef8cbfd0c94",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 528. Category: PAINT / COATINGS. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -10248,7 +10245,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "SIC",
     name: "Silicon Clear",
     categoryId: "3c03fe75-8e49-582b-b553-7ef8cbfd0c94",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 529. Category: PAINT / COATINGS. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -10257,7 +10254,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "SIW",
     name: "Silicon White",
     categoryId: "3c03fe75-8e49-582b-b553-7ef8cbfd0c94",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 530. Category: PAINT / COATINGS. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -10266,7 +10263,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "S",
     name: "Simba cement",
     categoryId: "4f1345d3-6c2f-5423-9192-3d60a89ac06d",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 531. Category: CEMENT / BUILDING MATERIALS. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -10275,7 +10272,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "SC",
     name: "SkimCoat",
     categoryId: "4f1345d3-6c2f-5423-9192-3d60a89ac06d",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 532. Category: CEMENT / BUILDING MATERIALS. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -10284,7 +10281,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "SB-2-2",
     name: "Soft Broom",
     categoryId: "55d303ce-17c9-5ea8-8054-02b2b05e871f",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 533. Category: TOOLS / EQUIPMENT. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -10293,7 +10290,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "SMG1/2",
     name: "Soweco Metal Grey 1/2",
     categoryId: "3c03fe75-8e49-582b-b553-7ef8cbfd0c94",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 534. Category: PAINT / COATINGS. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -10302,7 +10299,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "SMG1",
     name: "Soweco Metal Grey 1ltrs",
     categoryId: "3c03fe75-8e49-582b-b553-7ef8cbfd0c94",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 535. Category: PAINT / COATINGS. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -10311,7 +10308,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "SMG4",
     name: "Soweco Metal Grey 4",
     categoryId: "3c03fe75-8e49-582b-b553-7ef8cbfd0c94",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 536. Category: PAINT / COATINGS. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -10320,7 +10317,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "SHS",
     name: "Sprinkler Heart Shape",
     categoryId: "ccc45332-e8ae-5cca-8670-158fd1ee40e0",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 537. Category: PLUMBING / SANITARY. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -10329,7 +10326,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "SF1",
     name: "Square ferrols 1",
     categoryId: "106b8bb0-faeb-5876-b551-6e4d24423fcb",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 538. Category: HARDWARE / FASTENERS. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -10338,7 +10335,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "SP1/2",
     name: "Stand Pipe 1/2",
     categoryId: "ccc45332-e8ae-5cca-8670-158fd1ee40e0",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 539. Category: PLUMBING / SANITARY. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -10347,7 +10344,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "SP3/4",
     name: "Stand Pipe 3/4",
     categoryId: "ccc45332-e8ae-5cca-8670-158fd1ee40e0",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 540. Category: PLUMBING / SANITARY. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -10356,7 +10353,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "SN2",
     name: "Steel Nail 2",
     categoryId: "106b8bb0-faeb-5876-b551-6e4d24423fcb",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 541. Category: HARDWARE / FASTENERS. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -10365,7 +10362,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "SN2.5",
     name: "Steel Nail 2.5",
     categoryId: "106b8bb0-faeb-5876-b551-6e4d24423fcb",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 542. Category: HARDWARE / FASTENERS. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -10374,7 +10371,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "SN3",
     name: "Steel Nail 3",
     categoryId: "106b8bb0-faeb-5876-b551-6e4d24423fcb",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 543. Category: HARDWARE / FASTENERS. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -10383,7 +10380,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "SN4",
     name: "Steel Nail 4",
     categoryId: "106b8bb0-faeb-5876-b551-6e4d24423fcb",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 544. Category: HARDWARE / FASTENERS. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -10392,7 +10389,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "SS-2",
     name: "Steel Showel",
     categoryId: "55d303ce-17c9-5ea8-8054-02b2b05e871f",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 545. Category: TOOLS / EQUIPMENT. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -10401,7 +10398,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "SUP2",
     name: "Suction Pipe 2",
     categoryId: "ccc45332-e8ae-5cca-8670-158fd1ee40e0",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 546. Category: PLUMBING / SANITARY. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -10410,7 +10407,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "SUP3",
     name: "Suction Pipe 3",
     categoryId: "ccc45332-e8ae-5cca-8670-158fd1ee40e0",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 547. Category: PLUMBING / SANITARY. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -10419,7 +10416,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "SJ240",
     name: "SUPER JUMBO 240",
     categoryId: "63852482-e02e-5a7b-b26d-a55ef8f734f4",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 548. Category: FENCING MATERIAL. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -10428,7 +10425,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "TEE1",
     name: "TEE 1",
     categoryId: "772b30b0-697e-570a-a260-756d74a0929b",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 549. Category: STEEL. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -10437,7 +10434,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "TEE3/4",
     name: "Tee 3/4",
     categoryId: "772b30b0-697e-570a-a260-756d74a0929b",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 550. Category: STEEL. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -10446,7 +10443,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "T2*30",
     name: "Tembo 2*30",
     categoryId: "f3347084-a442-50be-b847-7c840ad30fee",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 551. Category: ROOFING. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -10455,7 +10452,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "T2*32",
     name: "Tembo 2*32",
     categoryId: "f3347084-a442-50be-b847-7c840ad30fee",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 552. Category: ROOFING. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -10464,7 +10461,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "T2.5*30",
     name: "Tembo 2.5*30",
     categoryId: "f3347084-a442-50be-b847-7c840ad30fee",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 553. Category: ROOFING. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -10473,7 +10470,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "T2.5*32",
     name: "Tembo 2.5*32",
     categoryId: "f3347084-a442-50be-b847-7c840ad30fee",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 554. Category: ROOFING. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -10482,7 +10479,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "T3*30",
     name: "Tembo 3*30",
     categoryId: "f3347084-a442-50be-b847-7c840ad30fee",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 555. Category: ROOFING. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -10491,7 +10488,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "T3*32",
     name: "Tembo 3*32",
     categoryId: "f3347084-a442-50be-b847-7c840ad30fee",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 556. Category: ROOFING. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -10500,7 +10497,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "T480",
     name: "Tembo 480",
     categoryId: "f3347084-a442-50be-b847-7c840ad30fee",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 557. Category: ROOFING. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -10509,7 +10506,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "T610",
     name: "Tembo 610",
     categoryId: "f3347084-a442-50be-b847-7c840ad30fee",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 558. Category: ROOFING. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -10518,7 +10515,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "TH1",
     name: "Thinner 1ltr",
     categoryId: "3c03fe75-8e49-582b-b553-7ef8cbfd0c94",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 559. Category: PAINT / COATINGS. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -10527,7 +10524,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "TH5",
     name: "Thinner 5ltr",
     categoryId: "3c03fe75-8e49-582b-b553-7ef8cbfd0c94",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 560. Category: PAINT / COATINGS. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -10536,7 +10533,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "TA",
     name: "Tile Adhesive",
     categoryId: "4f1345d3-6c2f-5423-9192-3d60a89ac06d",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 561. Category: CEMENT / BUILDING MATERIALS. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -10545,7 +10542,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "TC",
     name: "Topflush Cistern",
     categoryId: "ccc45332-e8ae-5cca-8670-158fd1ee40e0",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 562. Category: PLUMBING / SANITARY. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -10554,7 +10551,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "TB",
     name: "Tower Bolt",
     categoryId: "106b8bb0-faeb-5876-b551-6e4d24423fcb",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 563. Category: HARDWARE / FASTENERS. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -10563,7 +10560,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "T2.5",
     name: "Transparent 2.5Mtr",
     categoryId: "f3347084-a442-50be-b847-7c840ad30fee",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 564. Category: ROOFING. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -10572,7 +10569,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "T2",
     name: "Transparent 2Mtr",
     categoryId: "f3347084-a442-50be-b847-7c840ad30fee",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 565. Category: ROOFING. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -10581,7 +10578,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "T3",
     name: "Transparent 3Mtr",
     categoryId: "f3347084-a442-50be-b847-7c840ad30fee",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 566. Category: ROOFING. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -10590,7 +10587,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "TC263",
     name: "Tri Circle 263",
     categoryId: "edacd144-a7e3-520a-935b-2759cd127209",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 567. Category: LOCKS. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -10599,7 +10596,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "TC264",
     name: "Tri Circle 264",
     categoryId: "edacd144-a7e3-520a-935b-2759cd127209",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 568. Category: LOCKS. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -10608,7 +10605,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "TC265",
     name: "Tri Circle 265",
     categoryId: "edacd144-a7e3-520a-935b-2759cd127209",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 569. Category: LOCKS. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -10617,7 +10614,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "TC266",
     name: "Tri Circle 266",
     categoryId: "edacd144-a7e3-520a-935b-2759cd127209",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 570. Category: LOCKS. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -10626,7 +10623,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "T1.5*1",
     name: "Tube 1 1/2*1",
     categoryId: "772b30b0-697e-570a-a260-756d74a0929b",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 571. Category: STEEL / METAL. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -10635,7 +10632,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "T1.5*1.5",
     name: "Tube 1 1/2*1 1/2",
     categoryId: "772b30b0-697e-570a-a260-756d74a0929b",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 572. Category: STEEL / METAL. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -10644,7 +10641,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "T1.5*1.5*1.5",
     name: "Tube 1 1/2*1 1/2*1.5",
     categoryId: "772b30b0-697e-570a-a260-756d74a0929b",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 573. Category: STEEL / METAL. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -10653,7 +10650,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "T1.25*1.25",
     name: "TUBE 1 1/4*1 1/4",
     categoryId: "772b30b0-697e-570a-a260-756d74a0929b",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 574. Category: STEEL / METAL. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -10662,7 +10659,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "T1*1",
     name: "Tube 1*1",
     categoryId: "772b30b0-697e-570a-a260-756d74a0929b",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 575. Category: STEEL / METAL. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -10671,7 +10668,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "T1*1*1.5",
     name: "Tube 1*1*1.5",
     categoryId: "772b30b0-697e-570a-a260-756d74a0929b",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 576. Category: STEEL / METAL. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -10680,7 +10677,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "T1.5*1*1.5",
     name: "Tube 1.5*1*1.5",
     categoryId: "772b30b0-697e-570a-a260-756d74a0929b",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 577. Category: STEEL / METAL. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -10689,7 +10686,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "T1.5*1.5*2",
     name: "Tube 1.5*1.5*2",
     categoryId: "772b30b0-697e-570a-a260-756d74a0929b",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 578. Category: STEEL / METAL. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -10698,7 +10695,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "T2*1",
     name: "Tube 2*1",
     categoryId: "772b30b0-697e-570a-a260-756d74a0929b",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 579. Category: STEEL / METAL. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -10707,7 +10704,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "T2*1*1.5",
     name: "Tube 2*1*1.5",
     categoryId: "772b30b0-697e-570a-a260-756d74a0929b",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 580. Category: STEEL / METAL. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -10716,7 +10713,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "T2*2",
     name: "Tube 2*2",
     categoryId: "772b30b0-697e-570a-a260-756d74a0929b",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 581. Category: STEEL / METAL. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -10725,7 +10722,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "T2*2*1.5",
     name: "Tube 2*2*1.5",
     categoryId: "772b30b0-697e-570a-a260-756d74a0929b",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 582. Category: STEEL / METAL. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -10734,7 +10731,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "T2*2*2",
     name: "Tube 2*2*2",
     categoryId: "772b30b0-697e-570a-a260-756d74a0929b",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 583. Category: STEEL / METAL. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -10743,7 +10740,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "T3*2",
     name: "Tube 3*2",
     categoryId: "772b30b0-697e-570a-a260-756d74a0929b",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 584. Category: STEEL / METAL. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -10752,7 +10749,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "T3/4*3/4",
     name: "Tube 3/4*3/4",
     categoryId: "772b30b0-697e-570a-a260-756d74a0929b",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 585. Category: STEEL / METAL. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -10761,7 +10758,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "T3/4*3/4*1.5",
     name: "Tube 3/4*3/4*1.5",
     categoryId: "772b30b0-697e-570a-a260-756d74a0929b",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 586. Category: STEEL / METAL. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -10770,7 +10767,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "T1",
     name: "Turpentine 1 ltr",
     categoryId: "3c03fe75-8e49-582b-b553-7ef8cbfd0c94",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 587. Category: PAINT / COATINGS. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -10779,7 +10776,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "T1/2",
     name: "Turpentine 1/2 ltr",
     categoryId: "3c03fe75-8e49-582b-b553-7ef8cbfd0c94",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 588. Category: PAINT / COATINGS. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -10788,7 +10785,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "T5",
     name: "Turpentine 5ltr",
     categoryId: "3c03fe75-8e49-582b-b553-7ef8cbfd0c94",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 589. Category: PAINT / COATINGS. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -10797,7 +10794,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "UN1",
     name: "U Nails 1",
     categoryId: "1a846928-a148-545f-a582-3b7070ea6bcf",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 590. Category: NAILS. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -10806,7 +10803,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "UN1.5",
     name: "U Nails 1.5",
     categoryId: "1a846928-a148-545f-a582-3b7070ea6bcf",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 591. Category: NAILS. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -10815,7 +10812,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "VM1P1",
     name: "V/MATT BASE 1P 1LTR",
     categoryId: "3c03fe75-8e49-582b-b553-7ef8cbfd0c94",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 592. Category: PAINT / COATINGS. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -10824,7 +10821,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "VM1P4",
     name: "V/MATT Base 1P 4LT",
     categoryId: "3c03fe75-8e49-582b-b553-7ef8cbfd0c94",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 593. Category: PAINT / COATINGS. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -10833,7 +10830,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "VM2D1",
     name: "V/MATT BASE 2D 1LR",
     categoryId: "3c03fe75-8e49-582b-b553-7ef8cbfd0c94",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 594. Category: PAINT / COATINGS. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -10842,7 +10839,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "VM2D4",
     name: "V/MATT BASE 2D 4",
     categoryId: "3c03fe75-8e49-582b-b553-7ef8cbfd0c94",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 595. Category: PAINT / COATINGS. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -10851,7 +10848,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "VM3A1",
     name: "V/MATT BASE 3A 1LTR",
     categoryId: "3c03fe75-8e49-582b-b553-7ef8cbfd0c94",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 596. Category: PAINT / COATINGS. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -10860,7 +10857,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "VM3A4",
     name: "V/MATT BASE 3A 4LT",
     categoryId: "3c03fe75-8e49-582b-b553-7ef8cbfd0c94",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 597. Category: PAINT / COATINGS. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -10869,7 +10866,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "VS1P1",
     name: "V/SILK BASE 1P 1LTR",
     categoryId: "3c03fe75-8e49-582b-b553-7ef8cbfd0c94",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 598. Category: PAINT / COATINGS. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -10878,7 +10875,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "VS1P4",
     name: "V/SILK BASE 1P 4LT",
     categoryId: "3c03fe75-8e49-582b-b553-7ef8cbfd0c94",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 599. Category: PAINT / COATINGS. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -10887,7 +10884,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "VS2D1",
     name: "V/SILK BASE 2D 1LTRS",
     categoryId: "3c03fe75-8e49-582b-b553-7ef8cbfd0c94",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 600. Category: PAINT / COATINGS. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -10896,7 +10893,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "VS2D4",
     name: "V/SILK BASE 2D 4LT",
     categoryId: "3c03fe75-8e49-582b-b553-7ef8cbfd0c94",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 601. Category: PAINT / COATINGS. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -10905,7 +10902,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "VS3A1",
     name: "V/SILK BASE 3A 1LTR",
     categoryId: "3c03fe75-8e49-582b-b553-7ef8cbfd0c94",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 602. Category: PAINT / COATINGS. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -10914,7 +10911,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "VS3A4",
     name: "V/SILK BASE 3A 4LT",
     categoryId: "3c03fe75-8e49-582b-b553-7ef8cbfd0c94",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 603. Category: PAINT / COATINGS. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -10923,7 +10920,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "V",
     name: "Ventilation",
     categoryId: "f1ea9b90-053e-59e6-b3c1-1c1dc1addc95",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 604. Category: GENERAL / OTHER. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -10932,7 +10929,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "WBM",
     name: "Wash Basin M/S",
     categoryId: "ccc45332-e8ae-5cca-8670-158fd1ee40e0",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 605. Category: PLUMBING / SANITARY. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -10941,7 +10938,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "WBS",
     name: "Wash Basin S/S",
     categoryId: "ccc45332-e8ae-5cca-8670-158fd1ee40e0",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 606. Category: PLUMBING / SANITARY. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -10950,7 +10947,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "WCT4",
     name: "Waste Cross Tee 4",
     categoryId: "ccc45332-e8ae-5cca-8670-158fd1ee40e0",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 607. Category: PLUMBING / SANITARY. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -10959,7 +10956,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "WE1.5",
     name: "Waste Elbow 1 1/2",
     categoryId: "ccc45332-e8ae-5cca-8670-158fd1ee40e0",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 608. Category: PLUMBING / SANITARY. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -10968,7 +10965,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "WE1.25",
     name: "Waste Elbow 1 1/4",
     categoryId: "ccc45332-e8ae-5cca-8670-158fd1ee40e0",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 609. Category: PLUMBING / SANITARY. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -10977,7 +10974,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "WE2",
     name: "Waste Elbow 2",
     categoryId: "ccc45332-e8ae-5cca-8670-158fd1ee40e0",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 610. Category: PLUMBING / SANITARY. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -10986,7 +10983,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "WE3",
     name: "Waste Elbow 3",
     categoryId: "ccc45332-e8ae-5cca-8670-158fd1ee40e0",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 611. Category: PLUMBING / SANITARY. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -10995,7 +10992,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "WE4",
     name: "Waste Elbow 4",
     categoryId: "ccc45332-e8ae-5cca-8670-158fd1ee40e0",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 612. Category: PLUMBING / SANITARY. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -11004,7 +11001,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "WE445",
     name: "Waste Elbow 4 45",
     categoryId: "ccc45332-e8ae-5cca-8670-158fd1ee40e0",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 613. Category: PLUMBING / SANITARY. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -11013,7 +11010,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "WE6",
     name: "Waste Elbow 6",
     categoryId: "ccc45332-e8ae-5cca-8670-158fd1ee40e0",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 614. Category: PLUMBING / SANITARY. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -11022,7 +11019,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "WIB4",
     name: "Waste Inspection Bend 4",
     categoryId: "ccc45332-e8ae-5cca-8670-158fd1ee40e0",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 615. Category: PLUMBING / SANITARY. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -11031,7 +11028,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "WIT4",
     name: "Waste Inspection Tee 4",
     categoryId: "ccc45332-e8ae-5cca-8670-158fd1ee40e0",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 616. Category: PLUMBING / SANITARY. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -11040,7 +11037,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "WP1.5",
     name: "Waste Pipe 1 1/2",
     categoryId: "ccc45332-e8ae-5cca-8670-158fd1ee40e0",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 617. Category: PLUMBING / SANITARY. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -11049,7 +11046,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "WP1.25",
     name: "Waste Pipe 1 1/4",
     categoryId: "ccc45332-e8ae-5cca-8670-158fd1ee40e0",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 618. Category: PLUMBING / SANITARY. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -11058,7 +11055,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "WP2",
     name: "Waste Pipe 2",
     categoryId: "ccc45332-e8ae-5cca-8670-158fd1ee40e0",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 619. Category: PLUMBING / SANITARY. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -11067,7 +11064,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "WP3",
     name: "Waste Pipe 3",
     categoryId: "ccc45332-e8ae-5cca-8670-158fd1ee40e0",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 620. Category: PLUMBING / SANITARY. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -11076,7 +11073,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "WP4",
     name: "Waste Pipe 4",
     categoryId: "ccc45332-e8ae-5cca-8670-158fd1ee40e0",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 621. Category: PLUMBING / SANITARY. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -11085,7 +11082,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "WP4G",
     name: "Waste pipe 4 golden",
     categoryId: "ccc45332-e8ae-5cca-8670-158fd1ee40e0",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 622. Category: PLUMBING / SANITARY. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -11094,7 +11091,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "WP6",
     name: "Waste Pipe 6",
     categoryId: "ccc45332-e8ae-5cca-8670-158fd1ee40e0",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 623. Category: PLUMBING / SANITARY. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -11103,7 +11100,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "WP6G",
     name: "waste pipe 6 golden",
     categoryId: "ccc45332-e8ae-5cca-8670-158fd1ee40e0",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 624. Category: PLUMBING / SANITARY. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -11112,7 +11109,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "WT1.5",
     name: "Waste Tee 1 1/2",
     categoryId: "ccc45332-e8ae-5cca-8670-158fd1ee40e0",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 625. Category: PLUMBING / SANITARY. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -11121,7 +11118,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "WT1.25",
     name: "Waste Tee 1 1/4",
     categoryId: "ccc45332-e8ae-5cca-8670-158fd1ee40e0",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 626. Category: PLUMBING / SANITARY. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -11130,7 +11127,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "WT2",
     name: "Waste Tee 2",
     categoryId: "ccc45332-e8ae-5cca-8670-158fd1ee40e0",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 627. Category: PLUMBING / SANITARY. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -11139,7 +11136,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "WT3",
     name: "Waste Tee 3",
     categoryId: "ccc45332-e8ae-5cca-8670-158fd1ee40e0",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 628. Category: PLUMBING / SANITARY. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -11148,7 +11145,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "WT4",
     name: "Waste Tee 4",
     categoryId: "ccc45332-e8ae-5cca-8670-158fd1ee40e0",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 629. Category: PLUMBING / SANITARY. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -11157,7 +11154,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "WPR",
     name: "Water Proof Red",
     categoryId: "4f1345d3-6c2f-5423-9192-3d60a89ac06d",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 630. Category: CEMENT / BUILDING MATERIALS. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -11166,7 +11163,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "WPW",
     name: "Water Proof White",
     categoryId: "4f1345d3-6c2f-5423-9192-3d60a89ac06d",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 631. Category: CEMENT / BUILDING MATERIALS. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -11175,7 +11172,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "WR10",
     name: "Welding Rods China G10",
     categoryId: "3f6914e7-665c-5937-8237-4da91c959d47",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 632. Category: WELDING. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -11184,7 +11181,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "WR12",
     name: "Welding Rods China G12",
     categoryId: "3f6914e7-665c-5937-8237-4da91c959d47",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 633. Category: WELDING. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -11193,7 +11190,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "WMH",
     name: "Weldmesh H/G",
     categoryId: "772b30b0-697e-570a-a260-756d74a0929b",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 634. Category: STEEL / METAL. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -11202,7 +11199,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "WML",
     name: "Weldmesh L/G",
     categoryId: "772b30b0-697e-570a-a260-756d74a0929b",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 635. Category: STEEL / METAL. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -11211,7 +11208,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "WMM",
     name: "Weldmesh M/g",
     categoryId: "772b30b0-697e-570a-a260-756d74a0929b",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 636. Category: STEEL / METAL. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -11220,7 +11217,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "WBW",
     name: "Wheel Barow Wheel Only",
     categoryId: "f1ea9b90-053e-59e6-b3c1-1c1dc1addc95",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 637. Category: GENERAL / OTHER. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -11229,7 +11226,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "WBC",
     name: "Wheel Barrow China",
     categoryId: "55d303ce-17c9-5ea8-8054-02b2b05e871f",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 638. Category: TOOLS / EQUIPMENT. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -11238,7 +11235,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "WBJ",
     name: "Wheel Barrow JK",
     categoryId: "55d303ce-17c9-5ea8-8054-02b2b05e871f",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 639. Category: TOOLS / EQUIPMENT. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -11247,7 +11244,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "WBR",
     name: "Wheel Barrow Reliance",
     categoryId: "55d303ce-17c9-5ea8-8054-02b2b05e871f",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 640. Category: TOOLS / EQUIPMENT. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -11256,7 +11253,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "WBWB",
     name: "Wheel Barrow wheel Big",
     categoryId: "55d303ce-17c9-5ea8-8054-02b2b05e871f",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 641. Category: TOOLS / EQUIPMENT. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -11265,7 +11262,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "WBWJ",
     name: "Wheel Barrow wheel JK",
     categoryId: "55d303ce-17c9-5ea8-8054-02b2b05e871f",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 642. Category: TOOLS / EQUIPMENT. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -11274,7 +11271,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "WC",
     name: "White Cement",
     categoryId: "4f1345d3-6c2f-5423-9192-3d60a89ac06d",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 643. Category: CEMENT / BUILDING MATERIALS. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -11283,7 +11280,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "WS1-2",
     name: "White Spirit 1 ltr",
     categoryId: "3c03fe75-8e49-582b-b553-7ef8cbfd0c94",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 644. Category: PAINT / COATINGS. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -11292,7 +11289,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "WS5",
     name: "White Spirit 5ltr",
     categoryId: "3c03fe75-8e49-582b-b553-7ef8cbfd0c94",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 645. Category: PAINT / COATINGS. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -11301,7 +11298,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "WP10",
     name: "Wood Preservative 10ltr",
     categoryId: "3c03fe75-8e49-582b-b553-7ef8cbfd0c94",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 646. Category: PAINT / COATINGS. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -11310,7 +11307,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "WP20",
     name: "Wood Preservative 20ltr",
     categoryId: "3c03fe75-8e49-582b-b553-7ef8cbfd0c94",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 647. Category: PAINT / COATINGS. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -11319,7 +11316,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "WP5",
     name: "Wood Preservative 5ltr",
     categoryId: "3c03fe75-8e49-582b-b553-7ef8cbfd0c94",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 648. Category: PAINT / COATINGS. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -11328,7 +11325,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "Z1",
     name: "Zed 1",
     categoryId: "772b30b0-697e-570a-a260-756d74a0929b",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 649. Category: STEEL / METAL. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -11337,7 +11334,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "Z3/4",
     name: "Zed 3/4",
     categoryId: "772b30b0-697e-570a-a260-756d74a0929b",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 650. Category: STEEL / METAL. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
@@ -11346,7 +11343,7 @@ export const ITEM_LIST_PRODUCT_SEED_ROWS: ItemListProductSeedRow[] = [
     sku: "ZL",
     name: "Zed L/g",
     categoryId: "772b30b0-697e-570a-a260-756d74a0929b",
-    unit: EProductUnit.Piece,
+
     retailPrice: 0.0,
     description: "Imported from ITEM CODE LIST.xlsx Sheet2 row 651. Category: STEEL / METAL. Price and unit not provided in source; placeholder retailPrice 0.0 and unit Piece pending manual pricing.",
   },
