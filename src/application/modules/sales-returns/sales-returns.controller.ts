@@ -152,6 +152,6 @@ export class SalesReturnsController {
       query.locationId = requestedLocationId;
       return;
     }
-    if (!user.hasOrgWideAccess) query.accessibleLocationIds = user.locationIds;
+    if (!user.hasOrgWideAccess) query.accessibleLocationIds = user.locationIds ?? [];
   }
 }

@@ -1,10 +1,8 @@
 import { BadRequestException, Inject, NotFoundException } from '@nestjs/common';
 import { ICommandHandler } from '@nestjs/cqrs';
-import { InjectDataSource } from '@nestjs/typeorm';
 import { InjectPinoLogger, PinoLogger } from 'nestjs-pino';
-import { DataSource } from 'typeorm';
 import { CommandHandlerStrict } from '../../../../../common';
-import { EPurchaseReturnItemSourceType, EPurchaseReturnStatus, PurchaseReturnEntity, PurchaseReturnItemEntity } from '../../../../../infrastructure/persistence/entities';
+import { EPurchaseReturnItemSourceType, EPurchaseReturnStatus } from '../../../../../infrastructure/persistence/entities';
 import { PURCHASE_ITEM_ALLOCATION_REPO, PURCHASE_ITEM_REPO, PURCHASE_RETURN_ITEM_REPO, PURCHASE_RETURN_REPO } from '../../../../constants';
 import { IPurchaseItemRepo } from '../../../purchase-items';
 import { PurchaseItem } from '../../../purchase-items/domain';
@@ -21,7 +19,6 @@ export class UpdatePurchaseReturnCommandHandler implements ICommandHandler<Updat
     @Inject(PURCHASE_RETURN_ITEM_REPO) private readonly returnItemRepo: IPurchaseReturnItemRepo,
     @Inject(PURCHASE_ITEM_REPO) private readonly itemRepo: IPurchaseItemRepo,
     @Inject(PURCHASE_ITEM_ALLOCATION_REPO) private readonly allocationRepo: IPurchaseItemAllocationRepo,
-    @InjectDataSource() private readonly dataSource: DataSource,
     @InjectPinoLogger(UpdatePurchaseReturnCommandHandler.name) private readonly logger: PinoLogger,
   ) {}
 
@@ -37,22 +34,13 @@ export class UpdatePurchaseReturnCommandHandler implements ICommandHandler<Updat
       applyPurchaseReturnTotals(existing);
     }
 
-    await this.dataSource.transaction(async (manager) => {
-      await manager.update(PurchaseReturnEntity, { id: command.id }, {
-        reason: command.reason,
-        notes: command.notes,
-        ...(replacementItems && { totalAmount: existing.totalAmount }),
-        updatedAt: new Date(),
-      });
-      if (replacementItems) {
-        await manager.delete(PurchaseReturnItemEntity, { purchaseReturnId: command.id });
-        await manager.save(
-          PurchaseReturnItemEntity,
-          replacementItems.map((item) => manager.create(PurchaseReturnItemEntity, { ...item, purchaseReturnId: command.id })),
-        );
-      }
+    return this.repo.updateDraftAsync({
+      id: command.id,
+      reason: command.reason,
+      notes: command.notes,
+      items: replacementItems,
+      totalAmount: replacementItems ? existing.totalAmount : undefined,
     });
-    return this.repo.getWithItemsAsync(command.id);
   }
 
   private async buildItems(existing: PurchaseReturn, requested: UpdatePurchaseReturnCommand['items']): Promise<PurchaseReturnItem[]> {

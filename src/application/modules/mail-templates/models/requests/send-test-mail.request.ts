@@ -20,7 +20,7 @@ export class SendTestMailRequest {
 
   @ApiPropertyOptional({
     description: 'Context variables to inject into the template',
-    example: { billNumber: 'BILL-001', customerName: 'John Doe', totalAmount: '₹1,500.00' },
+    example: { billNumber: 'BILL-001', customerName: 'John Doe', currency: 'USD', totalAmount: '$1,500.00' },
   })
   @IsOptional()
   public context?: Record<string, unknown>;

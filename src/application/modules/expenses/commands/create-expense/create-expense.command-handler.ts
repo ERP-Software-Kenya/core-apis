@@ -10,12 +10,14 @@ import { UserRoleResponse } from '../../../user-roles/models/responses/user-role
 import { Expense } from '../../domain';
 import { IExpenseRepo } from '../..';
 import { CreateExpenseCommand } from './create-expense.command';
+import { OrganizationSettingsService } from '../../../billing-settings/currency';
 
 @CommandHandlerStrict(CreateExpenseCommand)
 export class CreateExpenseCommandHandler implements ICommandHandler<CreateExpenseCommand, Expense> {
   constructor(
     @Inject(EXPENSE_REPO) private readonly repo: IExpenseRepo,
     private readonly mediator: CqrsMediator,
+    private readonly organizationSettings: OrganizationSettingsService,
     @InjectPinoLogger(CreateExpenseCommandHandler.name) private readonly logger: PinoLogger,
   ) {}
 
@@ -45,7 +47,8 @@ export class CreateExpenseCommandHandler implements ICommandHandler<CreateExpens
       .filter((ur) => ur.roleId === ERole.OrgAdmin)
       .map((ur) => ur.userId);
     const submitterName = isNilOrEmpty(command.submittedByName) ? 'Someone' : command.submittedByName;
-    const body = `${submitterName} submitted ₹${command.amount} for ${command.category}`;
+    const amount = await this.organizationSettings.formatCurrency(command.organizationId, command.amount);
+    const body = `${submitterName} submitted ${amount} for ${command.category}`;
     for (const adminUserId of adminUserIds) {
       const notification = new CreateNotificationCommand();
       notification.userId = adminUserId;

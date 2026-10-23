@@ -4,7 +4,7 @@ import { InjectPinoLogger, PinoLogger } from 'nestjs-pino';
 import { CommandHandlerStrict } from '../../../../../common';
 import { EPurchaseReturnDispatchStatus, EPurchaseReturnItemSourceType, EPurchaseReturnStatus } from '../../../../../infrastructure/persistence/entities';
 import { PURCHASE_ITEM_ALLOCATION_REPO, PURCHASE_ITEM_REPO, PURCHASE_ORDER_REPO, PURCHASE_RETURN_ITEM_REPO, PURCHASE_RETURN_REPO } from '../../../../constants';
-import { generateReturnNumber } from '../../../../shared/helpers/return-number';
+import { generateReturnNumber } from '../../../../shared/helpers';
 import { IPurchaseItemRepo } from '../../../purchase-items';
 import { PurchaseItem } from '../../../purchase-items/domain';
 import { PurchaseItemAllocation, PurchaseOrder } from '../../../purchase-orders/domain';

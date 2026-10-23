@@ -98,5 +98,7 @@ export * from './push-notification';
 export * from './constants';
 export * from './mail';
 export * from './pdf-export';
+export * from './gemini';
+export * from './qdrant';
 export * from './common.module';
 

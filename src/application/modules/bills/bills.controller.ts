@@ -122,6 +122,7 @@ export class BillsController {
     command.performedByRoles = user?.roles ?? [];
     command.commissionPct    = body.commissionPct;
     assertLocationAccess(user, body.locationId);
+    for (const item of body.items ?? []) assertLocationAccess(user, item.locationId ?? body.locationId);
     const result = await this.mediator.execute<CreateBillCommand, Bill>(command);
     return this.mapper.map(result, Bill, BillResponse);
   }
@@ -137,6 +138,7 @@ export class BillsController {
     const existing = await this.mediator.execute<GetBillQuery, Bill>(fetchQuery);
     assertOrgOwnership(user, existing.organizationId, 'Bill');
     assertLocationAccess(user, existing.locationId);
+    assertLocationAccess(user, body.locationId ?? existing.locationId);
     const command = this.mapper.map(body, UpdateBillRequest, UpdateBillCommand);
     command.id    = id;
     const result  = await this.mediator.execute<UpdateBillCommand, Bill>(command);
@@ -194,6 +196,7 @@ export class BillsController {
     const existing = await this.mediator.execute<GetBillQuery, Bill>(fetchQuery);
     assertOrgOwnership(user, existing.organizationId, 'Bill');
     assertLocationAccess(user, existing.locationId);
+    assertLocationAccess(user, body.locationId ?? existing.locationId);
     const command          = new AddBillItemCommand();
     command.billId         = id;
     command.productId      = body.productId;
@@ -272,6 +275,6 @@ export class BillsController {
     if (!user.locationIds.length) {
       throw new LocationAccessDeniedException(undefined, 'Filter by locationId, or use an org-wide role to list without one.');
     }
-    query.accessibleLocationIds = user.locationIds;
+    query.accessibleLocationIds = user.locationIds ?? [];
   }
 }

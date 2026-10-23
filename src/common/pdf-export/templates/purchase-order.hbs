@@ -1,248 +1,406 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Purchase Order — {{poNumber}} | {{orgName}}</title>
   <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --ink:        #1c2b3a;
+      --ink-mid:    #4a5d6e;
+      --ink-light:  #7a8fa0;
+      --rule:       #dde3ea;
+      --rule-dark:  #b0bec8;
+      --page:       #f2f5f8;
+      --white:      #ffffff;
+      --accent:     #0f3460;
+      --stripe:     #f7f9fb;
+      --red:        #b91c1c;
+      --red-bg:     #fef2f2;
+      --green:      #166534;
+      --green-bg:   #f0fdf4;
+    }
+
     body {
       font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
-      background: #fff;
-      color: #1f2937;
-      font-size: 13px;
-      line-height: 1.5;
+      font-size: 12.5px;
+      line-height: 1.55;
+      color: var(--ink);
+      background: var(--page);
+      padding: 28px 16px 56px;
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
     }
-    .page { padding: 36px 40px; max-width: 800px; margin: 0 auto; }
 
-    /* ── Header ── */
-    .header {
-      display: flex; justify-content: space-between; align-items: flex-start;
-      margin-bottom: 28px; padding-bottom: 20px;
-      border-bottom: 3px solid #0d9488;
-    }
-    .brand h1 { font-size: 24px; font-weight: 800; color: #0d9488; margin-bottom: 2px; }
-    .brand p  { font-size: 12px; color: #6b7280; line-height: 1.6; }
-    .doc-meta { text-align: right; }
-    .doc-meta .doc-type {
-      font-size: 26px; font-weight: 800; color: #111827;
-      text-transform: uppercase; letter-spacing: 2px;
-    }
-    .doc-meta .po-number { font-size: 14px; color: #6b7280; margin-top: 4px; }
-    .doc-meta .status-chip {
-      display: inline-block; margin-top: 6px;
-      padding: 3px 12px; border-radius: 20px;
-      font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.6px;
-    }
-    .status-Draft        { background: #f3f4f6; color: #6b7280; }
-    .status-Submitted    { background: #dbeafe; color: #1e3a8a; }
-    .status-Received     { background: #d1fae5; color: #065f46; }
-    .status-Allocated    { background: #d1fae5; color: #065f46; }
-    .status-PartiallyReceived { background: #fef3c7; color: #92400e; }
-    .status-Cancelled    { background: #fee2e2; color: #7f1d1d; }
+    .toolbar { max-width: 900px; margin: 0 auto 14px; display: flex; align-items: center; justify-content: space-between; }
+    .toolbar-note { font-size: 11px; color: var(--ink-light); letter-spacing: .3px; }
+    .btn { display: inline-flex; align-items: center; gap: 7px; padding: 8px 18px; font-size: 12px; font-weight: 600; font-family: inherit; cursor: pointer; border: none; letter-spacing: .3px; background: var(--accent); color: #fff; }
+    .btn:hover { background: #163e72; }
 
-    /* ── Party Cards ── */
-    .party-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 24px; }
-    .party-card { border: 1px solid #e5e7eb; border-radius: 8px; padding: 14px 16px; }
-    .party-card .party-label {
-      font-size: 10px; text-transform: uppercase; letter-spacing: 0.8px;
-      color: #9ca3af; font-weight: 700; margin-bottom: 8px;
-      padding-bottom: 6px; border-bottom: 1px solid #f3f4f6;
-    }
-    .party-card .party-name { font-size: 14px; font-weight: 700; color: #111827; margin-bottom: 4px; }
-    .party-card .party-row  { font-size: 12px; color: #6b7280; display: flex; gap: 6px; }
-    .party-card .party-row strong { color: #374151; }
+    .doc { max-width: 900px; margin: 0 auto; background: var(--white); border: 1px solid var(--rule-dark); position: relative; overflow: hidden; }
 
-    /* ── Meta Strip ── */
-    .meta-strip {
-      display: flex; gap: 24px; background: #f0fdfa; border: 1px solid #99f6e4;
-      border-radius: 8px; padding: 12px 16px; margin-bottom: 24px;
+    .watermark {
+      position: absolute;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%) rotate(-35deg);
+      font-size: 96px;
+      font-weight: 900;
+      letter-spacing: 12px;
+      pointer-events: none;
+      z-index: 0;
+      white-space: nowrap;
+      user-select: none;
     }
-    .meta-item { flex: 1; }
-    .meta-item .meta-label { font-size: 10px; text-transform: uppercase; letter-spacing: 0.6px; color: #0d9488; font-weight: 700; margin-bottom: 3px; }
-    .meta-item .meta-value { font-size: 13px; font-weight: 600; color: #111827; }
+    .watermark-unpaid { color: rgba(185,28,28,.05); }
+    .watermark-paid   { color: rgba(22,101,52,.04);  }
 
-    /* ── Items Table ── */
-    table { width: 100%; border-collapse: collapse; margin-bottom: 20px; }
-    thead tr { background: #0d9488; }
-    thead th {
-      padding: 10px 12px; text-align: left;
-      font-size: 11px; text-transform: uppercase; letter-spacing: 0.6px;
-      color: #fff; font-weight: 600;
+    .doc > * { position: relative; z-index: 1; }
+
+    .lh { padding: 28px 36px 22px; display: grid; grid-template-columns: 1fr auto; gap: 24px; align-items: flex-start; border-bottom: 3px solid var(--accent); }
+    .lh-left { display: flex; align-items: flex-start; gap: 16px; }
+    .logo-box { width: 48px; height: 48px; background: var(--accent); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .logo-box svg { display: block; }
+    .co-name { font-size: 18px; font-weight: 700; color: var(--ink); letter-spacing: -.2px; line-height: 1.2; }
+    .co-tag  { font-size: 10px; font-weight: 600; color: var(--accent); letter-spacing: 1.6px; text-transform: uppercase; margin-top: 2px; }
+    .co-addr { margin-top: 6px; font-size: 11.5px; color: var(--ink-mid); line-height: 1.7; }
+
+    .lh-right { text-align: right; }
+    .doc-type { font-size: 26px; font-weight: 300; color: var(--ink); letter-spacing: 3px; text-transform: uppercase; line-height: 1; border-bottom: 2px solid var(--accent); padding-bottom: 6px; margin-bottom: 10px; }
+    .po-ref-grid { display: grid; grid-template-columns: auto auto; gap: 2px 16px; text-align: right; }
+    .pr-label { font-size: 9px; font-weight: 700; letter-spacing: 1.4px; text-transform: uppercase; color: var(--ink-light); }
+    .pr-val   { font-size: 13px; font-weight: 700; color: var(--ink); font-variant-numeric: tabular-nums; }
+
+    .details-strip { display: grid; grid-template-columns: repeat(5, 1fr); border-bottom: 1px solid var(--rule); }
+    .ds-cell  { padding: 10px 16px; border-right: 1px solid var(--rule); }
+    .ds-cell:last-child { border-right: none; }
+    .ds-label { font-size: 8.5px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: var(--ink-light); margin-bottom: 3px; }
+    .ds-val   { font-size: 12.5px; font-weight: 600; color: var(--ink); font-variant-numeric: tabular-nums; }
+
+    .badge { display: inline-block; font-size: 9px; font-weight: 800; letter-spacing: 1px; text-transform: uppercase; padding: 2px 7px; border: 1px solid currentColor; }
+    .badge-unpaid { color: var(--red);    background: var(--red-bg); }
+    .badge-paid   { color: var(--green);  background: var(--green-bg); }
+    .badge-status { color: var(--accent); background: #e8f0fe; }
+
+    .parties { display: grid; grid-template-columns: 1fr 1fr; border-bottom: 1px solid var(--rule); }
+    .party { padding: 16px 20px; }
+    .party:first-child { border-right: 1px solid var(--rule); }
+    .party-label  { font-size: 8.5px; font-weight: 700; letter-spacing: 1.8px; text-transform: uppercase; color: var(--ink-light); margin-bottom: 8px; padding-bottom: 5px; border-bottom: 1px solid var(--rule); }
+    .party-name   { font-size: 14px; font-weight: 700; color: var(--ink); margin-bottom: 5px; }
+    .party-detail { font-size: 11.5px; color: var(--ink-mid); line-height: 1.75; }
+    .party-detail span { color: var(--ink-light); font-size: 10.5px; }
+
+    .body { padding: 0 36px 28px; }
+    .sec-head { font-size: 8.5px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--ink-light); padding: 14px 0 6px; border-bottom: 1px solid var(--rule); }
+
+    .tbl-wrap { overflow-x: auto; }
+    table { width: 100%; border-collapse: collapse; font-size: 12px; font-variant-numeric: tabular-nums; }
+    thead tr { background: var(--accent); }
+    thead th { padding: 9px 12px; font-size: 9px; font-weight: 700; letter-spacing: 1.3px; text-transform: uppercase; color: rgba(255,255,255,.9); text-align: left; white-space: nowrap; border-right: 1px solid rgba(255,255,255,.1); }
+    thead th:last-child { border-right: none; }
+    thead th.r, td.r { text-align: right; }
+    thead th.c, td.c { text-align: center; }
+    tbody tr { border-bottom: 1px solid var(--rule); }
+    tbody tr:nth-child(even) { background: var(--stripe); }
+    td { padding: 10px 12px; color: var(--ink); vertical-align: top; }
+    td.seq { color: var(--ink-light); font-size: 11px; width: 36px; }
+    .item-name { font-weight: 600; font-size: 12.5px; }
+    .item-sub  { font-size: 10.5px; color: var(--ink-mid); margin-top: 2px; }
+    tfoot tr { background: var(--stripe); border-top: 2px solid var(--rule-dark); }
+    tfoot td { font-weight: 700; font-size: 12px; padding: 9px 12px; }
+
+    .lower { display: grid; grid-template-columns: 1fr 280px; gap: 24px; padding-top: 20px; }
+    .amount-words { align-self: start; }
+    .aw-label { font-size: 8.5px; font-weight: 700; letter-spacing: 1.6px; text-transform: uppercase; color: var(--ink-light); margin-bottom: 5px; }
+    .aw-text  { font-size: 12px; color: var(--ink-mid); font-style: italic; line-height: 1.5; border-left: 3px solid var(--rule-dark); padding-left: 10px; }
+
+    .totals { border: 1px solid var(--rule); }
+    .tot-row { display: flex; justify-content: space-between; align-items: center; padding: 8px 14px; border-bottom: 1px solid var(--rule); font-size: 12px; font-variant-numeric: tabular-nums; }
+    .tot-row:last-child { border-bottom: none; }
+    .tot-label { color: var(--ink-mid); }
+    .tot-row.grand-total { background: var(--accent); color: #fff; font-size: 13.5px; font-weight: 700; }
+    .tot-row.grand-total .tot-label { color: rgba(255,255,255,.75); }
+    .tot-row.balance  .tot-label { font-weight: 700; color: var(--red); }
+    .tot-row.balance  .tot-val   { font-weight: 800; color: var(--red); font-size: 13px; }
+    .tot-row.amt-paid .tot-val   { color: var(--green); font-weight: 600; }
+
+    .terms-box   { margin-top: 24px; border: 1px solid var(--rule); padding: 12px 16px; background: var(--stripe); }
+    .terms-label { font-size: 8.5px; font-weight: 700; letter-spacing: 1.6px; text-transform: uppercase; color: var(--ink-light); margin-bottom: 6px; }
+    .terms-text  { font-size: 11.5px; color: var(--ink-mid); line-height: 1.7; }
+
+    .sig-section { margin-top: 32px; }
+    .sig-title   { font-size: 8.5px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--ink-light); margin-bottom: 14px; padding-bottom: 6px; border-bottom: 1px solid var(--rule); }
+    .sig-row     { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px; }
+    .sig-box     { border: 1px solid var(--rule); }
+    .sig-box-header { background: var(--stripe); padding: 6px 12px; font-size: 8.5px; font-weight: 700; letter-spacing: 1.4px; text-transform: uppercase; color: var(--ink-light); border-bottom: 1px solid var(--rule); }
+    .sig-box-body   { padding: 12px; height: 80px; display: flex; flex-direction: column; justify-content: flex-end; }
+    .sig-name { font-size: 12px; font-weight: 600; color: var(--ink); }
+    .sig-role { font-size: 10.5px; color: var(--ink-mid); margin-top: 2px; }
+    .sig-date { margin-top: 10px; padding-top: 6px; border-top: 1px solid var(--rule-dark); font-size: 10px; color: var(--ink-light); letter-spacing: .3px; }
+
+    .doc-footer { margin-top: 0; padding: 12px 36px; border-top: 2px solid var(--rule); display: flex; justify-content: space-between; align-items: center; font-size: 10px; color: var(--ink-light); background: var(--stripe); }
+    .doc-footer strong { color: var(--ink-mid); }
+
+    @media print {
+      body { background: white; padding: 0; }
+      .toolbar { display: none; }
+      .doc { border: none; max-width: 100%; box-shadow: none; }
     }
-    thead th:not(:first-child) { text-align: right; }
-    tbody tr:nth-child(even) { background: #f9fafb; }
-    tbody td { padding: 10px 12px; border-bottom: 1px solid #f3f4f6; font-size: 13px; color: #374151; }
-    tbody td:not(:first-child) { text-align: right; }
-    .item-name { font-weight: 600; color: #111827; }
-    .item-sku  { font-size: 11px; color: #9ca3af; }
-
-    /* ── Totals ── */
-    .totals-wrap { display: flex; justify-content: flex-end; margin-bottom: 28px; }
-    .totals { width: 260px; }
-    .totals-row { display: flex; justify-content: space-between; padding: 7px 0; font-size: 13px; color: #6b7280; border-bottom: 1px dashed #e5e7eb; }
-    .totals-row:last-child { border-bottom: none; padding-top: 12px; font-size: 16px; font-weight: 800; color: #111827; }
-    .totals-total-amount { color: #0d9488 !important; }
-
-    /* ── Progress Columns ── */
-    .progress-cell { font-size: 11px; }
-    .progress-bar-wrap { background: #e5e7eb; border-radius: 4px; height: 5px; margin-top: 3px; width: 80px; }
-    .progress-bar-fill { background: #0d9488; border-radius: 4px; height: 5px; }
-
-    /* ── Notes + Footer ── */
-    .footer-section { display: flex; justify-content: space-between; align-items: flex-start; margin-top: 8px; gap: 20px; }
-    .notes-box { flex: 1; }
-    .notes-box .notes-label { font-size: 10px; text-transform: uppercase; letter-spacing: 0.8px; color: #9ca3af; margin-bottom: 6px; font-weight: 700; }
-    .notes-box p { font-size: 12px; color: #6b7280; line-height: 1.6; }
-    .stamp-box { text-align: right; }
-    .stamp { display: inline-block; border: 2px dashed #0d9488; border-radius: 8px; padding: 10px 20px; }
-    .stamp .stamp-label { font-size: 10px; color: #9ca3af; text-transform: uppercase; letter-spacing: 0.6px; margin-bottom: 24px; }
-    .stamp .stamp-value { font-size: 12px; font-weight: 600; color: #0d9488; }
-    .page-footer {
-      margin-top: 36px; padding-top: 14px; border-top: 1px solid #e5e7eb;
-      display: flex; justify-content: space-between;
-      font-size: 11px; color: #9ca3af;
-    }
-    .terms {
-      background: #fafafa; border-radius: 6px; padding: 12px 16px;
-      margin-top: 20px; font-size: 11px; color: #6b7280; line-height: 1.8;
-    }
-    .terms-title { font-weight: 700; color: #374151; margin-bottom: 4px; font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; }
   </style>
 </head>
 <body>
-  <div class="page">
 
-    <!-- Header -->
-    <div class="header">
-      <div class="brand">
-        <h1>{{organizationName}}</h1>
-        {{#if organizationAddress}}<p>{{organizationAddress}}</p>{{/if}}
-        {{#if organizationEmail}}<p>{{organizationEmail}}</p>{{/if}}
+  <div class="toolbar">
+    <span class="toolbar-note">Purchase Order Document &nbsp;·&nbsp; {{orgName}} ERP</span>
+    <button class="btn" onclick="window.print()">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+        <polyline points="6 9 6 2 18 2 18 9"/>
+        <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/>
+        <rect x="6" y="14" width="12" height="8"/>
+      </svg>
+      Print / Save PDF
+    </button>
+  </div>
+
+  <div class="doc">
+
+    {{#if isUnpaid}}<div class="watermark watermark-unpaid">UNPAID</div>{{/if}}
+    {{#unless isUnpaid}}{{#if isPaid}}<div class="watermark watermark-paid">PAID</div>{{/if}}{{/unless}}
+
+    <!-- Letterhead -->
+    <div class="lh">
+      <div class="lh-left">
+        <div class="logo-box">
+          <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
+            <text x="14" y="21" text-anchor="middle" font-family="'Segoe UI',Arial,sans-serif" font-size="20" font-weight="800" fill="white">O</text>
+          </svg>
+        </div>
+        <div>
+          <div class="co-name">{{orgName}}</div>
+          <div class="co-tag">{{orgCountry}}</div>
+          <div class="co-addr">
+            {{#if orgEmail}}{{orgEmail}}<br>{{/if}}
+            {{#if orgPhone}}Tel: {{orgPhone}}{{/if}}
+          </div>
+        </div>
       </div>
-      <div class="doc-meta">
+
+      <div class="lh-right">
         <div class="doc-type">Purchase Order</div>
-        <div class="po-number">#{{poNumber}}</div>
-        <span class="status-chip status-{{status}}">{{status}}</span>
-      </div>
-    </div>
-
-    <!-- Party Cards -->
-    <div class="party-grid">
-      <div class="party-card">
-        <div class="party-label">Supplier</div>
-        <div class="party-name">{{supplierName}}</div>
-        {{#if supplierContact}}<div class="party-row"><span>Contact</span><strong>{{supplierContact}}</strong></div>{{/if}}
-        {{#if supplierPhone}}<div class="party-row"><span>Phone</span><strong>{{supplierPhone}}</strong></div>{{/if}}
-        {{#if supplierEmail}}<div class="party-row"><span>Email</span><strong>{{supplierEmail}}</strong></div>{{/if}}
-        {{#if supplierTaxId}}<div class="party-row"><span>Tax ID</span><strong>{{supplierTaxId}}</strong></div>{{/if}}
-      </div>
-      <div class="party-card">
-        <div class="party-label">Delivery / Bill To</div>
-        <div class="party-name">{{organizationName}}</div>
-        {{#if organizationAddress}}<div class="party-row"><span>Address</span><strong>{{organizationAddress}}</strong></div>{{/if}}
-        {{#if createdBy}}<div class="party-row"><span>Raised by</span><strong>{{createdBy}}</strong></div>{{/if}}
-      </div>
-    </div>
-
-    <!-- Meta Strip -->
-    <div class="meta-strip">
-      <div class="meta-item">
-        <div class="meta-label">PO Date</div>
-        <div class="meta-value">{{createdAt}}</div>
-      </div>
-      {{#if expectedAt}}
-      <div class="meta-item">
-        <div class="meta-label">Expected Delivery</div>
-        <div class="meta-value">{{expectedAt}}</div>
-      </div>
-      {{/if}}
-      {{#if receivedAt}}
-      <div class="meta-item">
-        <div class="meta-label">Received On</div>
-        <div class="meta-value">{{receivedAt}}</div>
-      </div>
-      {{/if}}
-      <div class="meta-item">
-        <div class="meta-label">Total Items</div>
-        <div class="meta-value">{{itemCount}} line{{#if multipleItems}}s{{/if}}</div>
-      </div>
-    </div>
-
-    <!-- Line Items -->
-    <table>
-      <thead>
-        <tr>
-          <th style="width:5%">#</th>
-          <th style="width:38%">Product / Description</th>
-          <th>SKU</th>
-          <th>Ordered</th>
-          <th>Received</th>
-          <th>Unit Cost</th>
-          <th>Total</th>
-        </tr>
-      </thead>
-      <tbody>
-        {{#each items}}
-        <tr>
-          <td>{{this.index}}</td>
-          <td>
-            <div class="item-name">{{this.name}}</div>
-            {{#if this.packInfo}}<div class="item-sku">{{this.packInfo}}</div>{{/if}}
-          </td>
-          <td>{{this.sku}}</td>
-          <td>{{this.quantityOrdered}}</td>
-          <td class="progress-cell">
-            {{this.quantityReceived}}
-            {{#if this.receiveProgress}}
-            <div class="progress-bar-wrap">
-              <div class="progress-bar-fill" style="width:{{this.receiveProgress}}%"></div>
-            </div>
-            {{/if}}
-          </td>
-          <td>{{this.unitCost}}</td>
-          <td><strong>{{this.totalCost}}</strong></td>
-        </tr>
-        {{/each}}
-      </tbody>
-    </table>
-
-    <!-- Totals -->
-    <div class="totals-wrap">
-      <div class="totals">
-        <div class="totals-row"><span>Subtotal</span><span>{{totalAmount}}</span></div>
-        <div class="totals-row"><span><strong>Total Amount</strong></span><span class="totals-total-amount">{{totalAmount}}</span></div>
-      </div>
-    </div>
-
-    <!-- Footer Section -->
-    <div class="footer-section">
-      {{#if notes}}
-      <div class="notes-box">
-        <div class="notes-label">Notes / Reference</div>
-        <p>{{notes}}</p>
-      </div>
-      {{/if}}
-      <div class="stamp-box">
-        <div class="stamp">
-          <div class="stamp-label">Authorised Signature</div>
-          <div class="stamp-value">{{organizationName}}</div>
+        <div class="po-ref-grid">
+          <div class="pr-label">PO Number</div>
+          <div class="pr-val">{{poNumber}}</div>
+          <div class="pr-label">Issue Date</div>
+          <div class="pr-val">{{createdAt}}</div>
+          {{#if expectedAt}}
+          <div class="pr-label">Expected Date</div>
+          <div class="pr-val">{{expectedAt}}</div>
+          {{/if}}
+          {{#if receivedAt}}
+          <div class="pr-label">Received Date</div>
+          <div class="pr-val">{{receivedAt}}</div>
+          {{/if}}
+          <div class="pr-label">Payment Status</div>
+          <div class="pr-val">
+            {{#if isUnpaid}}<span class="badge badge-unpaid">Unpaid</span>
+            {{else}}{{#if isPaid}}<span class="badge badge-paid">Paid</span>
+            {{else}}<span class="badge badge-status">{{paymentStatus}}</span>{{/if}}{{/if}}
+          </div>
         </div>
       </div>
     </div>
 
-    <!-- Terms -->
-    <div class="terms">
-      <div class="terms-title">Terms &amp; Conditions</div>
-      1. Goods must match the specifications in this purchase order. &nbsp;
-      2. Invoice must reference PO number <strong>{{poNumber}}</strong>. &nbsp;
-      3. Prices are fixed as agreed — no variation without prior written approval. &nbsp;
-      4. Delivery to be completed by the expected date unless otherwise notified.
+    <!-- Details strip -->
+    <div class="details-strip">
+      <div class="ds-cell">
+        <div class="ds-label">Supplier Tax ID</div>
+        <div class="ds-val">{{supplierTaxId}}</div>
+      </div>
+      <div class="ds-cell">
+        <div class="ds-label">Currency</div>
+        <div class="ds-val">{{currencyCode}}</div>
+      </div>
+      <div class="ds-cell">
+        <div class="ds-label">Payment Terms</div>
+        <div class="ds-val">Due on Receipt</div>
+      </div>
+      <div class="ds-cell">
+        <div class="ds-label">Order Status</div>
+        <div class="ds-val"><span class="badge badge-status">{{status}}</span></div>
+      </div>
+      <div class="ds-cell">
+        <div class="ds-label">Total Items</div>
+        <div class="ds-val">{{itemCount}} item{{#if multipleItems}}s{{/if}}</div>
+      </div>
     </div>
 
-    <div class="page-footer">
-      <span>{{organizationName}} &bull; {{organizationEmail}}</span>
-      <span>Generated {{generatedAt}}</span>
+    <!-- Parties -->
+    <div class="parties">
+      <div class="party">
+        <div class="party-label">Vendor / Supplier</div>
+        <div class="party-name">{{supplierName}}</div>
+        <div class="party-detail">
+          Contact Person: <span>{{supplierContact}}</span><br>
+          Email: <span>{{supplierEmail}}</span><br>
+          Phone: <span>{{supplierPhone}}</span><br>
+          Address: <span>{{supplierAddress}}</span><br>
+          Tax ID: <span>{{supplierTaxId}}</span>
+        </div>
+      </div>
+      <div class="party">
+        <div class="party-label">Ship To / Deliver To</div>
+        <div class="party-name">{{#if deliverTo}}{{deliverTo}}{{else}}{{orgName}}{{/if}}</div>
+        <div class="party-detail">
+          {{#if deliverAddr}}Address: <span>{{deliverAddr}}</span><br>{{/if}}
+          {{#if deliverCity}}City: <span>{{deliverCity}}</span><br>{{/if}}
+          Country: <span>{{deliverCountry}}</span><br>
+          Organization: <span>{{orgName}}</span>
+        </div>
+      </div>
     </div>
 
-  </div>
+    <!-- Line items -->
+    <div class="body">
+      <div class="sec-head">Line Items</div>
+
+      <div class="tbl-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Item Description</th>
+              <th>SKU / Code</th>
+              <th class="c">UOM</th>
+              <th class="r">Qty Ordered</th>
+              <th class="r">Qty Received</th>
+              <th class="r">Unit Cost</th>
+              <th class="r">Amount</th>
+            </tr>
+          </thead>
+          <tbody>
+            {{#each items}}
+            <tr>
+              <td class="seq">{{this.index}}</td>
+              <td>
+                <div class="item-name">{{this.name}}</div>
+                <div class="item-sub">SKU: {{this.sku}}</div>
+              </td>
+              <td>{{this.sku}}</td>
+              <td class="c">{{this.uom}}</td>
+              <td class="r">{{this.quantityOrdered}}</td>
+              <td class="r">{{this.quantityReceived}}</td>
+              <td class="r">{{this.unitCost}}</td>
+              <td class="r"><strong>{{this.totalCost}}</strong></td>
+            </tr>
+            {{/each}}
+          </tbody>
+          <tfoot>
+            <tr>
+              <td colspan="7" class="r" style="color:var(--ink-mid);font-size:11px;font-weight:400">
+                Total Items: {{itemCount}} &nbsp;·&nbsp; Total Qty: {{totalQty}}
+              </td>
+              <td class="r">{{totalAmount}}</td>
+            </tr>
+          </tfoot>
+        </table>
+      </div>
+
+      <!-- Totals + Amount in words -->
+      <div class="lower">
+        <div class="amount-words">
+          <div class="aw-label">Amount in Words</div>
+          <div class="aw-text">{{amountInWords}}</div>
+
+          {{#if notes}}
+          <div style="margin-top:20px">
+            <div class="aw-label">Notes / Special Instructions</div>
+            <div class="aw-text" style="font-style:normal;font-size:11.5px">{{notes}}</div>
+          </div>
+          {{/if}}
+        </div>
+
+        <div class="totals">
+          <div class="tot-row">
+            <span class="tot-label">Subtotal</span>
+            <span class="tot-val">{{subtotal}}</span>
+          </div>
+          <div class="tot-row grand-total">
+            <span class="tot-label">Order Total</span>
+            <span class="tot-val">{{totalAmount}}</span>
+          </div>
+          <div class="tot-row amt-paid">
+            <span class="tot-label">Amount Paid</span>
+            <span class="tot-val">{{amountPaid}}</span>
+          </div>
+          {{#if hasBalance}}
+          <div class="tot-row balance">
+            <span class="tot-label">Balance Due</span>
+            <span class="tot-val">{{balanceDue}}</span>
+          </div>
+          {{/if}}
+        </div>
+      </div>
+
+      <!-- Terms -->
+      <div class="terms-box">
+        <div class="terms-label">Terms &amp; Conditions</div>
+        <div class="terms-text">
+          1. This Purchase Order constitutes a binding contract upon acceptance by the supplier.<br>
+          2. Delivery must be made to the specified location. Partial deliveries require prior written approval.<br>
+          3. Invoices must quote the PO Number <strong>{{poNumber}}</strong> to be processed for payment.<br>
+          4. {{orgName}} reserves the right to reject goods not conforming to specifications.<br>
+          5. Payment will be made within the agreed terms from the date of accepted delivery.
+        </div>
+      </div>
+
+      <!-- Signatures -->
+      <div class="sig-section">
+        <div class="sig-title">Authorisation &amp; Acknowledgement</div>
+        <div class="sig-row">
+          <div class="sig-box">
+            <div class="sig-box-header">Prepared By</div>
+            <div class="sig-box-body">
+              <div>
+                <div class="sig-name">{{orgName}}</div>
+                <div class="sig-role">Procurement — {{orgName}}</div>
+                <div class="sig-date">Date: ___________________</div>
+              </div>
+            </div>
+          </div>
+          <div class="sig-box">
+            <div class="sig-box-header">Authorised By</div>
+            <div class="sig-box-body">
+              <div>
+                <div class="sig-name">Management</div>
+                <div class="sig-role">{{orgName}} — Org Admin</div>
+                <div class="sig-date">Date: ___________________</div>
+              </div>
+            </div>
+          </div>
+          <div class="sig-box">
+            <div class="sig-box-header">Supplier Acknowledgement</div>
+            <div class="sig-box-body">
+              <div>
+                <div class="sig-name">{{supplierName}}</div>
+                <div class="sig-role">Authorised Signatory</div>
+                <div class="sig-date">Date: ___________________</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /body -->
+
+    <!-- Document footer -->
+    <div class="doc-footer">
+      <div><strong>{{orgName}}</strong> &nbsp;·&nbsp; {{orgCountry}}</div>
+      <div>Document Ref: <strong>{{poNumber}}</strong> &nbsp;·&nbsp; Generated: {{generatedAt}}</div>
+      <div>Page 1 of 1 &nbsp;·&nbsp; System-generated document</div>
+    </div>
+
+  </div><!-- /doc -->
+
 </body>
 </html>

@@ -3,6 +3,7 @@ import { EPurchaseOrderStatus } from 'src/application/shared/enums';
 
 export class PurchaseOrderFilter {
   @AutoMap() public organizationId?: string;
+  @AutoMap() public branchId?: string;
   @AutoMap() public supplierId?: string;
   @AutoMap(() => String) public status?: EPurchaseOrderStatus;
 }

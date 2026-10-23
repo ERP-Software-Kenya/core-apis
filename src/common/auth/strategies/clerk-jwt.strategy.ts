@@ -54,7 +54,7 @@ export class ClerkJwtStrategy extends PassportStrategy(Strategy, CLERK_STRATEGY)
           jwksUri: `${iss}/.well-known/jwks.json`,
         }));
       }
-      return jwksProviders.get(iss)!;
+      return jwksProviders.get(iss);
     };
 
     super({

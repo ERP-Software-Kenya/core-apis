@@ -5,6 +5,16 @@ import { IApiOptions } from './i-api.options';
 import { IClerkOptions } from './i-clerk.options';
 import { IMailOptions } from './i-mail.options';
 
+export interface IGeminiOptions {
+  apiKey: string;
+}
+
+export interface IQdrantOptions {
+  url: string;
+  apiKey: string;
+  collection: string;
+}
+
 export interface ICoreApiConfig {
   logger: Params;
   sentry: SentryModuleOptions;
@@ -12,4 +22,6 @@ export interface ICoreApiConfig {
   database: IDbOptions;
   clerk: IClerkOptions;
   mail: IMailOptions;
+  gemini: IGeminiOptions;
+  qdrant: IQdrantOptions;
 }

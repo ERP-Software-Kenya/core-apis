@@ -45,8 +45,8 @@ export function calculateQuotationTotals(
 
     const lineTotal = round2(qty * unitPriceInc);
     const unitTaxable = taxRate > 0 ? round4(unitPriceInc / (1 + taxRate / 100)) : round4(unitPriceInc);
-    const lineTaxable = round4(unitTaxable * qty);
-    const lineTaxAmount = round4(lineTotal - lineTaxable);
+    const lineTaxable = taxRate > 0 ? round4(unitTaxable * qty) : lineTotal;
+    const lineTaxAmount = taxRate > 0 ? round4(lineTotal - lineTaxable) : 0;
 
     items.push({
       productId: item.productId,

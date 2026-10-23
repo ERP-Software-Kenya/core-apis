@@ -1,6 +1,7 @@
 import { AutoMap } from '@automapper/classes';
 import {
   Column,
+  Check,
   CreateDateColumn,
   DeleteDateColumn,
   Entity,
@@ -25,7 +26,14 @@ const PK_NAME = 'PK_' + ECoreTableName.Quotations;
 
 @Entity({ schema: CORE_SCHEMA, name: ECoreTableName.Quotations })
 @Index(['rootQuotationId', 'versionNumber'], { unique: true })
-@Index(['organizationId', 'quoteNumber'])
+@Index(['organizationId', 'quoteNumber'], { unique: true })
+@Index(['organizationId', 'locationId', 'status', 'createdAt'])
+@Check('CHK_quotations_version_positive', `"version_number" >= 1`)
+@Check('CHK_quotations_quote_number_not_blank', `length(trim("quote_number")) > 0`)
+@Check('CHK_quotations_status', `"status" IN ('DRAFT', 'SENT', 'CONVERTED', 'SUPERSEDED', 'CANCELLED')`)
+@Check('CHK_quotations_superseded_not_latest', `"status" <> 'SUPERSEDED' OR "is_latest" = false`)
+@Check('CHK_quotations_amounts_nonnegative', `"subtotal" >= 0 AND "tax_amount" >= 0 AND "total_amount" >= 0`)
+@Check('CHK_quotations_total_consistent', `abs("total_amount" - "subtotal" - "tax_amount") <= 0.01`)
 export class QuotationEntity {
   @AutoMap()
   @PrimaryGeneratedColumn('uuid', { primaryKeyConstraintName: PK_NAME })

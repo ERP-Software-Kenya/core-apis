@@ -1,4 +1,14 @@
 services:
+  qdrant:
+    image: qdrant/qdrant:latest
+    container_name: core-qdrant
+    restart: unless-stopped
+    ports:
+      - "6333:6333"
+      - "6334:6334"
+    volumes:
+      - qdrant_storage:/qdrant/storage
+
   backend:
     image: ${BACKEND_IMAGE:-core-apis-backend:latest}
     container_name: core-backend
@@ -12,3 +22,6 @@ services:
 
     env_file:
       - .env
+
+volumes:
+  qdrant_storage:

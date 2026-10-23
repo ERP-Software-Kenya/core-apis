@@ -2,6 +2,7 @@ import { EPurchaseReturnStatus } from '../../../../infrastructure/persistence/en
 
 export interface PurchaseReturnFilter {
   organizationId?: string;
+  branchId?: string;
   purchaseOrderId?: string;
   supplierId?: string;
   status?: EPurchaseReturnStatus;

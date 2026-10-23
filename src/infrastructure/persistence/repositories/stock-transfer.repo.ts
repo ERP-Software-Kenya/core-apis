@@ -42,7 +42,7 @@ export class StockTransferRepo extends BaseRepo<StockTransferEntity, StockTransf
       baseWhere.transferNumber = ILike(`%${filter.search}%`);
     }
 
-    if (filter.accessibleLocationIds?.length && !baseWhere.fromLocationId && !baseWhere.toLocationId) {
+    if (filter.accessibleLocationIds !== undefined && !baseWhere.fromLocationId && !baseWhere.toLocationId) {
       findOpts.where = [
         {
           organizationId: baseWhere.organizationId as string,

@@ -74,3 +74,8 @@ export * from './unpublished-stock-pi.repo';
 export * from './unpublished-stock-pi-allocation.repo';
 export * from './product-branch-price.repo';
 export * from './tax.repo';
+export * from './accounting.repo';
+export * from './black-ledger.repo';
+export * from './organization-setting.repo';
+export * from './ledger-posting';
+export * from './stock-operations.repo';

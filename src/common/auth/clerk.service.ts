@@ -187,7 +187,7 @@ export class ClerkService implements IClerkService {
 
   private mapUser(user: Awaited<ReturnType<(typeof this.client.users)['getUser']>>): ClerkUserData {
     const meta       = user.publicMetadata as Record<string, unknown>;
-    let roles        = Array.isArray(meta['roles']) ? (meta['roles'] as string[]) : [];
+    const roles        = Array.isArray(meta['roles']) ? (meta['roles'] as string[]) : [];
     if (roles.length === 0 && Array.isArray((user as unknown as Record<string, unknown>).organizationMemberships)) {
       const memberships = (user as unknown as Record<string, unknown>).organizationMemberships as Array<{ role?: string }>;
       for (const m of memberships) {
