@@ -5,6 +5,7 @@ import { TerminusModule } from '@nestjs/terminus';
 import { AuthModule } from './modules/auth';
 import { OrganizationsModule } from './modules/organizations';
 import { CategoriesModule } from './modules/categories';
+import { OrganizationUnitsModule } from './modules/organization-units';
 import { ProductsModule } from './modules/products';
 import { SuppliersModule } from './modules/suppliers';
 import { InventoryModule } from './modules/inventory';
@@ -65,6 +66,7 @@ export class ApplicationModule {
         AuthModule,
         OrganizationsModule,
         CategoriesModule,
+        OrganizationUnitsModule,
         ProductsModule,
         SuppliersModule,
         InventoryModule,

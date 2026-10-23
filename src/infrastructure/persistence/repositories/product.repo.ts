@@ -30,8 +30,8 @@ export class ProductRepo extends BaseRepo<ProductEntity, Product, string, Pageab
 
   public override async getAsync(id: string): Promise<Product> {
     const entity = await this.internalRepo.findOne({
-      where: { id, deletedAt: IsNull() } as FindOptionsWhere<ProductEntity>,
-      relations: ['tax'],
+      where: { id, deletedAt: IsNull() },
+      relations: { tax: true, productUnits: { unit: true } },
     });
     if (!entity) {
       return null;
@@ -40,7 +40,7 @@ export class ProductRepo extends BaseRepo<ProductEntity, Product, string, Pageab
   }
 
   protected override modifyFindOption(findOpts: FindManyOptions<ProductEntity>, filterObj: Filter<ProductFilter> | PageableFilter<ProductFilter>): void {
-    findOpts.relations = ['tax'];
+    findOpts.relations = { tax: true, productUnits: { unit: true } } as unknown as string[];
     const search = (filterObj as ProductFilter).search;
     if (isNilOrEmpty(search)) {
       return;

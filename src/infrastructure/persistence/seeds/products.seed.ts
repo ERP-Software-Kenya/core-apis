@@ -26,7 +26,6 @@ export class ProductsSeed extends BaseSeed<ProductEntity> {
         name: row.name,
         sku: row.sku,
         description: row.description,
-        unit: row.unit,
         manufacturer: row.manufacturer,
         costPrice: 0,
         retailPrice: price,

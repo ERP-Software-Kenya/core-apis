@@ -113,4 +113,10 @@ export enum ECoreTableName {
 
   // ─── Branch-wise pricing ─────────────────────────────────────────────────
   ProductBranchPrices   = 'product_branch_prices',
+
+  // ─── Organization-specific lookup tables ──────────────────────────────────
+  OrganizationUnits     = 'organization_units',
+
+  // ─── Product ↔ Unit junction ───────────────────────────────────────────────
+  ProductUnits          = 'product_units',
 }

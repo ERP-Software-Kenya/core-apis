@@ -95,11 +95,11 @@ export class ExportPurchaseOrderQueryHandler implements IQueryHandler<ExportPurc
         return {
           index:             idx + 1,
           name:              product?.name ?? `Product (${item.productId.slice(0, 8)})`,
-          sku:               product?.sku ?? '',
-          packInfo,
-          quantityOrdered:   item.quantityOrdered,
-          quantityReceived:  item.quantityReceived,
-          receiveProgress:   receiveProgress < 100 ? receiveProgress : null,
+          sku:               product?.sku  ?? '—',
+          uom:               product?.productUnits?.find((pu) => pu.isDefault)?.unitSymbol ?? '—',
+          quantityOrdered:   Number(item.quantityOrdered  ?? 0),
+          quantityReceived:  Number(item.quantityReceived  ?? 0),
+          quantityAllocated: Number(item.quantityAllocated ?? 0),
           unitCost:          fmt(item.unitCost),
           totalCost:         fmt(item.totalCost),
         };

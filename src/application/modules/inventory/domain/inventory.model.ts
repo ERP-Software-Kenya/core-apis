@@ -5,6 +5,9 @@ export class Inventory {
   @AutoMap() public organizationId: string;
   @AutoMap() public locationId: string;
   @AutoMap() public productId: string;
+  @AutoMap() public unitId?: string;
+  @AutoMap() public unitName?: string;
+  @AutoMap() public unitSymbol?: string;
   @AutoMap() public quantityOnHand: number;
   @AutoMap() public quantityReserved: number;
   @AutoMap() public reorderLevel: number;

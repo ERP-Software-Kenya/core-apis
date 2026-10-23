@@ -26,7 +26,7 @@ export class InventoryRepo
   }
 
   public override async getAsync(pk: string): Promise<Inventory> {
-    const entity = await this.internalRepo.findOne({ where: { id: pk }, relations: { product: true } });
+    const entity = await this.internalRepo.findOne({ where: { id: pk }, relations: { product: true, unit: true } });
     if (!entity) return null;
     return this.mapper.map(entity, InventoryEntity, Inventory);
   }
@@ -39,7 +39,7 @@ export class InventoryRepo
     findOpts: FindManyOptions<InventoryEntity>,
     filterObj?: Filter<InventoryFilter> | PageableFilter<InventoryFilter>,
   ): void {
-    findOpts.relations = { product: true };
+    findOpts.relations = { product: true, unit: true };
     const f = filterObj as InventoryFilter | undefined;
     if (f?.accessibleLocationIds?.length && !f.locationId) {
       findOpts.where = { ...(findOpts.where as object), locationId: In(f.accessibleLocationIds) };
@@ -119,9 +119,10 @@ export class InventoryRepo
     locationId: string,
     productId: string,
     manager?: EntityManager,
+    unitId?: string,
   ): Promise<Inventory | null> {
     const repo = manager ? manager.getRepository(InventoryEntity) : this.internalRepo;
-    const entity = await repo.findOne({ where: { organizationId, locationId, productId } });
+    const entity = await repo.findOne({ where: { organizationId, locationId, productId, ...(unitId ? { unitId } : {}) } });
     return entity ? this.mapper.map(entity, InventoryEntity, Inventory) : null;
   }
 
@@ -130,11 +131,12 @@ export class InventoryRepo
     locationId: string,
     productId: string,
     manager?: EntityManager,
+    unitId?: string,
   ): Promise<Inventory> {
     const run = async (mgr: EntityManager): Promise<Inventory> => {
-      let entity = await mgr.findOne(InventoryEntity, { where: { organizationId, locationId, productId } });
+      let entity = await mgr.findOne(InventoryEntity, { where: { organizationId, locationId, productId, ...(unitId ? { unitId } : {}) } });
       if (!entity) {
-        entity = mgr.create(InventoryEntity, { organizationId, locationId, productId, quantityOnHand: 0 });
+        entity = mgr.create(InventoryEntity, { organizationId, locationId, productId, unitId, quantityOnHand: 0 });
         await mgr.save(InventoryEntity, entity);
       }
       return this.mapper.map(entity, InventoryEntity, Inventory);
