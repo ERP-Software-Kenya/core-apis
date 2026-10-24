@@ -3,12 +3,15 @@ import { InjectPinoLogger, PinoLogger } from 'nestjs-pino';
 import * as fs from 'fs';
 import * as path from 'path';
 import * as Handlebars from 'handlebars';
-import type { Browser } from 'puppeteer';
+import * as puppeteer from 'puppeteer';
 import { IPdfExportService } from './i-pdf-export.service';
 import { PdfDocument, PdfOptions } from './domain';
 import { PdfExportException } from './exceptions';
 
 const TEMPLATES_DIR = path.join(__dirname, 'templates');
+const PDF_VIEWPORT_WIDTH = 1280;
+const PDF_VIEWPORT_HEIGHT = 720;
+const PDF_PUPPETEER_TIMEOUT = 90000;
 
 @Injectable()
 export class PdfExportService implements IPdfExportService {
@@ -48,17 +51,23 @@ export class PdfExportService implements IPdfExportService {
   }
 
   private async renderPdf(html: string, options?: PdfOptions): Promise<Buffer> {
-    // eslint-disable-next-line @typescript-eslint/no-require-imports
-    const puppeteer = require('puppeteer') as { launch: (opts: Record<string, unknown>) => Promise<Browser> };
-    let browser: Browser | null = null;
+    let browser: puppeteer.Browser | null = null;
     try {
       browser = await puppeteer.launch({
         headless: true,
-        args: ['--no-sandbox', '--disable-setuid-sandbox', '--disable-dev-shm-usage'],
+        args: [
+          '--no-sandbox',
+          '--disable-setuid-sandbox',
+          '--disable-dev-shm-usage',
+          '--disable-gpu',
+        ],
       });
 
       const page = await browser.newPage();
-      await page.setContent(html, { waitUntil: 'load' });
+      page.setDefaultNavigationTimeout(PDF_PUPPETEER_TIMEOUT);
+      page.setDefaultTimeout(PDF_PUPPETEER_TIMEOUT);
+      await page.setViewport({ width: PDF_VIEWPORT_WIDTH, height: PDF_VIEWPORT_HEIGHT });
+      await page.setContent(html, { waitUntil: 'domcontentloaded', timeout: PDF_PUPPETEER_TIMEOUT });
 
       const pdfBuffer = options?.width
         ? await page.pdf({
@@ -66,6 +75,7 @@ export class PdfExportService implements IPdfExportService {
             height: await this.measureContentHeight(page),
             printBackground: options?.printBackground ?? true,
             margin: options?.margin ?? { top: '0', right: '0', bottom: '0', left: '0' },
+            timeout: PDF_PUPPETEER_TIMEOUT,
           })
         : await page.pdf({
             format: options?.format ?? 'A4',
@@ -77,8 +87,10 @@ export class PdfExportService implements IPdfExportService {
               bottom: '20mm',
               left: '15mm',
             },
+            timeout: PDF_PUPPETEER_TIMEOUT,
           });
 
+      await page.close();
       return Buffer.from(pdfBuffer);
     } catch (err) {
       const error = err as Error;
@@ -89,8 +101,7 @@ export class PdfExportService implements IPdfExportService {
     }
   }
 
-  /** Receipt-style PDFs have no fixed page length — size the page to the rendered content. */
-  private async measureContentHeight(page: import('puppeteer').Page): Promise<string> {
+  private async measureContentHeight(page: puppeteer.Page): Promise<string> {
     const scrollHeightPx = await page.evaluate(() => document.documentElement.scrollHeight);
     const PX_PER_MM = 96 / 25.4;
     const heightMm = Math.ceil(scrollHeightPx / PX_PER_MM) + 4;
