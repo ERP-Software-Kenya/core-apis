@@ -4,7 +4,7 @@ import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { InjectPinoLogger, PinoLogger } from 'nestjs-pino';
 import { EntityManager, FindManyOptions, In, Repository } from 'typeorm';
-import { BaseRepo, Filter, PageableFilter } from '../../../common';
+import { BaseRepo, Filter, IPageable, PageableFilter } from '../../../common';
 import { InventoryEntity } from '../entities';
 import { Inventory, InventoryFilter, IInventoryRepo } from 'src/application/modules/inventory';
 
@@ -32,7 +32,37 @@ export class InventoryRepo
   }
 
   public override get specialFilterFields(): (keyof (PageableFilter<InventoryFilter>))[] {
-    return [...super.specialFilterFields, 'accessibleLocationIds'] as any;
+    return [...super.specialFilterFields, 'accessibleLocationIds', 'search'] as any;
+  }
+
+  public override async pagedAsync(filterObj?: PageableFilter<InventoryFilter>): Promise<IPageable<Inventory>> {
+    const f = filterObj as (PageableFilter<InventoryFilter> & { search?: string }) | undefined;
+    if (!f?.search) return super.pagedAsync(filterObj);
+
+    const page = f.$page ?? 1;
+    const perPage = f.$perPage ?? 20;
+    const term = `%${f.search.toLowerCase()}%`;
+
+    const qb = this.internalRepo
+      .createQueryBuilder('inv')
+      .leftJoinAndSelect('inv.product', 'product')
+      .where('inv.organization_id = :organizationId', { organizationId: f.organizationId })
+      .andWhere('(LOWER(product.name) LIKE :term OR LOWER(product.sku) LIKE :term)', { term });
+
+    if (f.locationId) {
+      qb.andWhere('inv.location_id = :locationId', { locationId: f.locationId });
+    } else if (f.accessibleLocationIds?.length) {
+      qb.andWhere('inv.location_id IN (:...locationIds)', { locationIds: f.accessibleLocationIds });
+    }
+
+    const [entities, totalCount] = await qb.skip((page - 1) * perPage).take(perPage).getManyAndCount();
+    return {
+      items: this.mapper.mapArray(entities, InventoryEntity, Inventory),
+      page,
+      perPage,
+      totalCount,
+      totalPages: Math.ceil(totalCount / perPage),
+    };
   }
 
   protected override modifyFindOption(

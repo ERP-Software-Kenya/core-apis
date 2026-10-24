@@ -5,4 +5,5 @@ export class InventoryFilter {
   @AutoMap() public locationId?: string;
   @AutoMap() public accessibleLocationIds?: string[];
   @AutoMap() public productId?: string;
+  @AutoMap() public search?: string;
 }

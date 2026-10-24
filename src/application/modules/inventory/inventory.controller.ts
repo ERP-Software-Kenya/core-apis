@@ -27,7 +27,6 @@ export class InventoryController {
   @HttpCode(HttpStatus.OK)
   @Get()
   public async search(@CurrentUser() user: AuthenticatedUser, @Query() filter?: SearchInventoryRequest): Promise<InventorysPagedResponse> {
-    if (!filter?.locationId && !user.hasOrgWideAccess) throw new LocationAccessDeniedException(undefined, 'Filter by locationId, or use an org-wide role to search without one.');
     if (filter?.locationId) assertLocationAccess(user, filter.locationId);
     const query            = this.mapper.map(filter, SearchInventoryRequest, SearchInventoryQuery);
     query.organizationId   = user.organizationId;
@@ -41,7 +40,6 @@ export class InventoryController {
   @HttpCode(HttpStatus.OK)
   @Get('list')
   public async list(@CurrentUser() user: AuthenticatedUser, @Query() filter?: ListInventoryRequest): Promise<InventoryResponse[]> {
-    if (!filter?.locationId && !user.hasOrgWideAccess) throw new LocationAccessDeniedException(undefined, 'Filter by locationId, or use an org-wide role to list without one.');
     if (filter?.locationId) assertLocationAccess(user, filter.locationId);
     const query            = this.mapper.map(filter, ListInventoryRequest, ListInventoryQuery);
     query.organizationId   = user.organizationId;

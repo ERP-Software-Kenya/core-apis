@@ -25,7 +25,7 @@ import { ListCustomerTypeRulesQuery, ListQuickChargesQuery } from './queries';
 import { OrganizationSettingsService } from './organization-settings.service';
 
 const ADMIN_ROLES = [ERole.OrgAdmin, ERole.SuperAdmin] as const;
-const READ_ROLES = [...ADMIN_ROLES] as const;
+const READ_ROLES = [...ADMIN_ROLES, ERole.BranchManager] as const;
 
 @ApiBearerAuth()
 @ApiTags('Billing Settings')
