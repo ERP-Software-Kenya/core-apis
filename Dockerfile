@@ -2,12 +2,13 @@ FROM node:22-slim AS builder
 
 WORKDIR /app
 
-COPY package*.json ./
+# Skip Chrome download in build stage — only TypeScript compilation needed here
+ENV PUPPETEER_SKIP_DOWNLOAD=true
 
+COPY package*.json ./
 RUN npm ci --legacy-peer-deps
 
 COPY . .
-
 RUN NODE_OPTIONS="--max-old-space-size=2048" npm run build
 
 
@@ -15,8 +16,10 @@ FROM node:22-slim
 
 WORKDIR /app
 
-# Chrome system dependencies required by Puppeteer
+# unzip is required by Puppeteer to extract the bundled Chrome binary on install
+# The remaining packages are the system libraries Chrome depends on at runtime
 RUN apt-get update && apt-get install -y \
+  unzip \
   libglib2.0-0 \
   libnss3 \
   libnspr4 \
@@ -43,7 +46,6 @@ RUN apt-get update && apt-get install -y \
   && rm -rf /var/lib/apt/lists/*
 
 COPY package*.json ./
-
 RUN npm ci --omit=dev --legacy-peer-deps
 
 COPY --from=builder /app/dist ./dist
