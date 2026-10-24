@@ -48,7 +48,6 @@ RUN apt-get update && apt-get install -y \
 COPY package*.json ./
 RUN npm ci --omit=dev --legacy-peer-deps
 
-COPY --from=builder /root/.cache/puppeteer /root/.cache/puppeteer
 COPY --from=builder /app/dist ./dist
 COPY --from=builder /app/docs ./docs
 
