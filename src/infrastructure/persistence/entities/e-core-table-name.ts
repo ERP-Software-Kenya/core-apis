@@ -132,4 +132,7 @@ export enum ECoreTableName {
 
   // ─── Product ↔ Unit junction ───────────────────────────────────────────────
   ProductUnits          = 'product_units',
+
+  // ─── Notification Settings ───────────────────────────────────────────────
+  NotificationSettings  = 'notification_settings',
 }

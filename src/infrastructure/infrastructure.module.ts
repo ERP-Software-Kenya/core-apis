@@ -88,6 +88,7 @@ import {
   BlackLedgerRepo,
   OrganizationSettingRepo,
   StockOperationsRepo,
+  NotificationSettingRepo,
 } from './persistence';
 
 import {
@@ -171,6 +172,7 @@ import {
   BLACK_LEDGER_REPO,
   ORGANIZATION_SETTING_REPO,
   STOCK_OPERATIONS_REPO,
+  NOTIFICATION_SETTING_REPO,
 } from '../application/constants';
 
 @Module({})
@@ -278,6 +280,7 @@ export class InfrastructureModule {
         { provide: BLACK_LEDGER_REPO, useClass: BlackLedgerRepo },
         { provide: ORGANIZATION_SETTING_REPO, useClass: OrganizationSettingRepo },
         { provide: STOCK_OPERATIONS_REPO, useClass: StockOperationsRepo },
+        { provide: NOTIFICATION_SETTING_REPO, useClass: NotificationSettingRepo },
       ],
       exports: [
         EntityMapperProfile,
@@ -360,6 +363,7 @@ export class InfrastructureModule {
         BLACK_LEDGER_REPO,
         ORGANIZATION_SETTING_REPO,
         STOCK_OPERATIONS_REPO,
+        NOTIFICATION_SETTING_REPO,
       ],
     };
   }
