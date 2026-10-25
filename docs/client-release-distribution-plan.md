@@ -211,20 +211,11 @@ Implemented on the Web-ERP `/downloads` page:
 - responsive Android mobile-app release card and device presentation;
 - APK version, channel, size, publication date, and optional SHA-256 display;
 - Android installation instructions and update-signing guidance;
-- safe disabled state until an HTTPS artifact URL is configured;
+- sign-in requirement and safe disabled state until private release metadata is available;
 - existing desktop downloads remain available below the mobile release;
 - header download actions now open the unified downloads page.
 
-Web-ERP production variables:
-
-- `VITE_ANDROID_APP_DOWNLOAD_URL`
-- `VITE_ANDROID_APP_VERSION`
-- `VITE_ANDROID_APP_SIZE`
-- `VITE_ANDROID_APP_UPDATED_AT`
-- `VITE_ANDROID_APP_SHA256` (optional)
-- `VITE_MOBILE_RELEASE_CHANNEL`
-
-The download URL must be a public R2/custom-domain object URL or a Core APIs endpoint that redirects to a short-lived signed URL. R2 credentials must never be supplied through a `VITE_*` variable.
+Web-ERP uses `VITE_API_BASE_URL`, `VITE_CLERK_PUBLISHABLE_KEY`, and `VITE_MOBILE_RELEASE_CHANNEL`. It retrieves metadata from `GET /api/v1/mobile-releases/latest` and requests a five-minute signed URL from `POST /api/v1/mobile-releases/latest/download`. R2/B2 credentials and permanent object URLs are never supplied through a `VITE_*` variable.
 
 ### Main-branch Android automation
 
@@ -236,7 +227,7 @@ The download URL must be a public R2/custom-domain object URL or a Core APIs end
 4. calculates SHA-256 and release metadata;
 5. uploads an immutable version/build path to Backblaze B2;
 6. refreshes `latest/erp-app.apk` and `latest.json`;
-7. lets Web-ERP discover the current build from `VITE_ANDROID_RELEASE_MANIFEST_URL`.
+7. lets Core APIs discover the current build from private storage.
 
 Required `erp-app` GitHub Actions secrets:
 
@@ -249,9 +240,8 @@ Required `erp-app` GitHub Actions variables:
 - `B2_ENDPOINT`, for example `https://s3.us-west-004.backblazeb2.com`
 - `B2_REGION`, for example `us-west-004`
 - `B2_BUCKET`
-- `B2_PUBLIC_BASE_URL`, including the bucket/public delivery prefix but no trailing slash
 
-The EAS project must be linked once (`eas init`), Android signing credentials must be configured, and the EAS `production` environment must contain the mobile application's public runtime configuration. The Backblaze release bucket must permit public reads for the Web-ERP direct-download model; otherwise, a Core APIs signed-download endpoint is required.
+The EAS project must be linked once (`eas init`), Android signing credentials must be configured, and the EAS `production` environment must contain the mobile application's public runtime configuration. The Backblaze bucket remains private. GitHub Actions receives a write key; Core APIs receives a separate read-only key and signs fixed-key downloads for authenticated users.
 
 ## External references
 
