@@ -4,6 +4,8 @@ export class OrderItem {
   @AutoMap() public id: string;
   @AutoMap() public orderId: string;
   @AutoMap() public productId: string;
+  @AutoMap() public productName?: string;
+  @AutoMap() public binLocation?: string;
   @AutoMap() public variantId?: string;
   @AutoMap() public quantity: number;
   @AutoMap() public unitPrice: number;

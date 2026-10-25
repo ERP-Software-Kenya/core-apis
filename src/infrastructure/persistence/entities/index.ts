@@ -90,6 +90,7 @@ import { QuickChargeEntity } from './quick-charge.entity';
 import { CustomerTypeRuleEntity } from './customer-type-rule.entity';
 import { TripStopEntity } from './trip-stop.entity';
 import { UserDeviceTokenEntity } from './user-device-token.entity';
+import { UserSessionEntity } from './user-session.entity';
 import { DeploymentCheckEntity } from './deployment-check.entity';
 import { UnpublishedStockPurchaseOrderEntity } from './unpublished-stock-purchase-order.entity';
 import { UnpublishedStockPurchaseItemEntity } from './unpublished-stock-purchase-item.entity';
@@ -208,6 +209,7 @@ export * from './quick-charge.entity';
 export * from './customer-type-rule.entity';
 export * from './trip-stop.entity';
 export * from './user-device-token.entity';
+export * from './user-session.entity';
 export * from './deployment-check.entity';
 export * from './unpublished-stock-purchase-order.entity';
 export * from './unpublished-stock-purchase-item.entity';
@@ -318,6 +320,7 @@ export default [
   CustomerTypeRuleEntity,
   TripStopEntity,
   UserDeviceTokenEntity,
+  UserSessionEntity,
   DeploymentCheckEntity,
   UnpublishedStockPurchaseOrderEntity,
   UnpublishedStockPurchaseItemEntity,

@@ -5,7 +5,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { InjectPinoLogger, PinoLogger } from 'nestjs-pino';
 import { IsNull, In, Repository } from 'typeorm';
 import { BaseRepo, countPages, DbException, Filter, IPageable, PageableFilter } from '../../../common';
-import { CustomerEntity, OrderEntity, UserEntity } from '../entities';
+import { CustomerEntity, InventoryEntity, OrderEntity, UserEntity } from '../entities';
 import { Order } from '../../../application/modules/orders/domain';
 import { IOrderRepo, OrderFilter, PackedOrderRow } from '../../../application/modules/orders/i-order.repo';
 import { EOrderStatus } from '../../../application/shared/enums/e-order-status';
@@ -77,9 +77,23 @@ export class OrderRepo
 
   public async getWithItemsAsync(id: string): Promise<Order | null> {
     try {
-      const entity = await this.internalRepo.findOne({ where: { id }, relations: ['items'] });
+      const entity = await this.internalRepo.findOne({ where: { id }, relations: ['items', 'items.product'] });
       if (!entity) return null;
-      return this.mapToModel(entity);
+      const model = this.mapToModel(entity);
+      const locationId = entity.fulfillmentLocationId ?? entity.locationId;
+      const productIds = entity.items?.map((item) => item.productId) ?? [];
+      const inventories = productIds.length === 0
+        ? []
+        : await this.internalRepo.manager.find(InventoryEntity, {
+            where: { locationId, productId: In(productIds) },
+          });
+      const binByProduct = new Map(inventories.map((inventory) => [inventory.productId, inventory.binLocation ?? '']));
+      for (const item of model.items ?? []) {
+        const entityItem = entity.items?.find((candidate) => candidate.id === item.id);
+        item.productName = entityItem?.product?.name ?? '';
+        item.binLocation = binByProduct.get(item.productId) ?? '';
+      }
+      return model;
     } catch (ex) {
       this.logger.error(ex);
       throw new DbException(ex);

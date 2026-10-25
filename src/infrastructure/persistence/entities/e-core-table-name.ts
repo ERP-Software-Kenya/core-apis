@@ -119,6 +119,7 @@ export enum ECoreTableName {
   // ─── Field App ───────────────────────────────────────────────────────────────
   TripStops             = 'trip_stops',
   UserDeviceTokens      = 'user_device_tokens',
+  UserSessions          = 'user_sessions',
 
   // ─── CI / Deploy verification ─────────────────────────────────────────────
   DeploymentChecks      = 'deployment_checks',

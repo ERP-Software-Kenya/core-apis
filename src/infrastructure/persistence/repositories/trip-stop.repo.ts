@@ -59,6 +59,23 @@ export class TripStopRepo
     }
   }
 
+  public async countByTripsAsync(tripIds: string[]): Promise<Map<string, number>> {
+    if (tripIds.length === 0) return new Map();
+    try {
+      const rows = await this.internalRepo
+        .createQueryBuilder('stop')
+        .select('stop.tripId', 'tripId')
+        .addSelect('COUNT(*)', 'count')
+        .where('stop.tripId IN (:...tripIds)', { tripIds })
+        .groupBy('stop.tripId')
+        .getRawMany<{ tripId: string; count: string }>();
+      return new Map(rows.map((row) => [row.tripId, Number(row.count)]));
+    } catch (ex) {
+      this.logger.error(ex);
+      throw new DbException(ex);
+    }
+  }
+
   public async findAllByTripAsync(tripId: string): Promise<TripStop[]> {
     try {
       const entities = await this.internalRepo.find({ where: { tripId } });
