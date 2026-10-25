@@ -204,6 +204,28 @@ The download button first calls Core APIs. Web-ERP then navigates to the returne
 
 Implement Android internal downloads first because they directly support warehouse and driver devices. Keep iOS routed through TestFlight/managed Apple distribution, and add public store delivery only when required.
 
+## Web-ERP download page status
+
+Implemented on the Web-ERP `/downloads` page:
+
+- responsive Android mobile-app release card and device presentation;
+- APK version, channel, size, publication date, and optional SHA-256 display;
+- Android installation instructions and update-signing guidance;
+- safe disabled state until an HTTPS artifact URL is configured;
+- existing desktop downloads remain available below the mobile release;
+- header download actions now open the unified downloads page.
+
+Web-ERP production variables:
+
+- `VITE_ANDROID_APP_DOWNLOAD_URL`
+- `VITE_ANDROID_APP_VERSION`
+- `VITE_ANDROID_APP_SIZE`
+- `VITE_ANDROID_APP_UPDATED_AT`
+- `VITE_ANDROID_APP_SHA256` (optional)
+- `VITE_MOBILE_RELEASE_CHANNEL`
+
+The download URL must be a public R2/custom-domain object URL or a Core APIs endpoint that redirects to a short-lived signed URL. R2 credentials must never be supplied through a `VITE_*` variable.
+
 ## External references
 
 - Expo: [Build APKs for Android devices](https://docs.expo.dev/build-reference/apk/)
