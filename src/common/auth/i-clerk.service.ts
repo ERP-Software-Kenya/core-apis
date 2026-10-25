@@ -1,6 +1,6 @@
-import { EInvitationStatus } from '../../infrastructure/e-invitation-status';
+import { EInvitationStatus } from "../../infrastructure/e-invitation-status";
 
-export const CLERK_SERVICE = 'IClerkService';
+export const CLERK_SERVICE = "IClerkService";
 
 export interface ClerkInvitationData {
   id: string;
@@ -59,4 +59,6 @@ export interface IClerkService {
   removeFromOrganizationAsync(params: { clerkUserId: string; organizationId: string }): Promise<void>;
   listOrganizationsAsync(): Promise<ClerkOrganizationData[]>;
   getInviteMetadataAsync(clerkUserId: string): Promise<InviteMetadata | undefined>;
+  revokeSessionAsync(sessionId: string): Promise<void>;
+  getOrganizationMembershipRoleAsync(organizationId: string, clerkUserId: string): Promise<string | undefined>;
 }

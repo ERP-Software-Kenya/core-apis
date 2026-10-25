@@ -3,6 +3,7 @@ import { CommandBase } from 'src/common';
 
 export class CreateDriverCommand extends CommandBase {
   @AutoMap() public organizationId: string;
+  @AutoMap() public userId?: string;
   @AutoMap() public firstName: string;
   @AutoMap() public lastName: string;
   @AutoMap() public phone: string;

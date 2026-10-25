@@ -1,5 +1,5 @@
-import { AutoMap } from '@automapper/classes';
-import { CommandBase } from 'src/common';
+import { AutoMap } from "@automapper/classes";
+import { CommandBase } from "src/common";
 
 export class OnboardOrganizationCommand extends CommandBase {
   @AutoMap() public clerkUserId: string;
@@ -8,4 +8,5 @@ export class OnboardOrganizationCommand extends CommandBase {
   @AutoMap() public slug?: string;
   @AutoMap() public clerkOrgId?: string;
   @AutoMap() public logoUrl?: string;
+  @AutoMap() public country?: string;
 }
