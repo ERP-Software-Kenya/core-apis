@@ -53,6 +53,7 @@ import { MailTemplatesModule } from './modules/mail-templates';
 import { ProductBranchPricesModule } from './modules/product-branch-prices';
 import { TaxesModule } from './modules/taxes';
 import { ChatbotModule } from './modules/chatbot';
+import { NotificationSettingsModule } from './modules/notification-settings';
 import { MobileReleasesModule } from './modules/mobile-releases';
 
 
@@ -115,6 +116,7 @@ export class ApplicationModule {
         ProductBranchPricesModule,
         TaxesModule,
         ChatbotModule,
+        NotificationSettingsModule,
         MobileReleasesModule,
       ],
       controllers: [],
