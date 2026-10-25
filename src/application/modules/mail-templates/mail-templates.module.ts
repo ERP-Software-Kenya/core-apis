@@ -20,6 +20,6 @@ import { ICoreApiConfig } from '../../../configuration';
     AppMailService,
     EmailTemplateProfile,
   ],
-  exports: [EmailTemplateProfile],
+  exports: [EmailTemplateProfile, AppMailService],
 })
 export class MailTemplatesModule {}
