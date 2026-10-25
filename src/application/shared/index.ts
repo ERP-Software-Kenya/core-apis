@@ -5,5 +5,6 @@ export * from './services/activity-log.service';
 export * from './services/product-activity-logger.service';
 export * from './services/stock-orchestration.service';
 export * from './services/bill-completion.service';
+export * from './services/notification-dispatch.service';
 export * from './shared.module';
 export * from './helpers/return-number';

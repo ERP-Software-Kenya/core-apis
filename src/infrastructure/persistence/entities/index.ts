@@ -111,6 +111,7 @@ import { BlackLedgerLineEntity } from './black-ledger-line.entity';
 import { OrganizationSettingEntity } from './organization-setting.entity';
 import { OrganizationUnitEntity } from './organization-unit.entity';
 import { ProductUnitEntity } from './product-unit.entity';
+import { NotificationSettingEntity } from './notification-setting.entity';
 
 export * from './branch.entity';
 export * from './location.entity';
@@ -227,6 +228,7 @@ export * from './black-ledger-line.entity';
 export * from './organization-setting.entity';
 export * from './organization-unit.entity';
 export * from './product-unit.entity';
+export * from './notification-setting.entity';
 
 export default [
   BranchEntity,
@@ -341,4 +343,5 @@ export default [
   OrganizationSettingEntity,
   OrganizationUnitEntity,
   ProductUnitEntity,
+  NotificationSettingEntity,
 ];
