@@ -28,24 +28,16 @@ export class TransitionBillStatusCommandHandler implements ICommandHandler<Trans
   public async execute(command: TransitionBillStatusCommand): Promise<Bill> {
     this.logger.info(`Executing ${TransitionBillStatusCommand.name}`);
     const bill = await this.repo.getAsync(command.id);
-    if (!bill) {
-      throw new NotFoundException(`Bill ${command.id} not found`);
-    }
+    if (!bill) throw new NotFoundException(`Bill ${command.id} not found`);
 
     if (bill.status !== command.status && !ALLOWED_FROM[bill.status]?.includes(command.status)) {
       throw new BadRequestException(`Cannot move bill from ${bill.status} to ${command.status}`);
     }
 
     if (command.status === EBillStatus.Completed) {
-      return this.completionService.completeBill(bill.id, command.performedById, false);
+      return this.completionService.completeBill(bill.id, command.performedById, false, command.paymentMethod);
     }
 
-    bill.status = command.status;
-    if (command.paymentMethod) {
-      bill.paymentMethod = command.paymentMethod;
-    }
-
-    await this.repo.updateAsync({ ...bill, items: undefined });
-    return this.repo.getAsync(command.id);
+    return this.repo.transitionOpenBillAsync(command.id, command.status, command.paymentMethod);
   }
 }

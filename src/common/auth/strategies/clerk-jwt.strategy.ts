@@ -1,32 +1,40 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
-import { ConfigService } from '@nestjs/config';
-import { PassportStrategy } from '@nestjs/passport';
-import { InjectRepository } from '@nestjs/typeorm';
-import { createClerkClient } from '@clerk/backend';
-import { passportJwtSecret } from 'jwks-rsa';
-import { InjectPinoLogger, PinoLogger } from 'nestjs-pino';
-import { ExtractJwt, Strategy } from 'passport-jwt';
-import { Repository } from 'typeorm';
-import { ICoreApiConfig } from '../../../configuration';
-import { UserEntity, UserRoleEntity, OrgMemberEntity, LocationEntity } from '../../../infrastructure/persistence/entities';
-import { In } from 'typeorm';
-import { CLERK_STRATEGY } from '../constants';
-import { AuthenticatedUser, ClerkJwtPayload } from '../types';
-import { computeHasOrgWideAccess } from '../org-wide-access';
+import { Injectable, UnauthorizedException } from "@nestjs/common";
+import { ConfigService } from "@nestjs/config";
+import { PassportStrategy } from "@nestjs/passport";
+import { InjectRepository } from "@nestjs/typeorm";
+import { createClerkClient } from "@clerk/backend";
+import { passportJwtSecret } from "jwks-rsa";
+import { InjectPinoLogger, PinoLogger } from "nestjs-pino";
+import { ExtractJwt, Strategy } from "passport-jwt";
+import { Repository } from "typeorm";
+import { ICoreApiConfig } from "../../../configuration";
+import { UserEntity, UserRoleEntity, OrgMemberEntity, LocationEntity, BranchEntity } from "../../../infrastructure/persistence/entities";
+import { CLERK_STRATEGY } from "../constants";
+import { AuthenticatedUser, ClerkJwtPayload } from "../types";
+
+function inferIssuer(jwksUrl: string): string {
+  return jwksUrl.replace(/\/\.well-known\/jwks\.json\/?$/, "").replace(/\/$/, "");
+}
 
 @Injectable()
 export class ClerkJwtStrategy extends PassportStrategy(Strategy, CLERK_STRATEGY) {
   private readonly clerkClient: ReturnType<typeof createClerkClient>;
 
   constructor(
-    configService: ConfigService<ICoreApiConfig>,
+    private readonly configService: ConfigService<ICoreApiConfig>,
     @InjectRepository(UserEntity) private readonly userRepo: Repository<UserEntity>,
     @InjectRepository(UserRoleEntity) private readonly userRoleRepo: Repository<UserRoleEntity>,
     @InjectRepository(OrgMemberEntity) private readonly orgMemberRepo: Repository<OrgMemberEntity>,
     @InjectRepository(LocationEntity) private readonly locationRepo: Repository<LocationEntity>,
+    @InjectRepository(BranchEntity) private readonly branchRepo: Repository<BranchEntity>,
     @InjectPinoLogger(ClerkJwtStrategy.name) private readonly logger: PinoLogger,
   ) {
-    const clerkCfg = configService.get<ICoreApiConfig['clerk']>('clerk');
+    const clerkCfg = configService.get<ICoreApiConfig["clerk"]>("clerk");
+    const issuer = clerkCfg.issuer || inferIssuer(clerkCfg.jwksUrl);
+    if (!clerkCfg.jwksUrl || !issuer) {
+      throw new Error("Clerk authentication requires CLERK_JWKS_URL and CLERK_ISSUER");
+    }
+
     super({
       secretOrKeyProvider: passportJwtSecret({
         cache: true,
@@ -35,20 +43,30 @@ export class ClerkJwtStrategy extends PassportStrategy(Strategy, CLERK_STRATEGY)
         jwksUri: clerkCfg.jwksUrl,
       }),
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
-      algorithms: ['RS256'],
+      algorithms: ["RS256"],
+      issuer,
+      audience: clerkCfg.audience,
       ignoreExpiration: false,
     });
     this.clerkClient = createClerkClient({ secretKey: clerkCfg.secretKey });
   }
 
   public async validate(payload: ClerkJwtPayload): Promise<AuthenticatedUser> {
+    const clerkCfg = this.configService.get<ICoreApiConfig["clerk"]>("clerk");
+    if (payload.azp && clerkCfg.authorizedParties.length > 0 && !clerkCfg.authorizedParties.includes(payload.azp)) {
+      throw new UnauthorizedException("Token was issued for an unauthorized application");
+    }
+    if (payload.sts && payload.sts !== "active") {
+      throw new UnauthorizedException("Clerk session is not active");
+    }
+
     const authUser = new AuthenticatedUser();
     authUser.clerkUserId = payload.sub;
+    authUser.clerkSessionId = payload.sid;
     authUser.clerkOrgId = payload.o?.id;
     authUser.clerkOrgRole = payload.o?.rol;
     authUser.roles = [];
     authUser.locationIds = [];
-    authUser.branchIds = [];
     authUser.hasOrgWideAccess = false;
 
     if (payload.email) {
@@ -61,38 +79,43 @@ export class ClerkJwtStrategy extends PassportStrategy(Strategy, CLERK_STRATEGY)
     }
 
     if (!authUser.email) {
-      throw new UnauthorizedException('Unable to resolve an email address for this Clerk account');
+      throw new UnauthorizedException("Unable to resolve an email address for this Clerk account");
     }
 
     const dbUser = await this.userRepo.findOne({ where: { clerkUserId: payload.sub } });
     if (dbUser) {
+      if (!dbUser.isActive) {
+        throw new UnauthorizedException("User account is inactive");
+      }
       authUser.dbUserId = dbUser.id;
       authUser.organizationId = dbUser.organizationId ?? undefined;
 
-      const userRoles = await this.userRoleRepo.find({
-        where: { userId: dbUser.id },
-        relations: ['role'],
-      });
-      const orgMembers = await this.orgMemberRepo.find({
-        where: { userId: dbUser.id },
-        relations: ['role'],
-      });
+      const [userRoles, orgMembers, managedBranch] = await Promise.all([
+        this.userRoleRepo.find({ where: { userId: dbUser.id }, relations: ["role"] }),
+        dbUser.organizationId
+          ? this.orgMemberRepo.find({
+              where: { userId: dbUser.id, organizationId: dbUser.organizationId, status: "active" },
+              relations: ["role"],
+            })
+          : Promise.resolve([]),
+        dbUser.organizationId ? this.branchRepo.findOne({ where: { userId: dbUser.id, organizationId: dbUser.organizationId } }) : Promise.resolve(null),
+      ]);
+
       const systemRoles = userRoles.map((ur) => ur.role?.name).filter(Boolean);
       const orgRoles = orgMembers.map((om) => om.role?.name).filter(Boolean);
       authUser.roles = [...new Set([...systemRoles, ...orgRoles])];
-      const branchIds = [...new Set(userRoles.filter((ur) => ur.branchId).map((ur) => ur.branchId))];
-      authUser.branchIds = branchIds;
-      const storeIds = userRoles.filter((ur) => ur.locationId).map((ur) => ur.locationId);
-      let branchLocationIds: string[] = [];
-      if (branchIds.length) {
+
+      if (managedBranch) {
+        authUser.branchId = managedBranch.id;
         const branchLocs = await this.locationRepo.find({
-          where: { branchId: In(branchIds) },
-          select: ['id'],
+          where: { branch: { id: managedBranch.id } },
+          select: ["id"],
         });
-        branchLocationIds = branchLocs.map((l) => l.id);
+        authUser.locationIds = branchLocs.map((l) => l.id);
+        authUser.hasOrgWideAccess = false;
+      } else {
+        authUser.hasOrgWideAccess = true;
       }
-      authUser.locationIds = [...new Set([...storeIds, ...branchLocationIds])];
-      authUser.hasOrgWideAccess = computeHasOrgWideAccess(userRoles, orgMembers.length);
     }
 
     return authUser;
@@ -100,13 +123,8 @@ export class ClerkJwtStrategy extends PassportStrategy(Strategy, CLERK_STRATEGY)
 
   private async enrichFromClerk(authUser: AuthenticatedUser, clerkUserId: string): Promise<void> {
     const clerkUser = await this.clerkClient.users.getUser(clerkUserId);
-    // Password sign-in JWTs carry no email claim, so we look it up here. Clerk only
-    // requires a *primary* email for OAuth accounts — password accounts can have an
-    // attached, verified email that isn't marked primary, so fall back to that.
     const emails = clerkUser.emailAddresses;
-    const chosen =
-      emails.find((ea) => ea.id === clerkUser.primaryEmailAddressId) ??
-      emails.find((ea) => ea.verification?.status === 'verified');
+    const chosen = emails.find((ea) => ea.id === clerkUser.primaryEmailAddressId) ?? emails.find((ea) => ea.verification?.status === "verified");
     authUser.email = chosen?.emailAddress;
     authUser.firstName = clerkUser.firstName ?? undefined;
     authUser.lastName = clerkUser.lastName ?? undefined;

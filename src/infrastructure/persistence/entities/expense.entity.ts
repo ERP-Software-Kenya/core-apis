@@ -45,6 +45,22 @@ export class ExpenseEntity {
   @Column({ name: 'submitted_by', type: 'varchar', length: 255, nullable: true })
   public submittedBy?: string;
 
+  @AutoMap()
+  @Column({ name: 'submitted_by_user_id', type: 'varchar', length: 255 })
+  public submittedByUserId: string;
+
+  @AutoMap()
+  @Column({ name: 'submitted_by_name', type: 'varchar', length: 255, nullable: true })
+  public submittedByName?: string;
+
+  @AutoMap()
+  @Column({ name: 'receipt_key', type: 'text', nullable: true })
+  public receiptKey?: string;
+
+  @AutoMap()
+  @Column({ name: 'admin_comment', type: 'text', nullable: true })
+  public adminComment?: string;
+
   @AutoMap(() => Date)
   @CreateDateColumn({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
   public createdAt: Date;

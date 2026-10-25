@@ -29,4 +29,15 @@ export class BranchRepo
   public override get softDeleteEnabled(): boolean {
     return true;
   }
+
+  public async findMainAsync(organizationId: string): Promise<Branch | null> {
+    const entity = await this.internalRepo.findOneBy({ organizationId, isMain: true });
+    if (!entity) return null;
+    return this.mapToModel(entity);
+  }
+
+  public async findByManagerIdAsync(userId: string): Promise<Branch | null> {
+    const entity = await this.internalRepo.findOneBy({ userId });
+    return entity ? this.mapToModel(entity) : null;
+  }
 }

@@ -5,6 +5,8 @@ import { ProductFilter } from '../../domain';
 export class ListProductsQuery extends QueryBase implements Filter<ProductFilter> {
   @AutoMap() public name?: string;
 
+  @AutoMap() public search?: string;
+
   @AutoMap() public categoryId?: string;
 
   @AutoMap() public isActive?: boolean;

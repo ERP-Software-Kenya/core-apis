@@ -1,11 +1,11 @@
 import { AutoMap } from '@automapper/classes';
-import { ApiProperty } from '@nestjs/swagger';
+import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { Type } from 'class-transformer';
-import { IsArray, IsNotEmpty, IsNumber, IsPositive, IsUUID, ValidateNested } from 'class-validator';
+import { IsArray, IsNotEmpty, IsNumber, IsOptional, IsPositive, IsUUID, ValidateNested } from 'class-validator';
 
 export class CompleteTransferItemRequest {
   @ApiProperty() @IsNotEmpty() @IsUUID() @AutoMap() public fromInventoryId: string;
-  @ApiProperty() @IsNotEmpty() @IsUUID() @AutoMap() public toInventoryId: string;
+  @ApiPropertyOptional() @IsOptional() @IsUUID() @AutoMap() public toInventoryId?: string;
   @ApiProperty() @IsNotEmpty() @IsUUID() @AutoMap() public productId: string;
   @ApiProperty() @IsNotEmpty() @IsUUID() @AutoMap() public fromLocationId: string;
   @ApiProperty() @IsNotEmpty() @IsUUID() @AutoMap() public toLocationId: string;

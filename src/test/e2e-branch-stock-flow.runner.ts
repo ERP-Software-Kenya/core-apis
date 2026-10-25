@@ -132,7 +132,7 @@ async function main(): Promise<void> {
     u.dbUserId = user.id;
     u.organizationId = org.id;
     u.roles = [ERole.BranchManager];
-    u.branchIds = [branchA.id];
+    u.branchId = branchA.id;
     u.locationIds = locationIds;
     u.hasOrgWideAccess = false;
     return u;

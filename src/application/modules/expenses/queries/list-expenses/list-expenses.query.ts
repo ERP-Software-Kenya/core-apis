@@ -5,4 +5,5 @@ import { EExpenseStatus } from '../../../../../infrastructure/e-expense-status';
 export class ListExpensesQuery extends QueryBase {
   @AutoMap(() => String) public status?: EExpenseStatus;
   @AutoMap() public organizationId?: string;
+  @AutoMap() public submittedByUserId?: string;
 }

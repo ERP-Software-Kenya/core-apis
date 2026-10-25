@@ -10,7 +10,9 @@ export class Branch {
   @AutoMap() public state?: string;
   @AutoMap() public country?: string;
   @AutoMap() public phone?: string;
+  @AutoMap() public userId?: string;
   @AutoMap() public isActive: boolean;
+  @AutoMap() public isMain: boolean;
   @AutoMap(() => Date) public createdAt?: Date;
   @AutoMap(() => Date) public updatedAt?: Date;
   /** Populated on read — location IDs belonging to this branch */

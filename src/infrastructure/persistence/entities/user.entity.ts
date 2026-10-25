@@ -28,6 +28,7 @@ export class UserEntity {
   @Column({ type: 'uuid', nullable: true })
   public organizationId?: string;
 
+
   @AutoMap()
   @Column({ type: 'varchar', length: 255, nullable: true })
   public firstName?: string;

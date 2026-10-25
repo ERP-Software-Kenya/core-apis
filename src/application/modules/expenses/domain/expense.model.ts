@@ -10,6 +10,10 @@ export class Expense {
   @AutoMap() public description?: string;
   @AutoMap(() => String) public status: EExpenseStatus;
   @AutoMap() public submittedBy?: string;
+  @AutoMap() public submittedByUserId: string;
+  @AutoMap() public submittedByName?: string;
+  @AutoMap() public receiptKey?: string;
+  @AutoMap() public adminComment?: string;
   @AutoMap(() => Date) public expenseDate: Date;
   @AutoMap(() => Date) public createdAt: Date;
   @AutoMap(() => Date) public updatedAt?: Date;

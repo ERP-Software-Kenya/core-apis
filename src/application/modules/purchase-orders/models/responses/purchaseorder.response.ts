@@ -5,6 +5,7 @@ import { EPurchaseOrderStatus } from 'src/application/shared/enums';
 export class PurchaseOrderResponse {
   @ApiProperty() @AutoMap() public id: string;
   @ApiProperty() @AutoMap() public organizationId: string;
+  @ApiPropertyOptional() @AutoMap() public branchId?: string;
   @ApiProperty() @AutoMap() public supplierId: string;
   @ApiPropertyOptional() @AutoMap() public createdById?: string;
   @ApiProperty() @AutoMap() public poNumber: string;
@@ -12,6 +13,8 @@ export class PurchaseOrderResponse {
   @ApiPropertyOptional() @AutoMap(() => Date) public expectedAt?: Date;
   @ApiPropertyOptional() @AutoMap(() => Date) public receivedAt?: Date;
   @ApiProperty() @AutoMap() public totalAmount: number;
+  @ApiProperty() @AutoMap() public amountPaid: number;
+  @ApiPropertyOptional() public paymentStatus?: string;
   @ApiPropertyOptional() @AutoMap() public notes?: string;
   @ApiPropertyOptional() @AutoMap(() => Date) public createdAt?: Date;
   @ApiPropertyOptional() @AutoMap(() => Date) public updatedAt?: Date;

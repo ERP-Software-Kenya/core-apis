@@ -3,14 +3,13 @@ import { InjectMapper } from '@automapper/nestjs';
 import { Body, Controller, Get, HttpCode, HttpStatus, Param, Post, Query, UseGuards } from '@nestjs/common';
 import { ApiBearerAuth, ApiCreatedResponse, ApiOkResponse, ApiOperation, ApiParam, ApiTags } from '@nestjs/swagger';
 import { InjectPinoLogger, PinoLogger } from 'nestjs-pino';
-import { ClerkAuthGuard, CqrsMediator, CurrentUser, AuthenticatedUser, Roles, RolesGuard, assertOrgOwnership, IPageable, requireOrganizationId } from '../../../common';
+import { ClerkAuthGuard, CqrsMediator, CurrentUser, AuthenticatedUser, Roles, RolesGuard, assertOrgOwnership, assertLocationAccess, IPageable, requireOrganizationId } from '../../../common';
 import { ERole } from '../../../infrastructure';
 import { GetLocationQuery } from '../locations/queries';
 import { Location } from '../locations/domain';
 import { CreateOrderCommand } from './commands';
 import { Order, OrderItem } from './domain';
-import { CreateOrderRequest, OrderResponse, SearchOrdersRequest } from './models';
-import { OrderItemResponse } from './models/responses/order.response';
+import { CreateOrderRequest, OrderItemResponse, OrderResponse, SearchOrdersRequest } from './models';
 import { GetOrderQuery, SearchOrdersQuery } from './queries';
 
 class OrdersPagedResponse {
@@ -24,7 +23,7 @@ class OrdersPagedResponse {
 @ApiBearerAuth()
 @ApiTags('Orders')
 @UseGuards(ClerkAuthGuard, RolesGuard)
-@Roles(ERole.OrgAdmin, ERole.OrgManager, ERole.SuperAdmin, ERole.StoreManager, ERole.StoreStaff)
+@Roles(ERole.OrgAdmin, ERole.SuperAdmin, ERole.BranchManager)
 @Controller({ path: 'orders', version: '1' })
 export class OrdersController {
   constructor(
@@ -44,6 +43,7 @@ export class OrdersController {
     const query = this.mapper.map(filter ?? new SearchOrdersRequest(), SearchOrdersRequest, SearchOrdersQuery);
     query.organizationId = requireOrganizationId(user);
     query.search = filter?.search?.trim() || filter?.name?.trim() || undefined;
+    if (!user.hasOrgWideAccess) query.accessibleLocationIds = user.locationIds ?? [];
     const result = await this.mediator.execute<SearchOrdersQuery, IPageable<Order>>(query);
     return {
       ...result,
@@ -65,6 +65,7 @@ export class OrdersController {
     locationQuery.id = result.locationId;
     const location = await this.mediator.execute<GetLocationQuery, Location>(locationQuery);
     assertOrgOwnership(user, location.organizationId, 'order');
+    assertLocationAccess(user, result.locationId);
 
     return this.toOrderResponse(result);
   }
@@ -81,6 +82,7 @@ export class OrdersController {
     locationQuery.id = command.locationId;
     const location = await this.mediator.execute<GetLocationQuery, Location>(locationQuery);
     assertOrgOwnership(user, location.organizationId, 'order');
+    assertLocationAccess(user, command.locationId);
 
     const result = await this.mediator.execute<CreateOrderCommand, Order>(command);
     return this.toOrderResponse(result);

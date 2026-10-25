@@ -6,15 +6,15 @@ import { InjectPinoLogger, PinoLogger } from 'nestjs-pino';
 import { AuthenticatedUser, ClerkAuthGuard, CqrsMediator, CurrentUser, IPageable, Roles, RolesGuard, assertOrgOwnership } from '../../../common';
 import { ERole } from '../../../infrastructure';
 import { CreateSupplierCommand, DeleteSupplierCommand, UpdateSupplierCommand } from './commands';
-import { Supplier } from './domain';
-import { CreateSupplierRequest, SearchSuppliersRequest, ListSuppliersRequest, SupplierResponse, SuppliersPagedResponse, UpdateSupplierRequest } from './models';
-import { GetSupplierQuery, ListSuppliersQuery, SearchSuppliersQuery } from './queries';
+import { Supplier, SupplierAccount } from './domain';
+import { CreateSupplierRequest, SearchSuppliersRequest, ListSuppliersRequest, SupplierAccountResponse, SupplierResponse, SuppliersPagedResponse, UpdateSupplierRequest } from './models';
+import { GetSupplierAccountQuery, GetSupplierQuery, ListSuppliersQuery, SearchSuppliersQuery } from './queries';
 
 @ApiBearerAuth()
 @ApiTags('Suppliers')
 @Controller({ path: 'suppliers', version: '1' })
 @UseGuards(ClerkAuthGuard, RolesGuard)
-@Roles(ERole.OrgAdmin, ERole.SuperAdmin)
+@Roles(ERole.OrgAdmin, ERole.SuperAdmin, ERole.BranchManager)
 export class SuppliersController {
   constructor(
     protected readonly mediator: CqrsMediator,
@@ -68,6 +68,19 @@ export class SuppliersController {
     return this.mapper.map(result, Supplier, SupplierResponse);
   }
 
+  @ApiOperation({ summary: 'Get supplier account summary with per-PO payment breakdown' })
+  @ApiOkResponse({ type: SupplierAccountResponse })
+  @ApiParam({ name: 'id', description: 'Supplier UUID' })
+  @HttpCode(HttpStatus.OK)
+  @Get(':id/account')
+  public async getAccount(@Param('id') id: string, @CurrentUser() user: AuthenticatedUser): Promise<SupplierAccountResponse> {
+    const query            = new GetSupplierAccountQuery();
+    query.supplierId       = id;
+    query.organizationId   = user.organizationId;
+    const result           = await this.mediator.execute<GetSupplierAccountQuery, SupplierAccount>(query);
+    return this.mapper.map(result, SupplierAccount, SupplierAccountResponse);
+  }
+
   @ApiOperation({ summary: 'Create a new supplier' })
   @ApiCreatedResponse({ type: SupplierResponse })
   @HttpCode(HttpStatus.CREATED)
@@ -102,6 +115,7 @@ export class SuppliersController {
   @ApiOkResponse({ type: Boolean })
   @ApiParam({ name: 'id', description: 'Supplier UUID' })
   @HttpCode(HttpStatus.OK)
+  @Roles(ERole.OrgAdmin, ERole.SuperAdmin)
   @Delete(':id')
   public async delete(@Param('id') id: string, @CurrentUser() user: AuthenticatedUser): Promise<boolean> {
     const fetchQuery = new GetSupplierQuery();

@@ -154,7 +154,7 @@ export class ReportGenerationLogsController {
   @ApiParam({ name: 'id', description: 'Report Log UUID' })
   @HttpCode(HttpStatus.OK)
   @UseGuards(RolesGuard)
-  @Roles(ERole.StoreManager, ERole.OrgManager, ERole.OrgAdmin, ERole.SuperAdmin)
+  @Roles(ERole.OrgAdmin, ERole.SuperAdmin)
   @Delete(':id')
   public async delete(@Param('id') id: string): Promise<boolean> {
     const command = new DeleteReportLogCommand();

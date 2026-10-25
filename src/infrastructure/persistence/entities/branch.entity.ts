@@ -13,6 +13,7 @@ import {
 import { CORE_SCHEMA, ECoreTableName } from './e-core-table-name';
 import { OrganizationEntity } from './organization.entity';
 import { LocationEntity } from './location.entity';
+import { UserEntity } from './user.entity';
 
 const PK_NAME = 'PK_' + ECoreTableName.Branches;
 
@@ -58,6 +59,10 @@ export class BranchEntity {
   @Column({ name: 'is_active', type: 'boolean', default: true })
   public isActive: boolean;
 
+  @AutoMap()
+  @Column({ name: 'is_main', type: 'boolean', default: false })
+  public isMain: boolean;
+
   @AutoMap(() => Date)
   @CreateDateColumn({ name: 'created_at', type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
   public createdAt: Date;
@@ -79,7 +84,20 @@ export class BranchEntity {
   })
   public organization: OrganizationEntity;
 
+  @AutoMap()
+  @Column({ name: 'user_id', type: 'uuid', nullable: true })
+  public userId?: string;
+
+  @AutoMap(() => UserEntity)
+  @ManyToOne(() => UserEntity, { nullable: true })
+  @JoinColumn({
+    name: 'user_id',
+    referencedColumnName: 'id',
+    foreignKeyConstraintName: `FK__${ECoreTableName.Branches}__${ECoreTableName.Users}`,
+  })
+  public user?: UserEntity;
+
   @AutoMap(() => [LocationEntity])
-  @OneToMany(() => LocationEntity, (loc) => loc.children)
+  @OneToMany(() => LocationEntity, (loc) => loc.branch)
   public locations?: LocationEntity[];
 }

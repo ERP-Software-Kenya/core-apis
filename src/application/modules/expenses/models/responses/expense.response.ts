@@ -12,5 +12,9 @@ export class ExpenseResponse {
   @ApiPropertyOptional() @AutoMap() public description?: string;
   @ApiProperty({ enum: EExpenseStatus }) @AutoMap(() => String) public status: EExpenseStatus;
   @ApiPropertyOptional() @AutoMap() public submittedBy?: string;
+  @ApiProperty() @AutoMap() public submittedByUserId: string;
+  @ApiPropertyOptional() @AutoMap() public submittedByName?: string;
+  @ApiPropertyOptional() @AutoMap() public receiptKey?: string;
+  @ApiPropertyOptional() @AutoMap() public adminComment?: string;
   @ApiProperty() @AutoMap(() => Date) public createdAt: Date;
 }

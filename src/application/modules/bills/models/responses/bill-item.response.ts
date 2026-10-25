@@ -12,4 +12,5 @@ export class BillItemResponse {
   @ApiProperty() @AutoMap() public taxAmount: number;
   @ApiProperty() @AutoMap() public discountAmount: number;
   @ApiProperty() @AutoMap() public lineTotal: number;
+  @ApiPropertyOptional() @AutoMap() public locationId?: string;
 }

@@ -3,6 +3,7 @@ import { CommandBase } from 'src/common';
 
 export class UpdateInventoryCommand extends CommandBase {
   @AutoMap() public id: string;
+  @AutoMap() public unitId?: string;
   @AutoMap() public reorderLevel?: number;
   @AutoMap() public maxStock?: number;
   @AutoMap() public binLocation?: string;

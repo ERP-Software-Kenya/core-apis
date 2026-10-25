@@ -15,10 +15,11 @@ import { LocationEntity } from './location.entity';
 import { ProductEntity } from './product.entity';
 import { StockMovementEntity } from './stock-movement.entity';
 import { OrganizationEntity } from './organization.entity';
+import { OrganizationUnitEntity } from './organization-unit.entity';
 
 const PK_NAME = 'PK_' + ECoreTableName.Inventory;
 
-@Unique(`UQ__${ECoreTableName.Inventory}__org_location_product`, ['organizationId', 'locationId', 'productId'])
+@Unique(`UQ__${ECoreTableName.Inventory}__org_location_product_unit`, ['organizationId', 'locationId', 'productId', 'unitId'])
 @Entity({ schema: CORE_SCHEMA, name: ECoreTableName.Inventory })
 export class InventoryEntity {
   @AutoMap()
@@ -36,6 +37,10 @@ export class InventoryEntity {
   @AutoMap()
   @Column({ name: 'product_id', type: 'uuid' })
   public productId: string;
+
+  @AutoMap()
+  @Column({ name: 'unit_id', type: 'uuid', nullable: true })
+  public unitId?: string;
 
   /** Published live stock — visible to all ERP operations */
   @AutoMap()
@@ -66,11 +71,6 @@ export class InventoryEntity {
   @AutoMap()
   @Column({ name: 'bin_location', type: 'varchar', length: 100, nullable: true })
   public binLocation?: string;
-
-  /** Off-ledger / black stock — deducted on black sales, not visible in published stock */
-  @AutoMap()
-  @Column({ name: 'quantity_unpublished', type: 'decimal', precision: 18, scale: 4, default: 0 })
-  public quantityUnpublished: number;
 
   @AutoMap(() => Date)
   @CreateDateColumn({ name: 'created_at', type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
@@ -108,6 +108,15 @@ export class InventoryEntity {
     foreignKeyConstraintName: `FK__${ECoreTableName.Inventory}__${ECoreTableName.Products}`,
   })
   public product: ProductEntity;
+
+  @AutoMap(() => OrganizationUnitEntity)
+  @ManyToOne(() => OrganizationUnitEntity, { nullable: true })
+  @JoinColumn({
+    name: 'unit_id',
+    referencedColumnName: 'id',
+    foreignKeyConstraintName: `FK__${ECoreTableName.Inventory}__${ECoreTableName.OrganizationUnits}`,
+  })
+  public unit?: OrganizationUnitEntity;
 
   @AutoMap(() => [StockMovementEntity])
   @OneToMany(() => StockMovementEntity, (sm) => sm.inventory)

@@ -120,7 +120,7 @@ export class ItemReturnsController {
   @ApiParam({ name: 'id', description: 'Item Return UUID' })
   @HttpCode(HttpStatus.OK)
   @UseGuards(RolesGuard)
-  @Roles(ERole.StoreManager, ERole.OrgManager, ERole.OrgAdmin, ERole.SuperAdmin)
+  @Roles(ERole.OrgAdmin, ERole.SuperAdmin)
   @Delete(':id')
   public async delete(@Param('id') id: string, @CurrentUser() user: AuthenticatedUser): Promise<boolean> {
     const getQuery = new GetItemReturnQuery();

@@ -10,6 +10,7 @@ export class CreateBillItemRequest {
   @ApiProperty() @Type(() => Number) @IsNumber() @Min(0) @AutoMap() public unitPrice: number;
   @ApiPropertyOptional({ default: 0 }) @IsOptional() @Type(() => Number) @IsNumber() @Min(0) @AutoMap() public taxRate?: number;
   @ApiPropertyOptional({ default: 0 }) @IsOptional() @Type(() => Number) @IsNumber() @Min(0) @AutoMap() public discountAmount?: number;
+  @ApiPropertyOptional() @IsOptional() @IsUUID() @AutoMap() public locationId?: string;
 }
 
 /** Every field optional — a partial patch of a single bill line. */

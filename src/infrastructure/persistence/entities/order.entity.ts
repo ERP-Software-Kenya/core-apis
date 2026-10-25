@@ -23,6 +23,10 @@ export class OrderEntity {
   public locationId: string;
 
   @AutoMap()
+  @Column({ name: 'source_quotation_id', type: 'uuid', nullable: true, unique: true })
+  public sourceQuotationId?: string;
+
+  @AutoMap()
   @Column({ name: 'customer_id', type: 'uuid' })
   public customerId: string;
 

@@ -72,6 +72,7 @@ export class DefaultOrganizationSeed extends BaseSeed<OrganizationEntity> {
     const passwordHash = await bcrypt.hash(rawPassword, 12);
 
     const admin = this.userRepo.create({
+      id:             '00000000-0000-4000-8000-000000000002', // matches PRODUCT_SEED_CREATED_BY_ID in products.seed.ts
       organizationId: org.id,
       firstName:      'Super',
       lastName:       'Admin',

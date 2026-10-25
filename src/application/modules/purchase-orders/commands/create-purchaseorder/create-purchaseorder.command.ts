@@ -9,6 +9,7 @@ export class CreatePurchaseOrderItemInput {
 
 export class CreatePurchaseOrderCommand extends CommandBase {
   @AutoMap() public organizationId: string;
+  @AutoMap() public branchId?: string;
   @AutoMap() public supplierId: string;
   @AutoMap() public createdById?: string;
   @AutoMap() public expectedAt?: string;

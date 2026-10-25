@@ -1,6 +1,7 @@
 import { AutoMap } from '@automapper/classes';
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
-import { EProductUnit } from '../../../../../infrastructure';
+import { TaxResponse } from '../../../taxes/models';
+import { ProductUnitResponse } from './product-unit.response';
 
 export class ProductResponse {
   @ApiProperty()
@@ -35,9 +36,8 @@ export class ProductResponse {
   @AutoMap()
   public description?: string;
 
-  @ApiPropertyOptional({ enum: EProductUnit })
-  @AutoMap(() => String)
-  public unit?: EProductUnit;
+  @ApiPropertyOptional({ type: [ProductUnitResponse] })
+  public units?: ProductUnitResponse[];
 
   @ApiPropertyOptional()
   @AutoMap()
@@ -70,6 +70,18 @@ export class ProductResponse {
   @ApiPropertyOptional()
   @AutoMap()
   public packSize?: number;
+
+  @ApiPropertyOptional()
+  @AutoMap()
+  public weightKg?: number;
+
+  @ApiPropertyOptional()
+  @AutoMap()
+  public taxId?: string;
+
+  @ApiPropertyOptional({ type: () => TaxResponse })
+  @AutoMap(() => TaxResponse)
+  public tax?: TaxResponse;
 
   @ApiPropertyOptional()
   @AutoMap()

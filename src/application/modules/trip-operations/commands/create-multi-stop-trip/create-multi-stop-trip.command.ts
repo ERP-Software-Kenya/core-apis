@@ -4,6 +4,8 @@ import { CommandBase } from '../../../../../common';
 export class TripStopInput {
   @AutoMap() public orderId: string;
   @AutoMap() public sequence: number;
+  @AutoMap() public latitude?: number;
+  @AutoMap() public longitude?: number;
 }
 
 export class CreateMultiStopTripCommand extends CommandBase {

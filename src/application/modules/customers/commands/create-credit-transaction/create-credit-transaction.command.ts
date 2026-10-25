@@ -1,4 +1,6 @@
-export class CreateCreditTransactionCommand {
+import { CommandBase } from '../../../../../common';
+
+export class CreateCreditTransactionCommand extends CommandBase {
   public customerId: string;
   public organizationId: string;
   public type: 'payment' | 'adjustment';

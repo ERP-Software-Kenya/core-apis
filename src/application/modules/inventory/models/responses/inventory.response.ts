@@ -6,11 +6,11 @@ export class InventoryResponse {
   @ApiProperty() @AutoMap() public organizationId: string;
   @ApiProperty() @AutoMap() public locationId: string;
   @ApiProperty() @AutoMap() public productId: string;
+  @ApiPropertyOptional() @AutoMap() public unitId?: string;
+  @ApiPropertyOptional() @AutoMap() public unitName?: string;
+  @ApiPropertyOptional() @AutoMap() public unitSymbol?: string;
   @ApiProperty() @AutoMap() public quantityOnHand: number;
   @ApiProperty() @AutoMap() public quantityReserved: number;
-  @ApiProperty({ description: 'Black / unpublished pool quantity at this location' })
-  @AutoMap()
-  public quantityUnpublished: number;
   @ApiProperty() @AutoMap() public reorderLevel: number;
   @ApiPropertyOptional() @AutoMap() public maxStock?: number;
   @ApiPropertyOptional() @AutoMap() public averageCost?: number;

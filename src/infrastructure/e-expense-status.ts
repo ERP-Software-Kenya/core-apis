@@ -1,5 +1,7 @@
 export enum EExpenseStatus {
-  Pending  = 'pending',
-  Approved = 'approved',
-  Rejected = 'rejected',
+  Pending     = 'pending',
+  UnderReview = 'under_review',
+  Approved    = 'approved',
+  Rejected    = 'rejected',
+  Settled     = 'settled',
 }

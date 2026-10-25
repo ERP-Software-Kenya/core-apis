@@ -35,8 +35,8 @@ export class LocationEntity {
   public organizationId: string;
 
   @AutoMap()
-  @Column({ name: 'parent_id', type: 'uuid', nullable: true })
-  public parentId?: string;
+  @Column({ name: 'branch_id', type: 'uuid', nullable: true })
+  public branchId?: string;
 
   @AutoMap()
   @Column({ type: 'varchar', length: 150 })
@@ -97,18 +97,14 @@ export class LocationEntity {
   })
   public organization: OrganizationEntity;
 
-  @AutoMap(() => LocationEntity)
-  @ManyToOne(() => LocationEntity, (loc) => loc.children, { nullable: true })
+  @AutoMap(() => BranchEntity)
+  @ManyToOne(() => BranchEntity, (branch) => branch.locations, { nullable: true })
   @JoinColumn({
-    name: 'parent_id',
+    name: 'branch_id',
     referencedColumnName: 'id',
-    foreignKeyConstraintName: `FK__${ECoreTableName.Locations}__parent`,
+    foreignKeyConstraintName: `FK__${ECoreTableName.Locations}__${ECoreTableName.Branches}`,
   })
-  public parent?: LocationEntity;
-
-  @AutoMap(() => [LocationEntity])
-  @OneToMany(() => LocationEntity, (loc) => loc.parent)
-  public children?: LocationEntity[];
+  public branch?: BranchEntity;
 
   @AutoMap(() => [InventoryEntity])
   @OneToMany(() => InventoryEntity, (inv) => inv.location)

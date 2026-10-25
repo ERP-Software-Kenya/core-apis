@@ -1,5 +1,6 @@
 import { AutoMap } from '@automapper/classes';
-import { EProductUnit } from '../../../../infrastructure';
+import { Tax } from '../../taxes/domain';
+import { ProductUnit } from './product-unit.model';
 
 export class Product {
   @AutoMap()
@@ -26,9 +27,6 @@ export class Product {
   @AutoMap()
   public description?: string;
 
-  @AutoMap(() => String)
-  public unit?: EProductUnit;
-
   @AutoMap()
   public costPrice?: number;
 
@@ -54,6 +52,15 @@ export class Product {
   public packSize?: number;
 
   @AutoMap()
+  public weightKg?: number;
+
+  @AutoMap()
+  public taxId?: string | null;
+
+  @AutoMap(() => Tax)
+  public tax?: Tax;
+
+  @AutoMap()
   public isActive?: boolean;
 
   @AutoMap(() => Date)
@@ -61,4 +68,6 @@ export class Product {
 
   @AutoMap(() => Date)
   public updatedAt?: Date;
+
+  public productUnits?: ProductUnit[];
 }

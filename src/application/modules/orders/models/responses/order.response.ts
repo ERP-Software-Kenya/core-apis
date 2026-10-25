@@ -18,6 +18,7 @@ export class OrderResponse {
   @ApiProperty() @AutoMap() public locationId: string;
   @ApiPropertyOptional() @AutoMap() public fulfillmentLocationId?: string;
   @ApiPropertyOptional() @AutoMap() public fulfillmentMode?: string;
+  @ApiPropertyOptional() @AutoMap() public sourceQuotationId?: string;
   @ApiProperty() @AutoMap() public customerId: string;
   @ApiPropertyOptional() @AutoMap() public status?: string;
   @ApiPropertyOptional() @AutoMap() public subtotal?: number;

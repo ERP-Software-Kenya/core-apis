@@ -1,6 +1,6 @@
-import { EInvitationStatus } from '../../infrastructure/e-invitation-status';
+import { EInvitationStatus } from "../../infrastructure/e-invitation-status";
 
-export const CLERK_SERVICE = 'IClerkService';
+export const CLERK_SERVICE = "IClerkService";
 
 export interface ClerkInvitationData {
   id: string;
@@ -43,7 +43,7 @@ export interface InviteMetadata {
 export interface IClerkService {
   getTokenForUser(userId: string): Promise<string>;
   signInWithEmailPasswordAsync(email: string, password: string): Promise<string>;
-  createUserAsync(params: { email: string; password: string; firstName: string; lastName: string }): Promise<string>;
+  createUserAsync(params: { email: string; password: string; firstName: string; lastName: string; username: string }): Promise<string>;
   listUsersAsync(params?: { limit?: number; offset?: number; organizationId?: string }): Promise<ClerkUserListData>;
   searchUsersAsync(params: { query: string; limit?: number; offset?: number }): Promise<ClerkUserListData>;
   getClerkUserAsync(clerkUserId: string): Promise<ClerkUserData>;
@@ -59,4 +59,6 @@ export interface IClerkService {
   removeFromOrganizationAsync(params: { clerkUserId: string; organizationId: string }): Promise<void>;
   listOrganizationsAsync(): Promise<ClerkOrganizationData[]>;
   getInviteMetadataAsync(clerkUserId: string): Promise<InviteMetadata | undefined>;
+  revokeSessionAsync(sessionId: string): Promise<void>;
+  getOrganizationMembershipRoleAsync(organizationId: string, clerkUserId: string): Promise<string | undefined>;
 }

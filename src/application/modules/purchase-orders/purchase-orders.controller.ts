@@ -1,6 +1,6 @@
 import { Mapper } from '@automapper/core';
 import { InjectMapper } from '@automapper/nestjs';
-import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Post, Put, Query, Res, UseGuards } from '@nestjs/common';
+import { Body, Controller, Delete, Get, HttpCode, HttpStatus, NotFoundException, Param, Post, Put, Query, Res, UseGuards } from '@nestjs/common';
 import { ApiBearerAuth, ApiCreatedResponse, ApiOkResponse, ApiOperation, ApiParam, ApiTags } from '@nestjs/swagger';
 import type { Response } from 'express';
 import { InjectPinoLogger, PinoLogger } from 'nestjs-pino';
@@ -11,36 +11,41 @@ import {
   CurrentUser,
   IPageable,
   InventoryNotOwnedByOrgException,
+  LocationAccessDeniedException,
+  assertLocationAccess,
   PdfDocument,
   Roles,
   RolesGuard,
 } from '../../../common';
-import { ERole } from '../../../infrastructure';
+import { ERole } from '../../../infrastructure/persistence/entities';
 import {
   AllocatePurchaseOrderCommand,
   CreatePurchaseOrderCommand,
   DeletePurchaseOrderCommand,
   ReceivePurchaseOrderCommand,
+  RecordPurchaseOrderPaymentCommand,
   UpdatePurchaseOrderCommand,
 } from './commands';
-import { PurchaseOrder } from './domain';
+import { PurchaseOrder, PurchaseOrderPayment } from './domain';
 import {
   AllocatePurchaseOrderRequest,
   CreatePurchaseOrderRequest,
   ListPurchaseOrdersRequest,
+  PurchaseOrderPaymentResponse,
   PurchaseOrderResponse,
   PurchaseOrdersPagedResponse,
   ReceivePurchaseOrderRequest,
+  RecordPurchaseOrderPaymentRequest,
   SearchPurchaseOrdersRequest,
   UpdatePurchaseOrderRequest,
 } from './models';
-import { ExportPurchaseOrderQuery, GetPurchaseOrderQuery, ListPurchaseOrdersQuery, SearchPurchaseOrdersQuery } from './queries';
+import { ExportPurchaseOrderQuery, GetPurchaseOrderQuery, ListPurchaseOrderPaymentsQuery, ListPurchaseOrdersQuery, SearchPurchaseOrdersQuery } from './queries';
 
 @ApiBearerAuth()
 @ApiTags('PurchaseOrders')
 @Controller({ path: 'purchase-orders', version: '1' })
 @UseGuards(ClerkAuthGuard, RolesGuard)
-@Roles(ERole.OrgAdmin, ERole.SuperAdmin)
+@Roles(ERole.OrgAdmin, ERole.SuperAdmin, ERole.BranchManager)
 export class PurchaseOrdersController {
   constructor(
     protected readonly mediator: CqrsMediator,
@@ -59,6 +64,7 @@ export class PurchaseOrdersController {
     if (!user.organizationId) return { items: [], page: 1, perPage: 15, totalCount: 0, totalPages: 0 };
     const query          = this.mapper.map(filter, SearchPurchaseOrdersRequest, SearchPurchaseOrdersQuery);
     query.organizationId = user.organizationId;
+    if (!user.hasOrgWideAccess) query.branchId = user.branchId;
     const result         = await this.mediator.execute<SearchPurchaseOrdersQuery, IPageable<PurchaseOrder>>(query);
     return {
       ...result,
@@ -77,6 +83,7 @@ export class PurchaseOrdersController {
     if (!user.organizationId) return [];
     const query          = this.mapper.map(filter, ListPurchaseOrdersRequest, ListPurchaseOrdersQuery);
     query.organizationId = user.organizationId;
+    if (!user.hasOrgWideAccess) query.branchId = user.branchId;
     const result         = await this.mediator.execute<ListPurchaseOrdersQuery, PurchaseOrder[]>(query);
     return this.mapper.mapArray(result, PurchaseOrder, PurchaseOrderResponse);
   }
@@ -87,10 +94,7 @@ export class PurchaseOrdersController {
   @HttpCode(HttpStatus.OK)
   @Get(':id')
   public async getById(@Param('id') id: string, @CurrentUser() user: AuthenticatedUser): Promise<PurchaseOrderResponse> {
-    const query  = new GetPurchaseOrderQuery();
-    query.id     = id;
-    const result = await this.mediator.execute<GetPurchaseOrderQuery, PurchaseOrder>(query);
-    if (result.organizationId !== user.organizationId) throw new InventoryNotOwnedByOrgException();
+    const result = await this.getAuthorizedPurchaseOrder(id, user);
     return this.mapper.map(result, PurchaseOrder, PurchaseOrderResponse);
   }
 
@@ -103,10 +107,7 @@ export class PurchaseOrdersController {
     @Res() res: Response,
     @CurrentUser() user: AuthenticatedUser,
   ): Promise<void> {
-    const fetchQuery  = new GetPurchaseOrderQuery();
-    fetchQuery.id     = id;
-    const existing    = await this.mediator.execute<GetPurchaseOrderQuery, PurchaseOrder>(fetchQuery);
-    if (existing.organizationId !== user.organizationId) throw new InventoryNotOwnedByOrgException();
+    await this.getAuthorizedPurchaseOrder(id, user);
     const query       = new ExportPurchaseOrderQuery();
     query.id          = id;
     const doc: PdfDocument = await this.mediator.execute<ExportPurchaseOrderQuery, PdfDocument>(query);
@@ -128,6 +129,7 @@ export class PurchaseOrdersController {
   ): Promise<PurchaseOrderResponse> {
     const command          = this.mapper.map(body, CreatePurchaseOrderRequest, CreatePurchaseOrderCommand);
     command.organizationId = user.organizationId;
+    command.branchId       = user.hasOrgWideAccess ? undefined : user.branchId;
     command.createdById    = user.dbUserId;
     command.items          = body.items;
     const result           = await this.mediator.execute<CreatePurchaseOrderCommand, PurchaseOrder>(command);
@@ -141,8 +143,10 @@ export class PurchaseOrdersController {
   @Put(':id')
   public async update(
     @Param('id') id: string,
+    @CurrentUser() user: AuthenticatedUser,
     @Body() body: UpdatePurchaseOrderRequest,
   ): Promise<PurchaseOrderResponse> {
+    await this.getAuthorizedPurchaseOrder(id, user);
     const command = this.mapper.map(body, UpdatePurchaseOrderRequest, UpdatePurchaseOrderCommand);
     command.id    = id;
     const result  = await this.mediator.execute<UpdatePurchaseOrderCommand, PurchaseOrder>(command);
@@ -159,6 +163,7 @@ export class PurchaseOrdersController {
     @CurrentUser() user: AuthenticatedUser,
     @Body() body: ReceivePurchaseOrderRequest,
   ): Promise<PurchaseOrderResponse> {
+    await this.getAuthorizedPurchaseOrder(id, user);
     const command           = new ReceivePurchaseOrderCommand();
     command.purchaseOrderId = id;
     command.organizationId  = user.organizationId;
@@ -179,6 +184,8 @@ export class PurchaseOrdersController {
     @CurrentUser() user: AuthenticatedUser,
     @Body() body: AllocatePurchaseOrderRequest,
   ): Promise<PurchaseOrderResponse> {
+    await this.getAuthorizedPurchaseOrder(id, user);
+    for (const allocation of body.allocations) assertLocationAccess(user, allocation.locationId);
     const command           = new AllocatePurchaseOrderCommand();
     command.purchaseOrderId = id;
     command.organizationId  = user.organizationId;
@@ -189,14 +196,66 @@ export class PurchaseOrdersController {
     return this.mapper.map(result, PurchaseOrder, PurchaseOrderResponse);
   }
 
+  @ApiOperation({ summary: 'Record a payment against a purchase order' })
+  @ApiOkResponse({ type: PurchaseOrderResponse })
+  @ApiParam({ name: 'id', description: 'Purchase Order UUID' })
+  @HttpCode(HttpStatus.OK)
+  @Post(':id/payments')
+  public async recordPayment(
+    @Param('id') id: string,
+    @CurrentUser() user: AuthenticatedUser,
+    @Body() body: RecordPurchaseOrderPaymentRequest,
+  ): Promise<PurchaseOrderResponse> {
+    await this.getAuthorizedPurchaseOrder(id, user);
+    const command             = new RecordPurchaseOrderPaymentCommand();
+    command.purchaseOrderId   = id;
+    command.organizationId    = user.organizationId;
+    command.amount            = body.amount;
+    command.paymentMethod     = body.paymentMethod;
+    command.paidAt            = body.paidAt ?? new Date();
+    command.note              = body.note;
+    command.performedById     = user.dbUserId;
+    const result              = await this.mediator.execute<RecordPurchaseOrderPaymentCommand, PurchaseOrder>(command);
+    return this.mapper.map(result, PurchaseOrder, PurchaseOrderResponse);
+  }
+
+  @ApiOperation({ summary: 'List all payments for a purchase order' })
+  @ApiOkResponse({ type: [PurchaseOrderPaymentResponse] })
+  @ApiParam({ name: 'id', description: 'Purchase Order UUID' })
+  @HttpCode(HttpStatus.OK)
+  @Get(':id/payments')
+  public async listPayments(
+    @Param('id') id: string,
+    @CurrentUser() user: AuthenticatedUser,
+  ): Promise<PurchaseOrderPaymentResponse[]> {
+    await this.getAuthorizedPurchaseOrder(id, user);
+    const query             = new ListPurchaseOrderPaymentsQuery();
+    query.purchaseOrderId   = id;
+    query.organizationId    = user.organizationId;
+    const result            = await this.mediator.execute<ListPurchaseOrderPaymentsQuery, PurchaseOrderPayment[]>(query);
+    return this.mapper.mapArray(result, PurchaseOrderPayment, PurchaseOrderPaymentResponse);
+  }
+
   @ApiOperation({ summary: 'Delete a purchase order' })
   @ApiOkResponse({ type: Boolean })
   @ApiParam({ name: 'id', description: 'Purchase Order UUID' })
   @HttpCode(HttpStatus.OK)
+  @Roles(ERole.OrgAdmin, ERole.SuperAdmin)
   @Delete(':id')
-  public async delete(@Param('id') id: string): Promise<boolean> {
+  public async delete(@Param('id') id: string, @CurrentUser() user: AuthenticatedUser): Promise<boolean> {
+    await this.getAuthorizedPurchaseOrder(id, user);
     const command = new DeletePurchaseOrderCommand();
     command.id    = id;
     return this.mediator.execute<DeletePurchaseOrderCommand, boolean>(command);
+  }
+
+  private async getAuthorizedPurchaseOrder(id: string, user: AuthenticatedUser): Promise<PurchaseOrder> {
+    const query = new GetPurchaseOrderQuery();
+    query.id = id;
+    const po = await this.mediator.execute<GetPurchaseOrderQuery, PurchaseOrder>(query);
+    if (!po) throw new NotFoundException(`Purchase order ${id} not found`);
+    if (po.organizationId !== user.organizationId) throw new InventoryNotOwnedByOrgException();
+    if (!user.hasOrgWideAccess && po.branchId !== user.branchId) throw new LocationAccessDeniedException();
+    return po;
   }
 }

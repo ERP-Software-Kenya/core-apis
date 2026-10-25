@@ -10,6 +10,8 @@ export class CreateBranchRequest {
   @ApiPropertyOptional() @IsOptional() @IsString() @MaxLength(100) @AutoMap() public state?: string;
   @ApiPropertyOptional() @IsOptional() @IsString() @MaxLength(100) @AutoMap() public country?: string;
   @ApiPropertyOptional() @IsOptional() @IsString() @MaxLength(50) @AutoMap() public phone?: string;
+  @ApiPropertyOptional({ description: 'User ID of the branch manager' })
+  @IsOptional() @IsUUID() @AutoMap() public userId?: string;
   @ApiPropertyOptional({ type: [String], description: 'Store and warehouse location IDs to attach' })
   @IsOptional() @IsArray() @IsUUID('4', { each: true }) @AutoMap(() => [String]) public locationIds?: string[];
 }

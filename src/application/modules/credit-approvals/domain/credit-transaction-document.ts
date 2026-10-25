@@ -1,4 +1,4 @@
-export type CreditTransactionDocumentType = 'credit_sale' | 'payment' | 'adjustment';
+export type CreditTransactionDocumentType = 'credit_sale' | 'payment' | 'adjustment' | 'sales_return';
 
 export interface CreditTransactionDocument {
   id: string;

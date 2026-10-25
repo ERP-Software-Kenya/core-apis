@@ -3,9 +3,9 @@ import { InjectMapper } from '@automapper/nestjs';
 import { Body, Controller, Get, HttpCode, HttpStatus, Param, Patch, Post, Put, Query, UseGuards } from '@nestjs/common';
 import { ApiBearerAuth, ApiCreatedResponse, ApiOkResponse, ApiOperation, ApiParam, ApiTags } from '@nestjs/swagger';
 import { InjectPinoLogger, PinoLogger } from 'nestjs-pino';
-import { AuthenticatedUser, ClerkAuthGuard, CqrsMediator, CurrentUser, IPageable, Roles, RolesGuard, assertOrgOwnership } from '../../../common';
+import { AuthenticatedUser, ClerkAuthGuard, CqrsMediator, CurrentUser, IPageable, Roles, RolesGuard, assertBranchAccess, assertOrgOwnership } from '../../../common';
 import { ERole } from '../../../infrastructure';
-import { CreateBranchCommand, UpdateBranchCommand } from './commands';
+import { CreateBranchCommand, SetMainBranchCommand, UpdateBranchCommand } from './commands';
 import { Branch } from './domain';
 import {
   BranchResponse,
@@ -31,7 +31,7 @@ export class BranchesController {
   @ApiOperation({ summary: 'Search branches (paginated)' })
   @ApiOkResponse({ type: BranchesPagedResponse })
   @HttpCode(HttpStatus.OK)
-  @Roles(ERole.OrgAdmin, ERole.OrgManager, ERole.SuperAdmin)
+  @Roles(ERole.OrgAdmin, ERole.SuperAdmin, ERole.BranchManager)
   @Get()
   public async search(
     @CurrentUser() user: AuthenticatedUser,
@@ -40,6 +40,7 @@ export class BranchesController {
     if (!user.organizationId) return { items: [], page: 1, perPage: 15, totalCount: 0, totalPages: 0 };
     const query = this.mapper.map(filter ?? new SearchBranchesRequest(), SearchBranchesRequest, SearchBranchesQuery);
     query.organizationId = user.organizationId;
+    if (!user.hasOrgWideAccess && user.branchId) query.$ids = [user.branchId];
     const result = await this.mediator.execute<SearchBranchesQuery, IPageable<Branch>>(query);
     return { ...result, items: this.mapper.mapArray(result.items, Branch, BranchResponse) };
   }
@@ -47,7 +48,7 @@ export class BranchesController {
   @ApiOperation({ summary: 'List all branches for the current organization' })
   @ApiOkResponse({ type: [BranchResponse] })
   @HttpCode(HttpStatus.OK)
-  @Roles(ERole.OrgAdmin, ERole.OrgManager, ERole.SuperAdmin, ERole.StoreManager, ERole.BranchManager)
+  @Roles(ERole.OrgAdmin, ERole.SuperAdmin, ERole.BranchManager)
   @Get('list')
   public async list(
     @CurrentUser() user: AuthenticatedUser,
@@ -56,6 +57,7 @@ export class BranchesController {
     if (!user.organizationId) return [];
     const query = this.mapper.map(filter ?? new ListBranchesRequest(), ListBranchesRequest, ListBranchesQuery);
     query.organizationId = user.organizationId;
+    if (!user.hasOrgWideAccess && user.branchId) query.$ids = [user.branchId];
     const result = await this.mediator.execute<ListBranchesQuery, Branch[]>(query);
     return this.mapper.mapArray(result, Branch, BranchResponse);
   }
@@ -64,20 +66,21 @@ export class BranchesController {
   @ApiOkResponse({ type: BranchResponse })
   @ApiParam({ name: 'id', description: 'Branch UUID' })
   @HttpCode(HttpStatus.OK)
-  @Roles(ERole.OrgAdmin, ERole.OrgManager, ERole.SuperAdmin)
+  @Roles(ERole.OrgAdmin, ERole.SuperAdmin, ERole.BranchManager)
   @Get(':id')
   public async getById(@Param('id') id: string, @CurrentUser() user: AuthenticatedUser): Promise<BranchResponse> {
     const query = new GetBranchQuery();
     query.id = id;
     const result = await this.mediator.execute<GetBranchQuery, Branch>(query);
     assertOrgOwnership(user, result.organizationId, 'Branch');
+    assertBranchAccess(user, result.id);
     return this.mapper.map(result, Branch, BranchResponse);
   }
 
   @ApiOperation({ summary: 'Create a new branch' })
   @ApiCreatedResponse({ type: BranchResponse })
   @HttpCode(HttpStatus.CREATED)
-  @Roles(ERole.OrgAdmin, ERole.OrgManager, ERole.SuperAdmin)
+  @Roles(ERole.OrgAdmin, ERole.SuperAdmin)
   @Post()
   public async create(
     @CurrentUser() user: AuthenticatedUser,
@@ -93,7 +96,7 @@ export class BranchesController {
   @ApiOkResponse({ type: BranchResponse })
   @ApiParam({ name: 'id', description: 'Branch UUID' })
   @HttpCode(HttpStatus.OK)
-  @Roles(ERole.OrgAdmin, ERole.OrgManager, ERole.SuperAdmin)
+  @Roles(ERole.OrgAdmin, ERole.SuperAdmin)
   @Put(':id')
   public async update(
     @Param('id') id: string,
@@ -115,7 +118,7 @@ export class BranchesController {
   @ApiOkResponse({ type: BranchResponse })
   @ApiParam({ name: 'id', description: 'Branch UUID' })
   @HttpCode(HttpStatus.OK)
-  @Roles(ERole.OrgAdmin, ERole.OrgManager, ERole.SuperAdmin)
+  @Roles(ERole.OrgAdmin, ERole.SuperAdmin)
   @Patch(':id/inactive')
   public async inactive(@Param('id') id: string, @CurrentUser() user: AuthenticatedUser): Promise<BranchResponse> {
     const fetchQuery = new GetBranchQuery();
@@ -127,6 +130,20 @@ export class BranchesController {
     command.organizationId = user.organizationId;
     command.isActive = false;
     const result = await this.mediator.execute<UpdateBranchCommand, Branch>(command);
+    return this.mapper.map(result, Branch, BranchResponse);
+  }
+
+  @ApiOperation({ summary: 'Set branch as main branch for the organisation' })
+  @ApiOkResponse({ type: BranchResponse })
+  @ApiParam({ name: 'id', description: 'Branch UUID' })
+  @HttpCode(HttpStatus.OK)
+  @Roles(ERole.OrgAdmin, ERole.SuperAdmin)
+  @Patch(':id/set-main')
+  public async setMain(@Param('id') id: string, @CurrentUser() user: AuthenticatedUser): Promise<BranchResponse> {
+    const command = new SetMainBranchCommand();
+    command.id = id;
+    command.organizationId = user.organizationId;
+    const result = await this.mediator.execute<SetMainBranchCommand, Branch>(command);
     return this.mapper.map(result, Branch, BranchResponse);
   }
 }

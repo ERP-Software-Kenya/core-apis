@@ -10,9 +10,11 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
+import { ProductUnitEntity } from './product-unit.entity';
 import { CORE_SCHEMA, ECoreTableName } from './e-core-table-name';
 import { OrganizationEntity } from './organization.entity';
 import { CategoryEntity } from './category.entity';
+import { TaxEntity } from './tax.entity';
 import { InventoryEntity } from './inventory.entity';
 import { PurchaseItemEntity } from './purchase-item.entity';
 import { UserEntity } from './user.entity';
@@ -21,16 +23,6 @@ import { ProductSupplierEntity } from './product-supplier.entity';
 
 const PK_NAME = 'PK_' + ECoreTableName.Products;
 
-export enum EProductUnit {
-  Piece  = 'piece',
-  Kg     = 'kg',
-  Gram   = 'gram',
-  Litre  = 'litre',
-  Ml     = 'ml',
-  Box    = 'box',
-  Pack   = 'pack',
-  Dozen  = 'dozen',
-}
 
 @Entity({ schema: CORE_SCHEMA, name: ECoreTableName.Products })
 export class ProductEntity {
@@ -66,9 +58,6 @@ export class ProductEntity {
   @Column({ type: 'text', nullable: true })
   public description?: string;
 
-  @AutoMap(() => String)
-  @Column({ type: 'enum', enum: EProductUnit, default: EProductUnit.Piece })
-  public unit: EProductUnit;
 
   /** Acquisition / landed cost */
   @AutoMap()
@@ -110,6 +99,15 @@ export class ProductEntity {
   @Column({ name: 'pack_size', type: 'integer', nullable: true })
   public packSize?: number;
 
+  /** Gross weight per base unit in kg (with packaging) — used for freight and delivery load calculation */
+  @AutoMap()
+  @Column({ name: 'weight_kg', type: 'decimal', precision: 10, scale: 4, nullable: true })
+  public weightKg?: number;
+
+  @AutoMap()
+  @Column({ name: 'tax_id', type: 'uuid', nullable: true })
+  public taxId?: string | null;
+
   @AutoMap()
   @Column({ type: 'boolean', default: true })
   public isActive: boolean;
@@ -146,6 +144,15 @@ export class ProductEntity {
   })
   public category?: CategoryEntity;
 
+  @AutoMap(() => TaxEntity)
+  @ManyToOne(() => TaxEntity, { nullable: true, eager: false })
+  @JoinColumn({
+    name: 'tax_id',
+    referencedColumnName: 'id',
+    foreignKeyConstraintName: `FK__${ECoreTableName.Products}__${ECoreTableName.Taxes}`,
+  })
+  public tax?: TaxEntity;
+
   @AutoMap(() => UserEntity)
   @ManyToOne(() => UserEntity, { nullable: true })
   @JoinColumn({
@@ -170,4 +177,8 @@ export class ProductEntity {
   @AutoMap(() => [PurchaseItemEntity])
   @OneToMany(() => PurchaseItemEntity, (pi) => pi.product)
   public purchaseItems?: PurchaseItemEntity[];
+
+  @AutoMap(() => [ProductUnitEntity])
+  @OneToMany(() => ProductUnitEntity, (pu) => pu.product)
+  public productUnits?: ProductUnitEntity[];
 }

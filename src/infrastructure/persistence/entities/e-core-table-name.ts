@@ -1,9 +1,17 @@
 export const CORE_SCHEMA = 'core';
 
 export enum ECoreTableName {
+  Accounts              = 'accounts',
+  AccountingPeriods     = 'accounting_periods',
+  JournalEntries        = 'journal_entries',
+  JournalLines          = 'journal_lines',
+  BlackLedgerAccounts   = 'black_ledger_accounts',
+  BlackLedgerEntries    = 'black_ledger_entries',
+  BlackLedgerLines      = 'black_ledger_lines',
   Branches              = 'branches',
   Locations             = 'locations',
   Organizations         = 'organizations',
+  OrganizationSettings  = 'organization_settings',
   OrgAddresses          = 'org_addresses',
   OrgMembers            = 'org_members',
   Stores                = 'stores',
@@ -16,6 +24,7 @@ export enum ECoreTableName {
   Permissions           = 'permissions',
   RolePermissions       = 'role_permissions',
   Categories            = 'categories',
+  Taxes                 = 'taxes',
   Products              = 'products',
   ProductImages         = 'product_images',
   ProductSuppliers      = 'product_suppliers',
@@ -31,15 +40,30 @@ export enum ECoreTableName {
   StockTransferItems    = 'stock_transfer_items',
   StockTransferRequests = 'stock_transfer_requests',
   PurchaseOrders            = 'purchase_orders',
+  PurchaseOrderPayments     = 'purchase_order_payments',
   PurchaseItems             = 'purchase_items',
   PurchaseItemAllocations   = 'purchase_item_allocations',
+  UnpublishedStockPurchaseOrders = 'unpublished_stock_purchase_orders',
+  UnpublishedStockPurchaseItems  = 'unpublished_stock_purchase_items',
+  UnpublishedStockPurchaseItemAllocations = 'unpublished_stock_purchase_item_allocations',
+  UnpublishedStockPurchaseOrderPayments = 'unpublished_stock_purchase_order_payments',
+  UnpublishedStockPurchaseReturns = 'unpublished_stock_purchase_returns',
+  UnpublishedStockPurchaseReturnItems = 'unpublished_stock_purchase_return_items',
+  UnpublishedStockPurchaseReturnRefunds = 'unpublished_stock_purchase_return_refunds',
   Customers             = 'customers',
   Orders                = 'orders',
   OrderItems            = 'order_items',
+  Quotations            = 'quotations',
+  QuotationItems        = 'quotation_items',
   DiscountCoupons       = 'discount_coupons',
   Invoices              = 'invoices',
   Bills                 = 'bills',
   BillItems             = 'bill_items',
+  SalesReturns          = 'sales_returns',
+  SalesReturnItems      = 'sales_return_items',
+  PurchaseReturns       = 'purchase_returns',
+  PurchaseReturnItems   = 'purchase_return_items',
+  PurchaseReturnRefunds = 'purchase_return_refunds',
   CustomerCreditTransactions = 'customer_credit_transactions',
   CreditApprovalRequests     = 'credit_approval_requests',
   QuickCharges               = 'quick_charges',
@@ -95,4 +119,17 @@ export enum ECoreTableName {
   // ─── Field App ───────────────────────────────────────────────────────────────
   TripStops             = 'trip_stops',
   UserDeviceTokens      = 'user_device_tokens',
+  UserSessions          = 'user_sessions',
+
+  // ─── CI / Deploy verification ─────────────────────────────────────────────
+  DeploymentChecks      = 'deployment_checks',
+
+  // ─── Branch-wise pricing ─────────────────────────────────────────────────
+  ProductBranchPrices   = 'product_branch_prices',
+
+  // ─── Organization-specific lookup tables ──────────────────────────────────
+  OrganizationUnits     = 'organization_units',
+
+  // ─── Product ↔ Unit junction ───────────────────────────────────────────────
+  ProductUnits          = 'product_units',
 }

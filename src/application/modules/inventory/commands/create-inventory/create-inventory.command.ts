@@ -5,6 +5,7 @@ export class CreateInventoryCommand extends CommandBase {
   @AutoMap() public organizationId: string;
   @AutoMap() public locationId: string;
   @AutoMap() public productId: string;
+  @AutoMap() public unitId?: string;
   @AutoMap() public reorderLevel?: number;
   @AutoMap() public maxStock?: number;
   @AutoMap() public binLocation?: string;

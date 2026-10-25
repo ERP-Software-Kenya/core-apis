@@ -1,4 +1,6 @@
-export const AUTH_SERVICE         = 'AUTH_SERVICE';
+export const AUTH_SERVICE             = 'AUTH_SERVICE';
+export const ORGANIZATION_UNIT_REPO   = 'ORGANIZATION_UNIT_REPO';
+export const PRODUCT_UNIT_REPO        = 'PRODUCT_UNIT_REPO';
 export const LOCATION_REPO        = 'LOCATION_REPO';
 export const BRANCH_REPO          = 'BRANCH_REPO';
 export const PRODUCT_LOG_REPO     = 'PRODUCT_LOG_REPO';
@@ -14,18 +16,26 @@ export const SUPPLIER_REPO        = 'SUPPLIER_REPO';
 export const INVENTORY_REPO       = 'INVENTORY_REPO';
 export const STOCK_MOVEMENT_REPO  = 'STOCK_MOVEMENT_REPO';
 export const PURCHASE_ORDER_REPO            = 'PURCHASE_ORDER_REPO';
+export const PURCHASE_ORDER_PAYMENT_REPO    = 'IPurchaseOrderPaymentRepo';
 export const PURCHASE_ITEM_REPO             = 'PURCHASE_ITEM_REPO';
 export const PURCHASE_ITEM_ALLOCATION_REPO  = 'PURCHASE_ITEM_ALLOCATION_REPO';
 export const ACTIVITY_LOG_REPO    = 'ACTIVITY_LOG_REPO';
 
 export const BILL_REPO                    = 'BILL_REPO';
 export const BILL_ITEM_REPO               = 'BILL_ITEM_REPO';
+export const SALES_RETURN_REPO            = 'SALES_RETURN_REPO';
+export const SALES_RETURN_ITEM_REPO       = 'SALES_RETURN_ITEM_REPO';
+export const PURCHASE_RETURN_REPO         = 'PURCHASE_RETURN_REPO';
+export const PURCHASE_RETURN_ITEM_REPO    = 'PURCHASE_RETURN_ITEM_REPO';
 export const ITEM_RETURN_REPO             = 'ITEM_RETURN_REPO';
 export const NOTIFICATION_REPO            = 'NOTIFICATION_REPO';
+export const REPORT_DATA_AGGREGATOR       = 'IReportDataAggregator';
 export const REPORT_GENERATION_LOG_REPO   = 'REPORT_GENERATION_LOG_REPO';
 export const PAYMENT_TRANSACTION_REPO     = 'PAYMENT_TRANSACTION_REPO';
 export const ORDER_REPO                   = 'ORDER_REPO';
 export const ORDER_ITEM_REPO              = 'ORDER_ITEM_REPO';
+export const QUOTATION_REPO               = 'QUOTATION_REPO';
+export const QUOTATION_ITEM_REPO          = 'QUOTATION_ITEM_REPO';
 export const INVOICE_REPO                 = 'INVOICE_REPO';
 export const CUSTOMER_REPO                = 'CUSTOMER_REPO';
 export const EXPENSE_REPO                 = 'EXPENSE_REPO';
@@ -86,3 +96,15 @@ export const CUSTOMER_TYPE_RULE_REPO       = 'CUSTOMER_TYPE_RULE_REPO';
 // ─── Field App ───────────────────────────────────────────────────────────────
 export const TRIP_STOP_REPO                = 'TRIP_STOP_REPO';
 export const USER_DEVICE_TOKEN_REPO        = 'USER_DEVICE_TOKEN_REPO';
+
+export const UNPUBLISHED_STOCK_PO_REPO            = 'UNPUBLISHED_STOCK_PO_REPO';
+export const UNPUBLISHED_STOCK_PO_PAYMENT_REPO    = 'UNPUBLISHED_STOCK_PO_PAYMENT_REPO';
+export const UNPUBLISHED_STOCK_PI_REPO            = 'UNPUBLISHED_STOCK_PI_REPO';
+export const UNPUBLISHED_STOCK_PI_ALLOCATION_REPO = 'UNPUBLISHED_STOCK_PI_ALLOCATION_REPO';
+
+export const PRODUCT_BRANCH_PRICE_REPO            = 'PRODUCT_BRANCH_PRICE_REPO';
+export const TAX_REPO = 'TAX_REPO';
+export const ACCOUNTING_REPO = 'ACCOUNTING_REPO';
+export const BLACK_LEDGER_REPO = 'BLACK_LEDGER_REPO';
+export const ORGANIZATION_SETTING_REPO = 'ORGANIZATION_SETTING_REPO';
+export const STOCK_OPERATIONS_REPO = 'STOCK_OPERATIONS_REPO';

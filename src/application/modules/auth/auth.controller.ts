@@ -1,30 +1,16 @@
-import { Body, Controller, ForbiddenException, Get, HttpCode, HttpStatus, Post, UseGuards } from '@nestjs/common';
-import {
-  ApiBearerAuth,
-  ApiCreatedResponse,
-  ApiOkResponse,
-  ApiOperation,
-  ApiTags,
-} from '@nestjs/swagger';
-import { Mapper } from '@automapper/core';
-import { InjectMapper } from '@automapper/nestjs';
-import { InjectPinoLogger, PinoLogger } from 'nestjs-pino';
-import {
-  AllowAnonymous,
-  AuthenticatedUser,
-  ClerkAuthGuard,
-  CqrsMediator,
-  CurrentUser,
-  isDev,
-  isLocal,
-  isTest,
-} from '../../../common';
-import { SyncUserCommand } from './commands/sync-user';
-import { OnboardOrganizationCommand, OnboardOrganizationResult } from './commands/onboard-organization';
-import { RegisterMobileUserCommand } from './commands/register-mobile-user';
-import { GetMeQuery, MeResult } from './queries/get-me';
-import { GetTokenQuery } from './queries/get-token';
-import { GetDevTokenQuery } from './queries/get-dev-token';
+import { Body, Controller, Delete, ForbiddenException, Get, HttpCode, HttpStatus, Param, Post, RawBodyRequest, Req, UnauthorizedException, UseGuards } from "@nestjs/common";
+import { ApiBearerAuth, ApiCreatedResponse, ApiOkResponse, ApiOperation, ApiTags } from "@nestjs/swagger";
+import { Mapper } from "@automapper/core";
+import { InjectMapper } from "@automapper/nestjs";
+import { InjectPinoLogger, PinoLogger } from "nestjs-pino";
+import { Throttle } from "@nestjs/throttler";
+import { AllowAnonymous, AuthenticatedUser, ClerkAuthGuard, ClerkService, CqrsMediator, CurrentUser, isDev, isLocal, isTest } from "../../../common";
+import { SyncUserCommand } from "./commands/sync-user";
+import { OnboardOrganizationCommand, OnboardOrganizationResult } from "./commands/onboard-organization";
+import { RegisterMobileUserCommand } from "./commands/register-mobile-user";
+import { GetMeQuery, MeResult } from "./queries/get-me";
+import { GetTokenQuery } from "./queries/get-token";
+import { GetDevTokenQuery } from "./queries/get-dev-token";
 import {
   GetTokenRequest,
   GetDevTokenRequest,
@@ -37,58 +23,102 @@ import {
   TokenResponse,
   OrganizationSummary,
   MembershipSummary,
-} from './models';
-import { ListOrganizationsQuery } from '../organizations/queries';
-import { Organization } from '../organizations/domain';
-import { ListRolesQuery } from '../roles/queries';
-import { Role } from '../roles/domain';
-import { User } from '../users/domain';
+} from "./models";
+import { ListOrganizationsQuery } from "../organizations/queries";
+import { Organization } from "../organizations/domain";
+import { ListRolesQuery } from "../roles/queries";
+import { Role } from "../roles/domain";
+import { User } from "../users/domain";
+import { OrganizationSettingsService } from "../billing-settings/currency";
+import { Request } from "express";
+import { UpsertSessionRequest, UserSessionResponse } from "./models";
+import { UserSessionService } from "./user-session.service";
+import { ConfigService } from "@nestjs/config";
+import { ICoreApiConfig } from "../../../configuration";
+import { Webhook } from "svix";
+import { EUserSessionStatus } from "../../../infrastructure/persistence/entities";
 
 @ApiBearerAuth()
-@ApiTags('Auth')
-@Controller({ path: 'auth', version: '1' })
+@ApiTags("Auth")
+@Controller({ path: "auth", version: "1" })
 @UseGuards(ClerkAuthGuard)
 export class AuthController {
   constructor(
     protected readonly mediator: CqrsMediator,
     @InjectMapper() protected readonly mapper: Mapper,
     @InjectPinoLogger(AuthController.name) protected readonly logger: PinoLogger,
+    private readonly organizationSettings: OrganizationSettingsService,
+    private readonly userSessions: UserSessionService,
+    private readonly config: ConfigService<ICoreApiConfig>,
+    private readonly clerkService: ClerkService,
   ) {}
+
+  @ApiOperation({ summary: "Receive verified Clerk session lifecycle events" })
+  @AllowAnonymous()
+  @HttpCode(HttpStatus.NO_CONTENT)
+  @Post("webhooks/clerk")
+  public async clerkWebhook(@Req() request: RawBodyRequest<Request>): Promise<void> {
+    const secret = this.config.get<ICoreApiConfig["clerk"]>("clerk").webhookSecret;
+    const rawBody = request.rawBody;
+    const id = request.get("svix-id");
+    const timestamp = request.get("svix-timestamp");
+    const signature = request.get("svix-signature");
+    if (!secret || !rawBody || !id || !timestamp || !signature) throw new UnauthorizedException("Invalid webhook signature");
+
+    let event: { type: string; data: { id?: string } };
+    try {
+      event = new Webhook(secret).verify(rawBody.toString("utf8"), {
+        "svix-id": id,
+        "svix-timestamp": timestamp,
+        "svix-signature": signature,
+      }) as typeof event;
+    } catch {
+      throw new UnauthorizedException("Invalid webhook signature");
+    }
+
+    if (!event.data.id) return;
+    if (event.type === "session.revoked") await this.userSessions.reconcileClerkStatus(event.data.id, EUserSessionStatus.Revoked);
+    if (event.type === "session.ended" || event.type === "session.removed") {
+      await this.userSessions.reconcileClerkStatus(event.data.id, EUserSessionStatus.SignedOut);
+    }
+  }
 
   // ── POST /auth/token (dev only) ─────────────────────────────────────────────
   @ApiOperation({
-    summary: 'Get a Clerk JWT for a user (development only)',
-    description: 'Finds the most recent active Clerk session for the given user ID and returns a signed JWT.',
+    summary: "Get a Clerk JWT for a user (development only)",
+    description: "Finds the most recent active Clerk session for the given user ID and returns a signed JWT.",
   })
   @ApiCreatedResponse({ type: TokenResponse })
   @HttpCode(HttpStatus.CREATED)
   @AllowAnonymous()
-  @Post('token')
+  @Throttle({ default: { limit: 10, ttl: 60_000 } })
+  @Post("token")
   public async getToken(@Body() body: GetTokenRequest): Promise<TokenResponse> {
     if (!isDev() && !isLocal() && !isTest()) {
-      throw new ForbiddenException('Token minting is disabled outside development');
+      throw new ForbiddenException("Token minting is disabled outside development");
     }
-    const query   = new GetTokenQuery();
-    query.userId  = body.userId;
+    const query = new GetTokenQuery();
+    query.userId = body.userId;
     const token = await this.mediator.execute<GetTokenQuery, string>(query);
     return { token };
   }
 
   // ── POST /auth/dev-login (dev/local/test only) ──────────────────────────────
   @ApiOperation({
-    summary: 'Sign in with email + password and get a JWT (development only)',
-    description: 'Creates a Clerk session for the user and returns a signed JWT. Disabled in production.',
+    summary: "Sign in with email + password and get a JWT (development only)",
+    description: "Creates a Clerk session for the user and returns a signed JWT. Disabled in production.",
   })
   @ApiCreatedResponse({ type: TokenResponse })
   @HttpCode(HttpStatus.CREATED)
   @AllowAnonymous()
-  @Post('dev-login')
+  @Throttle({ default: { limit: 5, ttl: 60_000 } })
+  @Post("dev-login")
   public async devLogin(@Body() body: GetDevTokenRequest): Promise<TokenResponse> {
     if (!isDev() && !isLocal() && !isTest()) {
-      throw new ForbiddenException('Dev login is disabled outside development');
+      throw new ForbiddenException("Dev login is disabled outside development");
     }
-    const query    = new GetDevTokenQuery();
-    query.email    = body.email;
+    const query = new GetDevTokenQuery();
+    query.email = body.email;
     query.password = body.password;
     const token = await this.mediator.execute<GetDevTokenQuery, string>(query);
     return { token };
@@ -96,16 +126,18 @@ export class AuthController {
 
   // ── POST /auth/login (mobile — Clerk email+password) ───────────────────────
   @ApiOperation({
-    summary: 'Mobile login — sign in with email + password via Clerk',
-    description: 'Returns a Clerk JWT. Mobile clients store this token and pass it as Bearer on subsequent requests. Call GET /auth/me after login to obtain role and org context.',
+    summary: "Mobile login — sign in with email + password via Clerk",
+    description: "Returns a Clerk JWT. Mobile clients store this token and pass it as Bearer on subsequent requests. Call GET /auth/me after login to obtain role and org context.",
   })
   @ApiCreatedResponse({ type: TokenResponse })
   @HttpCode(HttpStatus.CREATED)
   @AllowAnonymous()
-  @Post('login')
+  @Throttle({ default: { limit: 5, ttl: 60_000 } })
+  @Post("login")
   public async mobileLogin(@Body() body: MobileLoginRequest): Promise<TokenResponse> {
-    const query    = new GetDevTokenQuery();
-    query.email    = body.email;
+    this.assertDevelopmentOnly("Backend password login");
+    const query = new GetDevTokenQuery();
+    query.email = body.email;
     query.password = body.password;
     const token = await this.mediator.execute<GetDevTokenQuery, string>(query);
     return { token };
@@ -113,13 +145,12 @@ export class AuthController {
 
   // ── POST /auth/sync ─────────────────────────────────────────────────────────
   @ApiOperation({
-    summary: 'Sync Clerk user to the database (JIT provisioning)',
-    description:
-      'Call this immediately after sign-in. Creates or updates the local user record from the Clerk JWT claims.',
+    summary: "Sync Clerk user to the database (JIT provisioning)",
+    description: "Call this immediately after sign-in. Creates or updates the local user record from the Clerk JWT claims.",
   })
   @ApiCreatedResponse({ type: SyncUserResponse })
   @HttpCode(HttpStatus.CREATED)
-  @Post('sync')
+  @Post("sync")
   public async sync(@CurrentUser() currentUser: AuthenticatedUser): Promise<SyncUserResponse> {
     const command = new SyncUserCommand();
     command.clerkUserId = currentUser.clerkUserId;
@@ -143,17 +174,18 @@ export class AuthController {
 
   // ── POST /auth/organizations ─────────────────────────────────────────────────
   @ApiOperation({
-    summary: 'Create an organization and set the caller as OrgAdmin',
-    description:
-      'Onboarding step: creates the org in our DB, assigns the caller as OrgAdmin via org_members, and links their primary organizationId.',
+    summary: "Create an organization and set the caller as OrgAdmin",
+    description: "Onboarding step: creates the org in our DB, assigns the caller as OrgAdmin via org_members, and links their primary organizationId.",
   })
   @ApiCreatedResponse({ type: OnboardOrganizationResponse })
   @HttpCode(HttpStatus.CREATED)
-  @Post('organizations')
-  public async onboardOrganization(
-    @CurrentUser() currentUser: AuthenticatedUser,
-    @Body() body: OnboardOrganizationRequest,
-  ): Promise<OnboardOrganizationResponse> {
+  @Post("organizations")
+  public async onboardOrganization(@CurrentUser() currentUser: AuthenticatedUser, @Body() body: OnboardOrganizationRequest): Promise<OnboardOrganizationResponse> {
+    const clerkRole = await this.clerkService.getOrganizationMembershipRoleAsync(body.clerkOrgId, currentUser.clerkUserId);
+    if (clerkRole !== "org:admin") {
+      throw new ForbiddenException("Only the Clerk organization administrator can complete organization onboarding");
+    }
+
     if (!currentUser.organizationId) {
       const syncCmd = new SyncUserCommand();
       syncCmd.clerkUserId = currentUser.clerkUserId;
@@ -173,6 +205,7 @@ export class AuthController {
     command.slug = body.slug;
     command.clerkOrgId = body.clerkOrgId;
     command.logoUrl = body.logoUrl;
+    command.country = body.country;
 
     const result = await this.mediator.execute<OnboardOrganizationCommand, OnboardOrganizationResult>(command);
 
@@ -185,67 +218,59 @@ export class AuthController {
   }
 
   // ── GET /auth/dev/organizations ─────────────────────────────────────────────
-  @ApiOperation({ summary: 'List organizations for mobile staff signup (dev only)' })
-  @ApiOkResponse({ schema: { type: 'array', items: { properties: { id: { type: 'string' }, name: { type: 'string' } } } } })
+  @ApiOperation({ summary: "List organizations for mobile staff signup (dev only)" })
+  @ApiOkResponse({ schema: { type: "array", items: { properties: { id: { type: "string" }, name: { type: "string" } } } } })
   @HttpCode(HttpStatus.OK)
   @AllowAnonymous()
-  @Get('dev/organizations')
+  @Get("dev/organizations")
   public async devOrganizations(): Promise<Array<{ id: string; name: string }>> {
-    if (!isDev() && !isLocal() && !isTest()) {
-      throw new ForbiddenException('Endpoint disabled outside development');
-    }
+    this.assertDevelopmentOnly("Organization listing");
     const query = new ListOrganizationsQuery();
     const orgs = await this.mediator.execute<ListOrganizationsQuery, Organization[]>(query);
-    return orgs.map((org) => ({ id: org.id, name: org.name ?? '' }));
+    return orgs.map((org) => ({ id: org.id, name: org.name ?? "" }));
   }
 
   // ── GET /auth/dev/roles ─────────────────────────────────────────────────────
-  @ApiOperation({ summary: 'List picker and driver roles for mobile staff signup (dev only)' })
-  @ApiOkResponse({ schema: { type: 'array', items: { properties: { id: { type: 'string' }, name: { type: 'string' } } } } })
+  @ApiOperation({ summary: "List picker and driver roles for mobile staff signup (dev only)" })
+  @ApiOkResponse({ schema: { type: "array", items: { properties: { id: { type: "string" }, name: { type: "string" } } } } })
   @HttpCode(HttpStatus.OK)
   @AllowAnonymous()
-  @Get('dev/roles')
+  @Get("dev/roles")
   public async devRoles(): Promise<Array<{ id: string; name: string }>> {
-    if (!isDev() && !isLocal() && !isTest()) {
-      throw new ForbiddenException('Endpoint disabled outside development');
-    }
+    this.assertDevelopmentOnly("Role listing");
     const query = new ListRolesQuery();
     const roles = await this.mediator.execute<ListRolesQuery, Role[]>(query);
-    return roles
-      .filter((role) => role.name === 'picker' || role.name === 'driver')
-      .map((role) => ({ id: role.id, name: role.name }));
+    return roles.map((role) => ({ id: role.id, name: role.name }));
   }
 
   // ── POST /auth/mobile/register ───────────────────────────────────────────────
-  @ApiOperation({ summary: 'Register a picker/driver staff user in Clerk + DB (dev only)' })
-  @ApiCreatedResponse({ schema: { properties: { userId: { type: 'string' } } } })
+  @ApiOperation({ summary: "Register a picker/driver staff user in Clerk + DB (dev only)" })
+  @ApiCreatedResponse({ schema: { properties: { userId: { type: "string" } } } })
   @HttpCode(HttpStatus.CREATED)
   @AllowAnonymous()
-  @Post('mobile/register')
+  @Throttle({ default: { limit: 5, ttl: 60_000 } })
+  @Post("mobile/register")
   public async mobileRegister(@Body() body: RegisterMobileUserRequest): Promise<{ userId: string }> {
-    if (!isDev() && !isLocal() && !isTest()) {
-      throw new ForbiddenException('Registration endpoint disabled outside development');
-    }
-    const command              = new RegisterMobileUserCommand();
-    command.firstName          = body.firstName;
-    command.lastName           = body.lastName;
-    command.email              = body.email;
-    command.password           = body.password;
-    command.organizationId     = body.organizationId;
-    command.roleId             = body.roleId;
+    this.assertDevelopmentOnly("Mobile staff registration");
+    const command = new RegisterMobileUserCommand();
+    command.firstName = body.firstName;
+    command.lastName = body.lastName;
+    command.email = body.email;
+    command.password = body.password;
+    command.organizationId = body.organizationId;
+    command.roleId = body.roleId;
     const userId = await this.mediator.execute<RegisterMobileUserCommand, string>(command);
     return { userId };
   }
 
   // ── GET /auth/me ─────────────────────────────────────────────────────────────
   @ApiOperation({
-    summary: 'Get current user profile with org and role (session enrichment)',
-    description:
-      'Returns the full user context: user data, primary organization, and org membership with role.',
+    summary: "Get current user profile with org and role (session enrichment)",
+    description: "Returns the full user context: user data, primary organization, and org membership with role.",
   })
   @ApiOkResponse({ type: MeResponse })
   @HttpCode(HttpStatus.OK)
-  @Get('me')
+  @Get("me")
   public async getMe(@CurrentUser() currentUser: AuthenticatedUser): Promise<MeResponse> {
     if (!currentUser.isOnboarded) {
       return {
@@ -260,6 +285,7 @@ export class AuthController {
         organization: undefined,
         membership: undefined,
         locationIds: [],
+        branchId: currentUser.branchId,
         hasOrgWideAccess: false,
       };
     }
@@ -300,16 +326,49 @@ export class AuthController {
       organization: orgSummary,
       membership: membershipSummary,
       locationIds: currentUser.locationIds ?? [],
+      branchId: currentUser.branchId,
       hasOrgWideAccess: currentUser.hasOrgWideAccess ?? false,
-      currencyCode: resolveCurrencyCode(result.organization?.country),
+      currencyCode: await this.organizationSettings.currencyCode(result.organization.id),
     };
   }
-}
 
-function resolveCurrencyCode(country?: string): string {
-  const cc = (country ?? '').toLowerCase();
-  if (cc.includes('kenya') || cc === 'ke') return 'KES';
-  if (cc.includes('india') || cc === 'in') return 'INR';
-  if (cc.includes('united states') || cc === 'us' || cc === 'usa') return 'USD';
-  return 'KES';
+  @ApiOperation({ summary: "Register this device or update its session activity" })
+  @ApiCreatedResponse({ type: UserSessionResponse })
+  @HttpCode(HttpStatus.CREATED)
+  @Post("sessions")
+  public async upsertSession(@CurrentUser() currentUser: AuthenticatedUser, @Body() body: UpsertSessionRequest, @Req() request: Request): Promise<UserSessionResponse> {
+    return this.userSessions.upsert(this.requireDbUserId(currentUser), currentUser.clerkSessionId, body, request.ip, request.get("user-agent"));
+  }
+
+  @ApiOperation({ summary: "List devices and recent sessions for the current account" })
+  @ApiOkResponse({ type: [UserSessionResponse] })
+  @Get("sessions")
+  public async listSessions(@CurrentUser() currentUser: AuthenticatedUser): Promise<UserSessionResponse[]> {
+    return this.userSessions.list(this.requireDbUserId(currentUser), currentUser.clerkSessionId);
+  }
+
+  @ApiOperation({ summary: "Revoke one of the current account's sessions" })
+  @HttpCode(HttpStatus.NO_CONTENT)
+  @Delete("sessions/:id")
+  public async revokeSession(@CurrentUser() currentUser: AuthenticatedUser, @Param("id") id: string): Promise<void> {
+    await this.userSessions.revoke(this.requireDbUserId(currentUser), id);
+  }
+
+  @ApiOperation({ summary: "Record a normal sign-out for the current session" })
+  @HttpCode(HttpStatus.NO_CONTENT)
+  @Post("sessions/current/end")
+  public async endCurrentSession(@CurrentUser() currentUser: AuthenticatedUser): Promise<void> {
+    await this.userSessions.endCurrent(this.requireDbUserId(currentUser), currentUser.clerkSessionId);
+  }
+
+  private assertDevelopmentOnly(feature: string): void {
+    if (!isDev() && !isLocal() && !isTest()) {
+      throw new ForbiddenException(`${feature} is disabled outside development`);
+    }
+  }
+
+  private requireDbUserId(user: AuthenticatedUser): string {
+    if (!user.dbUserId) throw new ForbiddenException("Account must be synchronized before managing sessions");
+    return user.dbUserId;
+  }
 }

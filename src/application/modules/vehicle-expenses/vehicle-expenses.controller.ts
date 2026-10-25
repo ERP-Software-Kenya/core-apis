@@ -58,7 +58,7 @@ export class VehicleExpensesController {
   @ApiParam({ name: 'id', description: 'Vehicle Expense UUID' })
   @HttpCode(HttpStatus.OK)
   @UseGuards(RolesGuard)
-  @Roles(ERole.StoreManager, ERole.OrgManager, ERole.OrgAdmin, ERole.SuperAdmin)
+  @Roles(ERole.OrgAdmin, ERole.SuperAdmin)
   @Delete(':id')
   public async delete(@Param('id') id: string): Promise<boolean> {
     const command = new DeleteVehicleExpenseCommand();

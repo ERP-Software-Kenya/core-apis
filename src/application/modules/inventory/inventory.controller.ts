@@ -14,7 +14,7 @@ import { GetInventoryQuery, GetLowStockQuery, GetValuationQuery, ListInventoryQu
 @ApiTags('Inventory')
 @Controller({ path: 'inventory', version: '1' })
 @UseGuards(ClerkAuthGuard, RolesGuard)
-@Roles(ERole.OrgAdmin, ERole.SuperAdmin, ERole.BranchManager, ERole.StoreManager, ERole.StoreStaff)
+@Roles(ERole.OrgAdmin, ERole.SuperAdmin, ERole.BranchManager)
 export class InventoryController {
   constructor(
     protected readonly mediator: CqrsMediator,
@@ -27,7 +27,6 @@ export class InventoryController {
   @HttpCode(HttpStatus.OK)
   @Get()
   public async search(@CurrentUser() user: AuthenticatedUser, @Query() filter?: SearchInventoryRequest): Promise<InventorysPagedResponse> {
-    if (!filter?.locationId && !user.hasOrgWideAccess) throw new LocationAccessDeniedException(undefined, 'Filter by locationId, or use an org-wide role to search without one.');
     if (filter?.locationId) assertLocationAccess(user, filter.locationId);
     const query            = this.mapper.map(filter, SearchInventoryRequest, SearchInventoryQuery);
     query.organizationId   = user.organizationId;
@@ -41,7 +40,6 @@ export class InventoryController {
   @HttpCode(HttpStatus.OK)
   @Get('list')
   public async list(@CurrentUser() user: AuthenticatedUser, @Query() filter?: ListInventoryRequest): Promise<InventoryResponse[]> {
-    if (!filter?.locationId && !user.hasOrgWideAccess) throw new LocationAccessDeniedException(undefined, 'Filter by locationId, or use an org-wide role to list without one.');
     if (filter?.locationId) assertLocationAccess(user, filter.locationId);
     const query            = this.mapper.map(filter, ListInventoryRequest, ListInventoryQuery);
     query.organizationId   = user.organizationId;
@@ -91,7 +89,7 @@ export class InventoryController {
   @ApiOperation({ summary: 'Create an inventory record for a product at a location' })
   @ApiCreatedResponse({ type: InventoryResponse })
   @HttpCode(HttpStatus.CREATED)
-  @Roles(ERole.OrgAdmin, ERole.SuperAdmin, ERole.BranchManager, ERole.StoreManager)
+  @Roles(ERole.OrgAdmin, ERole.SuperAdmin, ERole.BranchManager)
   @Post()
   public async create(
     @CurrentUser() user: AuthenticatedUser,
@@ -108,7 +106,7 @@ export class InventoryController {
   @ApiOkResponse({ type: InventoryResponse })
   @ApiParam({ name: 'id', description: 'Inventory UUID' })
   @HttpCode(HttpStatus.OK)
-  @Roles(ERole.OrgAdmin, ERole.SuperAdmin, ERole.BranchManager, ERole.StoreManager)
+  @Roles(ERole.OrgAdmin, ERole.SuperAdmin, ERole.BranchManager)
   @Put(':id')
   public async update(@Param('id') id: string, @Body() body: UpdateInventoryRequest, @CurrentUser() user: AuthenticatedUser): Promise<InventoryResponse> {
     const existing = await this.mediator.execute<GetInventoryQuery, Inventory>(Object.assign(new GetInventoryQuery(), { id }));
@@ -152,6 +150,6 @@ export class InventoryController {
     if (!user.locationIds.length) {
       throw new LocationAccessDeniedException(undefined, 'Filter by locationId, or use an org-wide role to list without one.');
     }
-    query.accessibleLocationIds = user.locationIds;
+    query.accessibleLocationIds = user.locationIds ?? [];
   }
 }

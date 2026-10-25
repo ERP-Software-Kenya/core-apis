@@ -1,7 +1,6 @@
 import { AutoMap } from '@automapper/classes';
 import { ApiPropertyOptional } from '@nestjs/swagger';
-import { IsEnum, IsInt, IsNumber, IsOptional, IsString, IsUUID, Min } from 'class-validator';
-import { EProductUnit } from '../../../../../infrastructure';
+import { IsArray, IsInt, IsNumber, IsOptional, IsString, IsUUID, Min, ValidateIf } from 'class-validator';
 
 export class CreateProductRequest {
   @ApiPropertyOptional()
@@ -34,11 +33,16 @@ export class CreateProductRequest {
   @AutoMap()
   public description?: string;
 
-  @ApiPropertyOptional({ enum: EProductUnit })
+  @ApiPropertyOptional({ type: [String], description: 'Org unit IDs to associate with this product' })
   @IsOptional()
-  @IsEnum(EProductUnit)
-  @AutoMap(() => String)
-  public unit?: EProductUnit;
+  @IsArray()
+  @IsUUID('4', { each: true })
+  public unitIds?: string[];
+
+  @ApiPropertyOptional({ description: 'Which unit ID is the default (must be in unitIds)' })
+  @IsOptional()
+  @IsUUID()
+  public defaultUnitId?: string;
 
   @ApiPropertyOptional()
   @IsOptional()
@@ -94,4 +98,18 @@ export class CreateProductRequest {
   @Min(1)
   @AutoMap()
   public packSize?: number;
+
+  @ApiPropertyOptional()
+  @IsOptional()
+  @IsNumber()
+  @Min(0)
+  @AutoMap()
+  public weightKg?: number;
+
+  @ApiPropertyOptional()
+  @IsOptional()
+  @ValidateIf((_object, value) => value !== null)
+  @IsUUID()
+  @AutoMap()
+  public taxId?: string | null;
 }

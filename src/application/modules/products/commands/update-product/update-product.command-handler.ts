@@ -4,18 +4,22 @@ import { Mapper } from '@automapper/core';
 import { InjectMapper } from '@automapper/nestjs';
 import { InjectPinoLogger, PinoLogger } from 'nestjs-pino';
 import { CommandHandlerStrict } from 'src/common';
-import { PRODUCT_REPO } from '../../../../constants';
+import { PRODUCT_REPO, PRODUCT_UNIT_REPO } from '../../../../constants';
 import { Product } from '../../domain';
 import { IProductRepo } from '../..';
+import { IProductUnitRepo } from '../../i-product-unit.repo';
 import { EProductLogAction } from 'src/application/shared/enums/e-product-log-action.enum';
-import { ProductActivityLogger, ProductLogEntry } from 'src/application/shared';
+import { ActivityLogService, ProductActivityLogger, ProductLogEntry } from 'src/application/shared';
+import { EActivityAction } from 'src/infrastructure/persistence/entities/activity-log.entity';
 import { UpdateProductCommand } from './update-product.command';
 
 @CommandHandlerStrict(UpdateProductCommand)
 export class UpdateProductCommandHandler implements ICommandHandler<UpdateProductCommand, Product> {
   constructor(
     @Inject(PRODUCT_REPO) private readonly repo: IProductRepo,
+    @Inject(PRODUCT_UNIT_REPO) private readonly productUnitRepo: IProductUnitRepo,
     private readonly activityLogger: ProductActivityLogger,
+    private readonly activityLog: ActivityLogService,
     @InjectMapper() private readonly mapper: Mapper,
     @InjectPinoLogger(UpdateProductCommandHandler.name) private readonly logger: PinoLogger,
   ) {}
@@ -30,21 +34,35 @@ export class UpdateProductCommandHandler implements ICommandHandler<UpdateProduc
       if (patch[key] !== undefined && patch[key] !== existing[key]) {
         changedFields.push({ field: key, oldValue: existing[key], newValue: patch[key] });
         (existing as unknown as Record<string, unknown>)[key] = patch[key];
+        if (key === 'taxId') {
+          (existing as unknown as Record<string, unknown>)['tax'] = null;
+        }
       }
     });
 
-    const updated = await this.repo.updateAsync(existing);
+    await this.repo.updateAsync(existing);
+
+    if (command.unitIds !== undefined) {
+      await this.productUnitRepo.syncForProductAsync(command.id, command.unitIds, command.defaultUnitId);
+    }
 
     if (changedFields.length > 0) {
       const entry = Object.assign(new ProductLogEntry(), {
         action:         EProductLogAction.ProductUpdated,
-        organizationId: updated.organizationId,
-        productId:      updated.id,
+        organizationId: existing.organizationId,
+        productId:      existing.id,
         changedFields,
       });
       await this.activityLogger.log(entry);
+      this.activityLog.record({
+        action: EActivityAction.ProductUpdated,
+        entityType: 'Product',
+        entityId: existing.id,
+        organizationId: existing.organizationId,
+        metadata: { changedFields },
+      });
     }
 
-    return updated;
+    return this.repo.getAsync(command.id);
   }
 }

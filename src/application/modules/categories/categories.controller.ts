@@ -14,7 +14,7 @@ import { GetCategoryQuery, ListCategoriesQuery, ListParentCategoriesQuery, Searc
 @ApiTags('Categories')
 @Controller({ path: 'categories', version: '1' })
 @UseGuards(ClerkAuthGuard, RolesGuard)
-@Roles(ERole.OrgAdmin, ERole.SuperAdmin)
+@Roles(ERole.OrgAdmin, ERole.SuperAdmin, ERole.BranchManager)
 export class CategoriesController {
   constructor(
     protected readonly mediator: CqrsMediator,
@@ -114,6 +114,7 @@ export class CategoriesController {
   @ApiOkResponse({ type: Boolean })
   @ApiParam({ name: 'id', description: 'Category UUID' })
   @HttpCode(HttpStatus.OK)
+  @Roles(ERole.OrgAdmin, ERole.SuperAdmin)
   @Delete(':id')
   public async delete(@Param('id') id: string, @CurrentUser() user: AuthenticatedUser): Promise<boolean> {
     const fetchQuery = new GetCategoryQuery();

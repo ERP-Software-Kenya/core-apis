@@ -45,7 +45,7 @@ export interface IAdjustStockOperation {
 
 export interface ITransferStockOperation {
   fromInventoryId: string;
-  toInventoryId: string;
+  toInventoryId?: string;
   organizationId: string;
   productId: string;
   fromLocationId: string;
@@ -58,7 +58,7 @@ export interface ITransferStockOperation {
 
 export class TransferStockOperationInput implements ITransferStockOperation {
   @AutoMap() public fromInventoryId: string;
-  @AutoMap() public toInventoryId: string;
+  @AutoMap() public toInventoryId?: string;
   @AutoMap() public organizationId: string;
   @AutoMap() public productId: string;
   @AutoMap() public fromLocationId: string;

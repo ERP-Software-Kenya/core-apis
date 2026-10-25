@@ -18,11 +18,14 @@ import {
   QuickChargeResponse,
   UpdateCustomerTypeRuleRequest,
   UpdateQuickChargeRequest,
+  UpdateOrganizationSettingRequest,
+  OrganizationSettingResponse,
 } from './models';
 import { ListCustomerTypeRulesQuery, ListQuickChargesQuery } from './queries';
+import { OrganizationSettingsService } from './organization-settings.service';
 
-const ADMIN_ROLES = [ERole.OrgAdmin, ERole.OrgManager, ERole.SuperAdmin] as const;
-const READ_ROLES = [...ADMIN_ROLES, ERole.StoreManager, ERole.StoreStaff] as const;
+const ADMIN_ROLES = [ERole.OrgAdmin, ERole.SuperAdmin] as const;
+const READ_ROLES = [...ADMIN_ROLES, ERole.BranchManager] as const;
 
 @ApiBearerAuth()
 @ApiTags('Billing Settings')
@@ -33,7 +36,34 @@ export class BillingSettingsController {
     protected readonly mediator: CqrsMediator,
     @InjectMapper() protected readonly mapper: Mapper,
     @InjectPinoLogger(BillingSettingsController.name) protected readonly logger: PinoLogger,
+    private readonly organizationSettings: OrganizationSettingsService,
   ) {}
+
+  @ApiOperation({ summary: 'Get financial and regional settings for the current organization' })
+  @ApiOkResponse({ type: OrganizationSettingResponse })
+  @Get('organization')
+  @Roles(...READ_ROLES)
+  public getOrganizationSettings(
+    @CurrentUser() user?: AuthenticatedUser,
+  ): Promise<OrganizationSettingResponse> {
+    return this.organizationSettings.get(requireOrganizationId(user));
+  }
+
+  @ApiOperation({ summary: 'Update financial and regional settings for the current organization' })
+  @ApiOkResponse({ type: OrganizationSettingResponse })
+  @Patch('organization')
+  @Roles(...ADMIN_ROLES)
+  public updateOrganizationSettings(
+    @Body() body: UpdateOrganizationSettingRequest,
+    @CurrentUser() user?: AuthenticatedUser,
+  ): Promise<OrganizationSettingResponse> {
+    return this.organizationSettings.update({
+      organizationId: requireOrganizationId(user),
+      baseCurrencyCode: body.baseCurrencyCode,
+      fiscalYearStartMonth: body.fiscalYearStartMonth,
+      timeZone: body.timeZone,
+    });
+  }
 
   @ApiOperation({ summary: 'List quick charges for the current organization' })
   @ApiQuery({ name: 'enabled', required: false, type: Boolean })

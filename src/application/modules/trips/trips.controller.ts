@@ -110,7 +110,7 @@ export class TripsController {
   @ApiParam({ name: 'id', description: 'Trip UUID' })
   @HttpCode(HttpStatus.OK)
   @UseGuards(RolesGuard)
-  @Roles(ERole.StoreManager, ERole.OrgManager, ERole.OrgAdmin, ERole.SuperAdmin)
+  @Roles(ERole.OrgAdmin, ERole.SuperAdmin)
   @Delete(':id')
   public async delete(@Param('id') id: string, @CurrentUser() user: AuthenticatedUser): Promise<boolean> {
     const fetchQuery = new GetTripQuery();

@@ -1,6 +1,5 @@
 import { AutoMap } from '@automapper/classes';
 import { CommandBase } from 'src/common';
-import { EProductUnit } from '../../../../../infrastructure';
 
 export class UpdateProductCommand extends CommandBase {
   @AutoMap()
@@ -20,9 +19,6 @@ export class UpdateProductCommand extends CommandBase {
 
   @AutoMap()
   public description?: string;
-
-  @AutoMap(() => String)
-  public unit?: EProductUnit;
 
   @AutoMap()
   public costPrice?: number;
@@ -50,4 +46,13 @@ export class UpdateProductCommand extends CommandBase {
 
   @AutoMap()
   public packSize?: number;
+
+  @AutoMap()
+  public weightKg?: number;
+
+  @AutoMap()
+  public taxId?: string | null;
+
+  public unitIds?: string[];
+  public defaultUnitId?: string;
 }
