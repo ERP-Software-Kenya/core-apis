@@ -204,6 +204,45 @@ The download button first calls Core APIs. Web-ERP then navigates to the returne
 
 Implement Android internal downloads first because they directly support warehouse and driver devices. Keep iOS routed through TestFlight/managed Apple distribution, and add public store delivery only when required.
 
+## Web-ERP download page status
+
+Implemented on the Web-ERP `/downloads` page:
+
+- responsive Android mobile-app release card and device presentation;
+- APK version, channel, size, publication date, and optional SHA-256 display;
+- Android installation instructions and update-signing guidance;
+- sign-in requirement and safe disabled state until private release metadata is available;
+- existing desktop downloads remain available below the mobile release;
+- header download actions now open the unified downloads page.
+
+Web-ERP uses `VITE_API_BASE_URL`, `VITE_CLERK_PUBLISHABLE_KEY`, and `VITE_MOBILE_RELEASE_CHANNEL`. It retrieves metadata from `GET /api/v1/mobile-releases/latest` and requests a five-minute signed URL from `POST /api/v1/mobile-releases/latest/download`. R2/B2 credentials and permanent object URLs are never supplied through a `VITE_*` variable.
+
+### Main-branch Android automation
+
+`erp-app/.github/workflows/release-android.yml` runs after a push/merge to `main` and can also be dispatched manually. It:
+
+1. runs TypeScript validation;
+2. creates a signed APK with the EAS `release-apk` profile;
+3. downloads the completed EAS artifact;
+4. calculates SHA-256 and release metadata;
+5. uploads an immutable version/build path to Backblaze B2;
+6. refreshes `latest/erp-app.apk` and `latest.json`;
+7. lets Core APIs discover the current build from private storage.
+
+Required `erp-app` GitHub Actions secrets:
+
+- `EXPO_TOKEN`
+- `B2_ACCESS_KEY_ID`
+- `B2_SECRET_ACCESS_KEY`
+
+Required `erp-app` GitHub Actions variables:
+
+- `B2_ENDPOINT`, for example `https://s3.us-west-004.backblazeb2.com`
+- `B2_REGION`, for example `us-west-004`
+- `B2_BUCKET`
+
+The EAS project must be linked once (`eas init`), Android signing credentials must be configured, and the EAS `production` environment must contain the mobile application's public runtime configuration. The Backblaze bucket remains private. GitHub Actions receives a write key; Core APIs receives a separate read-only key and signs fixed-key downloads for authenticated users.
+
 ## External references
 
 - Expo: [Build APKs for Android devices](https://docs.expo.dev/build-reference/apk/)
