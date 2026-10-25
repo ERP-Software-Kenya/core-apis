@@ -5,3 +5,4 @@ export * from './i-mail.service';
 export * from './i-email-template.repo';
 export * from './mail.service';
 export * from './app-mail.service';
+export * from './app-mail.module';
