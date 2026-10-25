@@ -5,6 +5,7 @@ import { StockOrchestrationService } from './services/stock-orchestration.servic
 import { BillCompletionService } from './services/bill-completion.service';
 import { OrderDispatchPaymentService } from './services/order-dispatch-payment.service';
 import { NotificationDispatchService } from './services/notification-dispatch.service';
+import { MailTemplatesModule } from '../modules/mail-templates/mail-templates.module';
 
 const PROVIDERS = [
   ActivityLogService,
@@ -16,6 +17,7 @@ const PROVIDERS = [
 ];
 
 @Module({
+  imports:   [MailTemplatesModule],
   providers: PROVIDERS,
   exports:   PROVIDERS,
 })
