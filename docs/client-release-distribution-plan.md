@@ -226,6 +226,33 @@ Web-ERP production variables:
 
 The download URL must be a public R2/custom-domain object URL or a Core APIs endpoint that redirects to a short-lived signed URL. R2 credentials must never be supplied through a `VITE_*` variable.
 
+### Main-branch Android automation
+
+`erp-app/.github/workflows/release-android.yml` runs after a push/merge to `main` and can also be dispatched manually. It:
+
+1. runs TypeScript validation;
+2. creates a signed APK with the EAS `release-apk` profile;
+3. downloads the completed EAS artifact;
+4. calculates SHA-256 and release metadata;
+5. uploads an immutable version/build path to Backblaze B2;
+6. refreshes `latest/erp-app.apk` and `latest.json`;
+7. lets Web-ERP discover the current build from `VITE_ANDROID_RELEASE_MANIFEST_URL`.
+
+Required `erp-app` GitHub Actions secrets:
+
+- `EXPO_TOKEN`
+- `B2_ACCESS_KEY_ID`
+- `B2_SECRET_ACCESS_KEY`
+
+Required `erp-app` GitHub Actions variables:
+
+- `B2_ENDPOINT`, for example `https://s3.us-west-004.backblazeb2.com`
+- `B2_REGION`, for example `us-west-004`
+- `B2_BUCKET`
+- `B2_PUBLIC_BASE_URL`, including the bucket/public delivery prefix but no trailing slash
+
+The EAS project must be linked once (`eas init`), Android signing credentials must be configured, and the EAS `production` environment must contain the mobile application's public runtime configuration. The Backblaze release bucket must permit public reads for the Web-ERP direct-download model; otherwise, a Core APIs signed-download endpoint is required.
+
 ## External references
 
 - Expo: [Build APKs for Android devices](https://docs.expo.dev/build-reference/apk/)
