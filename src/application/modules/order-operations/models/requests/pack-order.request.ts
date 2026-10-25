@@ -9,7 +9,6 @@ export class PackedItemRequest {
 }
 
 export class PackOrderRequest {
-  @ApiProperty() @IsNotEmpty() @IsUUID() @AutoMap() public packerUserId: string;
   @ApiProperty({ type: [PackedItemRequest] })
   @IsArray()
   @ValidateNested({ each: true })

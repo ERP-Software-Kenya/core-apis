@@ -4,6 +4,9 @@ export class AuthenticatedUser {
   /** Clerk's user ID (JWT sub) */
   clerkUserId: string;
 
+  /** Clerk session ID from the verified JWT. Safe identifier; never a token. */
+  clerkSessionId: string;
+
   /** Our DB user UUID — undefined until the user has been synced via POST /auth/sync */
   dbUserId?: string;
 

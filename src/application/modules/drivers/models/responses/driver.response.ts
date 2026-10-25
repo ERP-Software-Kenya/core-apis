@@ -4,6 +4,7 @@ import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 export class DriverResponse {
   @ApiProperty() @AutoMap() public id: string;
   @ApiProperty() @AutoMap() public organizationId: string;
+  @ApiPropertyOptional() @AutoMap() public userId?: string;
   @ApiPropertyOptional() @AutoMap() public employeeId?: string;
   @ApiProperty() @AutoMap() public firstName: string;
   @ApiProperty() @AutoMap() public lastName: string;

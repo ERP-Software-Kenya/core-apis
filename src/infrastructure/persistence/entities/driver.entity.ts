@@ -4,6 +4,7 @@ import {
   CreateDateColumn,
   DeleteDateColumn,
   Entity,
+  Index,
   JoinColumn,
   ManyToOne,
   PrimaryGeneratedColumn,
@@ -24,6 +25,11 @@ export class DriverEntity {
   @AutoMap()
   @Column({ type: 'uuid' })
   public organizationId: string;
+
+  @AutoMap()
+  @Index('UQ__drivers__user_id', { unique: true, where: '"user_id" IS NOT NULL' })
+  @Column({ type: 'uuid', nullable: true })
+  public userId?: string;
 
   @AutoMap()
   @Column({ type: 'varchar', length: 50, nullable: true })
