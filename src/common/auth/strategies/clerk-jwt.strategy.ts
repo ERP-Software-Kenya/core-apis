@@ -10,24 +10,11 @@ import { In, Repository } from 'typeorm';
 import { ICoreApiConfig } from '../../../configuration';
 import { UserEntity, UserRoleEntity, OrgMemberEntity, LocationEntity, BranchEntity } from '../../../infrastructure/persistence/entities';
 import { ERole } from '../../../infrastructure/persistence/entities/role.entity';
-import { CLERK_STRATEGY } from '../constants';
+import { CLERK_STRATEGY, SESSION_INACTIVE_CODE } from '../constants';
 import { AuthenticatedUser, ClerkJwtPayload } from '../types';
 
-// Constrain JWKS fetches to known Clerk domains — prevents SSRF via a crafted iss claim.
-const CLERK_ISSUER_PATTERN = /^https:\/\/[a-zA-Z0-9-]+\.(clerk\.accounts\.dev|clerkstage\.dev)$/;
-
-function extractIssuer(rawToken: string): string | null {
-  try {
-    const segment = rawToken.split('.')[1];
-    if (!segment) return null;
-    const parsed: unknown = JSON.parse(Buffer.from(segment, 'base64url').toString('utf8'));
-    if (typeof parsed !== 'object' || parsed === null) return null;
-    const iss = (parsed as Record<string, unknown>)['iss'];
-    if (typeof iss !== 'string' || !CLERK_ISSUER_PATTERN.test(iss)) return null;
-    return iss;
-  } catch {
-    return null;
-  }
+function inferIssuer(jwksUrl: string): string {
+  return jwksUrl.replace(/\/\.well-known\/jwks\.json\/?$/, "").replace(/\/$/, "");
 }
 
 @Injectable()
@@ -35,7 +22,7 @@ export class ClerkJwtStrategy extends PassportStrategy(Strategy, CLERK_STRATEGY)
   private readonly clerkClient: ReturnType<typeof createClerkClient>;
 
   constructor(
-    configService: ConfigService<ICoreApiConfig>,
+    private readonly configService: ConfigService<ICoreApiConfig>,
     @InjectRepository(UserEntity) private readonly userRepo: Repository<UserEntity>,
     @InjectRepository(UserRoleEntity) private readonly userRoleRepo: Repository<UserRoleEntity>,
     @InjectRepository(OrgMemberEntity) private readonly orgMemberRepo: Repository<OrgMemberEntity>,
@@ -43,40 +30,51 @@ export class ClerkJwtStrategy extends PassportStrategy(Strategy, CLERK_STRATEGY)
     @InjectRepository(BranchEntity) private readonly branchRepo: Repository<BranchEntity>,
     @InjectPinoLogger(ClerkJwtStrategy.name) private readonly logger: PinoLogger,
   ) {
-    const clerkCfg = configService.get<ICoreApiConfig['clerk']>('clerk');
-
-    const jwksProviders = new Map<string, SecretOrKeyProvider>();
-    const getProvider = (iss: string): SecretOrKeyProvider => {
-      if (!jwksProviders.has(iss)) {
-        jwksProviders.set(iss, passportJwtSecret({
-          cache: true,
-          rateLimit: true,
-          jwksRequestsPerMinute: 10,
-          jwksUri: `${iss}/.well-known/jwks.json`,
-        }));
-      }
-      return jwksProviders.get(iss);
-    };
+    const clerkCfg = configService.get<ICoreApiConfig["clerk"]>("clerk");
+    const issuer = clerkCfg.issuer || inferIssuer(clerkCfg.jwksUrl);
+    if (!clerkCfg.jwksUrl || !issuer) {
+      throw new Error("Clerk authentication requires CLERK_JWKS_URL and CLERK_ISSUER");
+    }
 
     super({
-      secretOrKeyProvider: (req, rawToken: string, done): void => {
-        const iss = extractIssuer(rawToken);
-        if (!iss) {
-          done(null, undefined);
-          return;
-        }
-        getProvider(iss)(req, rawToken, done);
-      },
+      secretOrKeyProvider: passportJwtSecret({
+        cache: true,
+        rateLimit: true,
+        jwksRequestsPerMinute: 10,
+        jwksUri: clerkCfg.jwksUrl,
+      }),
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
-      algorithms: ['RS256'],
+      algorithms: ["RS256"],
+      issuer,
+      audience: clerkCfg.audience,
       ignoreExpiration: false,
     });
     this.clerkClient = createClerkClient({ secretKey: clerkCfg.secretKey });
   }
 
   public async validate(payload: ClerkJwtPayload): Promise<AuthenticatedUser> {
+    const clerkCfg = this.configService.get<ICoreApiConfig["clerk"]>("clerk");
+    if (payload.azp && clerkCfg.authorizedParties.length > 0 && !clerkCfg.authorizedParties.includes(payload.azp)) {
+      throw new UnauthorizedException("Token was issued for an unauthorized application");
+    }
+    const sessionStatus = payload.sts ?? "active";
+    if (sessionStatus !== "active" && sessionStatus !== "pending") {
+      this.logger.warn({ sts: sessionStatus, sub: payload.sub, sid: payload.sid }, "Rejected Clerk session with unsupported status");
+      throw new UnauthorizedException({
+        code: SESSION_INACTIVE_CODE,
+        message: "Your session has ended. Please sign in again.",
+      });
+    }
+    // "pending" is not an expired session: the user has an unfinished Clerk task (e.g. no active
+    // organization). ClerkAuthGuard confines such sessions to @AllowPendingSession() endpoints.
+    if (sessionStatus === "pending") {
+      this.logger.warn({ sub: payload.sub, sid: payload.sid, org: payload.o?.id ?? null }, "Clerk session is pending");
+    }
+
     const authUser = new AuthenticatedUser();
+    authUser.sessionStatus = sessionStatus;
     authUser.clerkUserId = payload.sub;
+    authUser.clerkSessionId = payload.sid;
     authUser.clerkOrgId = payload.o?.id;
     authUser.clerkOrgRole = payload.o?.rol;
     authUser.roles = [];
@@ -93,13 +91,13 @@ export class ClerkJwtStrategy extends PassportStrategy(Strategy, CLERK_STRATEGY)
     }
 
     if (!authUser.email) {
-      throw new UnauthorizedException('Unable to resolve an email address for this Clerk account');
+      throw new UnauthorizedException("Unable to resolve an email address for this Clerk account");
     }
 
     const dbUser = await this.userRepo.findOne({ where: { clerkUserId: payload.sub } });
     if (dbUser) {
       if (!dbUser.isActive) {
-        throw new UnauthorizedException('This ERP account is suspended');
+        throw new UnauthorizedException("User account is inactive");
       }
       authUser.dbUserId = dbUser.id;
       authUser.organizationId = dbUser.organizationId ?? undefined;
@@ -163,9 +161,7 @@ export class ClerkJwtStrategy extends PassportStrategy(Strategy, CLERK_STRATEGY)
   private async enrichFromClerk(authUser: AuthenticatedUser, clerkUserId: string): Promise<void> {
     const clerkUser = await this.clerkClient.users.getUser(clerkUserId);
     const emails = clerkUser.emailAddresses;
-    const chosen =
-      emails.find((ea) => ea.id === clerkUser.primaryEmailAddressId) ??
-      emails.find((ea) => ea.verification?.status === 'verified');
+    const chosen = emails.find((ea) => ea.id === clerkUser.primaryEmailAddressId) ?? emails.find((ea) => ea.verification?.status === "verified");
     authUser.email = chosen?.emailAddress;
     authUser.firstName = clerkUser.firstName ?? undefined;
     authUser.lastName = clerkUser.lastName ?? undefined;

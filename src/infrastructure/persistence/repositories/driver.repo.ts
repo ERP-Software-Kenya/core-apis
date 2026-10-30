@@ -22,4 +22,9 @@ export class DriverRepo extends BaseRepo<DriverEntity, Driver, string, PageableF
   public override get idColumnName(): keyof DriverEntity {
     return 'id';
   }
+
+  public async findByUserIdAsync(userId: string): Promise<Driver | null> {
+    const entity = await this.internalRepo.findOne({ where: { userId } });
+    return entity ? this.mapToModel(entity) : null;
+  }
 }

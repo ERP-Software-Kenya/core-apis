@@ -179,7 +179,7 @@ Implemented across all three repositories on 2026-10-30:
 - Invitation email uses the configured public landing URL and explains the post-install reopen step.
 - Clerk organizations and Clerk organization memberships are not used.
 - Suspended users are rejected during session enrichment, and non-active memberships no longer grant roles.
-- Backend build, diff validation, and three focused invitation service tests pass.
+- Backend build and diff validation pass. Three focused invitation tests cover `CreateInvitationCommandHandler` and `AcceptInvitationCommandHandler` (CQRS refactoring applied 2026-10-31; tests were rewritten from the old monolithic `OrganizationMembersService` to the new command handlers).
 
 ### `ERP-Client`
 
@@ -222,8 +222,9 @@ This section is the canonical continuation point for another agent. Read this en
 
 #### `core-apis`
 
-- `src/application/modules/organization-members/`
+- `src/application/modules/organization-members/` — CQRS command/query handlers, domain model, mapper, mail service, module
 - `src/infrastructure/persistence/entities/organization-invitation.entity.ts`
+- `src/infrastructure/persistence/repositories/organization-invitation.repo.ts`
 - `src/infrastructure/persistence/migrations/1793400000000-migration.ts`
 - `src/common/auth/strategies/clerk-jwt.strategy.ts`
 - `src/tests/application/modules/organization-members/organization-members.service.spec.ts`
@@ -406,3 +407,4 @@ Append new entries; do not erase earlier evidence.
 | --- | --- | --- | --- | --- | --- |
 | 2026-10-30 | Codex | Local workspace | Backend build; focused backend invitation tests; desktop renderer build; mobile TypeScript; diff checks | Pass | Backend 3/3; desktop build passed; mobile typecheck passed |
 | 2026-10-30 | Codex agents | Local workspace | Full desktop Vitest | Partial | 124 passed; six pre-existing `page-access.test.ts` failures require separate confirmation |
+| 2026-10-31 | Claude | Local workspace | Backend CQRS refactor + 5 bug fixes; test file rewritten | Pass | Build EXIT:0; test file retargeted to `CreateInvitationCommandHandler` + `AcceptInvitationCommandHandler` (same 3 scenarios); old `OrganizationMembersService` deleted |

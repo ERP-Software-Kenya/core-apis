@@ -1,4 +1,4 @@
-import { Body, Controller, Get, HttpCode, HttpStatus, Param, Patch, Post, Query, UseGuards } from '@nestjs/common';
+import { Body, Controller, ForbiddenException, Get, HttpCode, HttpStatus, Param, Patch, Post, Query, UseGuards } from '@nestjs/common';
 import { ApiBearerAuth, ApiOkResponse, ApiOperation, ApiParam, ApiTags } from '@nestjs/swagger';
 import { InjectPinoLogger, PinoLogger } from 'nestjs-pino';
 import {
@@ -26,7 +26,6 @@ import { GetOrderQueueQuery } from './queries/get-order-queue/get-order-queue.qu
 import { SearchPackedOrdersQuery } from './queries/get-packed-orders/get-packed-orders.query';
 import { SearchReadyForPickupQuery } from './queries/get-ready-for-pickup/get-ready-for-pickup.query';
 import { OrderQueueItem } from './queries/get-order-queue/get-order-queue.query-handler';
-import { ClaimOrderRequest } from './models/requests/claim-order.request';
 import { FulfillFromStoreRequest } from './models/requests/fulfill-from-store.request';
 import { PackOrderRequest } from './models/requests/pack-order.request';
 import { SearchPackedOrdersRequest } from './models/requests/search-packed-orders.request';
@@ -97,12 +96,14 @@ export class OrderOperationsController {
   @ApiOperation({ summary: 'Get unclaimed confirmed orders queue for a location' })
   @ApiOkResponse({ type: [OrderQueueItemResponse] })
   @HttpCode(HttpStatus.OK)
+  @Roles(ERole.OrgAdmin, ERole.SuperAdmin, ERole.BranchManager, ERole.Packer)
   @Get('queue')
   public async getQueue(
     @Query('locationId') locationId: string,
     @CurrentUser() user: AuthenticatedUser,
   ): Promise<OrderQueueItemResponse[]> {
     const organizationId = requireOrganizationId(user);
+    this.assertLocationAccess(user, locationId);
     const query = new GetOrderQueueQuery();
     query.locationId = locationId;
     query.organizationId = organizationId;
@@ -168,16 +169,18 @@ export class OrderOperationsController {
   @ApiOkResponse({ type: Boolean })
   @ApiParam({ name: 'id', description: 'Order UUID' })
   @HttpCode(HttpStatus.OK)
+  @Roles(ERole.OrgAdmin, ERole.SuperAdmin, ERole.BranchManager, ERole.Packer)
   @Post(':id/claim')
   public async claimOrder(
     @Param('id') id: string,
-    @Body() body: ClaimOrderRequest,
     @CurrentUser() user: AuthenticatedUser,
   ): Promise<boolean> {
     const organizationId = requireOrganizationId(user);
+    const pickerUserId = this.requireDbUserId(user);
+    await this.assertOrderAccess(id, user);
     const command = new ClaimOrderCommand();
     command.orderId = id;
-    command.pickerUserId = body.pickerUserId;
+    command.pickerUserId = pickerUserId;
     command.organizationId = organizationId;
     await this.mediator.execute<ClaimOrderCommand, Order>(command);
     return true;
@@ -187,6 +190,7 @@ export class OrderOperationsController {
   @ApiOkResponse({ type: Boolean })
   @ApiParam({ name: 'id', description: 'Order UUID' })
   @HttpCode(HttpStatus.OK)
+  @Roles(ERole.OrgAdmin, ERole.SuperAdmin, ERole.BranchManager, ERole.Packer)
   @Post(':id/pack')
   public async packOrder(
     @Param('id') id: string,
@@ -194,9 +198,11 @@ export class OrderOperationsController {
     @CurrentUser() user: AuthenticatedUser,
   ): Promise<boolean> {
     const organizationId = requireOrganizationId(user);
+    const packerUserId = this.requireDbUserId(user);
+    await this.assertOrderAccess(id, user);
     const command = new PackOrderCommand();
     command.orderId = id;
-    command.packerUserId = body.packerUserId;
+    command.packerUserId = packerUserId;
     command.organizationId = organizationId;
     command.items = body.items;
     await this.mediator.execute<PackOrderCommand, Order>(command);
@@ -244,14 +250,40 @@ export class OrderOperationsController {
   @ApiOkResponse({ type: OrderResponse })
   @ApiParam({ name: 'id', description: 'Order UUID' })
   @HttpCode(HttpStatus.OK)
+  @Roles(ERole.OrgAdmin, ERole.SuperAdmin, ERole.BranchManager, ERole.Packer)
   @Get(':id')
   public async getById(
     @Param('id') id: string,
     @CurrentUser() user: AuthenticatedUser,
   ): Promise<Order> {
-    assertOrgOwnership(user, requireOrganizationId(user), 'order');
     const query = new GetOrderQuery();
     query.id = id;
-    return this.mediator.execute<GetOrderQuery, Order>(query);
+    const order = await this.mediator.execute<GetOrderQuery, Order>(query);
+    this.assertOrderScope(order, user);
+    return order;
+  }
+
+  private async assertOrderAccess(id: string, user: AuthenticatedUser): Promise<void> {
+    const query = new GetOrderQuery();
+    query.id = id;
+    const order = await this.mediator.execute<GetOrderQuery, Order>(query);
+    this.assertOrderScope(order, user);
+  }
+
+  private assertOrderScope(order: Order, user: AuthenticatedUser): void {
+    assertOrgOwnership(user, order.organizationId, 'order');
+    this.assertLocationAccess(user, order.locationId);
+  }
+
+  private assertLocationAccess(user: AuthenticatedUser, locationId: string): void {
+    const isOrgAdmin = user.roles.some((role) => role === ERole.OrgAdmin || role === ERole.SuperAdmin);
+    if (!isOrgAdmin && !user.locationIds.includes(locationId)) {
+      throw new ForbiddenException('Location is outside the authenticated user scope');
+    }
+  }
+
+  private requireDbUserId(user: AuthenticatedUser): string {
+    if (!user.dbUserId) throw new ForbiddenException('Authenticated user is not synchronized');
+    return user.dbUserId;
   }
 }

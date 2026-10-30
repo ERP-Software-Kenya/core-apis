@@ -5,6 +5,7 @@ export class OrganizationSummary {
   @ApiProperty() public name: string;
   @ApiPropertyOptional() public slug?: string;
   @ApiPropertyOptional() public logoUrl?: string;
+  @ApiPropertyOptional({ description: 'Clerk organization ID, used by clients to activate the org on a pending session' }) public clerkOrgId?: string;
 }
 
 export class MembershipSummary {
@@ -24,6 +25,8 @@ export class MeResponse {
   @ApiProperty({ type: [String], description: 'DB roles assigned to this user' })
   public roles: string[];
   @ApiProperty() public isOnboarded: boolean;
+  @ApiProperty({ enum: ['active', 'pending'], description: 'pending = unfinished Clerk task (e.g. no active organization)' })
+  public sessionStatus: 'active' | 'pending';
   @ApiPropertyOptional({ type: OrganizationSummary }) public organization?: OrganizationSummary;
   @ApiPropertyOptional({ type: MembershipSummary }) public membership?: MembershipSummary;
   @ApiProperty({ type: [String], description: 'Store location IDs the user is scoped to (empty if org-wide)' })

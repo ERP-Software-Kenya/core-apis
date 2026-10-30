@@ -54,6 +54,8 @@ import { ProductBranchPricesModule } from './modules/product-branch-prices';
 import { TaxesModule } from './modules/taxes';
 import { ChatbotModule } from './modules/chatbot';
 import { OrganizationMembersModule } from './modules/organization-members';
+import { NotificationSettingsModule } from './modules/notification-settings';
+import { MobileReleasesModule } from './modules/mobile-releases';
 
 
 @Module({})
@@ -116,6 +118,8 @@ export class ApplicationModule {
         TaxesModule,
         ChatbotModule,
         OrganizationMembersModule,
+        NotificationSettingsModule,
+        MobileReleasesModule,
       ],
       controllers: [],
       providers: [CqrsMediator],

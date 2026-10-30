@@ -32,6 +32,15 @@ export class UserRepo
     return this.mapToModel(entity);
   }
 
+  public async findByEmailAsync(emailNormalized: string): Promise<User | null> {
+    const entity = await this.internalRepo
+      .createQueryBuilder('user')
+      .where('LOWER(user.email) = :email', { email: emailNormalized })
+      .getOne();
+    if (!entity) return null;
+    return this.mapToModel(entity);
+  }
+
   /**
    * Upsert by Clerk id; if missing, link an existing row with the same email and
    * null clerkUserId. Email already owned by another Clerk id → 409.

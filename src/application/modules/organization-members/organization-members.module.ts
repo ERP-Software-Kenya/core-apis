@@ -1,19 +1,36 @@
 import { Module } from '@nestjs/common';
+import { CqrsModule } from '@nestjs/cqrs';
 import { ConfigService } from '@nestjs/config';
-import { TypeOrmModule } from '@nestjs/typeorm';
 import { MailOptions } from '../../../common';
 import { ICoreApiConfig } from '../../../configuration';
-import { LocationEntity, OrganizationEntity, OrganizationInvitationEntity, OrgMemberEntity, RoleEntity, UserEntity, UserRoleEntity } from '../../../infrastructure';
+import { OrganizationMembersCommandHandlers } from './commands';
+import { OrganizationMembersQueryHandlers } from './queries';
+import { OrganizationInvitationProfile } from './mapper';
 import { OrganizationInvitationMailService } from './organization-invitation-mail.service';
-import { OrganizationInvitationsController, OrganizationMembersController, PublicOrganizationInvitationsController } from './organization-members.controller';
-import { OrganizationMembersService } from './organization-members.service';
+import { OrganizationInvitationsController } from './organization-invitations.controller';
+import { PublicOrganizationInvitationsController } from './public-organization-invitations.controller';
+import { OrganizationMembersController } from './organization-members.controller';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([OrganizationInvitationEntity, OrgMemberEntity, UserEntity, UserRoleEntity, RoleEntity, LocationEntity, OrganizationEntity])],
-  controllers: [OrganizationInvitationsController, PublicOrganizationInvitationsController, OrganizationMembersController],
+  imports: [CqrsModule],
+  controllers: [
+    OrganizationInvitationsController,
+    PublicOrganizationInvitationsController,
+    OrganizationMembersController,
+  ],
   providers: [
-    { provide: MailOptions, useFactory: (config: ConfigService<ICoreApiConfig>) => { const cfg = config.get<ICoreApiConfig['mail']>('mail'); return new MailOptions(cfg.host, cfg.port, cfg.secure, cfg.user, cfg.password, cfg.from); }, inject: [ConfigService] },
-    OrganizationInvitationMailService, OrganizationMembersService,
+    ...OrganizationMembersCommandHandlers,
+    ...OrganizationMembersQueryHandlers,
+    OrganizationInvitationProfile,
+    OrganizationInvitationMailService,
+    {
+      provide: MailOptions,
+      useFactory: (config: ConfigService<ICoreApiConfig>) => {
+        const cfg = config.get<ICoreApiConfig['mail']>('mail');
+        return new MailOptions(cfg.host, cfg.port, cfg.secure, cfg.user, cfg.password, cfg.from);
+      },
+      inject: [ConfigService],
+    },
   ],
 })
 export class OrganizationMembersModule {}

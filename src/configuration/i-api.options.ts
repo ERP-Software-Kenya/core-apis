@@ -4,4 +4,5 @@ export interface IApiOptions {
   host: string;
   port: number;
   globalPrefix: string;
+  trustProxyHops: number;
 }

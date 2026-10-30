@@ -1,43 +1,47 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
-import { ConfigService } from '@nestjs/config';
-import { createClerkClient } from '@clerk/backend';
-import { ICoreApiConfig } from '../../configuration';
-import { EInvitationStatus } from '../../infrastructure/e-invitation-status';
-import { ClerkInvitationData, ClerkOrganizationData, ClerkUserData, ClerkUserListData, IClerkService, InviteMetadata } from './i-clerk.service';
-import { parseInviteMetadata } from './invite-metadata';
+import { Injectable, NotFoundException, UnauthorizedException } from "@nestjs/common";
+import { ConfigService } from "@nestjs/config";
+import { createClerkClient } from "@clerk/backend";
+import { ICoreApiConfig } from "../../configuration";
+import { EInvitationStatus } from "../../infrastructure/e-invitation-status";
+import { ClerkInvitationData, ClerkOrganizationData, ClerkUserData, ClerkUserListData, IClerkService, InviteMetadata } from "./i-clerk.service";
+import { parseInviteMetadata } from "./invite-metadata";
 
 @Injectable()
 export class ClerkService implements IClerkService {
   private readonly client: ReturnType<typeof createClerkClient>;
 
   constructor(config: ConfigService<ICoreApiConfig>) {
-    const clerkCfg = config.get<ICoreApiConfig['clerk']>('clerk');
+    const clerkCfg = config.get<ICoreApiConfig["clerk"]>("clerk");
     this.client = createClerkClient({ secretKey: clerkCfg.secretKey });
   }
 
   public async createUserAsync(params: { email: string; password: string; firstName: string; lastName: string; username: string }): Promise<string> {
     const user = await this.client.users.createUser({
       emailAddress: [params.email],
-      password:     params.password,
-      firstName:    params.firstName,
-      lastName:     params.lastName,
-      username:     params.username,
+      password: params.password,
+      firstName: params.firstName,
+      lastName: params.lastName,
+      username: params.username,
     });
     return user.id;
   }
 
   public async signInWithEmailPasswordAsync(email: string, password: string): Promise<string> {
-    const users = await this.client.users.getUserList({ emailAddress: [email] });
-    if (!users.data.length) throw new NotFoundException(`No user found with email ${email}`);
-    const user = users.data[0];
-    await this.client.users.verifyPassword({ userId: user.id, password });
-    const session = await this.client.sessions.createSession({ userId: user.id });
-    const tokenResult = await this.client.sessions.getToken(session.id);
-    return tokenResult.jwt;
+    try {
+      const users = await this.client.users.getUserList({ emailAddress: [email] });
+      const user = users.data[0];
+      if (!user) throw new UnauthorizedException();
+      await this.client.users.verifyPassword({ userId: user.id, password });
+      const session = await this.client.sessions.createSession({ userId: user.id });
+      const tokenResult = await this.client.sessions.getToken(session.id);
+      return tokenResult.jwt;
+    } catch {
+      throw new UnauthorizedException("Invalid email or password");
+    }
   }
 
   public async getTokenForUser(userId: string): Promise<string> {
-    const result = await this.client.sessions.getSessionList({ userId, status: 'active' });
+    const result = await this.client.sessions.getSessionList({ userId, status: "active" });
     if (!result.data.length) {
       throw new NotFoundException(`No active session found for user ${userId}`);
     }
@@ -45,26 +49,45 @@ export class ClerkService implements IClerkService {
     return tokenResult.jwt;
   }
 
+  public async revokeSessionAsync(sessionId: string): Promise<void> {
+    await this.client.sessions.revokeSession(sessionId);
+  }
+
+  public async getOrganizationMembershipRoleAsync(organizationId: string, clerkUserId: string): Promise<string | undefined> {
+    const memberships = await this.client.organizations.getOrganizationMembershipList({
+      organizationId,
+      userId: [clerkUserId],
+      limit: 1,
+    });
+    return memberships.data[0]?.role;
+  }
+
+  public async ensureOrganizationMembershipAsync(organizationId: string, clerkUserId: string): Promise<boolean> {
+    if (await this.getOrganizationMembershipRoleAsync(organizationId, clerkUserId)) return false;
+    await this.client.organizations.createOrganizationMembership({ organizationId, userId: clerkUserId, role: "org:member" });
+    return true;
+  }
+
   public async listUsersAsync(params?: { limit?: number; offset?: number; organizationId?: string }): Promise<ClerkUserListData> {
     const result = await this.client.users.getUserList({
-      limit:          params?.limit  ?? 20,
-      offset:         params?.offset ?? 0,
+      limit: params?.limit ?? 20,
+      offset: params?.offset ?? 0,
       organizationId: params?.organizationId ? [params.organizationId] : undefined,
     });
     return {
-      data:       result.data.map((u) => this.mapUser(u)),
+      data: result.data.map((u) => this.mapUser(u)),
       totalCount: result.totalCount,
     };
   }
 
   public async searchUsersAsync(params: { query: string; limit?: number; offset?: number }): Promise<ClerkUserListData> {
     const result = await this.client.users.getUserList({
-      query:  params.query,
-      limit:  params.limit  ?? 20,
+      query: params.query,
+      limit: params.limit ?? 20,
       offset: params.offset ?? 0,
     });
     return {
-      data:       result.data.map((u) => this.mapUser(u)),
+      data: result.data.map((u) => this.mapUser(u)),
       totalCount: result.totalCount,
     };
   }
@@ -77,7 +100,7 @@ export class ClerkService implements IClerkService {
   public async getUserRolesAsync(clerkUserId: string): Promise<string[]> {
     const user = await this.client.users.getUser(clerkUserId);
     const meta = user.publicMetadata as Record<string, unknown>;
-    return Array.isArray(meta['roles']) ? (meta['roles'] as string[]) : [];
+    return Array.isArray(meta["roles"]) ? (meta["roles"] as string[]) : [];
   }
 
   public async updateUserRolesAsync(clerkUserId: string, roles: string[]): Promise<void> {
@@ -88,17 +111,17 @@ export class ClerkService implements IClerkService {
 
   public async inviteUserAsync(params: { email: string; roles?: string[]; redirectUrl?: string; organizationId?: string; roleId?: string; locationId?: string }): Promise<void> {
     const publicMetadata: Record<string, unknown> = {};
-    if (params.roles?.length) publicMetadata['roles'] = params.roles;
+    if (params.roles?.length) publicMetadata["roles"] = params.roles;
     if (params.organizationId && params.roleId) {
-      publicMetadata['invite'] = {
+      publicMetadata["invite"] = {
         organizationId: params.organizationId,
-        roleId:         params.roleId,
-        locationId:     params.locationId,
+        roleId: params.roleId,
+        locationId: params.locationId,
       };
     }
     await this.client.invitations.createInvitation({
-      emailAddress:   params.email,
-      redirectUrl:    params.redirectUrl,
+      emailAddress: params.email,
+      redirectUrl: params.redirectUrl,
       publicMetadata: Object.keys(publicMetadata).length ? publicMetadata : undefined,
       ignoreExisting: true,
     });
@@ -109,15 +132,15 @@ export class ClerkService implements IClerkService {
       status: params?.status,
     });
     return result.data.map((inv) => {
-      const meta  = inv.publicMetadata;
-      const roles = Array.isArray(meta['roles']) ? (meta['roles'] as string[]) : undefined;
+      const meta = inv.publicMetadata;
+      const roles = Array.isArray(meta["roles"]) ? (meta["roles"] as string[]) : undefined;
       return {
-        id:           inv.id,
+        id: inv.id,
         emailAddress: inv.emailAddress,
-        status:       inv.status as EInvitationStatus,
+        status: inv.status as EInvitationStatus,
         roles,
-        createdAt:    inv.createdAt,
-        updatedAt:    inv.updatedAt,
+        createdAt: inv.createdAt,
+        updatedAt: inv.updatedAt,
       };
     });
   }
@@ -141,15 +164,15 @@ export class ClerkService implements IClerkService {
   public async assignToOrganizationAsync(params: { clerkUserId: string; organizationId: string; role: string }): Promise<void> {
     await this.client.organizations.createOrganizationMembership({
       organizationId: params.organizationId,
-      userId:         params.clerkUserId,
-      role:           params.role,
+      userId: params.clerkUserId,
+      role: params.role,
     });
   }
 
   public async removeFromOrganizationAsync(params: { clerkUserId: string; organizationId: string }): Promise<void> {
     await this.client.organizations.deleteOrganizationMembership({
       organizationId: params.organizationId,
-      userId:         params.clerkUserId,
+      userId: params.clerkUserId,
     });
   }
 
@@ -157,8 +180,8 @@ export class ClerkService implements IClerkService {
     const result = await this.client.organizations.getOrganizationList({ limit: 100 });
     return result.data.map((org) => ({
       organizationId: org.id,
-      name:           org.name,
-      slug:           org.slug,
+      name: org.name,
+      slug: org.slug,
     }));
   }
 
@@ -167,16 +190,12 @@ export class ClerkService implements IClerkService {
     const fromUser = parseInviteMetadata(user.publicMetadata);
     if (fromUser) return fromUser;
 
-    const email =
-      user.emailAddresses.find((e) => e.id === user.primaryEmailAddressId)?.emailAddress ??
-      user.emailAddresses[0]?.emailAddress;
+    const email = user.emailAddresses.find((e) => e.id === user.primaryEmailAddressId)?.emailAddress ?? user.emailAddresses[0]?.emailAddress;
     if (!email) return undefined;
 
     for (const status of [EInvitationStatus.Accepted, EInvitationStatus.Pending]) {
       const result = await this.client.invitations.getInvitationList({ status, limit: 100 });
-      const matches = result.data
-        .filter((inv) => inv.emailAddress.toLowerCase() === email.toLowerCase())
-        .sort((a, b) => b.createdAt - a.createdAt);
+      const matches = result.data.filter((inv) => inv.emailAddress.toLowerCase() === email.toLowerCase()).sort((a, b) => b.createdAt - a.createdAt);
       for (const match of matches) {
         const parsed = parseInviteMetadata(match.publicMetadata);
         if (parsed) return parsed;
@@ -185,28 +204,28 @@ export class ClerkService implements IClerkService {
     return undefined;
   }
 
-  private mapUser(user: Awaited<ReturnType<(typeof this.client.users)['getUser']>>): ClerkUserData {
-    const meta       = user.publicMetadata as Record<string, unknown>;
-    const roles        = Array.isArray(meta['roles']) ? (meta['roles'] as string[]) : [];
+  private mapUser(user: Awaited<ReturnType<(typeof this.client.users)["getUser"]>>): ClerkUserData {
+    const meta = user.publicMetadata as Record<string, unknown>;
+    const roles = Array.isArray(meta["roles"]) ? (meta["roles"] as string[]) : [];
     if (roles.length === 0 && Array.isArray((user as unknown as Record<string, unknown>).organizationMemberships)) {
       const memberships = (user as unknown as Record<string, unknown>).organizationMemberships as Array<{ role?: string }>;
       for (const m of memberships) {
-        if (m.role === 'org:admin' || m.role === 'admin') {
-          roles.push('org_admin');
+        if (m.role === "org:admin" || m.role === "admin") {
+          roles.push("org_admin");
         }
       }
     }
     const primaryEmail = user.emailAddresses.find((e) => e.id === user.primaryEmailAddressId);
 
     return {
-      clerkUserId:  user.id,
-      email:        primaryEmail?.emailAddress ?? '',
-      firstName:    user.firstName,
-      lastName:     user.lastName,
-      imageUrl:     user.imageUrl,
-      banned:       user.banned,
+      clerkUserId: user.id,
+      email: primaryEmail?.emailAddress ?? "",
+      firstName: user.firstName,
+      lastName: user.lastName,
+      imageUrl: user.imageUrl,
+      banned: user.banned,
       roles,
-      createdAt:    user.createdAt,
+      createdAt: user.createdAt,
       lastSignInAt: user.lastSignInAt ?? null,
     };
   }

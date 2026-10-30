@@ -38,7 +38,7 @@ export class OrganizationInvitationEntity {
   @Column({ name: 'revoked_by_user_id', type: 'uuid', nullable: true }) public revokedByUserId?: string;
   @Column({ name: 'last_sent_at', type: 'timestamp' }) public lastSentAt: Date;
   @Column({ name: 'send_count', type: 'integer', default: 1 }) public sendCount: number;
-  @Column({ name: 'failure_reason', type: 'text', nullable: true }) public failureReason?: string;
+  @Column({ name: 'failure_reason', type: 'text', nullable: true }) public failureReason?: string | null;
   @CreateDateColumn({ name: 'created_at', type: 'timestamp' }) public createdAt: Date;
   @UpdateDateColumn({ name: 'updated_at', type: 'timestamp', nullable: true }) public updatedAt?: Date;
 

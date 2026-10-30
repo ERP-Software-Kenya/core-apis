@@ -1,5 +1,6 @@
 export * from './organization-unit.repo';
 export * from './product-unit.repo';
+export * from './notification-setting.repo';
 export * from './branch.repo';
 export * from './location.repo';
 export * from './product-log.repo';
@@ -79,3 +80,4 @@ export * from './black-ledger.repo';
 export * from './organization-setting.repo';
 export * from './ledger-posting';
 export * from './stock-operations.repo';
+export * from './organization-invitation.repo';
