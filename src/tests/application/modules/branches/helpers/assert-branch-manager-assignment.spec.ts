@@ -11,8 +11,8 @@ describe('assertBranchManagerAssignment', () => {
 
   beforeEach(() => {
     jest.resetAllMocks();
-    userRepo.getAsync.mockResolvedValue({ id: 'user-1', organizationId: 'org-1' });
-    roleRepo.allAsync.mockResolvedValue([{ id: 'role-1', organizationId: 'org-1', name: 'branch_manager' }]);
+    userRepo.getAsync.mockResolvedValue({ id: 'user-1', organizationId: 'org-1', isActive: true });
+    roleRepo.allAsync.mockResolvedValue([{ id: 'role-1', name: 'branch_manager' }]);
     userRoleRepo.allByOrganizationAsync.mockResolvedValue([{ userId: 'user-1', roleId: 'role-1' }]);
     branchRepo.findByManagerIdAsync.mockResolvedValue(null);
   });
@@ -27,7 +27,12 @@ describe('assertBranchManagerAssignment', () => {
   });
 
   it('rejects a user from another organization', async () => {
-    userRepo.getAsync.mockResolvedValue({ id: 'user-1', organizationId: 'org-2' });
+    userRepo.getAsync.mockResolvedValue({ id: 'user-1', organizationId: 'org-2', isActive: true });
+    await expect(run()).rejects.toBeInstanceOf(BadRequestException);
+  });
+
+  it('rejects an inactive manager', async () => {
+    userRepo.getAsync.mockResolvedValue({ id: 'user-1', organizationId: 'org-1', isActive: false });
     await expect(run()).rejects.toBeInstanceOf(BadRequestException);
   });
 

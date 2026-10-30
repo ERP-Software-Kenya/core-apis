@@ -86,7 +86,7 @@ export class BranchEntity {
 
   @AutoMap()
   @Column({ name: 'user_id', type: 'uuid', nullable: true })
-  public userId?: string;
+  public userId?: string | null;
 
   @AutoMap(() => UserEntity)
   @ManyToOne(() => UserEntity, { nullable: true })

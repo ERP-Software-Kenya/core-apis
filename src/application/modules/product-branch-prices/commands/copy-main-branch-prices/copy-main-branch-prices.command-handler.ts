@@ -30,7 +30,13 @@ export class CopyMainBranchPricesCommandHandler implements ICommandHandler<CopyM
     if (!targetBranch || targetBranch.organizationId !== command.organizationId) {
       throw new NotFoundException(`Branch ${command.targetBranchId} not found`);
     }
+    if (!mainBranch.isActive || !targetBranch.isActive) {
+      throw new BadRequestException('Prices can only be copied between active branches.');
+    }
+    if (mainBranch.id === targetBranch.id) {
+      throw new BadRequestException('The target branch is already the main branch.');
+    }
 
-    await this.repo.copyFromMainBranchAsync(command.targetBranchId, command.organizationId);
+    await this.repo.copyFromMainBranchAsync(mainBranch.id, command.targetBranchId, command.organizationId);
   }
 }

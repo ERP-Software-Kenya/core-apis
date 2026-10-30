@@ -15,6 +15,6 @@ export interface IProductBranchPriceRepo extends IBaseRepo<ProductBranchPrice, s
     search?: string,
     status?: EBranchPriceStatus,
   ): Promise<IPageable<ProductBranchPrice>>;
-  copyFromMainBranchAsync(targetBranchId: string, organizationId: string): Promise<void>;
+  copyFromMainBranchAsync(mainBranchId: string, targetBranchId: string, organizationId: string): Promise<void>;
   getByBranchAndProductAsync(branchId: string, productId: string): Promise<ProductBranchPrice | null>;
 }

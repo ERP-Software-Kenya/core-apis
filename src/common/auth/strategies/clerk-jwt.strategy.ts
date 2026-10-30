@@ -6,9 +6,10 @@ import { createClerkClient } from '@clerk/backend';
 import { passportJwtSecret } from 'jwks-rsa';
 import { InjectPinoLogger, PinoLogger } from 'nestjs-pino';
 import { ExtractJwt, SecretOrKeyProvider, Strategy } from 'passport-jwt';
-import { Repository } from 'typeorm';
+import { In, Repository } from 'typeorm';
 import { ICoreApiConfig } from '../../../configuration';
 import { UserEntity, UserRoleEntity, OrgMemberEntity, LocationEntity, BranchEntity } from '../../../infrastructure/persistence/entities';
+import { ERole } from '../../../infrastructure/persistence/entities/role.entity';
 import { CLERK_STRATEGY } from '../constants';
 import { AuthenticatedUser, ClerkJwtPayload } from '../types';
 
@@ -106,23 +107,53 @@ export class ClerkJwtStrategy extends PassportStrategy(Strategy, CLERK_STRATEGY)
       const [userRoles, orgMembers, managedBranch] = await Promise.all([
         this.userRoleRepo.find({ where: { userId: dbUser.id }, relations: ['role'] }),
         this.orgMemberRepo.find({ where: { userId: dbUser.id, status: 'active' }, relations: ['role'] }),
-        this.branchRepo.findOne({ where: { userId: dbUser.id } }),
+        this.branchRepo.findOne({ where: { userId: dbUser.id, isActive: true } }),
       ]);
 
       const systemRoles = userRoles.map((ur) => ur.role?.name).filter(Boolean);
       const orgRoles = orgMembers.map((om) => om.role?.name).filter(Boolean);
       authUser.roles = [...new Set([...systemRoles, ...orgRoles])];
 
-      if (managedBranch) {
+      const isAdministrator = authUser.roles.some((role) =>
+        role === ERole.SuperAdmin || role === ERole.OrgAdmin);
+      const hasExplicitOrganizationScope = userRoles.some((assignment) =>
+        !assignment.locationId && assignment.role?.name !== ERole.BranchManager);
+
+      if (isAdministrator || hasExplicitOrganizationScope) {
+        authUser.hasOrgWideAccess = true;
+      } else {
+        const directLocationIds = userRoles
+          .map((assignment) => assignment.locationId)
+          .filter((id): id is string => Boolean(id));
+        const activeDirectLocations = directLocationIds.length
+          ? await this.locationRepo.find({
+            where: {
+              id: In(directLocationIds),
+              organizationId: dbUser.organizationId,
+              isActive: true,
+            },
+            select: ['id'],
+          })
+          : [];
+
+        authUser.locationIds = activeDirectLocations.map((location) => location.id);
+        authUser.hasOrgWideAccess = false;
+      }
+
+      if (managedBranch && !authUser.hasOrgWideAccess) {
         authUser.branchId = managedBranch.id;
         const branchLocs = await this.locationRepo.find({
-          where: { branch: { id: managedBranch.id } },
+          where: {
+            branchId: managedBranch.id,
+            organizationId: dbUser.organizationId,
+            isActive: true,
+          },
           select: ['id'],
         });
-        authUser.locationIds = branchLocs.map((l) => l.id);
-        authUser.hasOrgWideAccess = false;
-      } else {
-        authUser.hasOrgWideAccess = true;
+        authUser.locationIds = [...new Set([
+          ...authUser.locationIds,
+          ...branchLocs.map((location) => location.id),
+        ])];
       }
     }
 

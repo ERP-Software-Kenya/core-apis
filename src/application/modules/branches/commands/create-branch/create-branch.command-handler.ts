@@ -34,9 +34,10 @@ export class CreateBranchCommandHandler implements ICommandHandler<CreateBranchC
     await assertBranchManagerAssignment(command.userId, command.organizationId, undefined, this.userRepo, this.roleRepo, this.userRoleRepo, this.repo);
     const branch = this.mapper.map(command, CreateBranchCommand, Branch);
     branch.isActive = true;
+    branch.isMain = !(await this.repo.findMainAsync(command.organizationId));
     const created = await this.repo.createAsync(branch);
 
-    if (command.locationIds?.length) {
+    if (command.locationIds) {
       await assignLocationsToBranch(this.locationRepo, {
         branchId: created.id,
         organizationId: command.organizationId,

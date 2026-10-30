@@ -12,4 +12,5 @@ export interface ILocationRepo extends IBaseRepo<Location, string, PageableFilte
   findIdsByBranchIdAsync(branchId: string): Promise<string[]>;
   findByBranchIdsAsync(branchIds: string[]): Promise<BranchLocationRow[]>;
   assignBranchAsync(branchId: string, locationIds: string[]): Promise<void>;
+  replaceBranchAssignmentsAsync(branchId: string, organizationId: string, locationIds: string[]): Promise<void>;
 }

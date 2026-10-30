@@ -40,4 +40,14 @@ export class BranchRepo
     const entity = await this.internalRepo.findOneBy({ userId });
     return entity ? this.mapToModel(entity) : null;
   }
+
+  public async setMainAsync(branchId: string, organizationId: string): Promise<Branch> {
+    return this.internalRepo.manager.transaction(async (manager) => {
+      const repo = manager.getRepository(BranchEntity);
+      await repo.update({ organizationId, isMain: true }, { isMain: false });
+      await repo.update({ id: branchId, organizationId }, { isMain: true });
+      const entity = await repo.findOneByOrFail({ id: branchId, organizationId });
+      return this.mapToModel(entity);
+    });
+  }
 }
