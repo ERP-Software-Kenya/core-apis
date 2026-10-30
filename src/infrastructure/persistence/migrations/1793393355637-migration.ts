@@ -1,8 +1,6 @@
-import { MigrationInterface, QueryRunner } from 'typeorm';
+import { MigrationInterface, QueryRunner } from "typeorm";
 
-export class Migration1793500000000 implements MigrationInterface {
-  name = 'Migration1793500000000';
-
+export class Migration1793393355637 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
     // For organizations with no main branch, promote the oldest active branch.
     // This must run before the unique index on (organization_id WHERE is_main) is created.
