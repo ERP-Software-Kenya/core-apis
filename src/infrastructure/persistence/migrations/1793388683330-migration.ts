@@ -4,7 +4,6 @@ export class Migration1793388683330 implements MigrationInterface {
     name = 'Migration1793388683330'
 
     public async up(queryRunner: QueryRunner): Promise<void> {
-        await queryRunner.query(`ALTER TABLE "core"."locations" DROP CONSTRAINT "FK__locations__parent"`);
         await queryRunner.query(`ALTER TABLE "core"."drivers" DROP CONSTRAINT "FK__drivers__users"`);
         await queryRunner.query(`ALTER TABLE "core"."user_sessions" DROP CONSTRAINT "FK__user_sessions__users"`);
         await queryRunner.query(`ALTER TABLE "core"."unpublished_stock_purchase_items" DROP CONSTRAINT "FK__unpublished_stock_purchase_items__unpublished_stock_purchas"`);
@@ -32,7 +31,6 @@ export class Migration1793388683330 implements MigrationInterface {
         await queryRunner.query(`ALTER TABLE "core"."unpublished_stock_purchase_items" ADD CONSTRAINT "FK__unpublished_stock_purchase_items__unpublished_stock_purchas" FOREIGN KEY ("purchase_order_id") REFERENCES "core"."unpublished_stock_purchase_orders"("id") ON DELETE CASCADE ON UPDATE NO ACTION`);
         await queryRunner.query(`ALTER TABLE "core"."user_sessions" ADD CONSTRAINT "FK__user_sessions__users" FOREIGN KEY ("user_id") REFERENCES "core"."users"("id") ON DELETE CASCADE ON UPDATE NO ACTION`);
         await queryRunner.query(`ALTER TABLE "core"."drivers" ADD CONSTRAINT "FK__drivers__users" FOREIGN KEY ("user_id") REFERENCES "core"."users"("id") ON DELETE SET NULL ON UPDATE NO ACTION`);
-        await queryRunner.query(`ALTER TABLE "core"."locations" ADD CONSTRAINT "FK__locations__parent" FOREIGN KEY ("parent_id") REFERENCES "core"."locations"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`);
     }
 
 }
