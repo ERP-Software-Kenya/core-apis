@@ -4,6 +4,9 @@ export class AuthenticatedUser {
   /** Clerk's user ID (JWT sub) */
   clerkUserId: string;
 
+  /** Clerk session ID from the verified JWT. Safe identifier; never a token. */
+  clerkSessionId: string;
+
   /** Our DB user UUID — undefined until the user has been synced via POST /auth/sync */
   dbUserId?: string;
 
@@ -32,6 +35,9 @@ export class AuthenticatedUser {
 
   /** True if the user holds at least one org-wide role (a user_roles row with locationId null, or any org membership) */
   hasOrgWideAccess: boolean;
+
+  /** Clerk session status from the JWT `sts` claim. "pending" means the user still has unfinished Clerk tasks. */
+  sessionStatus: 'active' | 'pending' = 'active';
 
   /** Whether the user has been synced and exists in our DB */
   get isOnboarded(): boolean {

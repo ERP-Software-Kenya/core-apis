@@ -4,10 +4,20 @@ import { ProductActivityLogger } from './services/product-activity-logger.servic
 import { StockOrchestrationService } from './services/stock-orchestration.service';
 import { BillCompletionService } from './services/bill-completion.service';
 import { OrderDispatchPaymentService } from './services/order-dispatch-payment.service';
+import { NotificationDispatchService } from './services/notification-dispatch.service';
+import { AppMailModule } from '../../common/mail/app-mail.module';
 
-const PROVIDERS = [ActivityLogService, ProductActivityLogger, StockOrchestrationService, BillCompletionService, OrderDispatchPaymentService];
+const PROVIDERS = [
+  ActivityLogService,
+  ProductActivityLogger,
+  StockOrchestrationService,
+  BillCompletionService,
+  OrderDispatchPaymentService,
+  NotificationDispatchService,
+];
 
 @Module({
+  imports:   [AppMailModule],
   providers: PROVIDERS,
   exports:   PROVIDERS,
 })

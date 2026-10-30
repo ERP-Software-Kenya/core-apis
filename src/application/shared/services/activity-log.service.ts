@@ -5,6 +5,7 @@ import { ACTIVITY_LOG_REPO, USER_REPO } from '../../constants';
 import { IActivityLogRepo } from '../../modules/activity-logs';
 import { ActivityLog } from '../../modules/activity-logs/domain';
 import { IUserRepo } from '../../modules/users/i-user.repo';
+import { NotificationDispatchService } from './notification-dispatch.service';
 
 export interface IActivityLogEntry {
   action: EActivityAction;
@@ -23,6 +24,7 @@ export class ActivityLogService {
   public constructor(
     @Inject(ACTIVITY_LOG_REPO) private readonly repo: IActivityLogRepo,
     @Inject(USER_REPO) private readonly userRepo: IUserRepo,
+    private readonly notificationDispatch: NotificationDispatchService,
     @InjectPinoLogger(ActivityLogService.name) private readonly logger: PinoLogger,
   ) {}
 
@@ -30,6 +32,13 @@ export class ActivityLogService {
     this.saveAsync(entry).catch((err: unknown) =>
       this.logger.error({ err }, 'Failed to write activity log'),
     );
+    this.notificationDispatch.dispatch({
+      action:         entry.action,
+      organizationId: entry.organizationId,
+      entityType:     entry.entityType,
+      entityId:       entry.entityId,
+      metadata:       entry.metadata,
+    });
   }
 
   private async saveAsync(entry: IActivityLogEntry): Promise<void> {

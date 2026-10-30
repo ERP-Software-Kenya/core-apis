@@ -1,4 +1,6 @@
 import { IBaseRepo } from '../../../../common';
 import { Driver } from '../domain';
 
-export type IDriverRepo = IBaseRepo<Driver, string>;
+export interface IDriverRepo extends IBaseRepo<Driver, string> {
+  findByUserIdAsync(userId: string): Promise<Driver | null>;
+}

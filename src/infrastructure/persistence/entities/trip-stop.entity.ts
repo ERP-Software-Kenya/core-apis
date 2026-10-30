@@ -33,6 +33,14 @@ export class TripStopEntity {
   @Column({ type: 'integer' })
   public sequence: number;
 
+  @AutoMap()
+  @Column({ type: 'decimal', precision: 10, scale: 7, nullable: true })
+  public latitude?: number;
+
+  @AutoMap()
+  @Column({ type: 'decimal', precision: 10, scale: 7, nullable: true })
+  public longitude?: number;
+
   @AutoMap(() => String)
   @Column({ type: 'enum', enum: ETripStopStatus, default: ETripStopStatus.Pending })
   public status: ETripStopStatus;
