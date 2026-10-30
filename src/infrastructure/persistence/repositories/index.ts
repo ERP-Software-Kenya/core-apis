@@ -80,3 +80,4 @@ export * from './black-ledger.repo';
 export * from './organization-setting.repo';
 export * from './ledger-posting';
 export * from './stock-operations.repo';
+export * from './organization-invitation.repo';

@@ -14,6 +14,7 @@ export enum ECoreTableName {
   OrganizationSettings  = 'organization_settings',
   OrgAddresses          = 'org_addresses',
   OrgMembers            = 'org_members',
+  OrganizationInvitations = 'organization_invitations',
   Stores                = 'stores',
   StoreMembers          = 'store_members',
   Users                 = 'users',

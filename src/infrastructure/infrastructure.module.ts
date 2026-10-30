@@ -88,6 +88,7 @@ import {
   BlackLedgerRepo,
   OrganizationSettingRepo,
   StockOperationsRepo,
+  OrganizationInvitationRepo,
   NotificationSettingRepo,
 } from './persistence';
 
@@ -172,6 +173,7 @@ import {
   BLACK_LEDGER_REPO,
   ORGANIZATION_SETTING_REPO,
   STOCK_OPERATIONS_REPO,
+  ORGANIZATION_INVITATION_REPO,
   NOTIFICATION_SETTING_REPO,
 } from '../application/constants';
 
@@ -280,6 +282,7 @@ export class InfrastructureModule {
         { provide: BLACK_LEDGER_REPO, useClass: BlackLedgerRepo },
         { provide: ORGANIZATION_SETTING_REPO, useClass: OrganizationSettingRepo },
         { provide: STOCK_OPERATIONS_REPO, useClass: StockOperationsRepo },
+        { provide: ORGANIZATION_INVITATION_REPO, useClass: OrganizationInvitationRepo },
         { provide: NOTIFICATION_SETTING_REPO, useClass: NotificationSettingRepo },
       ],
       exports: [
@@ -363,6 +366,7 @@ export class InfrastructureModule {
         BLACK_LEDGER_REPO,
         ORGANIZATION_SETTING_REPO,
         STOCK_OPERATIONS_REPO,
+        ORGANIZATION_INVITATION_REPO,
         NOTIFICATION_SETTING_REPO,
       ],
     };
