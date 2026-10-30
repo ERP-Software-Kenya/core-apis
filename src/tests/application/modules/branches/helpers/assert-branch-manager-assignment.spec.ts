@@ -1,4 +1,8 @@
 jest.mock('@automapper/classes', () => ({ AutoMap: () => () => undefined }));
+jest.mock('../../../../../infrastructure/persistence/entities/role.entity', () => ({
+  ERole: { SuperAdmin: 'super_admin', OrgAdmin: 'org_admin', BranchManager: 'branch_manager', Driver: 'driver', Packer: 'packer' },
+  RoleEntity: class RoleEntity {},
+}));
 
 import { BadRequestException } from '@nestjs/common';
 import { assertBranchManagerAssignment } from '../../../../../application/modules/branches/helpers/assert-branch-manager-assignment';

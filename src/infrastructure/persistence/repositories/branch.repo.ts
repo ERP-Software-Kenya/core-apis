@@ -3,8 +3,8 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { InjectMapper } from '@automapper/nestjs';
 import { Mapper } from '@automapper/core';
 import { InjectPinoLogger, PinoLogger } from 'nestjs-pino';
-import { Repository } from 'typeorm';
-import { BaseRepo, Filter, PageableFilter } from '../../../common';
+import { QueryFailedError, Repository } from 'typeorm';
+import { BaseRepo, DbException, Filter, PageableFilter } from '../../../common';
 import { BranchEntity } from '../entities';
 import { Branch, BranchFilter } from '../../../application/modules/branches/domain';
 import { IBranchRepo } from 'src/application/modules/branches';
@@ -49,5 +49,24 @@ export class BranchRepo
       const entity = await repo.findOneByOrFail({ id: branchId, organizationId });
       return this.mapToModel(entity);
     });
+  }
+
+  public async createBranchAsync(branch: Branch): Promise<Branch> {
+    const entity = this.mapToEntity(branch);
+    try {
+      await this.internalRepo.save(entity);
+      return this.mapToModel(entity);
+    } catch (err) {
+      const pgCode = (err as any).code ?? (err as any).driverError?.code;
+      const pgConstraint = (err as any).constraint ?? (err as any).driverError?.constraint;
+      if (err instanceof QueryFailedError && pgCode === '23505' && pgConstraint === 'UQ_branches_one_main_per_organization') {
+        // A concurrent branch creation claimed the main-branch slot first. Retry as non-main.
+        const retryEntity = this.mapToEntity({ ...branch, isMain: false } as Branch);
+        await this.internalRepo.save(retryEntity);
+        return this.mapToModel(retryEntity);
+      }
+      this.logger.error(err);
+      throw new DbException(err);
+    }
   }
 }
