@@ -1,5 +1,8 @@
 export const CLERK_STRATEGY = 'clerk-jwt';
 export const CLERK_USER_REQ_PROP = 'user';
+export const ALLOW_PENDING_SESSION_META = "__allow_pending_session__";
+export const SESSION_PENDING_CODE = "SESSION_PENDING";
+export const SESSION_INACTIVE_CODE = "SESSION_INACTIVE";
 export const ROLES_META_KEY = '__clerk_roles__';
 export const LAMBDA_STRATEGY = "lambda";
 export const END_USER_STRATEGY = "end-user";

@@ -55,7 +55,8 @@ describe("Clerk JWT verification source contract", () => {
 
   it("checks authorized parties, session status, local account status, and active org membership", () => {
     expect(strategy).toContain("clerkCfg.authorizedParties.includes(payload.azp)");
-    expect(strategy).toContain("payload.sts !== 'active'");
+    expect(strategy).toContain("sessionStatus !== 'active' && sessionStatus !== 'pending'");
+    expect(strategy).toContain("authUser.sessionStatus = sessionStatus");
     expect(strategy).toContain("if (!dbUser.isActive)");
     expect(strategy).toContain("status: 'active'");
     expect(strategy).toContain("organizationId: dbUser.organizationId");

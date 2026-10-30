@@ -36,6 +36,9 @@ export class AuthenticatedUser {
   /** True if the user holds at least one org-wide role (a user_roles row with locationId null, or any org membership) */
   hasOrgWideAccess: boolean;
 
+  /** Clerk session status from the JWT `sts` claim. "pending" means the user still has unfinished Clerk tasks. */
+  sessionStatus: 'active' | 'pending' = 'active';
+
   /** Whether the user has been synced and exists in our DB */
   get isOnboarded(): boolean {
     return !!this.dbUserId;

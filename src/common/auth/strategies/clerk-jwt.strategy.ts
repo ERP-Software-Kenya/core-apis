@@ -9,7 +9,7 @@ import { ExtractJwt, Strategy } from "passport-jwt";
 import { Repository } from "typeorm";
 import { ICoreApiConfig } from "../../../configuration";
 import { UserEntity, UserRoleEntity, OrgMemberEntity, LocationEntity, BranchEntity } from "../../../infrastructure/persistence/entities";
-import { CLERK_STRATEGY } from "../constants";
+import { CLERK_STRATEGY, SESSION_INACTIVE_CODE } from "../constants";
 import { AuthenticatedUser, ClerkJwtPayload } from "../types";
 
 function inferIssuer(jwksUrl: string): string {
@@ -56,11 +56,22 @@ export class ClerkJwtStrategy extends PassportStrategy(Strategy, CLERK_STRATEGY)
     if (payload.azp && clerkCfg.authorizedParties.length > 0 && !clerkCfg.authorizedParties.includes(payload.azp)) {
       throw new UnauthorizedException("Token was issued for an unauthorized application");
     }
-    if (payload.sts && payload.sts !== "active") {
-      throw new UnauthorizedException("Clerk session is not active");
+    const sessionStatus = payload.sts ?? "active";
+    if (sessionStatus !== "active" && sessionStatus !== "pending") {
+      this.logger.warn({ sts: sessionStatus, sub: payload.sub, sid: payload.sid }, "Rejected Clerk session with unsupported status");
+      throw new UnauthorizedException({
+        code: SESSION_INACTIVE_CODE,
+        message: "Your session has ended. Please sign in again.",
+      });
+    }
+    // "pending" is not an expired session: the user has an unfinished Clerk task (e.g. no active
+    // organization). ClerkAuthGuard confines such sessions to @AllowPendingSession() endpoints.
+    if (sessionStatus === "pending") {
+      this.logger.warn({ sub: payload.sub, sid: payload.sid, org: payload.o?.id ?? null }, "Clerk session is pending");
     }
 
     const authUser = new AuthenticatedUser();
+    authUser.sessionStatus = sessionStatus;
     authUser.clerkUserId = payload.sub;
     authUser.clerkSessionId = payload.sid;
     authUser.clerkOrgId = payload.o?.id;

@@ -4,7 +4,7 @@ Date: 2026-10-25
 
 ## Authentication hardening implemented
 
-The API now treats Clerk as the production session and token authority. It does not issue a custom long-lived access or refresh token. Short-lived Clerk JWTs are verified by the API, while the Clerk client SDK silently renews them for an active desktop session.
+The API now treats Clerk as the production session and token authority. It does not issue a custom long-lived access or refresh token. Short-lived Clerk JWTs are verified Cby the API, while the Clerk client SDK silently renews them for an active desktop session.
 
 Implemented controls:
 
