@@ -53,6 +53,7 @@ import { MailTemplatesModule } from './modules/mail-templates';
 import { ProductBranchPricesModule } from './modules/product-branch-prices';
 import { TaxesModule } from './modules/taxes';
 import { ChatbotModule } from './modules/chatbot';
+import { OrganizationMembersModule } from './modules/organization-members';
 
 
 @Module({})
@@ -114,6 +115,7 @@ export class ApplicationModule {
         ProductBranchPricesModule,
         TaxesModule,
         ChatbotModule,
+        OrganizationMembersModule,
       ],
       controllers: [],
       providers: [CqrsMediator],

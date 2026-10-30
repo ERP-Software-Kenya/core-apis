@@ -97,12 +97,15 @@ export class ClerkJwtStrategy extends PassportStrategy(Strategy, CLERK_STRATEGY)
 
     const dbUser = await this.userRepo.findOne({ where: { clerkUserId: payload.sub } });
     if (dbUser) {
+      if (!dbUser.isActive) {
+        throw new UnauthorizedException('This ERP account is suspended');
+      }
       authUser.dbUserId = dbUser.id;
       authUser.organizationId = dbUser.organizationId ?? undefined;
 
       const [userRoles, orgMembers, managedBranch] = await Promise.all([
         this.userRoleRepo.find({ where: { userId: dbUser.id }, relations: ['role'] }),
-        this.orgMemberRepo.find({ where: { userId: dbUser.id }, relations: ['role'] }),
+        this.orgMemberRepo.find({ where: { userId: dbUser.id, status: 'active' }, relations: ['role'] }),
         this.branchRepo.findOne({ where: { userId: dbUser.id } }),
       ]);
 
