@@ -57,4 +57,31 @@ export class LocationRepo
     if (!locationIds.length) return;
     await this.internalRepo.update({ id: In(locationIds) }, { branchId });
   }
+
+  public async replaceBranchAssignmentsAsync(
+    branchId: string,
+    organizationId: string,
+    locationIds: string[],
+  ): Promise<void> {
+    await this.internalRepo.manager.transaction(async (manager) => {
+      const repo = manager.getRepository(LocationEntity);
+      await repo
+        .createQueryBuilder()
+        .update(LocationEntity)
+        .set({ branchId: null })
+        .where('branch_id = :branchId', { branchId })
+        .andWhere('organization_id = :organizationId', { organizationId })
+        .execute();
+
+      if (locationIds.length) {
+        await repo
+          .createQueryBuilder()
+          .update(LocationEntity)
+          .set({ branchId })
+          .where('id IN (:...locationIds)', { locationIds })
+          .andWhere('organization_id = :organizationId', { organizationId })
+          .execute();
+      }
+    });
+  }
 }

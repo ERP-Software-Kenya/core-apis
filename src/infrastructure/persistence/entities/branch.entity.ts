@@ -4,6 +4,7 @@ import {
   CreateDateColumn,
   DeleteDateColumn,
   Entity,
+  Index,
   JoinColumn,
   ManyToOne,
   OneToMany,
@@ -17,6 +18,18 @@ import { UserEntity } from './user.entity';
 
 const PK_NAME = 'PK_' + ECoreTableName.Branches;
 
+@Index('UQ_branches_one_main_per_organization', ['organizationId'], {
+  unique: true,
+  where: '"is_main" = true AND "deleted_at" IS NULL',
+})
+@Index('UQ_branches_one_branch_per_manager', ['userId'], {
+  unique: true,
+  where: '"user_id" IS NOT NULL AND "deleted_at" IS NULL',
+})
+@Index('UQ_branches_code_per_organization', ['organizationId', 'code'], {
+  unique: true,
+  where: '"code" IS NOT NULL AND "deleted_at" IS NULL',
+})
 @Entity({ schema: CORE_SCHEMA, name: ECoreTableName.Branches })
 export class BranchEntity {
   @AutoMap()
@@ -86,7 +99,7 @@ export class BranchEntity {
 
   @AutoMap()
   @Column({ name: 'user_id', type: 'uuid', nullable: true })
-  public userId?: string;
+  public userId?: string | null;
 
   @AutoMap(() => UserEntity)
   @ManyToOne(() => UserEntity, { nullable: true })
