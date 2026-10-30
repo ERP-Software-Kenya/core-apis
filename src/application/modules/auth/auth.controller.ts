@@ -4,7 +4,7 @@ import { Mapper } from "@automapper/core";
 import { InjectMapper } from "@automapper/nestjs";
 import { InjectPinoLogger, PinoLogger } from "nestjs-pino";
 import { Throttle } from "@nestjs/throttler";
-import { AllowAnonymous, AuthenticatedUser, ClerkAuthGuard, ClerkService, CqrsMediator, CurrentUser, isDev, isLocal, isTest } from "../../../common";
+import { AllowAnonymous, AllowPendingSession, AuthenticatedUser, ClerkAuthGuard, ClerkService, CqrsMediator, CurrentUser, isDev, isLocal, isTest } from "../../../common";
 import { SyncUserCommand } from "./commands/sync-user";
 import { OnboardOrganizationCommand, OnboardOrganizationResult } from "./commands/onboard-organization";
 import { RegisterMobileUserCommand } from "./commands/register-mobile-user";
@@ -150,6 +150,7 @@ export class AuthController {
   })
   @ApiCreatedResponse({ type: SyncUserResponse })
   @HttpCode(HttpStatus.CREATED)
+  @AllowPendingSession()
   @Post("sync")
   public async sync(@CurrentUser() currentUser: AuthenticatedUser): Promise<SyncUserResponse> {
     const command = new SyncUserCommand();
@@ -160,6 +161,7 @@ export class AuthController {
     command.imageUrl = currentUser.imageUrl;
 
     const user = await this.mediator.execute<SyncUserCommand, User>(command);
+    await this.healPendingSession(currentUser, user);
 
     return {
       id: user.id,
@@ -179,6 +181,7 @@ export class AuthController {
   })
   @ApiCreatedResponse({ type: OnboardOrganizationResponse })
   @HttpCode(HttpStatus.CREATED)
+  @AllowPendingSession()
   @Post("organizations")
   public async onboardOrganization(@CurrentUser() currentUser: AuthenticatedUser, @Body() body: OnboardOrganizationRequest): Promise<OnboardOrganizationResponse> {
     const clerkRole = await this.clerkService.getOrganizationMembershipRoleAsync(body.clerkOrgId, currentUser.clerkUserId);
@@ -270,6 +273,7 @@ export class AuthController {
   })
   @ApiOkResponse({ type: MeResponse })
   @HttpCode(HttpStatus.OK)
+  @AllowPendingSession()
   @Get("me")
   public async getMe(@CurrentUser() currentUser: AuthenticatedUser): Promise<MeResponse> {
     if (!currentUser.isOnboarded) {
@@ -282,6 +286,7 @@ export class AuthController {
         avatarUrl: currentUser.imageUrl,
         roles: [],
         isOnboarded: false,
+        sessionStatus: currentUser.sessionStatus,
         organization: undefined,
         membership: undefined,
         locationIds: [],
@@ -301,6 +306,7 @@ export class AuthController {
         name: result.organization.name,
         slug: result.organization.slug,
         logoUrl: result.organization.logoUrl,
+        clerkOrgId: result.organization.clerkOrgId,
       };
     }
 
@@ -323,6 +329,7 @@ export class AuthController {
       avatarUrl: result.user.avatarUrl,
       roles: currentUser.roles,
       isOnboarded: true,
+      sessionStatus: currentUser.sessionStatus,
       organization: orgSummary,
       membership: membershipSummary,
       locationIds: currentUser.locationIds ?? [],
@@ -356,9 +363,29 @@ export class AuthController {
 
   @ApiOperation({ summary: "Record a normal sign-out for the current session" })
   @HttpCode(HttpStatus.NO_CONTENT)
+  @AllowPendingSession()
   @Post("sessions/current/end")
   public async endCurrentSession(@CurrentUser() currentUser: AuthenticatedUser): Promise<void> {
     await this.userSessions.endCurrent(this.requireDbUserId(currentUser), currentUser.clerkSessionId);
+  }
+
+  /**
+   * A pending Clerk session usually means the user belongs to an organization in our database but not in Clerk
+   * (for example an account provisioned before org membership was mirrored). Our DB is the source of truth, so
+   * mirror the membership; the client then activates the org and the session becomes active.
+   */
+  private async healPendingSession(currentUser: AuthenticatedUser, user: User): Promise<void> {
+    if (currentUser.sessionStatus !== "pending" || !user.organizationId) return;
+    try {
+      const meQuery = new GetMeQuery();
+      meQuery.clerkUserId = currentUser.clerkUserId;
+      const clerkOrgId = (await this.mediator.execute<GetMeQuery, MeResult>(meQuery)).organization?.clerkOrgId;
+      if (!clerkOrgId) return;
+      const created = await this.clerkService.ensureOrganizationMembershipAsync(clerkOrgId, currentUser.clerkUserId);
+      this.logger.info({ clerkUserId: currentUser.clerkUserId, clerkOrgId, created }, "Healed pending Clerk session");
+    } catch (error) {
+      this.logger.error({ err: error, clerkUserId: currentUser.clerkUserId }, "Failed to heal pending Clerk session");
+    }
   }
 
   private assertDevelopmentOnly(feature: string): void {

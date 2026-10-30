@@ -62,6 +62,12 @@ export class ClerkService implements IClerkService {
     return memberships.data[0]?.role;
   }
 
+  public async ensureOrganizationMembershipAsync(organizationId: string, clerkUserId: string): Promise<boolean> {
+    if (await this.getOrganizationMembershipRoleAsync(organizationId, clerkUserId)) return false;
+    await this.client.organizations.createOrganizationMembership({ organizationId, userId: clerkUserId, role: "org:member" });
+    return true;
+  }
+
   public async listUsersAsync(params?: { limit?: number; offset?: number; organizationId?: string }): Promise<ClerkUserListData> {
     const result = await this.client.users.getUserList({
       limit: params?.limit ?? 20,
