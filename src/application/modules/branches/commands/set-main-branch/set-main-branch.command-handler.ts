@@ -1,4 +1,4 @@
-import { Inject, NotFoundException } from '@nestjs/common';
+import { BadRequestException, Inject, NotFoundException } from '@nestjs/common';
 import { ICommandHandler } from '@nestjs/cqrs';
 import { InjectPinoLogger, PinoLogger } from 'nestjs-pino';
 import { CommandHandlerStrict } from '../../../../../common';
@@ -22,14 +22,10 @@ export class SetMainBranchCommandHandler implements ICommandHandler<SetMainBranc
     if (target.organizationId !== command.organizationId) {
       throw new NotFoundException(`Branch ${command.id} not found`);
     }
-
-    const currentMain = await this.repo.findMainAsync(command.organizationId);
-    if (currentMain && currentMain.id !== command.id) {
-      currentMain.isMain = false;
-      await this.repo.updateAsync(currentMain);
+    if (!target.isActive) {
+      throw new BadRequestException('An inactive branch cannot be the main branch.');
     }
 
-    target.isMain = true;
-    return this.repo.updateAsync(target);
+    return this.repo.setMainAsync(command.id, command.organizationId);
   }
 }
