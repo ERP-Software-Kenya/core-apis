@@ -1,4 +1,4 @@
-import { AutoMap } from '@automapper/classes';
+﻿import { AutoMap } from '@automapper/classes';
 import {
   Column,
   CreateDateColumn,
@@ -19,7 +19,7 @@ export class PlatformEntity {
   @Column({ type: 'varchar', length: 255 })
   public name: string;
 
-  @AutoMap()
+  @AutoMap(() => Object)
   @Column({ type: 'jsonb', nullable: true })
   public config?: Record<string, any>;
 

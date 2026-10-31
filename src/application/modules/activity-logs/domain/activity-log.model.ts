@@ -1,4 +1,4 @@
-import { AutoMap } from '@automapper/classes';
+﻿import { AutoMap } from '@automapper/classes';
 import { EActivityAction } from '../../../../infrastructure/persistence/entities/activity-log.entity';
 
 export class ActivityLog {
@@ -12,6 +12,6 @@ export class ActivityLog {
   @AutoMap() public actorName?: string;
   @AutoMap() public ipAddress?: string;
   @AutoMap() public userAgent?: string;
-  @AutoMap() public metadata?: Record<string, unknown>;
+  @AutoMap(() => Object) public metadata?: Record<string, unknown>;
   @AutoMap(() => Date) public createdAt?: Date;
 }

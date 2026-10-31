@@ -1,4 +1,4 @@
-import { AutoMap } from '@automapper/classes';
+﻿import { AutoMap } from '@automapper/classes';
 import {
   Column,
   CreateDateColumn,
@@ -65,12 +65,12 @@ export class ProductLogEntity {
   public action: EProductLogAction;
 
   /** Field-level change records for PRODUCT_UPDATED events: [{field, oldValue, newValue}] */
-  @AutoMap()
+  @AutoMap(() => Object)
   @Column({ name: 'changed_fields', type: 'jsonb', nullable: true })
   public changedFields?: Array<{ field: string; oldValue: unknown; newValue: unknown }>;
 
   /** Extra context: quantity, movementType, referenceId, unitCost, etc. */
-  @AutoMap()
+  @AutoMap(() => Object)
   @Column({ type: 'jsonb', nullable: true })
   public metadata?: Record<string, unknown>;
 

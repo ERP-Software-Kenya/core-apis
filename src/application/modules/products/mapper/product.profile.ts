@@ -1,14 +1,14 @@
-import { createMap, forMember, mapFrom, mapWith, Mapper } from '@automapper/core';
+﻿import { createMap, forMember, mapFrom, mapWith, Mapper } from '@automapper/core';
 import { AutomapperProfile, InjectMapper } from '@automapper/nestjs';
 import { Injectable } from '@nestjs/common';
 import { ProductEntity, ProductImageEntity, ProductSupplierEntity, ProductUnitEntity, TaxEntity } from '../../../../infrastructure';
+import { Tax } from '../../taxes/domain';
+import { TaxResponse } from '../../taxes/models';
 import { Product, ProductImage, ProductSupplier, ProductUnit } from '../domain';
 import { CreateProductRequest, UpdateProductRequest, UpdateProductPriceRequest, ProductResponse, ProductImageResponse, ListProductsRequest, SearchProductsRequest, ProductUnitResponse } from '../models';
 import { AddProductImageCommand, CreateProductCommand, UpdateProductCommand, UpdateProductPriceCommand, LinkProductSupplierCommand, UpdateProductSupplierCommand } from '../commands';
 import { ListProductsQuery, SearchProductsQuery } from '../queries';
 import { ProductSupplierResponse, LinkProductSupplierRequest, UpdateProductSupplierRequest } from '../models';
-import { Tax } from '../../taxes/domain';
-import { TaxResponse } from '../../taxes/models';
 
 @Injectable()
 export class ProductProfile extends AutomapperProfile {
@@ -66,8 +66,6 @@ export class ProductProfile extends AutomapperProfile {
       createMap(mapper, UpdateProductCommand, Product);
       createMap(mapper, UpdateProductPriceRequest, UpdateProductPriceCommand);
       createMap(mapper, UpdateProductPriceCommand, Product);
-      createMap(mapper, TaxEntity, Tax);
-      createMap(mapper, Tax, TaxResponse);
       createMap(
         mapper,
         Product,

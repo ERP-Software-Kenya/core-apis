@@ -1,4 +1,4 @@
-import { AutoMap } from '@automapper/classes';
+﻿import { AutoMap } from '@automapper/classes';
 import {
   Column,
   CreateDateColumn,
@@ -114,7 +114,7 @@ export class ActivityLogEntity {
   public entityId?: string;
 
   /** Full JSON diff / payload snapshot for audit trail */
-  @AutoMap()
+  @AutoMap(() => Object)
   @Column({ type: 'jsonb', nullable: true })
   public metadata?: Record<string, unknown>;
 
