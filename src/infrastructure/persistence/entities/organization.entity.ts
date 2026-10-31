@@ -44,6 +44,30 @@ export class OrganizationEntity {
   public country?: string;
 
   @AutoMap()
+  @Column({ type: 'varchar', length: 100, nullable: true })
+  public industry?: string;
+
+  @AutoMap()
+  @Column({ type: 'varchar', length: 50, nullable: true })
+  public businessType?: string;
+
+  @AutoMap()
+  @Column({ type: 'varchar', length: 20, nullable: true })
+  public teamSize?: string;
+
+  @AutoMap(() => [String])
+  @Column({ type: 'jsonb', nullable: true })
+  public modules?: string[];
+
+  @AutoMap()
+  @Column({ type: 'varchar', length: 50, nullable: true })
+  public salesMethod?: string;
+
+  @AutoMap()
+  @Column({ type: 'varchar', length: 100, nullable: true })
+  public taxId?: string;
+
+  @AutoMap()
   @Column({ type: 'varchar', length: 255, unique: true, nullable: true })
   public clerkOrgId?: string;
 

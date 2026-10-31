@@ -2,7 +2,7 @@ import { Inject } from "@nestjs/common";
 import { ICommandHandler } from "@nestjs/cqrs";
 import { InjectPinoLogger, PinoLogger } from "nestjs-pino";
 import { CommandHandlerStrict, OrganizationNotFoundException } from "../../../../../common";
-import { ORGANIZATION_REPO, ROLE_REPO, USER_REPO, ORG_MEMBER_REPO } from "../../../../constants";
+import { ORGANIZATION_REPO, ROLE_REPO, USER_REPO, ORG_MEMBER_REPO, ORGANIZATION_SETTING_REPO } from "../../../../constants";
 import { Organization } from "../../../organizations/domain";
 import { IOrganizationRepo } from "../../../organizations";
 import { IUserRepo } from "../../../users";
@@ -11,6 +11,7 @@ import { ERole } from "../../../../../infrastructure/persistence/entities/role.e
 import { IOrgMemberRepo } from "../../i-org-member.repo";
 import { OrgMember } from "../../domain";
 import { OnboardOrganizationCommand } from "./onboard-organization.command";
+import { IOrganizationSettingRepo } from "../../../billing-settings/i-organization-setting.repo";
 
 export class OnboardOrganizationResult {
   organization: Organization;
@@ -25,6 +26,7 @@ export class OnboardOrganizationCommandHandler implements ICommandHandler<Onboar
     @Inject(USER_REPO) private readonly userRepo: IUserRepo,
     @Inject(ROLE_REPO) private readonly roleRepo: IRoleRepo,
     @Inject(ORG_MEMBER_REPO) private readonly orgMemberRepo: IOrgMemberRepo,
+    @Inject(ORGANIZATION_SETTING_REPO) private readonly orgSettingRepo: IOrganizationSettingRepo,
     @InjectPinoLogger(OnboardOrganizationCommandHandler.name)
     private readonly logger: PinoLogger,
   ) {}
@@ -56,6 +58,12 @@ export class OnboardOrganizationCommandHandler implements ICommandHandler<Onboar
         clerkOrgId: command.clerkOrgId,
         logoUrl: command.logoUrl,
         country: command.country,
+        industry: command.industry,
+        businessType: command.businessType,
+        teamSize: command.teamSize,
+        modules: command.modules,
+        salesMethod: command.salesMethod,
+        taxId: command.taxId,
         isActive: true,
       } as unknown as Organization);
       completedSteps.push("org_created");
@@ -80,6 +88,18 @@ export class OnboardOrganizationCommandHandler implements ICommandHandler<Onboar
         joinedAt: new Date(),
       } as unknown as OrgMember);
       completedSteps.push("membership_created");
+
+      // Step 5 — initialize organization settings with onboarding values
+      const orgSetting = await this.orgSettingRepo.getOrCreateAsync(org.id);
+      if (command.baseCurrencyCode || command.timeZone || command.fiscalYearStartMonth) {
+        await this.orgSettingRepo.updateSettingsAsync({
+          organizationId: org.id,
+          baseCurrencyCode: command.baseCurrencyCode ?? orgSetting.baseCurrencyCode,
+          timeZone: command.timeZone ?? orgSetting.timeZone,
+          fiscalYearStartMonth: command.fiscalYearStartMonth ?? orgSetting.fiscalYearStartMonth,
+        });
+      }
+      completedSteps.push("settings_initialized");
 
       return { organization: org, membership, roleName: orgAdminRole.name };
     } catch (err) {

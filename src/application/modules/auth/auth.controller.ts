@@ -209,6 +209,15 @@ export class AuthController {
     command.clerkOrgId = body.clerkOrgId;
     command.logoUrl = body.logoUrl;
     command.country = body.country;
+    command.industry = body.industry;
+    command.businessType = body.businessType;
+    command.teamSize = body.teamSize;
+    command.modules = body.modules;
+    command.salesMethod = body.salesMethod;
+    command.taxId = body.taxId;
+    command.baseCurrencyCode = body.baseCurrencyCode;
+    command.timeZone = body.timeZone;
+    command.fiscalYearStartMonth = body.fiscalYearStartMonth;
 
     const result = await this.mediator.execute<OnboardOrganizationCommand, OnboardOrganizationResult>(command);
 
