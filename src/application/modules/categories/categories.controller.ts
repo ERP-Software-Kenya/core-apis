@@ -1,10 +1,10 @@
-import { Mapper } from '@automapper/core';
+﻿import { Mapper } from '@automapper/core';
 import { InjectMapper } from '@automapper/nestjs';
 import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Post, Put, Query, UseGuards } from '@nestjs/common';
 import { ApiBearerAuth, ApiCreatedResponse, ApiOkResponse, ApiOperation, ApiParam, ApiTags } from '@nestjs/swagger';
 import { InjectPinoLogger, PinoLogger } from 'nestjs-pino';
 import { AuthenticatedUser, ClerkAuthGuard, CqrsMediator, CurrentUser, IPageable, Roles, RolesGuard, assertOrgOwnership } from '../../../common';
-import { ERole } from '../../../infrastructure';
+import { ERole } from '../../../infrastructure/persistence/entities/role.entity';
 import { CreateCategoryCommand, DeleteCategoryCommand, UpdateCategoryCommand } from './commands';
 import { Category } from './domain';
 import { CreateCategoryRequest, SearchCategoriesRequest, ListCategoriesRequest, ListParentCategoriesRequest, CategoryResponse, CategorysPagedResponse, UpdateCategoryRequest } from './models';
@@ -53,7 +53,7 @@ export class CategoriesController {
     return this.mapper.mapArray(result, Category, CategoryResponse);
   }
 
-  @ApiOperation({ summary: 'List all root (parent) categories — use to populate parent selector when creating sub-categories' })
+  @ApiOperation({ summary: 'List all root (parent) categories â€” use to populate parent selector when creating sub-categories' })
   @ApiOkResponse({ type: [CategoryResponse] })
   @HttpCode(HttpStatus.OK)
   @Get('parents')

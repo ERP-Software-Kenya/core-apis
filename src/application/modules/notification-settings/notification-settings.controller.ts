@@ -1,4 +1,4 @@
-import { Mapper } from '@automapper/core';
+﻿import { Mapper } from '@automapper/core';
 import { InjectMapper } from '@automapper/nestjs';
 import { Body, Controller, Get, HttpCode, HttpStatus, Put, UseGuards } from '@nestjs/common';
 import { ApiBearerAuth, ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
@@ -12,7 +12,7 @@ import {
   RolesGuard,
   requireOrganizationId,
 } from '../../../common';
-import { ERole } from '../../../infrastructure';
+import { ERole } from '../../../infrastructure/persistence/entities/role.entity';
 import { UpsertNotificationSettingsCommand } from './commands';
 import { NotificationSetting } from './domain';
 import { UpsertNotificationSettingsRequest, NotificationSettingResponse } from './models';

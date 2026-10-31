@@ -1,11 +1,11 @@
-import { Mapper } from '@automapper/core';
+﻿import { Mapper } from '@automapper/core';
 import { InjectMapper } from '@automapper/nestjs';
 import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Post, Put, Query, UseGuards } from '@nestjs/common';
 import { ApiBearerAuth, ApiCreatedResponse, ApiOkResponse, ApiOperation, ApiParam, ApiTags } from '@nestjs/swagger';
 import { InjectPinoLogger, PinoLogger } from 'nestjs-pino';
 import { ClerkAuthGuard, CqrsMediator, RolesGuard, Roles } from '../../../common';
 import { IPageable } from '../../../common';
-import { ERole } from '../../../infrastructure';
+import { ERole } from '../../../infrastructure/persistence/entities/role.entity';
 import { CreateOrganizationCommand, DeleteOrganizationCommand, UpdateOrganizationCommand } from './commands';
 import { Organization } from './domain';
 import { CreateOrganizationRequest, SearchOrganizationsRequest, ListOrganizationsRequest, OrganizationResponse, OrganizationsPagedResponse, UpdateOrganizationRequest } from './models';

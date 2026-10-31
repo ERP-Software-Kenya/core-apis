@@ -1,4 +1,4 @@
-import { Mapper } from '@automapper/core';
+﻿import { Mapper } from '@automapper/core';
 import { InjectMapper } from '@automapper/nestjs';
 import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Post, Put, Query, UseGuards } from '@nestjs/common';
 import { ApiBearerAuth, ApiCreatedResponse, ApiOkResponse, ApiOperation, ApiParam, ApiTags } from '@nestjs/swagger';
@@ -8,7 +8,7 @@ import { GetTripQuery, SearchTripsQuery, ListTripsQuery } from './queries';
 import { CreateTripRequest, UpdateTripRequest, SearchTripsRequest, ListTripsRequest, CreateTripResponse, TripsPagedResponse } from './models';
 import { Trip } from './domain';
 import { CreateTripCommand, DeleteTripCommand, UpdateTripCommand } from './commands';
-import { ERole } from '../../../infrastructure';
+import { ERole } from '../../../infrastructure/persistence/entities/role.entity';
 import { GetVehicleQuery, ListVehiclesQuery } from '../vehicles/queries';
 import { Vehicle } from '../vehicles/domain';
 

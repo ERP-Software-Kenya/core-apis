@@ -1,11 +1,11 @@
-import { Mapper } from '@automapper/core';
+﻿import { Mapper } from '@automapper/core';
 import { InjectMapper } from '@automapper/nestjs';
 import { Body, Controller, Delete, ForbiddenException, Get, HttpCode, HttpStatus, Param, Post, Put, Query, UseGuards, ParseEnumPipe } from '@nestjs/common';
 import { ApiBearerAuth, ApiCreatedResponse, ApiNoContentResponse, ApiOkResponse, ApiOperation, ApiParam, ApiTags } from '@nestjs/swagger';
 import { InjectPinoLogger, PinoLogger } from 'nestjs-pino';
 import { ClerkAuthGuard, CqrsMediator, Roles, RolesGuard, AuthenticatedUser, CurrentUser, assertOrgOwnership } from '../../../common';
 import { resolveInviteOrganizationId } from './commands/invite-user';
-import { ERole } from '../../../infrastructure';
+import { ERole } from '../../../infrastructure/persistence/entities/role.entity';
 import {
   AssignUserToOrgCommand,
   BanUserCommand,
@@ -54,7 +54,7 @@ export class UsersController {
     @InjectPinoLogger(UsersController.name) protected readonly logger: PinoLogger,
   ) {}
 
-  // ─── Queries ──────────────────────────────────────────────────────────────
+  // â”€â”€â”€ Queries â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
   @ApiOperation({ summary: 'List all users (Clerk)' })
   @ApiOkResponse({ type: ClerkUserListResponse })
@@ -135,7 +135,7 @@ export class UsersController {
     return this.mediator.execute<ListOrganizationsQuery, ClerkOrganizationResponse[]>(query);
   }
 
-  // ─── Commands ─────────────────────────────────────────────────────────────
+  // â”€â”€â”€ Commands â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
   @ApiOperation({ summary: 'Create a new user' })
   @ApiCreatedResponse({ type: UserResponse })
