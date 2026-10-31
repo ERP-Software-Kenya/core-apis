@@ -1,4 +1,4 @@
-import { AutoMap } from '@automapper/classes';
+﻿import { AutoMap } from '@automapper/classes';
 import { CommandBase } from '../../../../../common';
 
 export class PackedItem {
@@ -10,5 +10,5 @@ export class PackOrderCommand extends CommandBase {
   @AutoMap() public orderId: string;
   @AutoMap() public packerUserId: string;
   @AutoMap() public organizationId: string;
-  @AutoMap() public items: PackedItem[];
+  @AutoMap(() => [PackedItem]) public items: PackedItem[];
 }

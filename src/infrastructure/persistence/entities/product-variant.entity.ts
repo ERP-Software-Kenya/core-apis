@@ -1,4 +1,4 @@
-import { AutoMap } from '@automapper/classes';
+﻿import { AutoMap } from '@automapper/classes';
 import {
   Column,
   Entity,
@@ -27,7 +27,7 @@ export class ProductVariantEntity {
   @Column({ type: 'varchar', length: 100 })
   public sku: string;
 
-  @AutoMap()
+  @AutoMap(() => Object)
   @Column({ type: 'jsonb', nullable: true })
   public attributes?: Record<string, any>;
 

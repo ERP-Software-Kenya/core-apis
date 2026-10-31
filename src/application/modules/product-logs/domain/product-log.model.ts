@@ -1,4 +1,4 @@
-import { AutoMap } from '@automapper/classes';
+﻿import { AutoMap } from '@automapper/classes';
 import { EProductLogAction } from 'src/infrastructure/persistence/entities';
 
 export class ProductLog {
@@ -9,8 +9,8 @@ export class ProductLog {
   @AutoMap() public locationId?: string;
   @AutoMap() public performedById?: string;
   @AutoMap(() => String) public action: EProductLogAction;
-  @AutoMap() public changedFields?: Array<{ field: string; oldValue: unknown; newValue: unknown }>;
-  @AutoMap() public metadata?: Record<string, unknown>;
+  @AutoMap(() => Object) public changedFields?: Array<{ field: string; oldValue: unknown; newValue: unknown }>;
+  @AutoMap(() => Object) public metadata?: Record<string, unknown>;
   @AutoMap(() => Date) public createdAt?: Date;
 }
 

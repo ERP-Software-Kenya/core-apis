@@ -1,4 +1,4 @@
-import { AutoMap } from '@automapper/classes';
+﻿import { AutoMap } from '@automapper/classes';
 import { ApiProperty } from '@nestjs/swagger';
 import { IsArray, IsInt, IsNotEmpty, IsNumber, IsOptional, IsUUID, Max, Min, ValidateNested } from 'class-validator';
 import { Type } from 'class-transformer';
@@ -17,6 +17,6 @@ export class CreateMultiStopTripRequest {
   @IsArray()
   @ValidateNested({ each: true })
   @Type(() => TripStopInputRequest)
-  @AutoMap()
+  @AutoMap(() => [TripStopInputRequest])
   public stops: TripStopInputRequest[];
 }
