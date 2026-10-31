@@ -1,4 +1,4 @@
-import { Mapper } from '@automapper/core';
+﻿import { Mapper } from '@automapper/core';
 import { InjectMapper } from '@automapper/nestjs';
 import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Post, Put, Query, Res, UseGuards } from '@nestjs/common';
 import { ApiBearerAuth, ApiCreatedResponse, ApiOkResponse, ApiOperation, ApiParam, ApiTags } from '@nestjs/swagger';
@@ -6,7 +6,7 @@ import type { Response } from 'express';
 import { InjectPinoLogger, PinoLogger } from 'nestjs-pino';
 import { AuthenticatedUser, ClerkAuthGuard, CqrsMediator, CurrentUser, RolesGuard, Roles, assertOrgOwnership, requireOrganizationId } from '../../../common';
 import { IPageable, PdfDocument } from '../../../common';
-import { ERole } from '../../../infrastructure';
+import { ERole } from '../../../infrastructure/persistence/entities/role.entity';
 import { CreateReportLogCommand, DeleteReportLogCommand, UpdateReportLogCommand, GenerateReportCommand } from './commands';
 import { ReportGenerationLog } from './domain';
 import {
