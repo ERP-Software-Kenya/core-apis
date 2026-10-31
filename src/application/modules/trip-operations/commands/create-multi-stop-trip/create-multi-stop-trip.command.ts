@@ -1,4 +1,4 @@
-import { AutoMap } from '@automapper/classes';
+﻿import { AutoMap } from '@automapper/classes';
 import { CommandBase } from '../../../../../common';
 
 export class TripStopInput {
@@ -12,5 +12,5 @@ export class CreateMultiStopTripCommand extends CommandBase {
   @AutoMap() public driverId: string;
   @AutoMap() public vehicleId: string;
   @AutoMap() public organizationId: string;
-  @AutoMap() public stops: TripStopInput[];
+  @AutoMap(() => [TripStopInput]) public stops: TripStopInput[];
 }

@@ -1,4 +1,4 @@
-import { AutoMap } from '@automapper/classes';
+﻿import { AutoMap } from '@automapper/classes';
 import { EReportPeriod } from './e-report-period';
 import { EReportType } from './e-report-type';
 
@@ -15,6 +15,6 @@ export class ReportGenerationLog {
   @AutoMap() public status: string;
   @AutoMap() public fileUrl?: string;
   @AutoMap() public errorMessage?: string;
-  @AutoMap() public reportData?: Record<string, unknown>;
+  @AutoMap(() => Object) public reportData?: Record<string, unknown>;
   @AutoMap(() => Date) public createdAt: Date;
 }

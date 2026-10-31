@@ -1,4 +1,4 @@
-import { AutoMap } from '@automapper/classes';
+﻿import { AutoMap } from '@automapper/classes';
 import { Column, CreateDateColumn, DeleteDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
 import { CORE_SCHEMA, ECoreTableName } from './e-core-table-name';
 
@@ -14,7 +14,7 @@ export class PlatformConfigurationEntity {
   @Column({ type: 'varchar', length: 100, unique: true })
   public configKey: string;
 
-  @AutoMap()
+  @AutoMap(() => Object)
   @Column({ type: 'jsonb', nullable: true })
   public configValue: Record<string, any>;
 
