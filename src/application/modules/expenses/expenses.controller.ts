@@ -1,4 +1,4 @@
-import { Mapper } from '@automapper/core';
+﻿import { Mapper } from '@automapper/core';
 import { InjectMapper } from '@automapper/nestjs';
 import {
   Body, Controller, Get, HttpCode, HttpStatus,
@@ -15,7 +15,7 @@ import {
   ClerkAuthGuard, CqrsMediator, RolesGuard, Roles,
   AuthenticatedUser, CurrentUser, requireOrganizationId, assertOrgOwnership,
 } from '../../../common';
-import { ERole } from '../../../infrastructure';
+import { ERole } from '../../../infrastructure/persistence/entities/role.entity';
 import { CreateExpenseCommand, UpdateExpenseStatusCommand, UploadExpenseReceiptCommand } from './commands';
 import { Expense } from './domain';
 import { CreateExpenseRequest, ExpenseResponse, UpdateExpenseStatusRequest } from './models';

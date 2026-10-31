@@ -1,4 +1,4 @@
-import { Body, Controller, ForbiddenException, Get, HttpCode, HttpStatus, Inject, NotFoundException, Param, Patch, Post, UseGuards } from '@nestjs/common';
+﻿import { Body, Controller, ForbiddenException, Get, HttpCode, HttpStatus, Inject, NotFoundException, Param, Patch, Post, UseGuards } from '@nestjs/common';
 import { ApiBearerAuth, ApiOkResponse, ApiOperation, ApiParam, ApiTags } from '@nestjs/swagger';
 import { InjectPinoLogger, PinoLogger } from 'nestjs-pino';
 import {
@@ -10,7 +10,7 @@ import {
   RolesGuard,
   requireOrganizationId,
 } from '../../../common';
-import { ERole } from '../../../infrastructure';
+import { ERole } from '../../../infrastructure/persistence/entities/role.entity';
 import { ETripStopStatus } from '../../shared/enums/e-trip-stop-status';
 import { DRIVER_REPO, TRIP_REPO } from '../../constants';
 import { Driver } from '../drivers/domain';

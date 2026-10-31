@@ -1,4 +1,4 @@
-import {
+﻿import {
   Body,
   Controller,
   Get,
@@ -34,7 +34,7 @@ import {
   assertLocationAccess,
   PdfDocument,
 } from '../../../common';
-import { ERole } from '../../../infrastructure';
+import { ERole } from '../../../infrastructure/persistence/entities/role.entity';
 import {
   CreateQuotationCommand,
   UpdateQuotationCommand,

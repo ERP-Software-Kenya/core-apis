@@ -1,4 +1,4 @@
-import { Body, Controller, ForbiddenException, Get, HttpCode, HttpStatus, Param, Patch, Post, Query, UseGuards } from '@nestjs/common';
+﻿import { Body, Controller, ForbiddenException, Get, HttpCode, HttpStatus, Param, Patch, Post, Query, UseGuards } from '@nestjs/common';
 import { ApiBearerAuth, ApiOkResponse, ApiOperation, ApiParam, ApiTags } from '@nestjs/swagger';
 import { InjectPinoLogger, PinoLogger } from 'nestjs-pino';
 import {
@@ -11,7 +11,7 @@ import {
   assertOrgOwnership,
   requireOrganizationId,
 } from '../../../common';
-import { ERole } from '../../../infrastructure';
+import { ERole } from '../../../infrastructure/persistence/entities/role.entity';
 import { OrderDispatchPaymentService } from '../../shared/services/order-dispatch-payment.service';
 import { Order } from '../orders/domain';
 import { OrderResponse } from '../orders/models';

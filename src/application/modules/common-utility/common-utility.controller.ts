@@ -1,10 +1,10 @@
-import { Mapper } from '@automapper/core';
+﻿import { Mapper } from '@automapper/core';
 import { InjectMapper } from '@automapper/nestjs';
 import { Body, Controller, Get, HttpCode, HttpStatus, Put, Query, UseGuards } from '@nestjs/common';
 import { ApiBearerAuth, ApiNoContentResponse, ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { InjectPinoLogger, PinoLogger } from 'nestjs-pino';
 import { ClerkAuthGuard, CqrsMediator, IPageable, Roles, RolesGuard } from '../../../common';
-import { ERole } from '../../../infrastructure';
+import { ERole } from '../../../infrastructure/persistence/entities/role.entity';
 import { Country, State, City, Currency, Language } from './domain';
 import {
   ListCountriesRequest, SearchCountriesRequest, CountriesPagedResponse, CountryResponse,
@@ -35,7 +35,7 @@ export class CommonUtilityController {
     @InjectPinoLogger(CommonUtilityController.name) protected readonly logger: PinoLogger,
   ) {}
 
-  // ── Page Access ───────────────────────────────────────────────────────────
+  // â”€â”€ Page Access â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
   @ApiOperation({ summary: 'Get all page-access configurations' })
   @ApiOkResponse({ type: [PageAccessConfigResponse] })
@@ -59,7 +59,7 @@ export class CommonUtilityController {
     await this.mediator.execute<UpdatePageAccessCommand, void>(command);
   }
 
-  // ── Countries ─────────────────────────────────────────────────────────────
+  // â”€â”€ Countries â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
   @ApiOperation({ summary: 'Search countries (paginated)' })
   @ApiOkResponse({ type: CountriesPagedResponse })
@@ -84,7 +84,7 @@ export class CommonUtilityController {
     return this.mapper.mapArray(result, Country, CountryResponse);
   }
 
-  // ── States ────────────────────────────────────────────────────────────────
+  // â”€â”€ States â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
   @ApiOperation({ summary: 'Search states (paginated)' })
   @ApiOkResponse({ type: StatesPagedResponse })
@@ -109,7 +109,7 @@ export class CommonUtilityController {
     return this.mapper.mapArray(result, State, StateResponse);
   }
 
-  // ── Cities ────────────────────────────────────────────────────────────────
+  // â”€â”€ Cities â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
   @ApiOperation({ summary: 'Search cities (paginated)' })
   @ApiOkResponse({ type: CitiesPagedResponse })
@@ -134,7 +134,7 @@ export class CommonUtilityController {
     return this.mapper.mapArray(result, City, CityResponse);
   }
 
-  // ── Currencies ────────────────────────────────────────────────────────────
+  // â”€â”€ Currencies â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
   @ApiOperation({ summary: 'Search currencies (paginated)' })
   @ApiOkResponse({ type: CurrenciesPagedResponse })
@@ -159,7 +159,7 @@ export class CommonUtilityController {
     return this.mapper.mapArray(result, Currency, CurrencyResponse);
   }
 
-  // ── Languages ─────────────────────────────────────────────────────────────
+  // â”€â”€ Languages â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
   @ApiOperation({ summary: 'Search languages (paginated)' })
   @ApiOkResponse({ type: LanguagesPagedResponse })
