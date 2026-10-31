@@ -1,6 +1,7 @@
 import { GetObjectCommand, S3Client } from '@aws-sdk/client-s3';
 import { getSignedUrl } from '@aws-sdk/s3-request-presigner';
 import { Inject, Injectable, NotFoundException, ServiceUnavailableException } from '@nestjs/common';
+import { InjectPinoLogger, PinoLogger } from 'nestjs-pino';
 import { Readable } from 'node:stream';
 import {
   MOBILE_RELEASE_OPTIONS,
@@ -17,6 +18,7 @@ export class MobileReleaseService {
   constructor(
     @Inject(MOBILE_RELEASE_S3) private readonly client: MobileReleaseS3Client,
     @Inject(MOBILE_RELEASE_OPTIONS) private readonly options: MobileReleaseOptions,
+    @InjectPinoLogger(MobileReleaseService.name) private readonly logger: PinoLogger,
   ) {}
 
   public async getLatest(): Promise<MobileReleaseMetadata> {
@@ -32,6 +34,10 @@ export class MobileReleaseService {
       if (status === 404 || (error instanceof Error && (error.name === 'NoSuchKey' || error.name === 'NotFound'))) {
         throw new NotFoundException('No Android release has been published');
       }
+      this.logger.error(
+        { err: error, bucket: this.options.bucket, key: this.options.manifestKey, httpStatus: status },
+        'S3 error fetching mobile release manifest',
+      );
       throw new ServiceUnavailableException('The Android release service is temporarily unavailable');
     }
 
