@@ -110,6 +110,19 @@ export class BranchEntity {
   })
   public user?: UserEntity;
 
+  @AutoMap()
+  @Column({ name: 'default_location_id', type: 'uuid', nullable: true })
+  public defaultLocationId?: string | null;
+
+  @AutoMap(() => LocationEntity)
+  @ManyToOne(() => LocationEntity, { nullable: true })
+  @JoinColumn({
+    name: 'default_location_id',
+    referencedColumnName: 'id',
+    foreignKeyConstraintName: `FK__${ECoreTableName.Branches}__default_location`,
+  })
+  public defaultLocation?: LocationEntity;
+
   @AutoMap(() => [LocationEntity])
   @OneToMany(() => LocationEntity, (loc) => loc.branch)
   public locations?: LocationEntity[];
