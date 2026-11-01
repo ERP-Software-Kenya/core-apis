@@ -13,5 +13,6 @@ export class UpdateBranchCommand extends CommandBase {
   @AutoMap() public phone?: string;
   @AutoMap() public isActive?: boolean;
   @AutoMap() public userId?: string | null;
+  @AutoMap() public defaultLocationId?: string | null;
   @AutoMap(() => [String]) public locationIds?: string[];
 }
