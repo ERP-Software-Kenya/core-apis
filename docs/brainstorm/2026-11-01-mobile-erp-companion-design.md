@@ -379,3 +379,257 @@ The mobile app authenticates with the same Clerk JWT used by ERP-Client. The tok
 | 3 — Purchase | PO list and detail, GRN flow, Allocate Stock flow, payment recording, purchase returns |
 | 4 — Inventory | Stock list, barcode scan, item detail, movement history, Transfers sub-tab |
 | 5 — More | Customers, Suppliers, Profile & Settings, push notification setup |
+
+---
+
+## 12. Implementation Record (as of 2026-11-01)
+
+This section records what has actually been built, what diverged from the design above, and what was deferred. Future sessions should treat this section as the source of truth for current app state.
+
+**PR:** `ERP-Software-Kenya/erp-app#7` — branch `feat/mobile-erp-companion-modules`
+
+---
+
+### 12.1 Auth — Native In-App Forms
+
+**Design said:** Use `useHostedAuth()` (browser redirect to Clerk hosted UI).  
+**What was built:** Replaced with fully native in-app auth screens using `@clerk/expo` hooks directly.
+
+#### New / replaced screens under `app/(auth)/`
+
+| File | What it does |
+|---|---|
+| `login.tsx` | Replaced. Password tab + Email OTP tab + Google OAuth. Uses `useSignIn`, `useOAuth`. |
+| `sign-up.tsx` | New. Password tab + Email OTP tab + Google OAuth. Uses `useSignUp`, `useOAuth`. |
+| `verify-email.tsx` | New. 6-digit code entry for email verification after password sign-up. Uses `useSignUp`. |
+| `verify-second-factor.tsx` | New. 6-digit code entry for MFA after password sign-in. Uses `useSignIn`. |
+| `pending-role.tsx` | Unchanged. Shown when user has no assigned role. Has **Check again** + **Sign Out**. |
+| `invite/[token].tsx` | Unchanged. Still uses `useHostedAuth()` — kept because the root layout's pending-invitation redirect would conflict with navigating away from the invite screen. |
+
+#### Sign-in flows implemented
+
+- **Password**: email + password → `signIn.create({ strategy: 'password' })` → if `needs_second_factor` → navigate to `verify-second-factor`
+- **Email OTP**: email → `signIn.create({ strategy: 'email_code' })` → 6-digit code → `signIn.attemptFirstFactor`
+- **Google OAuth**: `useOAuth({ strategy: 'oauth_google' })` → `startOAuthFlow` with deep-link redirect
+
+#### Sign-up flows implemented
+
+- **Password**: email + password → `signUp.create()` → `prepareEmailAddressVerification` → navigate to `verify-email` screen
+- **Email OTP**: email → `signUp.create()` → `prepareEmailAddressVerification` → 6-digit code inline → `signUp.attemptEmailAddressVerification` → `setActive`
+- **Google OAuth**: same as sign-in
+
+---
+
+### 12.2 User Onboarding Flow
+
+This is the end-to-end path for a brand-new user from zero to using the app:
+
+1. **Download app** → open → `login.tsx` (native form)
+2. **Sign up** via Password or Email OTP tab → email verified → Clerk session created
+3. **No role yet** → root layout bootstrap detects no known role → routes to `/(auth)/pending-role`
+4. **pending-role screen** shows: "Account pending setup — contact your administrator"
+   - If user just created their own organization: open **ERP web client** (erp-client) → create organization → system assigns `org-admin` role
+   - If invited by an existing org admin: admin sends invite email → user opens invite link → `invite/[token].tsx` handles acceptance
+5. **Tap "Check again"** on pending-role screen → `getMeApi()` returns new role → routes to role dashboard
+6. **org-admin dashboard** → full access to all modules
+
+#### What the user can do immediately after reaching the dashboard
+
+- **Add products**: More → Products → New Product
+- **Add stock**: Purchase → New PO → receive goods on PO detail (stock is added via GRN, not direct entry)
+- **Sell**: Sales → New Order
+- **Quote**: Sales → Quotations → New Quotation → Convert to Order
+- **Purchase**: Purchase → New PO
+- **Manage contacts**: More → Customers / Suppliers
+
+---
+
+### 12.3 Modules — Implementation Status
+
+#### Auth
+| Screen | Status | Notes |
+|---|---|---|
+| Login (native) | ✅ Done | Password + OTP + Google |
+| Sign-up (native) | ✅ Done | Password + OTP + Google |
+| Verify email | ✅ Done | |
+| Verify second factor (MFA) | ✅ Done | |
+| Pending role | ✅ Done | Pre-existing, unchanged |
+
+#### Sales
+| Feature | Status | Notes |
+|---|---|---|
+| Orders list + search + filter | ✅ Done | |
+| Order detail + payment recording | ✅ Done | |
+| New order | ✅ Done | |
+| Quotations list + filter | ✅ Done | |
+| Quotation detail + convert + send email | ✅ Done | |
+| New quotation | ✅ Done | |
+| Sales returns list + filter | ✅ Done | |
+| Return detail + finalize + cancel | ✅ Done | |
+| New return | ✅ Done | |
+
+#### Purchase
+| Feature | Status | Notes |
+|---|---|---|
+| Purchase orders list + filter | ✅ Done | |
+| PO detail + receive goods + record payment | ✅ Done | |
+| Payment history on PO | ✅ Done | |
+| New purchase order | ✅ Done | |
+| Purchase returns list + filter | ✅ Done | |
+| Purchase return detail + finalize + cancel | ✅ Done | |
+| New purchase return | ✅ Done | |
+
+#### Inventory
+| Feature | Status | Notes |
+|---|---|---|
+| Stock tab — KPI cards (total value + low-stock count) | ✅ Done | |
+| Stock list | ✅ Done | |
+| Inventory item detail | ⏭ Deferred | Nav prop `onOpenInventoryItem` is wired but screen not built |
+| Barcode scan | ⏭ Deferred | Not built in V1 |
+| Transfers list | ✅ Done | List renders, no detail screen |
+| Transfer detail + complete + cancel | ⏭ Deferred | User confirmed transfers not needed on mobile for now |
+| New transfer | ⏭ Deferred | Same |
+
+#### Contacts (More menu)
+| Feature | Status | Notes |
+|---|---|---|
+| Customer list + search | ✅ Done | Infinite scroll |
+| Customer detail + recent orders + call | ✅ Done | |
+| Supplier list + search | ✅ Done | Infinite scroll |
+| Supplier detail + recent POs + call | ✅ Done | |
+
+#### Products (added beyond original design scope)
+| Feature | Status | Notes |
+|---|---|---|
+| Product list + search | ✅ Done | Infinite scroll, accessible via More → Products |
+| Product detail (view mode) | ✅ Done | Pricing card with margin calculation |
+| Product edit (inline edit mode) | ✅ Done | Toggle via Edit button on detail screen |
+| New product | ✅ Done | Name, SKU, category, description, selling/cost price, tax%, unit picker, weight |
+
+#### Profile / Settings
+| Feature | Status | Notes |
+|---|---|---|
+| More screen with profile card | ✅ Done | Shows role + organizationId |
+| Sign out | ✅ Done | |
+| Push notifications nav | ✅ Done | Routes to shared notifications screen |
+| Organization switcher | ⏭ Not built | Out of scope for V1 |
+| Branch selector | ⏭ Not built | Out of scope for V1 |
+
+---
+
+### 12.4 File Structure
+
+#### Shared screen components (business logic lives here)
+```
+src/screens/manager/
+  SalesScreen.tsx              — Orders / Quotations / Returns sub-tabs
+  OrderDetailScreen.tsx
+  NewOrderScreen.tsx
+  QuotationDetailScreen.tsx
+  NewQuotationScreen.tsx
+  ReturnDetailScreen.tsx
+  NewReturnScreen.tsx
+  PurchaseScreen.tsx           — Orders / Returns sub-tabs
+  PurchaseOrderDetailScreen.tsx
+  NewPurchaseOrderScreen.tsx
+  PurchaseReturnDetailScreen.tsx
+  NewPurchaseReturnScreen.tsx
+  InventoryScreen.tsx          — Stock / Transfers sub-tabs
+  MoreScreen.tsx
+  CustomerListScreen.tsx
+  CustomerDetailScreen.tsx
+  SupplierListScreen.tsx
+  SupplierDetailScreen.tsx
+  ProductListScreen.tsx
+  ProductDetailScreen.tsx      — view + edit toggle
+  NewProductScreen.tsx
+```
+
+#### Route wrappers (thin files, inject role-specific paths)
+```
+app/(org-admin)/          — mirrors app/(branch-manager)/ exactly
+  sales.tsx, purchase.tsx, inventory.tsx, more.tsx
+  order/[id].tsx, new-order.tsx
+  quotation/[id].tsx, new-quotation.tsx
+  return/[id].tsx, new-return.tsx
+  purchase-order/[id].tsx, new-purchase-order.tsx
+  purchase-return/[id].tsx, new-purchase-return.tsx
+  customers.tsx, customer/[id].tsx
+  suppliers.tsx, supplier/[id].tsx
+  products.tsx, product/[id].tsx, new-product.tsx
+```
+
+#### API types
+```
+src/api/manager/
+  sales-orders.api.ts
+  quotations.api.ts
+  sales-returns.api.ts
+  purchase-orders.api.ts
+  purchase-returns.api.ts
+  inventory.api.ts
+  customers.api.ts
+  suppliers.api.ts
+  products.api.ts
+  payments.api.ts
+  locations.api.ts
+```
+
+#### TanStack Query hooks
+```
+src/hooks/manager/
+  useSalesOrders.ts
+  useQuotations.ts
+  useSalesReturns.ts
+  usePurchaseOrders.ts
+  usePurchaseReturns.ts
+  useInventory.ts
+  useCustomers.ts
+  useSuppliers.ts
+  useProducts.ts
+  usePayments.ts
+  useLocations.ts
+```
+
+---
+
+### 12.5 Design Deviations
+
+| Design decision | What was built instead | Reason |
+|---|---|---|
+| Products not in original scope | Products module added (list + detail/edit + create) | User requirement added during implementation |
+| Stock Transfers in scope | Transfers list visible but detail/create deferred | User confirmed transfers not needed on mobile |
+| Inventory item detail in scope | Not built | Deferred — nav prop wired, screen not created |
+| Barcode scan | Not built | Deferred for V1 |
+| Profile & Settings (org switcher, branch selector) | Only shows role + organizationId + sign out | Deferred |
+| WhatsApp deep-link on customer/supplier detail | Not built | Not wired in current screens |
+| Add customer / add supplier flows | Not built as separate screens | Customer/supplier creation is handled via the New Order flow's inline customer picker |
+| PDF invoice sharing | Not built | Deferred |
+
+---
+
+### 12.6 App Icon
+
+**Before:** Default Expo blue "A" icon  
+**After:** Pramukh Digital logo (dark circle with green "P" mark)  
+
+Source file: `D:\ERP\erp-client\assets\app-logo.png` — copied to all icon slots:
+- `assets/icon.png` (iOS + fallback)
+- `assets/android-icon-foreground.png`
+- `assets/android-icon-monochrome.png`
+- `assets/splash-icon.png`
+- `assets/favicon.png`
+
+Android adaptive icon background changed from `#E6F4FE` to `#000000` to match the logo's dark circle. `backgroundImage` removed from `app.json`.
+
+---
+
+### 12.7 Key Design Patterns for Future Sessions
+
+- **Shared screen / thin wrapper pattern**: All business logic in `src/screens/manager/`. Route wrappers under `app/(org-admin)/` and `app/(branch-manager)/` are 5–12 line files that only inject role-specific navigation paths. Never put business logic in route wrappers.
+- **Navigation props**: Every shared screen exports a `*NavProps` interface (e.g. `SalesScreenNavProps`) for its navigation callbacks. Route wrappers receive these and pass `router.push(...)` calls.
+- **Hidden screens in layouts**: Every drill-down/create screen must be registered as `<Tabs.Screen name="..." options={{ href: null }} />` in both `app/(org-admin)/_layout.tsx` and `app/(branch-manager)/_layout.tsx`.
+- **Infinite scroll**: List screens use `useInfiniteQuery` with FlashList from `@shopify/flash-list`. Search uses `useDeferredValue` for debouncing.
+- **Auth store**: `src/store/auth.store.ts` — fields are `isReady`, `userId`, `role`, `locationIds`, `organizationId`, `branchId`. No `organizationName` field exists.
+- **Indian Rupee formatting**: `` `₹${n.toLocaleString('en-IN')}` ``
+- **Colors**: primary blue `#3b74f5`, navy `#0d1b3e`, surface `#f0f4f8`, border `#dde5f0`, cyan `#09b6e8`
