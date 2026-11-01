@@ -116,9 +116,12 @@ Three sub-tabs rendered as pill chips below the screen title: **Orders · Quotat
 
 **Create order flow**
 1. Select customer (search existing or tap + to add new)
-2. Add products — search by name or scan barcode
-3. Set quantity, apply discount and tax per line
-4. Review total, submit → `POST /v1/orders`
+2. Select location — defaults to the user's branch default location, changeable before adding products. This single location applies to the entire order; there is no per-product location picker on mobile.
+3. Add products — search by name or scan barcode
+4. Set quantity, apply discount and tax per line
+5. Review total, submit → `POST /v1/orders`
+
+> **Stock removal rule:** all products in a mobile order are deducted from the one location selected at step 2. The desktop's per-line-item location picker is not available on mobile.
 
 ### 5.2 Quotations Sub-tab
 
@@ -351,7 +354,7 @@ The mobile app authenticates with the same Clerk JWT used by ERP-Client. The tok
 |---|---|
 | Auth | Clerk session · `GET /v1/users/me` |
 | Dashboard | `GET /v1/analytics` · `/v1/inventory/valuation` · `/v1/inventory/low-stock` · `/v1/orders` |
-| Sales — Orders | `GET/POST /v1/orders` · `GET /v1/orders/:id` |
+| Sales — Orders | `GET/POST /v1/orders` · `GET /v1/orders/:id` — location set at order header, not per line item |
 | Sales — Quotations | `GET/POST /v1/quotations` · `GET /v1/quotations/:id` · convert · send-email · revise |
 | Sales — Returns | `GET/POST /v1/sales-returns` · finalize · cancel |
 | Sales — Payments | `POST /v1/payment-transactions` |
