@@ -11,6 +11,7 @@ export class Branch {
   @AutoMap() public country?: string;
   @AutoMap() public phone?: string;
   @AutoMap() public userId?: string | null;
+  @AutoMap() public defaultLocationId?: string | null;
   @AutoMap() public isActive: boolean;
   @AutoMap() public isMain: boolean;
   @AutoMap(() => Date) public createdAt?: Date;
