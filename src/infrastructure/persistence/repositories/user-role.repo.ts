@@ -31,4 +31,9 @@ export class UserRoleRepo extends BaseRepo<UserRoleEntity, UserRole, string, Pag
       .getMany();
     return this.mapper.mapArray(entities, UserRoleEntity, UserRole);
   }
+
+  public async findByUserIdAsync(userId: string): Promise<UserRole[]> {
+    const entities = await this.internalRepo.find({ where: { userId } });
+    return this.mapper.mapArray(entities, UserRoleEntity, UserRole);
+  }
 }
