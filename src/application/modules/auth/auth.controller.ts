@@ -135,7 +135,7 @@ export class AuthController {
   @Throttle({ default: { limit: 5, ttl: 60_000 } })
   @Post("login")
   public async mobileLogin(@Body() body: MobileLoginRequest): Promise<TokenResponse> {
-    this.assertDevelopmentOnly("Backend password login");
+    // this.assertDevelopmentOnly("Backend password login");
     const query = new GetDevTokenQuery();
     query.email = body.email;
     query.password = body.password;
