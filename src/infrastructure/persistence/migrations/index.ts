@@ -33,3 +33,4 @@ export * from './1792917924490-migration';
 export * from './1793388683330-migration';
 export * from './1793393288639-migration';
 export * from './1793393355637-migration';
+export * from './1793471994287-migration';
