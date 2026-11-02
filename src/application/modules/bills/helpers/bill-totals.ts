@@ -20,7 +20,7 @@ export function computeBillItemTotals(item: BillItem): BillItem {
   item.taxRate        = num(item.taxRate);
   item.discountAmount = num(item.discountAmount);
 
-  const gross   = round4(item.quantity * item.unitPrice);
+  const gross   = round4(num(item.enteredQuantity ?? item.quantity) * item.unitPrice);
   const taxable = Math.max(round4(gross - item.discountAmount), 0);
 
   item.taxAmount = round4((taxable * item.taxRate) / 100);
@@ -33,7 +33,7 @@ export function applyBillTotals(bill: Bill): Bill {
   const items = bill.items ?? [];
   items.forEach(computeBillItemTotals);
 
-  bill.subtotal       = round4(items.reduce((acc, i) => acc + i.quantity * i.unitPrice, 0));
+  bill.subtotal       = round4(items.reduce((acc, i) => acc + num(i.enteredQuantity ?? i.quantity) * i.unitPrice, 0));
   bill.discountAmount = round4(items.reduce((acc, i) => acc + i.discountAmount, 0));
   bill.taxAmount      = round4(items.reduce((acc, i) => acc + i.taxAmount, 0));
   bill.totalAmount    = round4(bill.subtotal - bill.discountAmount + bill.taxAmount);

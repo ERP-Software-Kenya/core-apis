@@ -6,3 +6,4 @@ export * from './e-vehicle-status';
 export * from './e-trip-stop-status';
 export * from './e-order-status';
 export * from './e-quotation-status';
+export * from './e-unit-operation';

@@ -5,6 +5,7 @@ import { ArrayMaxSize, ArrayMinSize, IsArray, IsDateString, IsNotEmpty, IsNumber
 
 export class CreatePurchaseOrderItemRequest {
   @ApiProperty() @IsNotEmpty() @IsUUID() public productId: string;
+  @ApiPropertyOptional() @IsOptional() @IsUUID() public productUnitId?: string;
   @ApiProperty() @IsNotEmpty() @IsNumber() @Min(0.0001) public quantityOrdered: number;
   @ApiProperty() @IsNotEmpty() @IsNumber() @Min(0) public unitCost: number;
 }

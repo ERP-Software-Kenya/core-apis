@@ -4,8 +4,9 @@ import { ProductActivityLogger } from './services/product-activity-logger.servic
 import { StockOrchestrationService } from './services/stock-orchestration.service';
 import { BillCompletionService } from './services/bill-completion.service';
 import { OrderDispatchPaymentService } from './services/order-dispatch-payment.service';
+import { QuantityConversionService } from './services/quantity-conversion.service';
 
-const PROVIDERS = [ActivityLogService, ProductActivityLogger, StockOrchestrationService, BillCompletionService, OrderDispatchPaymentService];
+const PROVIDERS = [ActivityLogService, ProductActivityLogger, QuantityConversionService, StockOrchestrationService, BillCompletionService, OrderDispatchPaymentService];
 
 @Module({
   providers: PROVIDERS,

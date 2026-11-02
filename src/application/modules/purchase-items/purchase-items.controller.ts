@@ -58,8 +58,9 @@ export class PurchaseItemsController {
   @ApiCreatedResponse({ type: PurchaseItemResponse })
   @HttpCode(HttpStatus.CREATED)
   @Post()
-  public async create(@Body() body: CreatePurchaseItemRequest): Promise<PurchaseItemResponse> {
+  public async create(@Body() body: CreatePurchaseItemRequest, @CurrentUser() user: AuthenticatedUser): Promise<PurchaseItemResponse> {
     const command = this.mapper.map(body, CreatePurchaseItemRequest, CreatePurchaseItemCommand);
+    command.organizationId = user.organizationId;
     const result  = await this.mediator.execute<CreatePurchaseItemCommand, PurchaseItem>(command);
     return this.mapper.map(result, PurchaseItem, PurchaseItemResponse);
   }

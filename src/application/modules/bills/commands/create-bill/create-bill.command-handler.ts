@@ -7,7 +7,7 @@ import { CommandHandlerStrict } from '../../../../../common';
 import { EBillStatus, ERole, ESaleType } from '../../../../../infrastructure/persistence/entities';
 import { EActivityAction } from '../../../../../infrastructure/persistence/entities/activity-log.entity';
 import { BILL_REPO, LOCATION_REPO, PRODUCT_REPO } from '../../../../constants';
-import { ActivityLogService } from '../../../../shared';
+import { ActivityLogService, EUnitOperation, QuantityConversionService } from '../../../../shared';
 import { ILocationRepo } from '../../../locations';
 import { IProductRepo } from '../../../products';
 import { Product } from '../../../products/domain';
@@ -35,6 +35,7 @@ export class CreateBillCommandHandler implements ICommandHandler<CreateBillComma
     @Inject(LOCATION_REPO) private readonly locationRepo: ILocationRepo,
     @Inject(PRODUCT_BRANCH_PRICE_REPO) private readonly productBranchPriceRepo: IProductBranchPriceRepo,
     private readonly activityLog: ActivityLogService,
+    private readonly quantityConversion: QuantityConversionService,
     @InjectMapper() private readonly mapper: Mapper,
     @InjectPinoLogger(CreateBillCommandHandler.name) private readonly logger: PinoLogger,
   ) {}
@@ -64,6 +65,20 @@ export class CreateBillCommandHandler implements ICommandHandler<CreateBillComma
       if (saleType !== ESaleType.Black && product) {
         item.unitPrice = resolveBranchPrice(branchPrice, product, command.customerType);
       }
+      if (item.productUnitId) {
+        const converted = await this.quantityConversion.convert({
+          organizationId: command.organizationId, productId: item.productId,
+          productUnitId: item.productUnitId, quantity: item.quantity,
+          operation: EUnitOperation.Sale,
+        });
+        const factor = Number(converted.conversionFactorSnapshot);
+        const baseUnitPrice = saleType === ESaleType.Black ? item.unitPrice / factor : item.unitPrice;
+        Object.assign(item, converted, {
+          quantity: Number(converted.baseQuantity),
+          baseUnitPrice,
+          unitPrice: saleType === ESaleType.Black ? item.unitPrice : baseUnitPrice * factor,
+        });
+      }
     }
 
     applyBillTotals(bill);
@@ -71,7 +86,7 @@ export class CreateBillCommandHandler implements ICommandHandler<CreateBillComma
     if (saleType === ESaleType.Black) {
       bill.blackAmount = enriched.reduce((acc, { item, product: prod, branchPrice: bp }) => {
         const officialPrice = prod ? resolveBranchPrice(bp, prod, command.customerType) : 0;
-        return acc + Math.max(0, (Number(item.unitPrice) - officialPrice) * Number(item.quantity));
+        return acc + Math.max(0, (Number(item.unitPrice) - officialPrice * Number(item.conversionFactorSnapshot ?? 1)) * Number(item.enteredQuantity ?? item.quantity));
       }, 0);
       if ((command.facilitatorUserId || command.facilitatorName) && command.commissionPct) {
         bill.commissionAmount = (bill.blackAmount * command.commissionPct) / 100;

@@ -12,6 +12,7 @@ import { Bill, BillItem } from '../../domain';
 import { applyBillTotals, computeBillItemTotals } from '../../helpers';
 import { IBillItemRepo, IBillRepo } from '../..';
 import { AddBillItemCommand } from './add-bill-item.command';
+import { EUnitOperation, QuantityConversionService } from '../../../../shared';
 
 @CommandHandlerStrict(AddBillItemCommand)
 export class AddBillItemCommandHandler implements ICommandHandler<AddBillItemCommand, Bill> {
@@ -21,6 +22,7 @@ export class AddBillItemCommandHandler implements ICommandHandler<AddBillItemCom
     @Inject(PRODUCT_REPO) private readonly productRepo: IProductRepo,
     @Inject(LOCATION_REPO) private readonly locationRepo: ILocationRepo,
     @Inject(PRODUCT_BRANCH_PRICE_REPO) private readonly branchPriceRepo: IProductBranchPriceRepo,
+    private readonly quantityConversion: QuantityConversionService,
     @InjectPinoLogger(AddBillItemCommandHandler.name) private readonly logger: PinoLogger,
   ) {}
 
@@ -34,6 +36,7 @@ export class AddBillItemCommandHandler implements ICommandHandler<AddBillItemCom
     const item = new BillItem();
     item.billId         = bill.id;
     item.productId      = command.productId;
+    item.productUnitId  = command.productUnitId;
     item.variantId      = command.variantId;
     item.quantity       = command.quantity;
     item.unitPrice      = command.unitPrice;
@@ -47,6 +50,20 @@ export class AddBillItemCommandHandler implements ICommandHandler<AddBillItemCom
         ? await this.branchPriceRepo.getByBranchAndProductAsync(location.branchId, command.productId)
         : null;
       item.unitPrice = resolveBranchPrice(branchPrice, product, bill.customerType);
+    }
+
+    if (command.productUnitId) {
+      const converted = await this.quantityConversion.convert({
+        organizationId: command.organizationId, productId: command.productId,
+        productUnitId: command.productUnitId, quantity: command.quantity,
+        operation: EUnitOperation.Sale,
+      });
+      const factor = Number(converted.conversionFactorSnapshot);
+      const baseUnitPrice = bill.saleType === ESaleType.Black ? item.unitPrice / factor : item.unitPrice;
+      Object.assign(item, converted, {
+        quantity: Number(converted.baseQuantity), baseUnitPrice,
+        unitPrice: bill.saleType === ESaleType.Black ? item.unitPrice : baseUnitPrice * factor,
+      });
     }
 
     if (command.taxRate != null) {

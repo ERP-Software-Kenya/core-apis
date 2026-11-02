@@ -7,6 +7,20 @@ export interface IStockOperation {
   productId: string;
   locationId: string;
   quantity: number;
+  productUnitId?: string;
+  selectedUnitId?: string;
+  selectedUnitNameSnapshot?: string;
+  selectedUnitSymbolSnapshot?: string;
+  enteredQuantity?: string;
+  conversionFactorSnapshot?: string;
+  baseUnitId?: string;
+  baseQuantity?: string;
+  quantityComponents?: Array<{ productUnitId: string; quantity: number }>;
+  quantityComponentsSnapshot?: Array<{
+    productUnitId: string; selectedUnitId: string; selectedUnitNameSnapshot: string;
+    selectedUnitSymbolSnapshot: string; enteredQuantity: string; conversionFactorSnapshot: string;
+    baseUnitId: string; baseQuantity: string;
+  }>;
   performedById?: string;
   unitCost?: number;
   referenceId?: string;
@@ -78,6 +92,14 @@ export class StockMovementInput {
   @AutoMap() public referenceType?: string;
   @AutoMap(() => String) public movementType: EMovementType;
   @AutoMap() public quantity: number;
+  @AutoMap() public productUnitId?: string;
+  @AutoMap() public selectedUnitId?: string;
+  @AutoMap() public selectedUnitNameSnapshot?: string;
+  @AutoMap() public selectedUnitSymbolSnapshot?: string;
+  @AutoMap() public enteredQuantity?: string;
+  @AutoMap() public conversionFactorSnapshot?: string;
+  @AutoMap() public baseUnitId?: string;
+  public quantityComponentsSnapshot?: IStockOperation['quantityComponentsSnapshot'];
   @AutoMap() public quantityBefore: number;
   @AutoMap() public quantityAfter: number;
   @AutoMap() public unitCost?: number;

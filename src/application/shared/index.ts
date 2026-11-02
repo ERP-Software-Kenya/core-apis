@@ -4,6 +4,7 @@ export * from './interfaces/i-stock-operations.repo';
 export * from './services/activity-log.service';
 export * from './services/product-activity-logger.service';
 export * from './services/stock-orchestration.service';
+export * from './services/quantity-conversion.service';
 export * from './services/bill-completion.service';
 export * from './shared.module';
 export * from './helpers/return-number';

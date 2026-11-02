@@ -66,6 +66,7 @@ export class StockMovementsController {
   public async addStock(@CurrentUser() user: AuthenticatedUser, @Body() body: StockOperationRequest): Promise<void> {
     assertLocationAccess(user, body.locationId);
     const command          = this.mapper.map(body, StockOperationRequest, AddStockCommand);
+    command.quantityComponents = body.quantityComponents;
     command.organizationId = user.organizationId;
     command.performedById  = user.dbUserId;
     await this.mediator.execute<AddStockCommand, void>(command);
@@ -79,6 +80,7 @@ export class StockMovementsController {
   public async removeStock(@CurrentUser() user: AuthenticatedUser, @Body() body: StockOperationRequest): Promise<void> {
     assertLocationAccess(user, body.locationId);
     const command          = this.mapper.map(body, StockOperationRequest, RemoveStockCommand);
+    command.quantityComponents = body.quantityComponents;
     command.organizationId = user.organizationId;
     command.performedById  = user.dbUserId;
     await this.mediator.execute<RemoveStockCommand, void>(command);
@@ -105,6 +107,7 @@ export class StockMovementsController {
   public async reserveStock(@CurrentUser() user: AuthenticatedUser, @Body() body: StockOperationRequest): Promise<void> {
     assertLocationAccess(user, body.locationId);
     const command          = this.mapper.map(body, StockOperationRequest, ReserveStockCommand);
+    command.quantityComponents = body.quantityComponents;
     command.organizationId = user.organizationId;
     command.performedById  = user.dbUserId;
     await this.mediator.execute<ReserveStockCommand, void>(command);
@@ -118,6 +121,7 @@ export class StockMovementsController {
   public async releaseReservation(@CurrentUser() user: AuthenticatedUser, @Body() body: StockOperationRequest): Promise<void> {
     assertLocationAccess(user, body.locationId);
     const command          = this.mapper.map(body, StockOperationRequest, ReleaseReservationCommand);
+    command.quantityComponents = body.quantityComponents;
     command.organizationId = user.organizationId;
     command.performedById  = user.dbUserId;
     await this.mediator.execute<ReleaseReservationCommand, void>(command);
@@ -131,6 +135,7 @@ export class StockMovementsController {
   public async damageStock(@CurrentUser() user: AuthenticatedUser, @Body() body: StockOperationRequest): Promise<void> {
     assertLocationAccess(user, body.locationId);
     const command          = this.mapper.map(body, StockOperationRequest, DamageStockCommand);
+    command.quantityComponents = body.quantityComponents;
     command.organizationId = user.organizationId;
     command.performedById  = user.dbUserId;
     await this.mediator.execute<DamageStockCommand, void>(command);
@@ -144,6 +149,7 @@ export class StockMovementsController {
   public async writeOffStock(@CurrentUser() user: AuthenticatedUser, @Body() body: StockOperationRequest): Promise<void> {
     assertLocationAccess(user, body.locationId);
     const command          = this.mapper.map(body, StockOperationRequest, WriteOffStockCommand);
+    command.quantityComponents = body.quantityComponents;
     command.organizationId = user.organizationId;
     command.performedById  = user.dbUserId;
     await this.mediator.execute<WriteOffStockCommand, void>(command);

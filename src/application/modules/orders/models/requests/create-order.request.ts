@@ -8,11 +8,14 @@ import { ECustomerType } from '../../../../../infrastructure/persistence/entitie
 
 export class CreateOrderItemRequest {
   @ApiProperty() @IsNotEmpty() @IsUUID() public productId: string;
+  @ApiPropertyOptional() @IsOptional() @IsUUID() public productUnitId?: string;
   @ApiProperty() @IsNotEmpty() @IsNumber() @Min(0.0001) public quantity: number;
   @ApiProperty() @IsNotEmpty() @IsNumber() @Min(0) public unitPrice: number;
   @ApiPropertyOptional() @IsOptional() @IsNumber() @Min(0) public taxAmount?: number;
-  @ApiPropertyOptional() @IsOptional() @IsNumber() @Min(0) public packQuantity?: number;
-  @ApiPropertyOptional() @IsOptional() @IsNumber() @Min(1) public packSizeSnapshot?: number;
+  /** @deprecated Use productUnitId and quantity. */
+  @ApiPropertyOptional({ deprecated: true }) @IsOptional() @IsNumber() @Min(0) public packQuantity?: number;
+  /** @deprecated Server snapshots conversionFactorSnapshot. */
+  @ApiPropertyOptional({ deprecated: true }) @IsOptional() @IsNumber() @Min(1) public packSizeSnapshot?: number;
 }
 
 export class CreateOrderRequest {

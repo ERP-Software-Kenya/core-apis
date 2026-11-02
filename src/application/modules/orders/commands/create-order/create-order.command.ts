@@ -6,11 +6,19 @@ import { ECustomerType } from '../../../../../infrastructure/persistence/entitie
 
 export class CreateOrderItemInput {
   public productId: string;
+  public productUnitId: string;
   public quantity: number;
   public unitPrice: number;
   public taxAmount?: number;
   public packQuantity?: number;
   public packSizeSnapshot?: number;
+  public selectedUnitId?: string;
+  public selectedUnitNameSnapshot?: string;
+  public selectedUnitSymbolSnapshot?: string;
+  public enteredQuantity?: string;
+  public conversionFactorSnapshot?: string;
+  public baseUnitId?: string;
+  public baseUnitPrice?: number;
 }
 
 export class CreateOrderCommand extends CommandBase {

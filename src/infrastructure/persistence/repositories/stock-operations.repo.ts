@@ -45,6 +45,7 @@ export class StockOperationsRepo implements IStockOperationsRepo {
     }
     await this.inventory.manager.transaction(async (manager) => {
       const stock = await this.lockOfficial(manager, input);
+      this.assertInventoryIdentity(stock, input);
       if (input.absoluteQuantity < Number(stock.quantityReserved)) {
         throw new BadRequestException('Adjusted quantity cannot be below reserved quantity');
       }
@@ -144,6 +145,7 @@ export class StockOperationsRepo implements IStockOperationsRepo {
     this.assertPositive(input.quantity);
     await this.inventory.manager.transaction(async (manager) => {
       const stock = await this.lockOfficial(manager, input);
+      this.assertInventoryIdentity(stock, input);
       const onHand = Number(stock.quantityOnHand);
       const reserved = Number(stock.quantityReserved);
       let before = onHand;
@@ -224,6 +226,10 @@ export class StockOperationsRepo implements IStockOperationsRepo {
       inventoryId: input.inventoryId, locationId: input.locationId, productId: input.productId,
       performedById: input.performedById, referenceId: input.referenceId, referenceType: input.referenceType,
       movementType, quantity: input.quantity, quantityBefore, quantityAfter, unitCost: input.unitCost, notes: input.notes,
+      productUnitId: input.productUnitId, selectedUnitId: input.selectedUnitId,
+      selectedUnitNameSnapshot: input.selectedUnitNameSnapshot, selectedUnitSymbolSnapshot: input.selectedUnitSymbolSnapshot,
+      enteredQuantity: input.enteredQuantity, conversionFactorSnapshot: input.conversionFactorSnapshot, baseUnitId: input.baseUnitId,
+      quantityComponentsSnapshot: input.quantityComponentsSnapshot,
     }));
   }
 
@@ -237,6 +243,12 @@ export class StockOperationsRepo implements IStockOperationsRepo {
 
   private assertPositive(quantity: number): void {
     if (!Number.isFinite(quantity) || quantity <= 0) throw new BadRequestException('Quantity must be greater than 0');
+  }
+
+  private assertInventoryIdentity(stock: InventoryEntity, input: { productId: string; locationId: string }): void {
+    if (stock.productId !== input.productId || stock.locationId !== input.locationId) {
+      throw new BadRequestException('Inventory does not match the requested product and location');
+    }
   }
 
   private averageCost(currentQuantity: number, currentCost: number, addedQuantity: number, addedCost?: number): number {

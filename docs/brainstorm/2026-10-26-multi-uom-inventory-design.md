@@ -1,7 +1,7 @@
 # Multi-Unit Product and Inventory Design
 
-Date: 2026-10-26  
-Status: Approved design; implementation not started
+Date: 2026-10-26 (updated 2026-11-02)
+Status: Implemented on feature branches; pending migration rehearsal and commit
 
 ## Document governance
 
@@ -9,7 +9,12 @@ This is the canonical, living context document for the multi-UOM inventory featu
 
 ## Implementation status
 
-Current branch: `core-apis/feature/multi-uom-inventory` (based on `develop`). Changes remain uncommitted until explicitly requested.
+Branches:
+
+- Core API: `feature/multi-uom-inventory` (based on `develop`)
+- ERP Client: `feature/multi-uom-inventory` (based on `main`; developed in the isolated `ERP-Client-multi-uom` worktree to preserve unrelated local edits in `ERP-Client`)
+
+The latest transaction/inventory integration remains uncommitted until explicitly requested.
 
 Phase 1 is implemented locally and verified:
 
@@ -33,7 +38,57 @@ Phase 2 is implemented locally and verified at the configuration layer:
 - the Products three-dot menu provides an `Inventory & units` modal: users with product access can inspect location balances and conversion rules, while only Org Admin/Super Admin can save conversion changes;
 - Core API build, 16 focused tests, and ERP renderer production build pass.
 
-Phase 3 canonical quantity conversion and mixed-component services are not yet implemented. Inventory and transaction workflows still use their legacy quantity/`packSize` behavior and must not be considered converted by the Phase 1–2 configuration work.
+Phase 3 is implemented for the authoritative desktop posting paths:
+
+- `QuantityConversionService` resolves tenant-owned product conversions and validates operation permission, active state, fractions, precision, minimum, and increment rules;
+- fixed-scale `BigInt` arithmetic avoids JavaScript binary floating-point drift for quantities and factors;
+- direct add/remove/reserve/release/damage/write-off operations accept either one `productUnitId` or mixed `quantityComponents`;
+- mixed input such as `5 Bag + 18 KG`, where one Bag is 10 KG, posts one 68 KG base movement and retains a JSON component snapshot;
+- bills/POS sales, sales orders, standalone purchase items, and purchase orders normalize quantities on the server and persist selected-unit, entered-quantity, factor, base-unit, and base-price/cost snapshots;
+- the ERP Client POS exposes sale/purchase-enabled units, recalculates display prices from the base price, performs stock checks in base quantity, and sends `productUnitId` to the API;
+- legacy clients remain compatible: when `productUnitId` is omitted, quantity keeps its historical base-unit meaning;
+- migration `1793664000000` fails fast for ambiguous legacy inventory, converts movement history, repoints movement/audit references, consolidates rows, and enforces one inventory row per organization/location/product.
+
+Existing return, allocation, fulfillment, and transfer handlers operate on the already-normalized base quantities stored on their source documents. New direct unit selection is intentionally performed at document entry and stock-operation boundaries rather than re-converting during posting.
+
+Verification completed on 2026-11-02:
+
+- Core API production build: passed;
+- focused Core API unit tests: 12 passed;
+- ERP Client strict renderer TypeScript check: passed;
+- ERP Client production renderer build: passed.
+
+Focused automated scenarios now cover organization/product configuration validation, fixed-scale decimal preservation, mixed-unit summation (`5 × 10 KG + 18 KG = 68 KG`), and POS base-stock aggregation. The client POS tests total 12 passing tests; the focused backend suite totals 12 passing tests.
+
+### Implementation map (2026-11-02)
+
+Core API authoritative paths:
+
+- `src/application/shared/services/quantity-conversion.service.ts`: tenant-aware conversion and mixed-component aggregation;
+- `src/application/shared/helpers/quantity-decimal.ts`: eight-decimal fixed-scale arithmetic;
+- `src/application/shared/services/stock-orchestration.service.ts`: common stock conversion boundary;
+- `src/application/modules/{bills,orders,purchase-items,purchase-orders,stock-movements}`: entry contracts and server normalization;
+- `src/infrastructure/persistence/entities/{bill-item,order-item,purchase-item,stock-movement,inventory}.entity.ts`: base quantities and historical snapshots;
+- `src/infrastructure/persistence/migrations/1793664000000-migration.ts`: legacy consolidation and canonical inventory constraint.
+
+ERP Client authoritative desktop paths:
+
+- `renderer/src/pages/pos/POSTerminal.tsx`: default unit resolution, selectable units, converted prices, and base-stock guards;
+- `renderer/src/pages/pos/checkout.ts`: product-unit identity in bill and purchase-order payloads;
+- `renderer/src/pages/pos/posStock.ts`: availability comparisons in base quantity;
+- sales and purchase line components: operation-filtered unit selectors.
+
+Compatibility decisions:
+
+- Existing `packSize`, `packQuantity`, and old response fields remain for old documents and clients, but new POS/purchase posting no longer uses `qty × packSize` as the authoritative calculation.
+- Omitted `productUnitId` continues to mean the submitted quantity is already a base quantity. This compatibility mode must remain until all deployed clients are upgraded.
+- Existing receive, allocate, fulfill, transfer, and return commands consume the base quantities already stored on their source line; they must not apply a second conversion.
+- Mixed components are currently accepted by direct stock operations and persisted on the stock movement as a JSON snapshot. Normal document lines use one selected conversion per line.
+- No new runtime dependency was added.
+
+Remaining rollout surface (not silently treated as complete): quotation entry, unpublished/black-stock purchase entry, transfer-request entry, return-entry unit selectors, report decomposition, and mobile UI still submit or display base quantities. Their backend posting paths remain safe because they consume normalized base quantities, but those screens do not yet provide alternate-unit entry UX. These items remain tracked in Phases 6–9 below.
+
+Deployment gate: run `1793664000000` against a production snapshot first. Any missing base unit or product conversion intentionally aborts the migration and must be reconciled before deployment.
 
 ## Purpose
 

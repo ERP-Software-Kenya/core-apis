@@ -19,7 +19,7 @@ import { OrganizationUnitEntity } from './organization-unit.entity';
 
 const PK_NAME = 'PK_' + ECoreTableName.Inventory;
 
-@Unique(`UQ__${ECoreTableName.Inventory}__org_location_product_unit`, ['organizationId', 'locationId', 'productId', 'unitId'])
+@Unique(`UQ__${ECoreTableName.Inventory}__org_location_product`, ['organizationId', 'locationId', 'productId'])
 @Entity({ schema: CORE_SCHEMA, name: ECoreTableName.Inventory })
 export class InventoryEntity {
   @AutoMap()
