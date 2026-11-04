@@ -2,28 +2,55 @@ import { BadRequestException, ForbiddenException } from '@nestjs/common';
 import { IQueryHandler } from '@nestjs/cqrs';
 import { InjectDataSource } from '@nestjs/typeorm';
 import { InjectPinoLogger, PinoLogger } from 'nestjs-pino';
-import { DataSource } from 'typeorm';
+import { DataSource, FindOptionsWhere, ILike } from 'typeorm';
 import { QueryHandlerStrict } from '../../../../../common';
 import { ERole, OrgMemberEntity } from '../../../../../infrastructure';
-import { OrganizationMemberResponse } from '../../models';
+import { ORGANIZATION_MEMBERS_MAX_LIMIT, OrganizationMemberResponse, PaginatedOrganizationMembersResponse } from '../../models';
 import { ListMembersQuery } from './list-members.query';
 
 @QueryHandlerStrict(ListMembersQuery)
-export class ListMembersQueryHandler implements IQueryHandler<ListMembersQuery, OrganizationMemberResponse[]> {
+export class ListMembersQueryHandler implements IQueryHandler<ListMembersQuery, OrganizationMemberResponse[] | PaginatedOrganizationMembersResponse> {
   public constructor(
     @InjectDataSource() private readonly dataSource: DataSource,
     @InjectPinoLogger(ListMembersQueryHandler.name) private readonly logger: PinoLogger,
   ) {}
 
-  public async execute(query: ListMembersQuery): Promise<OrganizationMemberResponse[]> {
+  public async execute(query: ListMembersQuery): Promise<OrganizationMemberResponse[] | PaginatedOrganizationMembersResponse> {
     this.logger.info(`Executing ${ListMembersQuery.name}`);
     const organizationId = this.resolveOrganizationId(query);
-    const members = await this.dataSource.getRepository(OrgMemberEntity).find({
-      where: { organizationId },
-      relations: { user: { userRoles: { role: true, location: true } }, role: true },
-      order: { joinedAt: 'DESC' },
+    const relations = { user: { userRoles: { role: true, location: true } }, role: true };
+    const repo = this.dataSource.getRepository(OrgMemberEntity);
+    const paged = query.page !== undefined || query.limit !== undefined;
+
+    if (!paged && !query.search && !query.status) {
+      const members = await repo.find({ where: { organizationId }, relations, order: { joinedAt: 'DESC' } });
+      return members.map((member) => this.buildMemberResponse(member));
+    }
+
+    const page = query.page ?? 1;
+    const limit = Math.min(ORGANIZATION_MEMBERS_MAX_LIMIT, query.limit ?? 15);
+    const [members, total] = await repo.findAndCount({
+      where: this.buildWhere(organizationId, query),
+      relations,
+      // id tiebreaker keeps pages stable when members share a joinedAt
+      order: { joinedAt: 'DESC', id: 'DESC' },
+      skip: (page - 1) * limit,
+      take: limit,
     });
-    return members.map((member) => this.buildMemberResponse(member));
+    const items = members.map((member) => this.buildMemberResponse(member));
+    if (!paged) return items;
+    return { items, total, page, limit, totalPages: Math.max(1, Math.ceil(total / limit)) };
+  }
+
+  private buildWhere(organizationId: string, query: ListMembersQuery): FindOptionsWhere<OrgMemberEntity> | FindOptionsWhere<OrgMemberEntity>[] {
+    const base: FindOptionsWhere<OrgMemberEntity> = { organizationId, ...(query.status ? { status: query.status } : {}) };
+    if (!query.search) return base;
+    const term = `%${query.search.replace(/[%_\\]/g, '\\$&')}%`;
+    return [
+      { ...base, user: { email: ILike(term) } },
+      { ...base, user: { firstName: ILike(term) } },
+      { ...base, user: { lastName: ILike(term) } },
+    ];
   }
 
   private resolveOrganizationId(query: ListMembersQuery): string {

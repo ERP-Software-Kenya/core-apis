@@ -1,7 +1,7 @@
 import { AutoMap } from '@automapper/classes';
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { Type } from 'class-transformer';
-import { IsArray, IsEnum, IsInt, IsNumber, IsOptional, IsString, IsUUID, Min, ValidateNested } from 'class-validator';
+import { IsArray, IsEnum, IsInt, IsISO8601, IsNumber, IsOptional, IsString, IsUUID, Min, ValidateNested } from 'class-validator';
 import {
   EBillStatus,
   ECustomerType,
@@ -61,6 +61,10 @@ export class ListBillsRequest {
   @ApiPropertyOptional() @IsOptional() @IsString() @AutoMap() public billNumber?: string;
   @ApiPropertyOptional({ enum: EBillStatus }) @IsOptional() @IsEnum(EBillStatus) @AutoMap() public status?: EBillStatus;
   @ApiPropertyOptional({ enum: EPaymentMethod }) @IsOptional() @IsEnum(EPaymentMethod) @AutoMap() public paymentMethod?: EPaymentMethod;
+  @ApiPropertyOptional({ enum: ESaleType, description: 'Only bills of this sale type' }) @IsOptional() @IsEnum(ESaleType) @AutoMap(() => String) public saleType?: ESaleType;
+  @ApiPropertyOptional({ enum: ESaleType, description: 'Exclude bills of this sale type (e.g. black)' }) @IsOptional() @IsEnum(ESaleType) @AutoMap(() => String) public saleTypeNot?: ESaleType;
+  @ApiPropertyOptional({ description: 'Inclusive lower bound on createdAt (ISO 8601)' }) @IsOptional() @IsISO8601() @AutoMap() public dateFrom?: string;
+  @ApiPropertyOptional({ description: 'Inclusive upper bound on createdAt (ISO 8601)' }) @IsOptional() @IsISO8601() @AutoMap() public dateTo?: string;
   @ApiPropertyOptional() @IsOptional() @IsString() @AutoMap() public $orderBy?: string;
   @ApiPropertyOptional() @IsOptional() @IsString() @AutoMap() public $order?: string;
 }

@@ -1,9 +1,10 @@
 import { AutoMap } from '@automapper/classes';
 import { ApiPropertyOptional } from '@nestjs/swagger';
-import { IsNumber, IsOptional, IsString } from 'class-validator';
+import { IsInt, IsOptional, IsString, Min } from 'class-validator';
+import { Type } from 'class-transformer';
 
 export class SearchPackedOrdersRequest {
   @ApiPropertyOptional() @IsOptional() @IsString() @AutoMap() public name?: string;
-  @ApiPropertyOptional() @IsOptional() @IsNumber() @AutoMap() public $page?: number;
-  @ApiPropertyOptional() @IsOptional() @IsNumber() @AutoMap() public $perPage?: number;
+  @ApiPropertyOptional() @IsOptional() @Type(() => Number) @IsInt() @Min(1) @AutoMap() public $page?: number;
+  @ApiPropertyOptional() @IsOptional() @Type(() => Number) @IsInt() @Min(1) @AutoMap() public $perPage?: number;
 }
