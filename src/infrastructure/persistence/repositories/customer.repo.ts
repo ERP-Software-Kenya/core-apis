@@ -3,11 +3,12 @@ import { InjectMapper } from '@automapper/nestjs';
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { InjectPinoLogger, PinoLogger } from 'nestjs-pino';
-import { FindManyOptions, MoreThan, Repository } from 'typeorm';
+import { FindManyOptions, FindOptionsWhere, MoreThan, Repository } from 'typeorm';
 import { BaseRepo, Filter, PageableFilter } from '../../../common';
 import { CustomerEntity } from '../entities';
 import { Customer } from '../../../application/modules/customers/domain';
 import { ICustomerRepo, CustomerFilter } from '../../../application/modules/customers';
+import { buildDebtorWhere } from './customer-debtor-where';
 
 @Injectable()
 export class CustomerRepo extends BaseRepo<CustomerEntity, Customer, string, PageableFilter<CustomerFilter>, Filter<CustomerFilter>> implements ICustomerRepo {
@@ -28,7 +29,7 @@ export class CustomerRepo extends BaseRepo<CustomerEntity, Customer, string, Pag
   }
 
   public override get specialFilterFields(): (keyof PageableFilter<CustomerFilter>)[] {
-    return [...super.specialFilterFields, 'hasCreditLimit'];
+    return [...super.specialFilterFields, 'hasCreditLimit', 'debtors'];
   }
 
   protected override modifyFindOption(
@@ -37,6 +38,9 @@ export class CustomerRepo extends BaseRepo<CustomerEntity, Customer, string, Pag
   ): void {
     if (filterObj.hasCreditLimit === true) {
       (findOpts.where as Record<string, unknown>).creditLimit = MoreThan(0);
+    }
+    if (filterObj.debtors) {
+      findOpts.where = buildDebtorWhere((findOpts.where ?? {}) as FindOptionsWhere<CustomerEntity>, filterObj.debtors);
     }
   }
 }

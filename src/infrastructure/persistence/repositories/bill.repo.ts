@@ -3,7 +3,7 @@ import { InjectMapper } from '@automapper/nestjs';
 import { BadRequestException, ConflictException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { InjectPinoLogger, PinoLogger } from 'nestjs-pino';
-import { Between, FindManyOptions, In, Not, Repository } from 'typeorm';
+import { Between, FindManyOptions, In, LessThanOrEqual, MoreThanOrEqual, Not, Repository } from 'typeorm';
 import { BaseRepo, DbException, Filter, PageableFilter } from '../../../common';
 import {
   BillEntity,
@@ -49,7 +49,7 @@ export class BillRepo
   }
 
   public override get specialFilterFields(): (keyof (PageableFilter<BillFilter>))[] {
-    return [...super.specialFilterFields, 'accessibleLocationIds', 'saleTypeNot'] as any;
+    return [...super.specialFilterFields, 'accessibleLocationIds', 'saleTypeNot', 'dateFrom', 'dateTo'] as any;
   }
 
   public override get softDeleteEnabled(): boolean {
@@ -79,12 +79,19 @@ export class BillRepo
     findOpts: FindManyOptions<BillEntity>,
     filterObj: Filter<BillFilter> | PageableFilter<BillFilter>,
   ): void {
-    const f = filterObj as BillFilter & { saleTypeNot?: string };
+    const f = filterObj as BillFilter;
     if (f?.accessibleLocationIds !== undefined && !f.locationId) {
       findOpts.where = { ...(findOpts.where as object), locationId: In(f.accessibleLocationIds) };
     }
     if (f?.saleTypeNot) {
       findOpts.where = { ...(findOpts.where as object), saleType: Not(f.saleTypeNot) };
+    }
+    if (f?.dateFrom && f?.dateTo) {
+      findOpts.where = { ...(findOpts.where as object), createdAt: Between(new Date(f.dateFrom), new Date(f.dateTo)) };
+    } else if (f?.dateFrom) {
+      findOpts.where = { ...(findOpts.where as object), createdAt: MoreThanOrEqual(new Date(f.dateFrom)) };
+    } else if (f?.dateTo) {
+      findOpts.where = { ...(findOpts.where as object), createdAt: LessThanOrEqual(new Date(f.dateTo)) };
     }
   }
 

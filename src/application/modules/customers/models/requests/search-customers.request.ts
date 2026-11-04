@@ -1,7 +1,8 @@
 import { AutoMap } from '@automapper/classes';
 import { ApiPropertyOptional } from '@nestjs/swagger';
-import { Transform } from 'class-transformer';
-import { IsBoolean, IsNumber, IsOptional, IsString } from 'class-validator';
+import { Transform, Type } from 'class-transformer';
+import { IsBoolean, IsIn, IsInt, IsOptional, IsString, Min } from 'class-validator';
+import { CUSTOMER_DEBTOR_FILTERS, CustomerDebtorFilter } from '../../domain/customer-debtor-filter';
 
 export class SearchCustomersRequest {
   @ApiPropertyOptional() @IsOptional() @IsString() @AutoMap() public organizationId?: string;
@@ -17,6 +18,8 @@ export class SearchCustomersRequest {
   @IsBoolean()
   @AutoMap()
   public hasCreditLimit?: boolean;
-  @ApiPropertyOptional() @IsOptional() @IsNumber() @AutoMap() public $page?: number;
-  @ApiPropertyOptional() @IsOptional() @IsNumber() @AutoMap() public $perPage?: number;
+  @ApiPropertyOptional({ enum: CUSTOMER_DEBTOR_FILTERS, description: 'any = credit line or balance > 0; with-dues = balance > 0; over-limit = balance > limit > 0' })
+  @IsOptional() @IsIn(CUSTOMER_DEBTOR_FILTERS) @AutoMap(() => String) public debtors?: CustomerDebtorFilter;
+  @ApiPropertyOptional() @IsOptional() @Type(() => Number) @IsInt() @Min(1) @AutoMap() public $page?: number;
+  @ApiPropertyOptional() @IsOptional() @Type(() => Number) @IsInt() @Min(1) @AutoMap() public $perPage?: number;
 }

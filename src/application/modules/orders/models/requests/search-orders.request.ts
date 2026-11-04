@@ -1,6 +1,7 @@
 import { AutoMap } from '@automapper/classes';
 import { ApiPropertyOptional } from '@nestjs/swagger';
-import { IsEnum, IsNumber, IsOptional, IsString } from 'class-validator';
+import { IsEnum, IsInt, IsOptional, IsString, Min } from 'class-validator';
+import { Type } from 'class-transformer';
 import { EFulfillmentMode } from '../../../../shared/enums/e-fulfillment-mode';
 
 export class SearchOrdersRequest {
@@ -9,6 +10,6 @@ export class SearchOrdersRequest {
   @ApiPropertyOptional({ enum: EFulfillmentMode }) @IsOptional() @IsEnum(EFulfillmentMode) @AutoMap() public fulfillmentMode?: EFulfillmentMode;
   @ApiPropertyOptional() @IsOptional() @IsString() @AutoMap() public search?: string;
   @ApiPropertyOptional({ description: 'Alias for search (used by list UI)' }) @IsOptional() @IsString() public name?: string;
-  @ApiPropertyOptional() @IsOptional() @IsNumber() @AutoMap() public $page?: number;
-  @ApiPropertyOptional() @IsOptional() @IsNumber() @AutoMap() public $perPage?: number;
+  @ApiPropertyOptional() @IsOptional() @Type(() => Number) @IsInt() @Min(1) @AutoMap() public $page?: number;
+  @ApiPropertyOptional() @IsOptional() @Type(() => Number) @IsInt() @Min(1) @AutoMap() public $perPage?: number;
 }
