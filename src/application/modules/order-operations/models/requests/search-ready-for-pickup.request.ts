@@ -1,9 +1,10 @@
 import { ApiPropertyOptional } from '@nestjs/swagger';
-import { IsNumber, IsOptional, IsString, IsUUID } from 'class-validator';
+import { IsInt, IsOptional, IsString, IsUUID, Min } from 'class-validator';
+import { Type } from 'class-transformer';
 
 export class SearchReadyForPickupRequest {
   @ApiPropertyOptional() @IsOptional() @IsUUID() public locationId?: string;
   @ApiPropertyOptional() @IsOptional() @IsString() public name?: string;
-  @ApiPropertyOptional() @IsOptional() @IsNumber() public $page?: number;
-  @ApiPropertyOptional() @IsOptional() @IsNumber() public $perPage?: number;
+  @ApiPropertyOptional() @IsOptional() @Type(() => Number) @IsInt() @Min(1) public $page?: number;
+  @ApiPropertyOptional() @IsOptional() @Type(() => Number) @IsInt() @Min(1) public $perPage?: number;
 }

@@ -11,6 +11,9 @@ export interface BillFilter {
   paymentMethod?: EPaymentMethod;
   saleType?: ESaleType;
   saleTypeNot?: ESaleType;
+  /** Inclusive createdAt bounds (ISO 8601). */
+  dateFrom?: string;
+  dateTo?: string;
 }
 
 export interface BillItemFilter {
