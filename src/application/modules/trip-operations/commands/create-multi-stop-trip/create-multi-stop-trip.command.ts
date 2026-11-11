@@ -10,5 +10,5 @@ export class CreateMultiStopTripCommand extends CommandBase {
   @AutoMap() public driverId: string;
   @AutoMap() public vehicleId: string;
   @AutoMap() public organizationId: string;
-  @AutoMap() public stops: TripStopInput[];
+  @AutoMap(() => [TripStopInput]) public stops: TripStopInput[];
 }

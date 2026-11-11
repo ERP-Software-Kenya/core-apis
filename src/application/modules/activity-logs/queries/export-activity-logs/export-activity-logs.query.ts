@@ -4,7 +4,7 @@ import { EActivityAction } from '../../../../../infrastructure/persistence/entit
 
 export class ExportActivityLogsQuery extends QueryBase {
   @AutoMap() public organizationId: string;
-  @AutoMap() public action?: EActivityAction[];
+  @AutoMap(() => [String]) public action?: EActivityAction[];
   @AutoMap() public userId?: string;
   @AutoMap() public dateFrom?: string;
   @AutoMap() public dateTo?: string;

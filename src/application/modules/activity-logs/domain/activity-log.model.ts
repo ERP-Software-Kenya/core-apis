@@ -12,6 +12,6 @@ export class ActivityLog {
   @AutoMap() public actorName?: string;
   @AutoMap() public ipAddress?: string;
   @AutoMap() public userAgent?: string;
-  @AutoMap() public metadata?: Record<string, unknown>;
+  @AutoMap(() => Object) public metadata?: Record<string, unknown>;
   @AutoMap(() => Date) public createdAt?: Date;
 }

@@ -56,7 +56,7 @@ export class CountryEntity {
   @Column({ type: 'decimal', precision: 11, scale: 8, nullable: true })
   public longitude?: number;
 
-  @AutoMap()
+  @AutoMap(() => [Object])
   @Column({ type: 'jsonb', nullable: true })
   public timezones?: any[];
 

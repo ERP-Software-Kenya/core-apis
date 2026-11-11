@@ -3,6 +3,6 @@ import { CommandBase } from '../../../../../common';
 
 export class CreatePlatformConfigurationCommand extends CommandBase {
   @AutoMap() public configKey: string;
-  @AutoMap() public configValue: Record<string, any>;
+  @AutoMap(() => Object) public configValue: Record<string, any>;
   @AutoMap() public description?: string;
 }

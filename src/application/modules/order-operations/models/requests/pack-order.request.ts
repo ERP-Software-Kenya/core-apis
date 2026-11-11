@@ -14,6 +14,6 @@ export class PackOrderRequest {
   @IsArray()
   @ValidateNested({ each: true })
   @Type(() => PackedItemRequest)
-  @AutoMap()
+  @AutoMap(() => [PackedItemRequest])
   public items: PackedItemRequest[];
 }

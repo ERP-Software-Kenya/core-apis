@@ -14,7 +14,7 @@ export class PlatformConfigurationEntity {
   @Column({ type: 'varchar', length: 100, unique: true })
   public configKey: string;
 
-  @AutoMap()
+  @AutoMap(() => Object)
   @Column({ type: 'jsonb', nullable: true })
   public configValue: Record<string, any>;
 

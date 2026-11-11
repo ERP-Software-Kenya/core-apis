@@ -12,7 +12,7 @@ export class ActivityLogResponse {
   @ApiPropertyOptional() @AutoMap() public actorName?: string;
   @ApiPropertyOptional() @AutoMap() public ipAddress?: string;
   @ApiPropertyOptional() @AutoMap() public userAgent?: string;
-  @ApiPropertyOptional() @AutoMap() public metadata?: Record<string, unknown>;
+  @ApiPropertyOptional() @AutoMap(() => Object) public metadata?: Record<string, unknown>;
   @ApiPropertyOptional() @AutoMap(() => Date) public createdAt?: Date;
 }
 

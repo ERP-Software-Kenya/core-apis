@@ -15,6 +15,6 @@ export class CreateMultiStopTripRequest {
   @IsArray()
   @ValidateNested({ each: true })
   @Type(() => TripStopInputRequest)
-  @AutoMap()
+  @AutoMap(() => [TripStopInputRequest])
   public stops: TripStopInputRequest[];
 }

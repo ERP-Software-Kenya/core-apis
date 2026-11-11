@@ -64,7 +64,7 @@ export class ReportGenerationLogEntity {
   @Column({ name: 'error_message', type: 'text', nullable: true })
   public errorMessage?: string;
 
-  @AutoMap()
+  @AutoMap(() => Object)
   @Column({ name: 'report_data', type: 'jsonb', nullable: true })
   public reportData?: Record<string, unknown>;
 

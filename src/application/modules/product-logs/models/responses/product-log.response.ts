@@ -10,8 +10,8 @@ export class ProductLogResponse {
   @ApiPropertyOptional() @AutoMap() public locationId?: string;
   @ApiPropertyOptional() @AutoMap() public performedById?: string;
   @ApiProperty({ enum: EProductLogAction }) @AutoMap(() => String) public action: EProductLogAction;
-  @ApiPropertyOptional() @AutoMap() public changedFields?: Array<{ field: string; oldValue: unknown; newValue: unknown }>;
-  @ApiPropertyOptional() @AutoMap() public metadata?: Record<string, unknown>;
+  @ApiPropertyOptional() @AutoMap(() => [Object]) public changedFields?: Array<{ field: string; oldValue: unknown; newValue: unknown }>;
+  @ApiPropertyOptional() @AutoMap(() => Object) public metadata?: Record<string, unknown>;
   @ApiPropertyOptional() @AutoMap(() => Date) public createdAt?: Date;
 }
 

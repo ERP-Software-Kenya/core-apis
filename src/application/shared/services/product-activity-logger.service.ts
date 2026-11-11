@@ -15,8 +15,8 @@ export class ProductLogEntry {
   @AutoMap() public performedById?: string;
   @AutoMap() public inventoryId?: string;
   @AutoMap() public locationId?: string;
-  @AutoMap() public changedFields?: Array<{ field: string; oldValue: unknown; newValue: unknown }>;
-  @AutoMap() public metadata?: Record<string, unknown>;
+  @AutoMap(() => [Object]) public changedFields?: Array<{ field: string; oldValue: unknown; newValue: unknown }>;
+  @AutoMap(() => Object) public metadata?: Record<string, unknown>;
 }
 
 @Injectable()
