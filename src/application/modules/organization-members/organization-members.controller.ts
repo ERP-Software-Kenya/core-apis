@@ -4,7 +4,7 @@ import { InjectPinoLogger, PinoLogger } from 'nestjs-pino';
 import { AuthenticatedUser, ClerkAuthGuard, CqrsMediator, CurrentUser, Roles, RolesGuard } from '../../../common';
 import { ERole } from '../../../infrastructure/persistence/entities/role.entity';
 import { UpdateMemberCommand, RemoveMemberCommand } from './commands';
-import { OrganizationMemberResponse, UpdateMemberRequest } from './models';
+import { ListMembersRequest, OrganizationMemberResponse, PaginatedOrganizationMembersResponse, UpdateMemberRequest } from './models';
 import { ListMembersQuery } from './queries';
 
 @ApiBearerAuth()
@@ -19,15 +19,19 @@ export class OrganizationMembersController {
   ) {}
 
   @ApiOperation({ summary: 'List organization members' })
-  @ApiOkResponse({ type: [OrganizationMemberResponse] })
+  @ApiOkResponse({ type: [OrganizationMemberResponse], description: 'Flat array, or PaginatedOrganizationMembersResponse when `page` is supplied' })
   @HttpCode(HttpStatus.OK)
   @Get()
-  public async list(@CurrentUser() user: AuthenticatedUser, @Query('organizationId') organizationId?: string): Promise<OrganizationMemberResponse[]> {
+  public async list(@CurrentUser() user: AuthenticatedUser, @Query() request: ListMembersRequest): Promise<OrganizationMemberResponse[] | PaginatedOrganizationMembersResponse> {
     const query = new ListMembersQuery();
-    query.organizationId = organizationId;
+    query.organizationId = request.organizationId;
+    query.page = request.page;
+    query.limit = request.limit;
+    query.search = request.search?.trim() || undefined;
+    query.status = request.status;
     query.currentOrganizationId = user.organizationId;
     query.currentRoles = user.roles;
-    return this.mediator.execute<ListMembersQuery, OrganizationMemberResponse[]>(query);
+    return this.mediator.execute<ListMembersQuery, OrganizationMemberResponse[] | PaginatedOrganizationMembersResponse>(query);
   }
 
   @ApiOperation({ summary: 'Update a member role/status/location' })
