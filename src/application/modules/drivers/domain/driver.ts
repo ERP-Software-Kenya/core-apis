@@ -7,6 +7,8 @@ export class Driver {
   @AutoMap()
   public organizationId: string;
   @AutoMap()
+  public userId?: string;
+  @AutoMap()
   public employeeId?: string;
   @AutoMap()
   public firstName: string;

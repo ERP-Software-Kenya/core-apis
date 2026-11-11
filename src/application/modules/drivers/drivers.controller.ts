@@ -1,4 +1,4 @@
-import { Mapper } from '@automapper/core';
+﻿import { Mapper } from '@automapper/core';
 import { InjectMapper } from '@automapper/nestjs';
 import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Post, Put, Query, UseGuards } from '@nestjs/common';
 import { ApiBearerAuth, ApiCreatedResponse, ApiOkResponse, ApiOperation, ApiParam, ApiTags } from '@nestjs/swagger';
@@ -8,7 +8,7 @@ import { CreateDriverRequest, UpdateDriverRequest, SearchDriversRequest, ListDri
 import { Driver } from './domain';
 import { GetDriverQuery, SearchDriversQuery, ListDriversQuery } from './queries';
 import { CreateDriverCommand, UpdateDriverCommand, DeleteDriverCommand } from './commands';
-import { ERole } from '../../../infrastructure';
+import { ERole } from '../../../infrastructure/persistence/entities/role.entity';
 
 @ApiBearerAuth()
 @ApiTags('Drivers')

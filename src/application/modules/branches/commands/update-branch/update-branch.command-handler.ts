@@ -1,4 +1,4 @@
-import { Inject, NotFoundException } from '@nestjs/common';
+import { BadRequestException, Inject, NotFoundException } from '@nestjs/common';
 import { ICommandHandler } from '@nestjs/cqrs';
 import { InjectMapper } from '@automapper/nestjs';
 import { Mapper } from '@automapper/core';
@@ -32,6 +32,9 @@ export class UpdateBranchCommandHandler implements ICommandHandler<UpdateBranchC
     if (!existing) throw new NotFoundException(`Branch ${command.id} not found`);
     if (existing.organizationId !== command.organizationId) {
       throw new NotFoundException(`Branch ${command.id} not found`);
+    }
+    if (command.isActive === false && existing.isMain) {
+      throw new BadRequestException('The main branch cannot be deactivated. Set another branch as main first.');
     }
     await assertBranchManagerAssignment(command.userId, command.organizationId, command.id, this.userRepo, this.roleRepo, this.userRoleRepo, this.repo);
 

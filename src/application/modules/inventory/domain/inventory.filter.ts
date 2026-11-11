@@ -1,4 +1,4 @@
-import { AutoMap } from '@automapper/classes';
+﻿import { AutoMap } from '@automapper/classes';
 
 export class InventoryFilter {
   @AutoMap() public organizationId?: string;

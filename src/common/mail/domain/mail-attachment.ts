@@ -1,4 +1,4 @@
-import { AutoMap } from '@automapper/classes';
+﻿import { AutoMap } from '@automapper/classes';
 
 export class MailAttachment {
   @AutoMap() public filename: string;

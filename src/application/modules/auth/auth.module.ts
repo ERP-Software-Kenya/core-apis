@@ -18,8 +18,10 @@ import {
   OrganizationEntity,
   LocationEntity,
   BranchEntity,
+  UserSessionEntity,
 } from '../../../infrastructure/persistence/entities';
 import { AuthMailService } from './mail';
+import { UserSessionService } from './user-session.service';
 
 @Module({
   imports: [
@@ -33,6 +35,7 @@ import { AuthMailService } from './mail';
       OrganizationEntity,
       LocationEntity,
       BranchEntity,
+      UserSessionEntity,
     ]),
   ],
   controllers: [AuthController],
@@ -51,6 +54,7 @@ import { AuthMailService } from './mail';
     { provide: CLERK_SERVICE, useExisting: ClerkService },
     RolesGuard,
     AuthProfile,
+    UserSessionService,
     ...AuthCommandHandlers,
     ...AuthQueryHandlers,
   ],

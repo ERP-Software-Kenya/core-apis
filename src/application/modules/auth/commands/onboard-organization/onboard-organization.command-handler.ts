@@ -1,16 +1,17 @@
-import { Inject } from '@nestjs/common';
-import { ICommandHandler } from '@nestjs/cqrs';
-import { InjectPinoLogger, PinoLogger } from 'nestjs-pino';
-import { CommandHandlerStrict, OrganizationNotFoundException } from '../../../../../common';
-import { ORGANIZATION_REPO, ROLE_REPO, USER_REPO, ORG_MEMBER_REPO } from '../../../../constants';
-import { Organization } from '../../../organizations/domain';
-import { IOrganizationRepo } from '../../../organizations';
-import { IUserRepo } from '../../../users';
-import { IRoleRepo } from '../../../roles';
-import { ERole } from '../../../../../infrastructure/persistence/entities/role.entity';
-import { IOrgMemberRepo } from '../../i-org-member.repo';
-import { OrgMember } from '../../domain';
-import { OnboardOrganizationCommand } from './onboard-organization.command';
+import { Inject } from "@nestjs/common";
+import { ICommandHandler } from "@nestjs/cqrs";
+import { InjectPinoLogger, PinoLogger } from "nestjs-pino";
+import { CommandHandlerStrict, OrganizationNotFoundException } from "../../../../../common";
+import { ORGANIZATION_REPO, ROLE_REPO, USER_REPO, ORG_MEMBER_REPO, ORGANIZATION_SETTING_REPO } from "../../../../constants";
+import { Organization } from "../../../organizations/domain";
+import { IOrganizationRepo } from "../../../organizations";
+import { IUserRepo } from "../../../users";
+import { IRoleRepo } from "../../../roles";
+import { ERole } from "../../../../../infrastructure/persistence/entities/role.entity";
+import { IOrgMemberRepo } from "../../i-org-member.repo";
+import { OrgMember } from "../../domain";
+import { OnboardOrganizationCommand } from "./onboard-organization.command";
+import { IOrganizationSettingRepo } from "../../../billing-settings/i-organization-setting.repo";
 
 export class OnboardOrganizationResult {
   organization: Organization;
@@ -19,20 +20,19 @@ export class OnboardOrganizationResult {
 }
 
 @CommandHandlerStrict(OnboardOrganizationCommand)
-export class OnboardOrganizationCommandHandler
-  implements ICommandHandler<OnboardOrganizationCommand, OnboardOrganizationResult>
-{
+export class OnboardOrganizationCommandHandler implements ICommandHandler<OnboardOrganizationCommand, OnboardOrganizationResult> {
   constructor(
     @Inject(ORGANIZATION_REPO) private readonly orgRepo: IOrganizationRepo,
     @Inject(USER_REPO) private readonly userRepo: IUserRepo,
     @Inject(ROLE_REPO) private readonly roleRepo: IRoleRepo,
     @Inject(ORG_MEMBER_REPO) private readonly orgMemberRepo: IOrgMemberRepo,
+    @Inject(ORGANIZATION_SETTING_REPO) private readonly orgSettingRepo: IOrganizationSettingRepo,
     @InjectPinoLogger(OnboardOrganizationCommandHandler.name)
     private readonly logger: PinoLogger,
   ) {}
 
   public async execute(command: OnboardOrganizationCommand): Promise<OnboardOrganizationResult> {
-    this.logger.info({ dbUserId: command.dbUserId }, 'Onboarding organization');
+    this.logger.info({ dbUserId: command.dbUserId }, "Onboarding organization");
 
     const existingUser = await this.userRepo.getAsync(command.dbUserId);
     if (existingUser?.organizationId) {
@@ -43,7 +43,7 @@ export class OnboardOrganizationCommandHandler
         throw new OrganizationNotFoundException(existingUser.organizationId);
       }
       const roles = await this.roleRepo.allAsync();
-      const roleName = roles.find((r) => r.id === membership.roleId)?.name ?? '';
+      const roleName = roles.find((r) => r.id === membership.roleId)?.name ?? "";
       return { organization, membership, roleName };
     }
 
@@ -57,44 +57,63 @@ export class OnboardOrganizationCommandHandler
         slug: command.slug,
         clerkOrgId: command.clerkOrgId,
         logoUrl: command.logoUrl,
+        country: command.country,
+        industry: command.industry,
+        businessType: command.businessType,
+        teamSize: command.teamSize,
+        modules: command.modules,
+        salesMethod: command.salesMethod,
+        taxId: command.taxId,
         isActive: true,
       } as unknown as Organization);
-      completedSteps.push('org_created');
+      completedSteps.push("org_created");
 
       // Step 2 — resolve the OrgAdmin role
       const roles = await this.roleRepo.allAsync();
       const orgAdminRole = roles.find((r) => r.name === String(ERole.OrgAdmin));
-      if (!orgAdminRole) throw new Error('OrgAdmin role not found in DB — run seeds first');
-      completedSteps.push('role_resolved');
+      if (!orgAdminRole) throw new Error("OrgAdmin role not found in DB — run seeds first");
+      completedSteps.push("role_resolved");
 
       // Step 3 — link user's primary org
       const user = await this.userRepo.getAsync(command.dbUserId);
       await this.userRepo.updateAsync({ ...user, organizationId: org.id });
-      completedSteps.push('user_org_linked');
+      completedSteps.push("user_org_linked");
 
       // Step 4 — create org membership with OrgAdmin role
       const membership = await this.orgMemberRepo.createAsync({
         organizationId: org.id,
         userId: command.dbUserId,
         roleId: orgAdminRole.id,
-        status: 'active',
+        status: "active",
         joinedAt: new Date(),
       } as unknown as OrgMember);
-      completedSteps.push('membership_created');
+      completedSteps.push("membership_created");
+
+      // Step 5 — initialize organization settings with onboarding values
+      const orgSetting = await this.orgSettingRepo.getOrCreateAsync(org.id);
+      if (command.baseCurrencyCode || command.timeZone || command.fiscalYearStartMonth) {
+        await this.orgSettingRepo.updateSettingsAsync({
+          organizationId: org.id,
+          baseCurrencyCode: command.baseCurrencyCode ?? orgSetting.baseCurrencyCode,
+          timeZone: command.timeZone ?? orgSetting.timeZone,
+          fiscalYearStartMonth: command.fiscalYearStartMonth ?? orgSetting.fiscalYearStartMonth,
+        });
+      }
+      completedSteps.push("settings_initialized");
 
       return { organization: org, membership, roleName: orgAdminRole.name };
     } catch (err) {
-      this.logger.error({ err, completedSteps }, 'Onboarding failed, rolling back completed steps');
+      this.logger.error({ err, completedSteps }, "Onboarding failed, rolling back completed steps");
 
       // Rollback in reverse — only steps that need cleanup
-      if (completedSteps.includes('membership_created')) {
+      if (completedSteps.includes("membership_created")) {
         // Membership will cascade-delete if org is removed
       }
-      if (completedSteps.includes('user_org_linked')) {
+      if (completedSteps.includes("user_org_linked")) {
         const user = await this.userRepo.getAsync(command.dbUserId).catch(() => null);
         if (user) await this.userRepo.updateAsync({ ...user, organizationId: null });
       }
-      if (completedSteps.includes('org_created') && org) {
+      if (completedSteps.includes("org_created") && org) {
         await this.orgRepo.deleteAsync(org.id, true);
       }
 

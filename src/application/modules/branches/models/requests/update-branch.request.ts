@@ -11,8 +11,10 @@ export class UpdateBranchRequest {
   @ApiPropertyOptional() @IsOptional() @IsString() @MaxLength(100) @AutoMap() public country?: string;
   @ApiPropertyOptional() @IsOptional() @IsString() @MaxLength(50) @AutoMap() public phone?: string;
   @ApiPropertyOptional() @IsOptional() @IsBoolean() @AutoMap() public isActive?: boolean;
+  @ApiPropertyOptional({ description: 'Default location ID for this branch' })
+  @IsOptional() @IsUUID() @AutoMap() public defaultLocationId?: string | null;
   @ApiPropertyOptional({ description: 'User ID of the branch manager' })
-  @IsOptional() @IsUUID() @AutoMap() public userId?: string;
+  @IsOptional() @IsUUID() @AutoMap() public userId?: string | null;
   @ApiPropertyOptional({ type: [String] })
   @IsOptional() @IsArray() @IsUUID('4', { each: true }) @AutoMap(() => [String]) public locationIds?: string[];
 }

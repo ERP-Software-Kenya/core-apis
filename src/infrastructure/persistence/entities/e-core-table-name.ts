@@ -14,6 +14,7 @@ export enum ECoreTableName {
   OrganizationSettings  = 'organization_settings',
   OrgAddresses          = 'org_addresses',
   OrgMembers            = 'org_members',
+  OrganizationInvitations = 'organization_invitations',
   Stores                = 'stores',
   StoreMembers          = 'store_members',
   Users                 = 'users',
@@ -119,6 +120,7 @@ export enum ECoreTableName {
   // ─── Field App ───────────────────────────────────────────────────────────────
   TripStops             = 'trip_stops',
   UserDeviceTokens      = 'user_device_tokens',
+  UserSessions          = 'user_sessions',
 
   // ─── CI / Deploy verification ─────────────────────────────────────────────
   DeploymentChecks      = 'deployment_checks',
@@ -131,4 +133,7 @@ export enum ECoreTableName {
 
   // ─── Product ↔ Unit junction ───────────────────────────────────────────────
   ProductUnits          = 'product_units',
+
+  // ─── Notification Settings ───────────────────────────────────────────────
+  NotificationSettings  = 'notification_settings',
 }

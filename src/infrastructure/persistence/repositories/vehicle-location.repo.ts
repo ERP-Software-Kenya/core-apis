@@ -3,7 +3,7 @@ import { InjectMapper } from '@automapper/nestjs';
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { InjectPinoLogger, PinoLogger } from 'nestjs-pino';
-import { Repository } from 'typeorm';
+import { In, Repository } from 'typeorm';
 import { BaseRepo, DbException, Filter, PageableFilter } from '../../../common';
 import { VehicleLocationEntity } from '../entities';
 import { VehicleLocation } from '../../../application/modules/trip-operations/domain/vehicle-location.model';
@@ -30,6 +30,17 @@ export class VehicleLocationRepo
     try {
       const entity = await this.internalRepo.findOne({ where: { vehicleId } });
       return entity ? this.mapToModel(entity) : null;
+    } catch (ex) {
+      this.logger.error(ex);
+      throw new DbException(ex);
+    }
+  }
+
+  public async findByVehicleIdsAsync(vehicleIds: string[]): Promise<VehicleLocation[]> {
+    if (vehicleIds.length === 0) return [];
+    try {
+      const entities = await this.internalRepo.find({ where: { vehicleId: In(vehicleIds) } });
+      return this.mapToModelArray(entities);
     } catch (ex) {
       this.logger.error(ex);
       throw new DbException(ex);

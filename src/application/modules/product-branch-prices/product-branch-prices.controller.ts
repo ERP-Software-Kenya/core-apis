@@ -1,4 +1,4 @@
-import { Mapper } from '@automapper/core';
+﻿import { Mapper } from '@automapper/core';
 import { InjectMapper } from '@automapper/nestjs';
 import {
   BadRequestException,
@@ -25,7 +25,7 @@ import {
   RolesGuard,
   assertBranchAccess,
 } from '../../../common';
-import { ERole } from '../../../infrastructure';
+import { ERole } from '../../../infrastructure/persistence/entities/role.entity';
 import { CopyMainBranchPricesCommand, UpsertBranchProductPriceCommand } from './commands';
 import { ProductBranchPrice } from './domain';
 import {

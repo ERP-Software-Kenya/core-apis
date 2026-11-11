@@ -1,4 +1,4 @@
-import { AutoMap } from '@automapper/classes';
+﻿import { AutoMap } from '@automapper/classes';
 import { EProductLogAction } from 'src/infrastructure/persistence/entities';
 
 export class ProductLog {

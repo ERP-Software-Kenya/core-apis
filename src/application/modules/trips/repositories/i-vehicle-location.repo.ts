@@ -3,5 +3,6 @@ import { VehicleLocation } from '../../trip-operations/domain/vehicle-location.m
 
 export interface IVehicleLocationRepo extends IBaseRepo<VehicleLocation, string> {
   findByVehicleIdAsync(vehicleId: string): Promise<VehicleLocation | null>;
+  findByVehicleIdsAsync(vehicleIds: string[]): Promise<VehicleLocation[]>;
   upsertByVehicleIdAsync(vehicleId: string, lat: number, lng: number, gpsTime: Date): Promise<void>;
 }

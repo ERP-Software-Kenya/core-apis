@@ -9,8 +9,6 @@ export async function assignLocationsToBranch(
     locationIds: string[];
   },
 ): Promise<void> {
-  if (!params.locationIds.length) return;
-
   const uniqueIds = [...new Set(params.locationIds)];
   for (const locationId of uniqueIds) {
     const location = await locationRepo.getAsync(locationId);
@@ -20,9 +18,16 @@ export async function assignLocationsToBranch(
     if (location.organizationId !== params.organizationId) {
       throw new LocationAccessDeniedException(undefined, 'Location does not belong to this organization.');
     }
+    if (location.branchId && location.branchId !== params.branchId) {
+      throw new LocationAccessDeniedException(
+        undefined,
+        'Location is already assigned to another branch. Use the location transfer flow.',
+      );
+    }
   }
 
-  await locationRepo.assignBranchAsync(params.branchId, uniqueIds);
+  // The request is authoritative: omitted locations must be detached as well.
+  await locationRepo.replaceBranchAssignmentsAsync(params.branchId, params.organizationId, uniqueIds);
 }
 
 export async function loadBranchLocationIds(locationRepo: ILocationRepo, branchId: string): Promise<string[]> {

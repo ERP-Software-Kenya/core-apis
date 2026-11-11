@@ -6,6 +6,8 @@ export interface ClerkJwtPayload {
   iat: number;
   nbf: number;
   azp?: string;
+  aud?: string | string[];
+  sts?: string;
   /** JWT v2: organization info nested under "o" */
   o?: { id: string; rol: string; slg: string };
   /** Custom claims from a Clerk JWT template (optional) */

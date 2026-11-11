@@ -1,4 +1,4 @@
-import { AutoMap } from '@automapper/classes';
+﻿import { AutoMap } from '@automapper/classes';
 import { EReportPeriod } from './e-report-period';
 import { EReportType } from './e-report-type';
 

@@ -96,7 +96,7 @@ describe('Clerk JWT email fallback', () => {
       join(__dirname, '../../../common/auth/strategies/clerk-jwt.strategy.ts'),
       'utf8',
     );
-    expect(source).toContain("verification?.status === 'verified'");
+    expect(source).toMatch(/verification\?\.status === ["']verified["']/);
     expect(source).not.toContain('emailAddresses[0]');
   });
 });
@@ -348,7 +348,7 @@ describe('slice A auth kill-switches', () => {
     const decorators = methodDecorators(source, 'getToken');
     expect(decorators).toContain('AllowAnonymous');
     expect(source).toMatch(/isDev\(\)/);
-    expect(source).toMatch(/ForbiddenException\('Token minting is disabled outside development'\)/);
+    expect(source).toMatch(/ForbiddenException\(["']Token minting is disabled outside development["']\)/);
   });
 
   it('restricts mail send-raw and test to SuperAdmin', () => {

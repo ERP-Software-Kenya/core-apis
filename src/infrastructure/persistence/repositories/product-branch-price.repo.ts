@@ -157,17 +157,29 @@ export class ProductBranchPriceRepo
     return this.mapToModel(saved);
   }
 
-  public async copyFromMainBranchAsync(targetBranchId: string, organizationId: string): Promise<void> {
+  public async copyFromMainBranchAsync(
+    mainBranchId: string,
+    targetBranchId: string,
+    organizationId: string,
+  ): Promise<void> {
     await this.internalRepo.manager.query(
       `INSERT INTO core.product_branch_prices
          (id, organization_id, branch_id, product_id,
           cost_price, retail_price, loyalty_price, wholesale_price, transfer_price,
           created_at)
        SELECT
-         gen_random_uuid(), $1, $2, p.id,
-         p.cost_price, p.retail_price, p.loyalty_price, p.wholesale_price, p.transfer_price,
+         gen_random_uuid(), $1, $3, p.id,
+         COALESCE(main_price.cost_price, p.cost_price),
+         COALESCE(main_price.retail_price, p.retail_price),
+         COALESCE(main_price.loyalty_price, p.loyalty_price),
+         COALESCE(main_price.wholesale_price, p.wholesale_price),
+         COALESCE(main_price.transfer_price, p.transfer_price),
          NOW()
        FROM core.products p
+       LEFT JOIN core.product_branch_prices main_price
+         ON main_price.product_id = p.id
+        AND main_price.branch_id = $2
+        AND main_price.organization_id = $1
        WHERE p.organization_id = $1 AND p.deleted_at IS NULL
        ON CONFLICT (branch_id, product_id)
        DO UPDATE SET
@@ -177,7 +189,7 @@ export class ProductBranchPriceRepo
          wholesale_price = EXCLUDED.wholesale_price,
          transfer_price  = EXCLUDED.transfer_price,
          updated_at      = NOW()`,
-      [organizationId, targetBranchId],
+      [organizationId, mainBranchId, targetBranchId],
     );
   }
 

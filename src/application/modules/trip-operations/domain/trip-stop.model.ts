@@ -6,6 +6,8 @@ export class TripStop {
   @AutoMap() public tripId: string;
   @AutoMap() public orderId: string;
   @AutoMap() public sequence: number;
+  @AutoMap() public latitude?: number;
+  @AutoMap() public longitude?: number;
   @AutoMap(() => String) public status: ETripStopStatus;
   @AutoMap() public otpCode?: string;
   @AutoMap(() => Date) public otpExpiresAt?: Date;

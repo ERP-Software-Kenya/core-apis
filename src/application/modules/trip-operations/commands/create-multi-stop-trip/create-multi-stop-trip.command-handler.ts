@@ -1,10 +1,11 @@
-import { Inject } from '@nestjs/common';
+import { BadRequestException, Inject } from '@nestjs/common';
 import { ICommandHandler } from '@nestjs/cqrs';
 import { InjectPinoLogger, PinoLogger } from 'nestjs-pino';
 import { CommandHandlerStrict } from '../../../../../common';
 import { IPushNotificationService, PUSH_NOTIFICATION_SERVICE } from '../../../../../common';
 import { CentrifugalService } from '../../../../../common/centrifugal';
-import { TRIP_REPO, ORDER_REPO } from '../../../../../application/constants';
+import { DRIVER_REPO, TRIP_REPO, ORDER_REPO } from '../../../../../application/constants';
+import { IDriverRepo } from '../../../drivers/repositories/i-driver.repo';
 import { ITripRepo } from '../../../trips/repositories/i-trip.repo';
 import { IOrderRepo } from '../../../orders';
 import { Trip } from '../../../trips/domain';
@@ -16,6 +17,7 @@ export class CreateMultiStopTripCommandHandler implements ICommandHandler<Create
   public constructor(
     @Inject(TRIP_REPO) private readonly tripRepo: ITripRepo,
     @Inject(ORDER_REPO) private readonly orderRepo: IOrderRepo,
+    @Inject(DRIVER_REPO) private readonly driverRepo: IDriverRepo,
     private readonly dispatchPaymentService: OrderDispatchPaymentService,
     private readonly centrifugal: CentrifugalService,
     @Inject(PUSH_NOTIFICATION_SERVICE) private readonly pushService: IPushNotificationService,
@@ -24,6 +26,11 @@ export class CreateMultiStopTripCommandHandler implements ICommandHandler<Create
 
   public async execute(command: CreateMultiStopTripCommand): Promise<Trip> {
     this.logger.info(`Executing Command '${CreateMultiStopTripCommand.name}' driverId=${command.driverId}`);
+
+    const driver = await this.driverRepo.getAsync(command.driverId);
+    if (!driver || driver.organizationId !== command.organizationId || !driver.userId) {
+      throw new BadRequestException('Driver must belong to the organization and be linked to a mobile user');
+    }
 
     for (const stop of command.stops) {
       const order = await this.orderRepo.getAsync(stop.orderId);
@@ -37,7 +44,7 @@ export class CreateMultiStopTripCommandHandler implements ICommandHandler<Create
     );
 
     await this.centrifugal
-      .publish(`user_${command.driverId}`, {
+      .publish(`user_${driver.userId}`, {
         type: 'trip:assigned',
         tripId: trip.id,
         stopCount: command.stops.length,
@@ -48,7 +55,7 @@ export class CreateMultiStopTripCommandHandler implements ICommandHandler<Create
 
     await this.pushService
       .sendAsync({
-        userId: command.driverId,
+        userId: driver.userId,
         organizationId: command.organizationId,
         type: 'trip:assigned',
         title: 'New Trip Assigned',

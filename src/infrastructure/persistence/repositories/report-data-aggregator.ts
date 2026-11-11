@@ -57,20 +57,13 @@ export class ReportDataAggregator implements IReportDataAggregator {
         return this.aggrSales(qr, orgId, locBillFilter, fromIso, toIso, "AND b.payment_method='CASH'", 'Cash Bills', base);
       case EReportType.CreditSales:
         return this.aggrSales(qr, orgId, locBillFilter, fromIso, toIso, "AND b.sale_type='credit'", 'Credit Bills', base);
-      case EReportType.TotalBills:
-      case EReportType.AverageBillValue:
       case EReportType.TimeWiseSales:
-        return this.aggrBills(qr, orgId, locBillFilter, fromIso, toIso, reportType, base);
+        return this.aggrBills(qr, orgId, locBillFilter, fromIso, toIso, base);
       case EReportType.TopSellingProducts:
       case EReportType.SlowMovingProducts:
         return this.aggrProducts(qr, orgId, locBillFilter, fromIso, toIso, reportType, base);
       case EReportType.TotalExpense:
-      case EReportType.ShopExpense:
-      case EReportType.OtherExpense:
-        return this.aggrExpenses(qr, orgId, locFilter, fromIso, toIso, reportType, base);
-      case EReportType.OpeningCash:
-      case EReportType.ClosingCash:
-        return this.aggrCash(qr, orgId, fromIso, toIso, reportType, base);
+        return this.aggrExpenses(qr, orgId, locFilter, fromIso, toIso, base);
       case EReportType.TotalPurchase:
       case EReportType.PurchaseReturn:
         return this.aggrPurchase(qr, orgId, fromIso, toIso, reportType, base);
@@ -82,19 +75,15 @@ export class ReportDataAggregator implements IReportDataAggregator {
       case EReportType.OutOfStockItems:
         return this.aggrStock(qr, orgId, locationId ?? null, reportType, base);
       case EReportType.DamagedStock:
-      case EReportType.ReturnedItems:
-        return this.aggrDamageReturns(qr, locationId ?? null, fromIso, toIso, reportType, base);
-      case EReportType.TotalCustomers:
+        return this.aggrDamagedStock(qr, locationId ?? null, fromIso, toIso, base);
       case EReportType.NewCustomers:
       case EReportType.RepeatCustomers:
         return this.aggrCustomers(qr, orgId, locBillFilter, fromIso, toIso, reportType, base);
       case EReportType.CreditGiven:
       case EReportType.CreditReceived:
-      case EReportType.PendingCredit:
         return this.aggrCredit(qr, orgId, fromIso, toIso, reportType, base);
       case EReportType.SupplierPayment:
-      case EReportType.PendingSupplierPayment:
-        return this.aggrSupplier(qr, orgId, locationId ?? null, fromIso, toIso, reportType, base);
+        return this.aggrSupplier(qr, orgId, fromIso, toIso, base);
       case EReportType.WeeklyComparison:
         return this.aggrWeekly(qr, orgId, locBillFilter, fromIso, toIso, base);
       default:
@@ -157,21 +146,9 @@ export class ReportDataAggregator implements IReportDataAggregator {
 
   private async aggrBills(
     qr: QueryRunner, orgId: string, locBillFilter: string,
-    fromIso: string, toIso: string, reportType: EReportType, base: ReportBase,
+    fromIso: string, toIso: string, base: ReportBase,
   ): Promise<ReportData> {
     const billWhere = `organization_id='${orgId}' AND status='COMPLETED' ${locBillFilter} AND billed_at BETWEEN '${fromIso}' AND '${toIso}'`;
-    if (reportType === EReportType.TotalBills) {
-      const val = await this.scalar(qr, `SELECT COUNT(*) FROM core.bills WHERE ${billWhere}`);
-      return { ...base, formattedValue: String(Number(val)) };
-    }
-    if (reportType === EReportType.AverageBillValue) {
-      const [total, count] = await Promise.all([
-        this.scalar(qr, `SELECT COALESCE(SUM(total_amount),0) FROM core.bills WHERE ${billWhere}`),
-        this.scalar(qr, `SELECT COUNT(*) FROM core.bills WHERE ${billWhere}`),
-      ]);
-      const cnt = Number(count);
-      return { ...base, formattedValue: this.inr(cnt > 0 ? Number(total) / cnt : 0) };
-    }
     const rows = (await qr.query(`SELECT EXTRACT(HOUR FROM billed_at) AS hour, COALESCE(SUM(total_amount),0) AS total FROM core.bills WHERE ${billWhere} GROUP BY hour ORDER BY hour`)) as Row[];
     return { ...base, tableHeaders: ['Hour', 'Total Sales'], tableRows: rows.map(rr => [`${String(rr['hour'])}:00`, this.inr(Number(rr['total']))]) };
   }
@@ -197,19 +174,9 @@ export class ReportDataAggregator implements IReportDataAggregator {
 
   private async aggrExpenses(
     qr: QueryRunner, orgId: string, locFilter: string,
-    fromIso: string, toIso: string, reportType: EReportType, base: ReportBase,
+    fromIso: string, toIso: string, base: ReportBase,
   ): Promise<ReportData> {
-    const catFilter = reportType === EReportType.ShopExpense ? "AND category='shop'" : reportType === EReportType.OtherExpense ? "AND category != 'shop'" : '';
-    const val = await this.scalar(qr, `SELECT COALESCE(SUM(amount),0) FROM core.expenses WHERE org_id='${orgId}' ${catFilter} ${locFilter} AND expense_date BETWEEN '${fromIso}' AND '${toIso}'`);
-    return { ...base, formattedValue: this.inr(Number(val)) };
-  }
-
-  private async aggrCash(
-    qr: QueryRunner, orgId: string,
-    fromIso: string, toIso: string, reportType: EReportType, base: ReportBase,
-  ): Promise<ReportData> {
-    const dateFilter = reportType === EReportType.OpeningCash ? `created_at < '${fromIso}'` : `created_at <= '${toIso}'`;
-    const val = await this.scalar(qr, `SELECT COALESCE(SUM(amount),0) FROM core.payment_transactions WHERE org_id='${orgId}' AND method='CASH' AND type='payment' AND status='completed' AND ${dateFilter}`);
+    const val = await this.scalar(qr, `SELECT COALESCE(SUM(amount),0) FROM core.expenses WHERE org_id='${orgId}' ${locFilter} AND expense_date BETWEEN '${fromIso}' AND '${toIso}'`);
     return { ...base, formattedValue: this.inr(Number(val)) };
   }
 
@@ -261,29 +228,20 @@ export class ReportDataAggregator implements IReportDataAggregator {
     return { ...base, formattedValue: String(Math.round(total)), summaryCards: [{ label: 'Total Items', value: String(rows.length) }, { label: 'Total Qty', value: String(Math.round(total)) }], tableHeaders: ['Product ID', 'Location ID', 'Qty On Hand'], tableRows: rows.map(rr => [String(rr['product_id']), String(rr['location_id']), String(rr['quantity_on_hand'])]) };
   }
 
-  private async aggrDamageReturns(
+  private async aggrDamagedStock(
     qr: QueryRunner, locationId: string | null,
-    fromIso: string, toIso: string, reportType: EReportType, base: ReportBase,
+    fromIso: string, toIso: string, base: ReportBase,
   ): Promise<ReportData> {
-    if (reportType === EReportType.DamagedStock) {
-      const locWhere = locationId ? `AND sm.location_id='${locationId}'` : '';
-      const rows = (await qr.query(`SELECT sm.product_id, sm.location_id, SUM(sm.quantity) AS qty_damaged FROM core.stock_movements sm WHERE sm.movement_type='damage' ${locWhere} AND sm.created_at BETWEEN '${fromIso}' AND '${toIso}' GROUP BY sm.product_id, sm.location_id`)) as Row[];
-      const total = rows.reduce((acc, rr) => acc + Number(rr['qty_damaged'] ?? 0), 0);
-      return { ...base, formattedValue: String(Math.round(total)), tableHeaders: ['Product ID', 'Location', 'Qty Damaged'], tableRows: rows.map(rr => [String(rr['product_id']), String(rr['location_id']), String(rr['qty_damaged'])]) };
-    }
-    const rows = (await qr.query(`SELECT ir.id, ir.return_type, ir.total_amount, ir.created_at FROM core.item_returns ir WHERE ir.created_at BETWEEN '${fromIso}' AND '${toIso}' ORDER BY ir.created_at DESC LIMIT 50`)) as Row[];
-    const total = rows.reduce((acc, rr) => acc + Number(rr['total_amount'] ?? 0), 0);
-    return { ...base, formattedValue: this.inr(total), tableHeaders: ['Return ID', 'Type', 'Amount', 'Date'], tableRows: rows.map(rr => [String(rr['id']).substring(0, 8) + '...', String(rr['return_type']), this.inr(Number(rr['total_amount'])), new Date(String(rr['created_at'])).toLocaleDateString('en-IN')]) };
+    const locWhere = locationId ? `AND sm.location_id='${locationId}'` : '';
+    const rows = (await qr.query(`SELECT sm.product_id, sm.location_id, SUM(sm.quantity) AS qty_damaged FROM core.stock_movements sm WHERE sm.movement_type='damage' ${locWhere} AND sm.created_at BETWEEN '${fromIso}' AND '${toIso}' GROUP BY sm.product_id, sm.location_id`)) as Row[];
+    const total = rows.reduce((acc, rr) => acc + Number(rr['qty_damaged'] ?? 0), 0);
+    return { ...base, formattedValue: String(Math.round(total)), tableHeaders: ['Product ID', 'Location', 'Qty Damaged'], tableRows: rows.map(rr => [String(rr['product_id']), String(rr['location_id']), String(rr['qty_damaged'])]) };
   }
 
   private async aggrCustomers(
     qr: QueryRunner, orgId: string, locBillFilter: string,
     fromIso: string, toIso: string, reportType: EReportType, base: ReportBase,
   ): Promise<ReportData> {
-    if (reportType === EReportType.TotalCustomers) {
-      const val = await this.scalar(qr, `SELECT COUNT(DISTINCT customer_id) FROM core.bills WHERE organization_id='${orgId}' AND status='COMPLETED' ${locBillFilter} AND billed_at BETWEEN '${fromIso}' AND '${toIso}'`);
-      return { ...base, formattedValue: String(Number(val)) };
-    }
     if (reportType === EReportType.NewCustomers) {
       const val = await this.scalar(qr, `SELECT COUNT(*) FROM core.customers WHERE organization_id='${orgId}' AND created_at BETWEEN '${fromIso}' AND '${toIso}'`);
       return { ...base, formattedValue: String(Number(val)) };
@@ -296,28 +254,17 @@ export class ReportDataAggregator implements IReportDataAggregator {
     qr: QueryRunner, orgId: string,
     fromIso: string, toIso: string, reportType: EReportType, base: ReportBase,
   ): Promise<ReportData> {
-    if (reportType === EReportType.PendingCredit) {
-      const rows = (await qr.query(`SELECT id, name, credit_balance FROM core.customers WHERE organization_id='${orgId}' AND credit_balance > 0 ORDER BY credit_balance DESC LIMIT 50`)) as Row[];
-      const total = rows.reduce((acc, rr) => acc + Number(rr['credit_balance'] ?? 0), 0);
-      return { ...base, formattedValue: this.inr(total), tableHeaders: ['Customer ID', 'Name', 'Balance'], tableRows: rows.map(rr => [String(rr['id']).substring(0, 8) + '...', String(rr['name']), this.inr(Number(rr['credit_balance']))]) };
-    }
     const txType = reportType === EReportType.CreditGiven ? 'credit_sale' : 'payment';
     const val = await this.scalar(qr, `SELECT COALESCE(SUM(amount),0) FROM core.customer_credit_transactions WHERE type='${txType}' AND created_at BETWEEN '${fromIso}' AND '${toIso}'`);
     return { ...base, formattedValue: this.inr(Number(val)) };
   }
 
   private async aggrSupplier(
-    qr: QueryRunner, orgId: string, locationId: string | null,
-    fromIso: string, toIso: string, reportType: EReportType, base: ReportBase,
+    qr: QueryRunner, orgId: string,
+    fromIso: string, toIso: string, base: ReportBase,
   ): Promise<ReportData> {
-    if (reportType === EReportType.SupplierPayment) {
-      const val = await this.scalar(qr, `SELECT COALESCE(SUM(amount),0) FROM core.payment_transactions WHERE org_id='${orgId}' AND reference_type='purchase_order' AND created_at BETWEEN '${fromIso}' AND '${toIso}'`);
-      return { ...base, formattedValue: this.inr(Number(val)) };
-    }
-    const locWhere = locationId ? `AND po.location_id='${locationId}'` : '';
-    const rows = (await qr.query(`SELECT po.po_number, po.supplier_id, po.total_amount, po.status FROM core.purchase_orders po WHERE po.organization_id='${orgId}' AND po.status NOT IN ('received','cancelled') ${locWhere} ORDER BY po.created_at DESC LIMIT 50`)) as Row[];
-    const total = rows.reduce((acc, rr) => acc + Number(rr['total_amount'] ?? 0), 0);
-    return { ...base, formattedValue: this.inr(total), tableHeaders: ['PO Number', 'Supplier ID', 'Amount', 'Status'], tableRows: rows.map(rr => [String(rr['po_number']), String(rr['supplier_id']).substring(0, 8) + '...', this.inr(Number(rr['total_amount'])), String(rr['status'])]) };
+    const val = await this.scalar(qr, `SELECT COALESCE(SUM(amount),0) FROM core.payment_transactions WHERE org_id='${orgId}' AND reference_type='purchase_order' AND created_at BETWEEN '${fromIso}' AND '${toIso}'`);
+    return { ...base, formattedValue: this.inr(Number(val)) };
   }
 
   private async aggrWeekly(
@@ -347,16 +294,10 @@ const REPORT_TYPE_DESCRIPTIONS: Partial<Record<EReportType, string>> = {
   [EReportType.TotalSales]:             'Sum of all completed bill totals in the selected period.',
   [EReportType.CashSales]:              'Bills where the payment method was Cash.',
   [EReportType.CreditSales]:            'Bills where payment was deferred on credit.',
-  [EReportType.TotalBills]:             'Count of all completed bills in the period.',
-  [EReportType.AverageBillValue]:       'Total sales divided by the number of bills.',
   [EReportType.TimeWiseSales]:          'Hourly breakdown of sales volume.',
   [EReportType.TopSellingProducts]:     'Products ranked by quantity sold in the period.',
   [EReportType.SlowMovingProducts]:     'Products with the lowest sales volume in the period.',
   [EReportType.TotalExpense]:           'All expenses (shop + other) combined.',
-  [EReportType.ShopExpense]:            'Operational store expenses in the period.',
-  [EReportType.OtherExpense]:           'Miscellaneous expenses outside core operations.',
-  [EReportType.OpeningCash]:            'Estimated cash balance at the start of the period.',
-  [EReportType.ClosingCash]:            'Estimated cash balance at the end of the period.',
   [EReportType.TotalPurchase]:          'Total cost of received purchase orders.',
   [EReportType.PurchaseReturn]:         'Goods returned to suppliers in the period.',
   [EReportType.TotalProfit]:            'Gross profit — revenue minus cost of goods sold.',
@@ -365,15 +306,10 @@ const REPORT_TYPE_DESCRIPTIONS: Partial<Record<EReportType, string>> = {
   [EReportType.LowStockItems]:          'Items at or below their reorder threshold.',
   [EReportType.OutOfStockItems]:        'Items with zero quantity on hand.',
   [EReportType.DamagedStock]:           'Stock marked as damaged in the period.',
-  [EReportType.ReturnedItems]:          'Customer and supplier returns in the period.',
-  [EReportType.TotalCustomers]:         'Distinct customers who transacted in the period.',
   [EReportType.NewCustomers]:           'Customers created (first purchase) in the period.',
   [EReportType.RepeatCustomers]:        'Customers with more than one bill in the period.',
   [EReportType.CreditGiven]:            'Credit extended to customers in the period.',
   [EReportType.CreditReceived]:         'Credit payments collected from customers.',
-  [EReportType.PendingCredit]:          'Outstanding credit balances owed by customers.',
   [EReportType.SupplierPayment]:        'Payments made to suppliers in the period.',
-  [EReportType.PendingSupplierPayment]: 'Purchase orders not yet fully paid.',
-  [EReportType.StaffAttendance]:        'Staff attendance records for the period.',
   [EReportType.WeeklyComparison]:       'Week-over-week sales comparison within the period.',
 };

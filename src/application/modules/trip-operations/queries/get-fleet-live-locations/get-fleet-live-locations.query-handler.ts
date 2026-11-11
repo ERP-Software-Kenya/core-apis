@@ -29,11 +29,13 @@ export class GetFleetLiveLocationsQueryHandler
   public async execute(query: GetFleetLiveLocationsQuery): Promise<FleetLiveLocation[]> {
     this.logger.info(`Executing Query '${GetFleetLiveLocationsQuery.name}' orgId=${query.organizationId}`);
 
-    const activeTrips = await this.tripRepo.findByStatusAsync(ETripStatus.InTransit);
+    const activeTrips = await this.tripRepo.findByStatusAsync(ETripStatus.InTransit, query.organizationId);
+    const locations = await this.vehicleLocationRepo.findByVehicleIdsAsync(activeTrips.map((trip) => trip.vehicleId));
+    const locationByVehicle = new Map(locations.map((location) => [location.vehicleId, location]));
     const results: FleetLiveLocation[] = [];
 
     for (const trip of activeTrips) {
-      const location = await this.vehicleLocationRepo.findByVehicleIdAsync(trip.vehicleId);
+      const location = locationByVehicle.get(trip.vehicleId);
       if (!location) continue;
 
       results.push({

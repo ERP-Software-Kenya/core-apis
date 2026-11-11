@@ -6,7 +6,7 @@ import { IUserRepo } from '../../users';
 import { IBranchRepo } from '../i-branch.repo';
 
 export async function assertBranchManagerAssignment(
-  userId: string | undefined,
+  userId: string | null | undefined,
   organizationId: string,
   currentBranchId: string | undefined,
   userRepo: IUserRepo,
@@ -16,12 +16,13 @@ export async function assertBranchManagerAssignment(
 ): Promise<void> {
   if (!userId) return;
   const user = await userRepo.getAsync(userId);
-  if (!user || user.organizationId !== organizationId) {
+  if (!user || user.organizationId !== organizationId || !user.isActive) {
     throw new BadRequestException('Branch manager must belong to the same organization.');
   }
   const roles = await roleRepo.allAsync({});
-  const branchManagerRole = roles.find((role) =>
-    role.organizationId === organizationId && role.name === ERole.BranchManager);
+  // Roles are global reference data. Organization membership is established by
+  // the user-role assignment, not by the role record itself.
+  const branchManagerRole = roles.find((role) => role.name === ERole.BranchManager);
   const assignments = await userRoleRepo.allByOrganizationAsync(organizationId);
   if (!branchManagerRole || !assignments.some((assignment) =>
     assignment.userId === userId && assignment.roleId === branchManagerRole.id)) {

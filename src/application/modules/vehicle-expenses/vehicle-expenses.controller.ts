@@ -1,4 +1,4 @@
-import { Mapper } from '@automapper/core';
+﻿import { Mapper } from '@automapper/core';
 import { InjectMapper } from '@automapper/nestjs';
 import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Post, UseGuards } from '@nestjs/common';
 import { ApiBearerAuth, ApiCreatedResponse, ApiOkResponse, ApiOperation, ApiParam, ApiTags } from '@nestjs/swagger';
@@ -8,7 +8,7 @@ import { CreateVehicleExpenseRequest, VehicleExpenseResponse } from './models';
 import { VehicleExpense } from './domain';
 import { CreateVehicleExpenseCommand, DeleteVehicleExpenseCommand } from './commands';
 import { GetVehicleExpenseQuery } from './queries';
-import { ERole } from '../../../infrastructure';
+import { ERole } from '../../../infrastructure/persistence/entities/role.entity';
 import { GetVehicleQuery } from '../vehicles/queries';
 import { Vehicle } from '../vehicles/domain';
 

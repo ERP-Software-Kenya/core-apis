@@ -1,4 +1,4 @@
-import { AutoMap } from '@automapper/classes';
+﻿import { AutoMap } from '@automapper/classes';
 import { EActivityAction } from '../../../../infrastructure/persistence/entities/activity-log.entity';
 
 export class ActivityLog {

@@ -40,18 +40,15 @@ export class GetDriverTripsTodayQueryHandler
       [ETripStatus.Scheduled, ETripStatus.InTransit],
     );
 
-    const results: DriverTripItem[] = [];
-    for (const trip of trips) {
-      const stopCount = await this.stopRepo.countByTripAsync(trip.id);
-      results.push({
+    const stopCounts = await this.stopRepo.countByTripsAsync(trips.map((trip) => trip.id));
+    return trips.map((trip) => {
+      return {
         id: trip.id,
         tripNumber: trip.tripNumber,
         tripStatus: trip.tripStatus,
         startDatetime: trip.startDatetime,
-        stopCount,
-      });
-    }
-
-    return results;
+        stopCount: stopCounts.get(trip.id) ?? 0,
+      };
+    });
   }
 }

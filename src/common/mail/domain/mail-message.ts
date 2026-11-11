@@ -1,4 +1,4 @@
-import { AutoMap } from '@automapper/classes';
+﻿import { AutoMap } from '@automapper/classes';
 import { MailAttachment } from './mail-attachment';
 
 export class MailMessage {

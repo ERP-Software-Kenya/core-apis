@@ -1,4 +1,4 @@
-import { AutoMap } from '@automapper/classes';
+﻿import { AutoMap } from '@automapper/classes';
 import { CommandBase } from '../../../../../common';
 
 export class CreateRoleCommand extends CommandBase {

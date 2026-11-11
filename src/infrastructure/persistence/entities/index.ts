@@ -90,6 +90,7 @@ import { QuickChargeEntity } from './quick-charge.entity';
 import { CustomerTypeRuleEntity } from './customer-type-rule.entity';
 import { TripStopEntity } from './trip-stop.entity';
 import { UserDeviceTokenEntity } from './user-device-token.entity';
+import { UserSessionEntity } from './user-session.entity';
 import { DeploymentCheckEntity } from './deployment-check.entity';
 import { UnpublishedStockPurchaseOrderEntity } from './unpublished-stock-purchase-order.entity';
 import { UnpublishedStockPurchaseItemEntity } from './unpublished-stock-purchase-item.entity';
@@ -110,6 +111,8 @@ import { BlackLedgerLineEntity } from './black-ledger-line.entity';
 import { OrganizationSettingEntity } from './organization-setting.entity';
 import { OrganizationUnitEntity } from './organization-unit.entity';
 import { ProductUnitEntity } from './product-unit.entity';
+import { OrganizationInvitationEntity } from './organization-invitation.entity';
+import { NotificationSettingEntity } from './notification-setting.entity';
 
 export * from './branch.entity';
 export * from './location.entity';
@@ -208,6 +211,7 @@ export * from './quick-charge.entity';
 export * from './customer-type-rule.entity';
 export * from './trip-stop.entity';
 export * from './user-device-token.entity';
+export * from './user-session.entity';
 export * from './deployment-check.entity';
 export * from './unpublished-stock-purchase-order.entity';
 export * from './unpublished-stock-purchase-item.entity';
@@ -225,6 +229,8 @@ export * from './black-ledger-line.entity';
 export * from './organization-setting.entity';
 export * from './organization-unit.entity';
 export * from './product-unit.entity';
+export * from './organization-invitation.entity';
+export * from './notification-setting.entity';
 
 export default [
   BranchEntity,
@@ -318,6 +324,7 @@ export default [
   CustomerTypeRuleEntity,
   TripStopEntity,
   UserDeviceTokenEntity,
+  UserSessionEntity,
   DeploymentCheckEntity,
   UnpublishedStockPurchaseOrderEntity,
   UnpublishedStockPurchaseItemEntity,
@@ -338,4 +345,6 @@ export default [
   OrganizationSettingEntity,
   OrganizationUnitEntity,
   ProductUnitEntity,
+  OrganizationInvitationEntity,
+  NotificationSettingEntity,
 ];

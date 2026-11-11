@@ -1,4 +1,4 @@
-import { AutoMap } from '@automapper/classes';
+﻿import { AutoMap } from '@automapper/classes';
 import { ApiProperty } from '@nestjs/swagger';
 import { IsArray, IsNotEmpty, IsNumber, IsUUID, ValidateNested } from 'class-validator';
 import { Type } from 'class-transformer';
@@ -9,7 +9,6 @@ export class PackedItemRequest {
 }
 
 export class PackOrderRequest {
-  @ApiProperty() @IsNotEmpty() @IsUUID() @AutoMap() public packerUserId: string;
   @ApiProperty({ type: [PackedItemRequest] })
   @IsArray()
   @ValidateNested({ each: true })
