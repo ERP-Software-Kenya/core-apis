@@ -25,9 +25,10 @@ export class OrderProfile extends AutomapperProfile {
         CreateOrderCommand,
         forMember(
           (d) => d.items,
-          mapFrom((s) =>
+          mapFrom((s): any =>
             (s.items ?? []).map((item) => ({
               productId: item.productId,
+              productUnitId: item.productUnitId!,
               quantity: item.quantity,
               unitPrice: item.unitPrice,
               taxAmount: item.taxAmount,

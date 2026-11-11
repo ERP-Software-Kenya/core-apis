@@ -5,6 +5,14 @@ export class PurchaseItem {
   @AutoMap() public purchaseOrderId: string;
   @AutoMap() public productId: string;
   @AutoMap() public quantityOrdered: number;
+  @AutoMap() public productUnitId?: string;
+  @AutoMap() public selectedUnitId?: string;
+  @AutoMap() public selectedUnitNameSnapshot?: string;
+  @AutoMap() public selectedUnitSymbolSnapshot?: string;
+  @AutoMap() public enteredQuantity?: string;
+  @AutoMap() public conversionFactorSnapshot?: string;
+  @AutoMap() public baseUnitId?: string;
+  @AutoMap() public selectedUnitCost?: number;
   @AutoMap() public quantityReceived: number;
   @AutoMap() public quantityAllocated: number;
   @AutoMap() public unitCost: number;

@@ -10,6 +10,7 @@ import { ERole } from '../../../../../infrastructure/persistence/entities/role.e
 
 export class CreateBillItemCommand {
   @AutoMap() public productId: string;
+  @AutoMap() public productUnitId?: string;
   @AutoMap() public variantId?: string;
   @AutoMap() public quantity: number;
   @AutoMap() public unitPrice: number;

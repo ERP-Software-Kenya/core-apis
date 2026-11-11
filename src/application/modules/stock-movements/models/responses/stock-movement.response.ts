@@ -12,6 +12,13 @@ export class StockMovementResponse {
   @ApiPropertyOptional() @AutoMap() public referenceType?: string;
   @ApiProperty({ enum: EMovementType }) @AutoMap(() => String) public movementType: EMovementType;
   @ApiProperty() @AutoMap() public quantity: number;
+  @ApiPropertyOptional() @AutoMap() public productUnitId?: string;
+  @ApiPropertyOptional() @AutoMap() public selectedUnitId?: string;
+  @ApiPropertyOptional() @AutoMap() public selectedUnitNameSnapshot?: string;
+  @ApiPropertyOptional() @AutoMap() public selectedUnitSymbolSnapshot?: string;
+  @ApiPropertyOptional() @AutoMap() public enteredQuantity?: string;
+  @ApiPropertyOptional() @AutoMap() public conversionFactorSnapshot?: string;
+  @ApiPropertyOptional() @AutoMap() public baseUnitId?: string;
   @ApiProperty() @AutoMap() public quantityBefore: number;
   @ApiProperty() @AutoMap() public quantityAfter: number;
   @ApiPropertyOptional() @AutoMap() public unitCost?: number;

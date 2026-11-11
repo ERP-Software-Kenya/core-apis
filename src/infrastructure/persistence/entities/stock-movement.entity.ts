@@ -69,6 +69,16 @@ export class StockMovementEntity {
   @Column({ type: 'decimal', precision: 18, scale: 4 })
   public quantity: number;
 
+  @AutoMap() @Column({ name: 'product_unit_id', type: 'uuid', nullable: true }) public productUnitId?: string;
+  @AutoMap() @Column({ name: 'selected_unit_id', type: 'uuid', nullable: true }) public selectedUnitId?: string;
+  @AutoMap() @Column({ name: 'selected_unit_name_snapshot', type: 'varchar', length: 100, nullable: true }) public selectedUnitNameSnapshot?: string;
+  @AutoMap() @Column({ name: 'selected_unit_symbol_snapshot', type: 'varchar', length: 20, nullable: true }) public selectedUnitSymbolSnapshot?: string;
+  @AutoMap() @Column({ name: 'entered_quantity', type: 'decimal', precision: 24, scale: 8, nullable: true }) public enteredQuantity?: string;
+  @AutoMap() @Column({ name: 'conversion_factor_snapshot', type: 'decimal', precision: 24, scale: 8, nullable: true }) public conversionFactorSnapshot?: string;
+  @AutoMap() @Column({ name: 'base_unit_id', type: 'uuid', nullable: true }) public baseUnitId?: string;
+  @Column({ name: 'quantity_components_snapshot', type: 'jsonb', nullable: true })
+  public quantityComponentsSnapshot?: Array<Record<string, string>>;
+
   /** Snapshot of on-hand qty BEFORE this movement */
   @AutoMap()
   @Column({ name: 'quantity_before', type: 'decimal', precision: 18, scale: 4 })

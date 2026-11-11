@@ -8,7 +8,6 @@ import {
   IStockOperation,
   IStockOperationsRepo,
   ITransferStockOperation,
-  TransferStockOperationInput,
 } from '../../../application/shared';
 import { EStockTransferStatus } from '../../../application/shared/enums/e-stock-transfer-status';
 import {
@@ -45,6 +44,7 @@ export class StockOperationsRepo implements IStockOperationsRepo {
     }
     await this.inventory.manager.transaction(async (manager) => {
       const stock = await this.lockOfficial(manager, input);
+      this.assertInventoryIdentity(stock, input);
       if (input.absoluteQuantity < Number(stock.quantityReserved)) {
         throw new BadRequestException('Adjusted quantity cannot be below reserved quantity');
       }
@@ -125,7 +125,7 @@ export class StockOperationsRepo implements IStockOperationsRepo {
     await this.inventory.manager.transaction((manager) => this.transfer(manager, input));
   }
 
-  public async completeTransferBatch(transferId: string, inputs: TransferStockOperationInput[]): Promise<void> {
+  public async completeTransferBatch(transferId: string, inputs: ITransferStockOperation[]): Promise<void> {
     await this.inventory.manager.transaction(async (manager) => {
       const transfer = await manager.findOne(StockTransferEntity, {
         where: { id: transferId }, lock: { mode: 'pessimistic_write' },
@@ -144,6 +144,7 @@ export class StockOperationsRepo implements IStockOperationsRepo {
     this.assertPositive(input.quantity);
     await this.inventory.manager.transaction(async (manager) => {
       const stock = await this.lockOfficial(manager, input);
+      this.assertInventoryIdentity(stock, input);
       const onHand = Number(stock.quantityOnHand);
       const reserved = Number(stock.quantityReserved);
       let before = onHand;
@@ -194,7 +195,13 @@ export class StockOperationsRepo implements IStockOperationsRepo {
     source.quantityOnHand = sourceBefore - input.quantity;
     destination.quantityOnHand = destinationBefore + input.quantity;
     await manager.save([source, destination]);
-    const common = { organizationId: input.organizationId, productId: input.productId, quantity: input.quantity, performedById: input.performedById, referenceId: input.referenceId, notes: input.notes };
+    const common = {
+      organizationId: input.organizationId, productId: input.productId, quantity: input.quantity,
+      performedById: input.performedById, referenceId: input.referenceId, notes: input.notes,
+      productUnitId: input.productUnitId, selectedUnitId: input.selectedUnitId,
+      selectedUnitNameSnapshot: input.selectedUnitNameSnapshot, selectedUnitSymbolSnapshot: input.selectedUnitSymbolSnapshot,
+      enteredQuantity: input.enteredQuantity, conversionFactorSnapshot: input.conversionFactorSnapshot, baseUnitId: input.baseUnitId,
+    };
     await this.officialMovement(manager, { ...common, inventoryId: source.id, locationId: input.fromLocationId }, EMovementType.TransferOut, sourceBefore, source.quantityOnHand);
     await this.officialMovement(manager, { ...common, inventoryId: destination.id, locationId: input.toLocationId }, EMovementType.TransferIn, destinationBefore, destination.quantityOnHand);
     await this.audit(manager, { ...common, inventoryId: source.id, locationId: input.fromLocationId }, EProductLogAction.StockTransferredOut, input.quantity);
@@ -224,6 +231,10 @@ export class StockOperationsRepo implements IStockOperationsRepo {
       inventoryId: input.inventoryId, locationId: input.locationId, productId: input.productId,
       performedById: input.performedById, referenceId: input.referenceId, referenceType: input.referenceType,
       movementType, quantity: input.quantity, quantityBefore, quantityAfter, unitCost: input.unitCost, notes: input.notes,
+      productUnitId: input.productUnitId, selectedUnitId: input.selectedUnitId,
+      selectedUnitNameSnapshot: input.selectedUnitNameSnapshot, selectedUnitSymbolSnapshot: input.selectedUnitSymbolSnapshot,
+      enteredQuantity: input.enteredQuantity, conversionFactorSnapshot: input.conversionFactorSnapshot, baseUnitId: input.baseUnitId,
+      quantityComponentsSnapshot: input.quantityComponentsSnapshot,
     }));
   }
 
@@ -237,6 +248,12 @@ export class StockOperationsRepo implements IStockOperationsRepo {
 
   private assertPositive(quantity: number): void {
     if (!Number.isFinite(quantity) || quantity <= 0) throw new BadRequestException('Quantity must be greater than 0');
+  }
+
+  private assertInventoryIdentity(stock: InventoryEntity, input: { productId: string; locationId: string }): void {
+    if (stock.productId !== input.productId || stock.locationId !== input.locationId) {
+      throw new BadRequestException('Inventory does not match the requested product and location');
+    }
   }
 
   private averageCost(currentQuantity: number, currentCost: number, addedQuantity: number, addedCost?: number): number {

@@ -4,12 +4,14 @@ import { ProductActivityLogger } from './services/product-activity-logger.servic
 import { StockOrchestrationService } from './services/stock-orchestration.service';
 import { BillCompletionService } from './services/bill-completion.service';
 import { OrderDispatchPaymentService } from './services/order-dispatch-payment.service';
+import { QuantityConversionService } from './services/quantity-conversion.service';
 import { NotificationDispatchService } from './services/notification-dispatch.service';
 import { AppMailModule } from '../../common/mail/app-mail.module';
 
 const PROVIDERS = [
   ActivityLogService,
   ProductActivityLogger,
+  QuantityConversionService,
   StockOrchestrationService,
   BillCompletionService,
   OrderDispatchPaymentService,

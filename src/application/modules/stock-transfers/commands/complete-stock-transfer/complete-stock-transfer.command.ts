@@ -8,6 +8,8 @@ export class CompleteTransferItemInput {
   @AutoMap() public fromLocationId: string;
   @AutoMap() public toLocationId: string;
   @AutoMap() public quantity: number;
+  @AutoMap() public productUnitId?: string;
+  public quantityComponents?: Array<{ productUnitId: string; quantity: number }>;
 }
 
 export class CompleteStockTransferCommand extends CommandBase {

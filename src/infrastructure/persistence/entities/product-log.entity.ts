@@ -65,7 +65,7 @@ export class ProductLogEntity {
   public action: EProductLogAction;
 
   /** Field-level change records for PRODUCT_UPDATED events: [{field, oldValue, newValue}] */
-  @AutoMap(() => Object)
+  @AutoMap(() => [Object])
   @Column({ name: 'changed_fields', type: 'jsonb', nullable: true })
   public changedFields?: Array<{ field: string; oldValue: unknown; newValue: unknown }>;
 
