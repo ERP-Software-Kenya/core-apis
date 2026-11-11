@@ -8,7 +8,6 @@ import {
   IStockOperation,
   IStockOperationsRepo,
   ITransferStockOperation,
-  TransferStockOperationInput,
 } from '../../../application/shared';
 import { EStockTransferStatus } from '../../../application/shared/enums/e-stock-transfer-status';
 import {
@@ -126,7 +125,7 @@ export class StockOperationsRepo implements IStockOperationsRepo {
     await this.inventory.manager.transaction((manager) => this.transfer(manager, input));
   }
 
-  public async completeTransferBatch(transferId: string, inputs: TransferStockOperationInput[]): Promise<void> {
+  public async completeTransferBatch(transferId: string, inputs: ITransferStockOperation[]): Promise<void> {
     await this.inventory.manager.transaction(async (manager) => {
       const transfer = await manager.findOne(StockTransferEntity, {
         where: { id: transferId }, lock: { mode: 'pessimistic_write' },
@@ -196,7 +195,13 @@ export class StockOperationsRepo implements IStockOperationsRepo {
     source.quantityOnHand = sourceBefore - input.quantity;
     destination.quantityOnHand = destinationBefore + input.quantity;
     await manager.save([source, destination]);
-    const common = { organizationId: input.organizationId, productId: input.productId, quantity: input.quantity, performedById: input.performedById, referenceId: input.referenceId, notes: input.notes };
+    const common = {
+      organizationId: input.organizationId, productId: input.productId, quantity: input.quantity,
+      performedById: input.performedById, referenceId: input.referenceId, notes: input.notes,
+      productUnitId: input.productUnitId, selectedUnitId: input.selectedUnitId,
+      selectedUnitNameSnapshot: input.selectedUnitNameSnapshot, selectedUnitSymbolSnapshot: input.selectedUnitSymbolSnapshot,
+      enteredQuantity: input.enteredQuantity, conversionFactorSnapshot: input.conversionFactorSnapshot, baseUnitId: input.baseUnitId,
+    };
     await this.officialMovement(manager, { ...common, inventoryId: source.id, locationId: input.fromLocationId }, EMovementType.TransferOut, sourceBefore, source.quantityOnHand);
     await this.officialMovement(manager, { ...common, inventoryId: destination.id, locationId: input.toLocationId }, EMovementType.TransferIn, destinationBefore, destination.quantityOnHand);
     await this.audit(manager, { ...common, inventoryId: source.id, locationId: input.fromLocationId }, EProductLogAction.StockTransferredOut, input.quantity);

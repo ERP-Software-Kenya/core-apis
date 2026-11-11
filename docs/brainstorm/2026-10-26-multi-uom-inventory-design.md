@@ -811,13 +811,35 @@ Expected implementation areas include:
 ## Explicitly out of scope
 
 - Tracking sealed versus opened packages as separate stock states.
-- Independent price overrides per alternate UOM.
+- Independent price overrides per alternate UOM (see note below).
 - Manufacturing/repacking transformations between separate SKUs.
 - Variable-weight packages whose actual weight differs per physical package.
 - Global cross-organization conversions.
 - Allowing clients to calculate or override authoritative base quantities or totals.
 
 These may be designed separately if future business requirements demand them.
+
+### Future scope: per-UOM price override
+
+All alternate-unit prices are currently derived by formula:
+
+```
+pricePerSelectedUnit = pricePerBaseUnit × conversionFactor
+```
+
+This means a Bag always costs exactly 10× the KG price. No manual override is supported.
+
+**When this gap matters:** wholesale distributors who price packages at a bulk discount independent of the base unit price — for example:
+
+| Unit | Current behaviour (formula) | Per-UOM override target |
+|---|---|---|
+| 1 KG | KSh 120 | KSh 120 |
+| 1 Bag (10 KG) | KSh 1,200 (120 × 10) | KSh 1,100 (manually set — bulk discount) |
+| 1 Sack (25 KG) | KSh 3,000 (120 × 25) | KSh 2,500 (manually set — cheapest per KG) |
+
+**When it does not matter:** customer-type discount tiers (Regular/Wholesale/Loyalty) already handle most bulk-pricing scenarios. Per-UOM override is only needed when the discount is tied to the *unit chosen*, not *who the customer is*.
+
+**Implementation path when scoped:** add an optional `price_override` column (`numeric(18,4)`) to `product_units`. Pricing logic falls back to the formula when `price_override` is null, uses the override when set. No breaking change to existing documents or the conversion service.
 
 ## Acceptance criteria
 

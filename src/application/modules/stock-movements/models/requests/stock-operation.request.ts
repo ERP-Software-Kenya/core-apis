@@ -29,6 +29,8 @@ export class AdjustStockRequest {
   @ApiProperty() @IsNotEmpty() @IsString() @AutoMap() public locationId: string;
   @ApiProperty() @IsNotEmpty() @IsString() @AutoMap() public productId: string;
   @ApiProperty() @IsNumber() @Min(0) @AutoMap() public absoluteQuantity: number;
+  @ApiPropertyOptional({ description: 'Product-unit conversion ID. When omitted, absoluteQuantity is in the base unit.' })
+  @IsOptional() @IsUUID() @AutoMap() public productUnitId?: string;
   @ApiPropertyOptional() @IsOptional() @IsNumber() @IsPositive() @AutoMap() public unitCost?: number;
   @ApiPropertyOptional() @IsOptional() @IsString() @AutoMap() public notes?: string;
 }

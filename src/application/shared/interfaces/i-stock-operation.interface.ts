@@ -55,6 +55,13 @@ export interface IAdjustStockOperation {
   performedById?: string;
   unitCost?: number;
   notes?: string;
+  productUnitId?: string;
+  selectedUnitId?: string;
+  selectedUnitNameSnapshot?: string;
+  selectedUnitSymbolSnapshot?: string;
+  enteredQuantity?: string;
+  conversionFactorSnapshot?: string;
+  baseUnitId?: string;
 }
 
 export interface ITransferStockOperation {
@@ -68,6 +75,14 @@ export interface ITransferStockOperation {
   performedById?: string;
   referenceId?: string;
   notes?: string;
+  productUnitId?: string;
+  quantityComponents?: Array<{ productUnitId: string; quantity: number }>;
+  selectedUnitId?: string;
+  selectedUnitNameSnapshot?: string;
+  selectedUnitSymbolSnapshot?: string;
+  enteredQuantity?: string;
+  conversionFactorSnapshot?: string;
+  baseUnitId?: string;
 }
 
 export class TransferStockOperationInput implements ITransferStockOperation {
@@ -81,6 +96,14 @@ export class TransferStockOperationInput implements ITransferStockOperation {
   @AutoMap() public performedById?: string;
   @AutoMap() public referenceId?: string;
   @AutoMap() public notes?: string;
+  @AutoMap() public productUnitId?: string;
+  public quantityComponents?: Array<{ productUnitId: string; quantity: number }>;
+  @AutoMap() public selectedUnitId?: string;
+  @AutoMap() public selectedUnitNameSnapshot?: string;
+  @AutoMap() public selectedUnitSymbolSnapshot?: string;
+  @AutoMap() public enteredQuantity?: string;
+  @AutoMap() public conversionFactorSnapshot?: string;
+  @AutoMap() public baseUnitId?: string;
 }
 
 export class StockMovementInput {

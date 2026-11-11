@@ -4,7 +4,6 @@ import {
   IPublishStockOperation,
   IStockOperation,
   ITransferStockOperation,
-  TransferStockOperationInput,
 } from './i-stock-operation.interface';
 
 export interface IStockOperationsRepo {
@@ -18,5 +17,5 @@ export interface IStockOperationsRepo {
   addUnpublishedStock(input: IAddUnpublishedStockOperation): Promise<void>;
   publishStock(input: IPublishStockOperation): Promise<void>;
   transferStock(input: ITransferStockOperation): Promise<void>;
-  completeTransferBatch(transferId: string, inputs: TransferStockOperationInput[]): Promise<void>;
+  completeTransferBatch(transferId: string, inputs: ITransferStockOperation[]): Promise<void>;
 }
