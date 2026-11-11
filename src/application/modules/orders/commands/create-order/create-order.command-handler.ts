@@ -9,7 +9,7 @@ import { IOrderItemRepo } from '../../i-order-item.repo';
 import { CreateOrderCommand, CreateOrderItemInput } from './create-order.command';
 import { OrdersMailService } from '../../mail';
 import { IPushNotificationService, PUSH_NOTIFICATION_SERVICE } from '../../../../../common';
-import { ActivityLogService, BillCompletionService, CreditLimitExceededError } from '../../../../shared';
+import { ActivityLogService, BillCompletionService, CreditLimitExceededError, EUnitOperation, QuantityConversionService } from '../../../../shared';
 import { EActivityAction } from '../../../../../infrastructure/persistence/entities/activity-log.entity';
 import { IBillRepo } from '../../../bills';
 import { Bill } from '../../../bills/domain';
@@ -38,6 +38,7 @@ export class CreateOrderCommandHandler implements ICommandHandler<CreateOrderCom
     @Inject(PUSH_NOTIFICATION_SERVICE) private readonly pushService: IPushNotificationService,
     private readonly activityLog: ActivityLogService,
     private readonly organizationSettings: OrganizationSettingsService,
+    private readonly quantityConversion: QuantityConversionService,
     @InjectPinoLogger(CreateOrderCommandHandler.name) private readonly logger: PinoLogger,
   ) {}
 
@@ -53,9 +54,10 @@ export class CreateOrderCommandHandler implements ICommandHandler<CreateOrderCom
       command.items ?? [],
       sellingLocation.branchId ?? null,
       command.customerType,
+      sellingLocation.organizationId,
     );
 
-    const subtotal     = resolvedItems.reduce((acc, i) => acc + i.quantity * i.unitPrice, 0);
+    const subtotal     = resolvedItems.reduce((acc, i) => acc + Number(i.enteredQuantity ?? i.quantity) * i.unitPrice, 0);
     const taxAmount    = resolvedItems.reduce((acc, i) => acc + Number(i.taxAmount ?? 0), 0);
     const totalAmount  = subtotal + taxAmount;
 
@@ -81,9 +83,17 @@ export class CreateOrderCommandHandler implements ICommandHandler<CreateOrderCom
       item.orderId          = order.id;
       item.productId        = input.productId;
       item.quantity         = input.quantity;
+      item.productUnitId    = input.productUnitId;
+      item.selectedUnitId   = input.selectedUnitId;
+      item.selectedUnitNameSnapshot = input.selectedUnitNameSnapshot;
+      item.selectedUnitSymbolSnapshot = input.selectedUnitSymbolSnapshot;
+      item.enteredQuantity  = input.enteredQuantity;
+      item.conversionFactorSnapshot = input.conversionFactorSnapshot;
+      item.baseUnitId       = input.baseUnitId;
+      item.baseUnitPrice    = input.baseUnitPrice;
       item.unitPrice        = input.unitPrice;
       item.taxAmount        = itemTaxAmount;
-      item.lineTotal        = Number(input.quantity) * Number(input.unitPrice) + itemTaxAmount;
+      item.lineTotal        = Number(input.enteredQuantity ?? input.quantity) * Number(input.unitPrice) + itemTaxAmount;
       item.packQuantity     = input.packQuantity;
       item.packSizeSnapshot = input.packSizeSnapshot;
       savedItems.push(await this.itemRepo.createAsync(item));
@@ -120,6 +130,7 @@ export class CreateOrderCommandHandler implements ICommandHandler<CreateOrderCom
     inputs: CreateOrderItemInput[],
     branchId: string | null,
     customerType?: ECustomerType,
+    organizationId?: string,
   ): Promise<CreateOrderItemInput[]> {
     return Promise.all(
       inputs.map(async (input) => {
@@ -130,7 +141,19 @@ export class CreateOrderCommandHandler implements ICommandHandler<CreateOrderCom
             : Promise.resolve(null),
         ]);
         if (!product) return input;
-        return { ...input, unitPrice: resolveBranchPrice(branchPrice, product, customerType) };
+        const baseUnitPrice = resolveBranchPrice(branchPrice, product, customerType);
+        if (!input.productUnitId || !organizationId) return { ...input, unitPrice: baseUnitPrice };
+        const converted = await this.quantityConversion.convert({
+          organizationId, productId: input.productId, productUnitId: input.productUnitId,
+          quantity: input.quantity, operation: EUnitOperation.Sale,
+        });
+        return {
+          ...input,
+          ...converted,
+          quantity: Number(converted.baseQuantity),
+          unitPrice: baseUnitPrice * Number(converted.conversionFactorSnapshot),
+          baseUnitPrice,
+        };
       }),
     );
   }

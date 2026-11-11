@@ -29,7 +29,11 @@ export interface CreatePurchaseOrderInput {
   createdById?: string;
   expectedAt?: string;
   notes?: string;
-  items: Array<{ productId: string; quantityOrdered: number; unitCost: number }>;
+  items: Array<{
+    productId: string; productUnitId?: string; quantityOrdered: number; unitCost: number;
+    selectedUnitId?: string; selectedUnitNameSnapshot?: string; selectedUnitSymbolSnapshot?: string;
+    enteredQuantity?: string; conversionFactorSnapshot?: string; baseUnitId?: string; selectedUnitCost?: number;
+  }>;
 }
 
 export interface PurchaseReceiptInput {

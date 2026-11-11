@@ -199,7 +199,9 @@ export class BillsController {
     assertLocationAccess(user, body.locationId ?? existing.locationId);
     const command          = new AddBillItemCommand();
     command.billId         = id;
+    command.organizationId = user.organizationId;
     command.productId      = body.productId;
+    command.productUnitId  = body.productUnitId;
     command.variantId      = body.variantId;
     command.quantity       = body.quantity;
     command.unitPrice      = body.unitPrice;

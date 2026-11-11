@@ -27,10 +27,11 @@ export class CompleteStockTransferCommandHandler implements ICommandHandler<Comp
       throw new BadRequestException(`Transfer ${command.transferId} is not in PENDING state`);
     }
     const inputs = this.mapper.mapArray(command.items, CompleteTransferItemInput, TransferStockOperationInput);
-    inputs.forEach((input) => {
-      input.organizationId = command.organizationId;
-      input.performedById  = command.performedById;
-      input.referenceId    = command.transferId;
+    inputs.forEach((input, index) => {
+      input.organizationId     = command.organizationId;
+      input.performedById      = command.performedById;
+      input.referenceId        = command.transferId;
+      input.quantityComponents = command.items[index]?.quantityComponents;
     });
     await this.orchestrator.completeTransferBatch(command.transferId, inputs);
     return this.repo.getAsync(command.transferId);

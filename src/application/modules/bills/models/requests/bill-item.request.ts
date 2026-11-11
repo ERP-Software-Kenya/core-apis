@@ -5,6 +5,7 @@ import { IsNumber, IsOptional, IsUUID, Min } from 'class-validator';
 
 export class CreateBillItemRequest {
   @ApiProperty() @IsUUID() @AutoMap() public productId: string;
+  @ApiPropertyOptional() @IsOptional() @IsUUID() @AutoMap() public productUnitId?: string;
   @ApiPropertyOptional() @IsOptional() @IsUUID() @AutoMap() public variantId?: string;
   @ApiProperty() @Type(() => Number) @IsNumber() @Min(0) @AutoMap() public quantity: number;
   @ApiProperty() @Type(() => Number) @IsNumber() @Min(0) @AutoMap() public unitPrice: number;

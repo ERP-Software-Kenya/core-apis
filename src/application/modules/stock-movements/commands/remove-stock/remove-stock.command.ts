@@ -7,6 +7,8 @@ export class RemoveStockCommand extends CommandBase {
   @AutoMap() public locationId: string;
   @AutoMap() public productId: string;
   @AutoMap() public quantity: number;
+  @AutoMap() public productUnitId?: string;
+  public quantityComponents?: Array<{ productUnitId: string; quantity: number }>;
   @AutoMap() public referenceId?: string;
   @AutoMap() public referenceType?: string;
   @AutoMap() public performedById?: string;

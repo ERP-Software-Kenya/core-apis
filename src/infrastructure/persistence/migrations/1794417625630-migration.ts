@@ -1,0 +1,120 @@
+import { MigrationInterface, QueryRunner } from "typeorm";
+
+export class Migration1794417625630 implements MigrationInterface {
+    name = 'Migration1794417625630'
+
+    public async up(queryRunner: QueryRunner): Promise<void> {
+        await queryRunner.query(`ALTER TABLE "core"."unpublished_stock_purchase_items" DROP CONSTRAINT "FK__unpublished_stock_purchase_items__unpublished_stock_purchas"`);
+        await queryRunner.query(`ALTER TABLE "core"."inventory" DROP CONSTRAINT "UQ__inventory__org_location_product_unit"`);
+        await queryRunner.query(`ALTER TABLE "core"."organization_units" ADD "quantity_precision" smallint NOT NULL DEFAULT '4'`);
+        await queryRunner.query(`ALTER TABLE "core"."organization_units" ADD "allow_fraction" boolean NOT NULL DEFAULT true`);
+        await queryRunner.query(`ALTER TABLE "core"."organization_units" ADD "rounding_mode" character varying(16) NOT NULL DEFAULT 'nearest'`);
+        await queryRunner.query(`ALTER TABLE "core"."organization_units" ADD "minimum_quantity" numeric(24,8)`);
+        await queryRunner.query(`ALTER TABLE "core"."organization_units" ADD "quantity_increment" numeric(24,8) NOT NULL DEFAULT '1'`);
+        await queryRunner.query(`ALTER TABLE "core"."product_units" ADD "organization_id" uuid NOT NULL`);
+        await queryRunner.query(`ALTER TABLE "core"."product_units" ADD "conversion_factor" numeric(24,8) NOT NULL DEFAULT '1'`);
+        await queryRunner.query(`ALTER TABLE "core"."product_units" ADD "allowed_for_sale" boolean NOT NULL DEFAULT true`);
+        await queryRunner.query(`ALTER TABLE "core"."product_units" ADD "allowed_for_purchase" boolean NOT NULL DEFAULT true`);
+        await queryRunner.query(`ALTER TABLE "core"."product_units" ADD "barcode" character varying(100)`);
+        await queryRunner.query(`ALTER TABLE "core"."product_units" ADD "is_active" boolean NOT NULL DEFAULT true`);
+        await queryRunner.query(`ALTER TABLE "core"."product_units" ADD "effective_from" TIMESTAMP NOT NULL DEFAULT now()`);
+        await queryRunner.query(`ALTER TABLE "core"."product_units" ADD "retired_at" TIMESTAMP`);
+        await queryRunner.query(`ALTER TABLE "core"."product_units" ADD "created_at" TIMESTAMP NOT NULL DEFAULT now()`);
+        await queryRunner.query(`ALTER TABLE "core"."product_units" ADD "updated_at" TIMESTAMP DEFAULT now()`);
+        await queryRunner.query(`ALTER TABLE "core"."purchase_items" ADD "product_unit_id" uuid`);
+        await queryRunner.query(`ALTER TABLE "core"."purchase_items" ADD "selected_unit_id" uuid`);
+        await queryRunner.query(`ALTER TABLE "core"."purchase_items" ADD "selected_unit_name_snapshot" character varying(100)`);
+        await queryRunner.query(`ALTER TABLE "core"."purchase_items" ADD "selected_unit_symbol_snapshot" character varying(20)`);
+        await queryRunner.query(`ALTER TABLE "core"."purchase_items" ADD "entered_quantity" numeric(24,8)`);
+        await queryRunner.query(`ALTER TABLE "core"."purchase_items" ADD "conversion_factor_snapshot" numeric(24,8)`);
+        await queryRunner.query(`ALTER TABLE "core"."purchase_items" ADD "base_unit_id" uuid`);
+        await queryRunner.query(`ALTER TABLE "core"."purchase_items" ADD "price_per_selected_unit" numeric(18,4)`);
+        await queryRunner.query(`ALTER TABLE "core"."products" ADD "base_unit_id" uuid`);
+        await queryRunner.query(`ALTER TABLE "core"."products" ADD "default_sale_unit_id" uuid`);
+        await queryRunner.query(`ALTER TABLE "core"."products" ADD "default_purchase_unit_id" uuid`);
+        await queryRunner.query(`ALTER TABLE "core"."stock_movements" ADD "product_unit_id" uuid`);
+        await queryRunner.query(`ALTER TABLE "core"."stock_movements" ADD "selected_unit_id" uuid`);
+        await queryRunner.query(`ALTER TABLE "core"."stock_movements" ADD "selected_unit_name_snapshot" character varying(100)`);
+        await queryRunner.query(`ALTER TABLE "core"."stock_movements" ADD "selected_unit_symbol_snapshot" character varying(20)`);
+        await queryRunner.query(`ALTER TABLE "core"."stock_movements" ADD "entered_quantity" numeric(24,8)`);
+        await queryRunner.query(`ALTER TABLE "core"."stock_movements" ADD "conversion_factor_snapshot" numeric(24,8)`);
+        await queryRunner.query(`ALTER TABLE "core"."stock_movements" ADD "base_unit_id" uuid`);
+        await queryRunner.query(`ALTER TABLE "core"."stock_movements" ADD "quantity_components_snapshot" jsonb`);
+        await queryRunner.query(`ALTER TABLE "core"."order_items" ADD "product_unit_id" uuid`);
+        await queryRunner.query(`ALTER TABLE "core"."order_items" ADD "selected_unit_id" uuid`);
+        await queryRunner.query(`ALTER TABLE "core"."order_items" ADD "selected_unit_name_snapshot" character varying(100)`);
+        await queryRunner.query(`ALTER TABLE "core"."order_items" ADD "selected_unit_symbol_snapshot" character varying(20)`);
+        await queryRunner.query(`ALTER TABLE "core"."order_items" ADD "entered_quantity" numeric(24,8)`);
+        await queryRunner.query(`ALTER TABLE "core"."order_items" ADD "conversion_factor_snapshot" numeric(24,8)`);
+        await queryRunner.query(`ALTER TABLE "core"."order_items" ADD "base_unit_id" uuid`);
+        await queryRunner.query(`ALTER TABLE "core"."order_items" ADD "price_per_base_unit" numeric(18,4)`);
+        await queryRunner.query(`ALTER TABLE "core"."bill_items" ADD "product_unit_id" uuid`);
+        await queryRunner.query(`ALTER TABLE "core"."bill_items" ADD "selected_unit_id" uuid`);
+        await queryRunner.query(`ALTER TABLE "core"."bill_items" ADD "selected_unit_name_snapshot" character varying(100)`);
+        await queryRunner.query(`ALTER TABLE "core"."bill_items" ADD "selected_unit_symbol_snapshot" character varying(20)`);
+        await queryRunner.query(`ALTER TABLE "core"."bill_items" ADD "entered_quantity" numeric(24,8)`);
+        await queryRunner.query(`ALTER TABLE "core"."bill_items" ADD "conversion_factor_snapshot" numeric(24,8)`);
+        await queryRunner.query(`ALTER TABLE "core"."bill_items" ADD "base_unit_id" uuid`);
+        await queryRunner.query(`ALTER TABLE "core"."bill_items" ADD "price_per_base_unit" numeric(18,4)`);
+        await queryRunner.query(`ALTER TABLE "core"."inventory" ADD CONSTRAINT "UQ__inventory__org_location_product" UNIQUE ("organization_id", "location_id", "product_id")`);
+        await queryRunner.query(`ALTER TABLE "core"."unpublished_stock_purchase_items" ADD CONSTRAINT "FK__unpublished_stock_purchase_items__unpublished_stock_purchase_orders" FOREIGN KEY ("purchase_order_id") REFERENCES "core"."unpublished_stock_purchase_orders"("id") ON DELETE CASCADE ON UPDATE NO ACTION`);
+    }
+
+    public async down(queryRunner: QueryRunner): Promise<void> {
+        await queryRunner.query(`ALTER TABLE "core"."unpublished_stock_purchase_items" DROP CONSTRAINT "FK__unpublished_stock_purchase_items__unpublished_stock_purchase_orders"`);
+        await queryRunner.query(`ALTER TABLE "core"."inventory" DROP CONSTRAINT "UQ__inventory__org_location_product"`);
+        await queryRunner.query(`ALTER TABLE "core"."bill_items" DROP COLUMN "price_per_base_unit"`);
+        await queryRunner.query(`ALTER TABLE "core"."bill_items" DROP COLUMN "base_unit_id"`);
+        await queryRunner.query(`ALTER TABLE "core"."bill_items" DROP COLUMN "conversion_factor_snapshot"`);
+        await queryRunner.query(`ALTER TABLE "core"."bill_items" DROP COLUMN "entered_quantity"`);
+        await queryRunner.query(`ALTER TABLE "core"."bill_items" DROP COLUMN "selected_unit_symbol_snapshot"`);
+        await queryRunner.query(`ALTER TABLE "core"."bill_items" DROP COLUMN "selected_unit_name_snapshot"`);
+        await queryRunner.query(`ALTER TABLE "core"."bill_items" DROP COLUMN "selected_unit_id"`);
+        await queryRunner.query(`ALTER TABLE "core"."bill_items" DROP COLUMN "product_unit_id"`);
+        await queryRunner.query(`ALTER TABLE "core"."order_items" DROP COLUMN "price_per_base_unit"`);
+        await queryRunner.query(`ALTER TABLE "core"."order_items" DROP COLUMN "base_unit_id"`);
+        await queryRunner.query(`ALTER TABLE "core"."order_items" DROP COLUMN "conversion_factor_snapshot"`);
+        await queryRunner.query(`ALTER TABLE "core"."order_items" DROP COLUMN "entered_quantity"`);
+        await queryRunner.query(`ALTER TABLE "core"."order_items" DROP COLUMN "selected_unit_symbol_snapshot"`);
+        await queryRunner.query(`ALTER TABLE "core"."order_items" DROP COLUMN "selected_unit_name_snapshot"`);
+        await queryRunner.query(`ALTER TABLE "core"."order_items" DROP COLUMN "selected_unit_id"`);
+        await queryRunner.query(`ALTER TABLE "core"."order_items" DROP COLUMN "product_unit_id"`);
+        await queryRunner.query(`ALTER TABLE "core"."stock_movements" DROP COLUMN "quantity_components_snapshot"`);
+        await queryRunner.query(`ALTER TABLE "core"."stock_movements" DROP COLUMN "base_unit_id"`);
+        await queryRunner.query(`ALTER TABLE "core"."stock_movements" DROP COLUMN "conversion_factor_snapshot"`);
+        await queryRunner.query(`ALTER TABLE "core"."stock_movements" DROP COLUMN "entered_quantity"`);
+        await queryRunner.query(`ALTER TABLE "core"."stock_movements" DROP COLUMN "selected_unit_symbol_snapshot"`);
+        await queryRunner.query(`ALTER TABLE "core"."stock_movements" DROP COLUMN "selected_unit_name_snapshot"`);
+        await queryRunner.query(`ALTER TABLE "core"."stock_movements" DROP COLUMN "selected_unit_id"`);
+        await queryRunner.query(`ALTER TABLE "core"."stock_movements" DROP COLUMN "product_unit_id"`);
+        await queryRunner.query(`ALTER TABLE "core"."products" DROP COLUMN "default_purchase_unit_id"`);
+        await queryRunner.query(`ALTER TABLE "core"."products" DROP COLUMN "default_sale_unit_id"`);
+        await queryRunner.query(`ALTER TABLE "core"."products" DROP COLUMN "base_unit_id"`);
+        await queryRunner.query(`ALTER TABLE "core"."purchase_items" DROP COLUMN "price_per_selected_unit"`);
+        await queryRunner.query(`ALTER TABLE "core"."purchase_items" DROP COLUMN "base_unit_id"`);
+        await queryRunner.query(`ALTER TABLE "core"."purchase_items" DROP COLUMN "conversion_factor_snapshot"`);
+        await queryRunner.query(`ALTER TABLE "core"."purchase_items" DROP COLUMN "entered_quantity"`);
+        await queryRunner.query(`ALTER TABLE "core"."purchase_items" DROP COLUMN "selected_unit_symbol_snapshot"`);
+        await queryRunner.query(`ALTER TABLE "core"."purchase_items" DROP COLUMN "selected_unit_name_snapshot"`);
+        await queryRunner.query(`ALTER TABLE "core"."purchase_items" DROP COLUMN "selected_unit_id"`);
+        await queryRunner.query(`ALTER TABLE "core"."purchase_items" DROP COLUMN "product_unit_id"`);
+        await queryRunner.query(`ALTER TABLE "core"."product_units" DROP COLUMN "updated_at"`);
+        await queryRunner.query(`ALTER TABLE "core"."product_units" DROP COLUMN "created_at"`);
+        await queryRunner.query(`ALTER TABLE "core"."product_units" DROP COLUMN "retired_at"`);
+        await queryRunner.query(`ALTER TABLE "core"."product_units" DROP COLUMN "effective_from"`);
+        await queryRunner.query(`ALTER TABLE "core"."product_units" DROP COLUMN "is_active"`);
+        await queryRunner.query(`ALTER TABLE "core"."product_units" DROP COLUMN "barcode"`);
+        await queryRunner.query(`ALTER TABLE "core"."product_units" DROP COLUMN "allowed_for_purchase"`);
+        await queryRunner.query(`ALTER TABLE "core"."product_units" DROP COLUMN "allowed_for_sale"`);
+        await queryRunner.query(`ALTER TABLE "core"."product_units" DROP COLUMN "conversion_factor"`);
+        await queryRunner.query(`ALTER TABLE "core"."product_units" DROP COLUMN "organization_id"`);
+        await queryRunner.query(`ALTER TABLE "core"."organization_units" DROP COLUMN "quantity_increment"`);
+        await queryRunner.query(`ALTER TABLE "core"."organization_units" DROP COLUMN "minimum_quantity"`);
+        await queryRunner.query(`ALTER TABLE "core"."organization_units" DROP COLUMN "rounding_mode"`);
+        await queryRunner.query(`ALTER TABLE "core"."organization_units" DROP COLUMN "allow_fraction"`);
+        await queryRunner.query(`ALTER TABLE "core"."organization_units" DROP COLUMN "quantity_precision"`);
+        await queryRunner.query(`ALTER TABLE "core"."inventory" ADD CONSTRAINT "UQ__inventory__org_location_product_unit" UNIQUE ("organization_id", "location_id", "product_id", "unit_id")`);
+        await queryRunner.query(`ALTER TABLE "core"."unpublished_stock_purchase_items" ADD CONSTRAINT "FK__unpublished_stock_purchase_items__unpublished_stock_purchas" FOREIGN KEY ("purchase_order_id") REFERENCES "core"."unpublished_stock_purchase_orders"("id") ON DELETE CASCADE ON UPDATE NO ACTION`);
+    }
+
+}

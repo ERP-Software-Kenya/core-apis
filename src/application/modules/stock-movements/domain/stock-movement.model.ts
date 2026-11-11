@@ -11,6 +11,13 @@ export class StockMovement {
   @AutoMap() public referenceType?: string;
   @AutoMap(() => String) public movementType: EMovementType;
   @AutoMap() public quantity: number;
+  @AutoMap() public productUnitId?: string;
+  @AutoMap() public selectedUnitId?: string;
+  @AutoMap() public selectedUnitNameSnapshot?: string;
+  @AutoMap() public selectedUnitSymbolSnapshot?: string;
+  @AutoMap() public enteredQuantity?: string;
+  @AutoMap() public conversionFactorSnapshot?: string;
+  @AutoMap() public baseUnitId?: string;
   @AutoMap() public quantityBefore: number;
   @AutoMap() public quantityAfter: number;
   @AutoMap() public unitCost?: number;

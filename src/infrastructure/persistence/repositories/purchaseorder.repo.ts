@@ -77,7 +77,7 @@ export class PurchaseOrderRepo extends BaseRepo<PurchaseOrderEntity, PurchaseOrd
             !Number.isFinite(item.unitCost) || item.unitCost < 0) {
           throw new BadRequestException('Purchase quantities and costs are invalid');
         }
-        totalAmount += item.quantityOrdered * item.unitCost;
+        totalAmount += Number(item.enteredQuantity ?? item.quantityOrdered) * Number(item.selectedUnitCost ?? item.unitCost);
       }
       const po = await manager.save(PurchaseOrderEntity, manager.create(PurchaseOrderEntity, {
         organizationId: input.organizationId, branchId: input.branchId, supplierId: input.supplierId,
@@ -88,7 +88,11 @@ export class PurchaseOrderRepo extends BaseRepo<PurchaseOrderEntity, PurchaseOrd
       await manager.save(PurchaseItemEntity, input.items.map((item) => manager.create(PurchaseItemEntity, {
         purchaseOrderId: po.id, productId: item.productId, quantityOrdered: item.quantityOrdered,
         quantityReceived: 0, quantityAllocated: 0, unitCost: item.unitCost,
-        totalCost: Number((item.quantityOrdered * item.unitCost).toFixed(4)),
+        totalCost: Number((Number(item.enteredQuantity ?? item.quantityOrdered) * Number(item.selectedUnitCost ?? item.unitCost)).toFixed(4)),
+        productUnitId: item.productUnitId, selectedUnitId: item.selectedUnitId,
+        selectedUnitNameSnapshot: item.selectedUnitNameSnapshot, selectedUnitSymbolSnapshot: item.selectedUnitSymbolSnapshot,
+        enteredQuantity: item.enteredQuantity, conversionFactorSnapshot: item.conversionFactorSnapshot,
+        baseUnitId: item.baseUnitId, selectedUnitCost: item.selectedUnitCost,
       })));
       return po.id;
     });

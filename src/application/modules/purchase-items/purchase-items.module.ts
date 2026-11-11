@@ -4,9 +4,10 @@ import { PurchaseItemsController } from './purchase-items.controller';
 import { PurchaseItemCommandHandlers } from './commands';
 import { PurchaseItemQueryHandlers } from './queries';
 import { PurchaseItemProfile } from './mapper';
+import { SharedModule } from '../../shared';
 
 @Module({
-  imports:     [CqrsModule],
+  imports:     [CqrsModule, SharedModule],
   controllers: [PurchaseItemsController],
   providers:   [
     ...PurchaseItemCommandHandlers,

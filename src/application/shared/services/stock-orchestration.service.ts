@@ -6,9 +6,10 @@ import {
   IPublishStockOperation,
   IStockOperation,
   ITransferStockOperation,
-  TransferStockOperationInput,
 } from '../interfaces/i-stock-operation.interface';
 import { IStockOperationsRepo } from '../interfaces/i-stock-operations.repo';
+import { EUnitOperation } from '../enums/e-unit-operation';
+import { QuantityConversionService } from './quantity-conversion.service';
 
 /** Application-facing stock operations; all persistence and transaction ownership stays in the repository. */
 @Injectable()
@@ -16,19 +17,77 @@ export class StockOrchestrationService {
   public constructor(
     @Inject(STOCK_OPERATIONS_REPO)
     private readonly repo: IStockOperationsRepo,
+    private readonly quantityConversion: QuantityConversionService,
   ) {}
 
-  public addStock(input: IStockOperation): Promise<void> { return this.repo.addStock(input); }
-  public removeStock(input: IStockOperation): Promise<void> { return this.repo.removeStock(input); }
-  public adjustStock(input: IAdjustStockOperation): Promise<void> { return this.repo.adjustStock(input); }
-  public reserveStock(input: IStockOperation): Promise<void> { return this.repo.reserveStock(input); }
-  public releaseReservation(input: IStockOperation): Promise<void> { return this.repo.releaseReservation(input); }
+  public async addStock(input: IStockOperation): Promise<void> { return this.repo.addStock(await this.normalize(input, EUnitOperation.Stock)); }
+  public async removeStock(input: IStockOperation): Promise<void> { return this.repo.removeStock(await this.normalize(input, EUnitOperation.Stock)); }
+  public async adjustStock(input: IAdjustStockOperation): Promise<void> { return this.repo.adjustStock(await this.normalizeAdjust(input)); }
+  public async reserveStock(input: IStockOperation): Promise<void> { return this.repo.reserveStock(await this.normalize(input, EUnitOperation.Sale)); }
+  public async releaseReservation(input: IStockOperation): Promise<void> { return this.repo.releaseReservation(await this.normalize(input, EUnitOperation.Sale)); }
   public addUnpublishedStock(input: IAddUnpublishedStockOperation): Promise<void> { return this.repo.addUnpublishedStock(input); }
   public publishStock(input: IPublishStockOperation): Promise<void> { return this.repo.publishStock(input); }
-  public damageStock(input: IStockOperation): Promise<void> { return this.repo.damageStock(input); }
-  public writeOffStock(input: IStockOperation): Promise<void> { return this.repo.writeOffStock(input); }
-  public transferStock(input: ITransferStockOperation): Promise<void> { return this.repo.transferStock(input); }
-  public completeTransferBatch(transferId: string, inputs: TransferStockOperationInput[]): Promise<void> {
-    return this.repo.completeTransferBatch(transferId, inputs);
+  public async damageStock(input: IStockOperation): Promise<void> { return this.repo.damageStock(await this.normalize(input, EUnitOperation.Stock)); }
+  public async writeOffStock(input: IStockOperation): Promise<void> { return this.repo.writeOffStock(await this.normalize(input, EUnitOperation.Stock)); }
+  public async transferStock(input: ITransferStockOperation): Promise<void> { return this.repo.transferStock(await this.normalizeTransfer(input)); }
+  public async completeTransferBatch(transferId: string, inputs: ITransferStockOperation[]): Promise<void> {
+    const normalized = await Promise.all(inputs.map((input) => this.normalizeTransfer(input)));
+    return this.repo.completeTransferBatch(transferId, normalized);
+  }
+
+  private async normalizeAdjust(input: IAdjustStockOperation): Promise<IAdjustStockOperation> {
+    if (!input.productUnitId) return input;
+    const converted = await this.quantityConversion.convert({
+      organizationId: input.organizationId, productId: input.productId,
+      productUnitId: input.productUnitId, quantity: input.absoluteQuantity,
+      operation: EUnitOperation.Stock,
+    });
+    return {
+      ...input,
+      ...converted,
+      absoluteQuantity: Number(converted.baseQuantity),
+      unitCost: input.unitCost != null ? input.unitCost / Number(converted.conversionFactorSnapshot) : undefined,
+    };
+  }
+
+  private async normalizeTransfer(input: ITransferStockOperation): Promise<ITransferStockOperation> {
+    if (input.quantityComponents?.length) {
+      const converted = await this.quantityConversion.convertComponents({
+        organizationId: input.organizationId, productId: input.productId,
+        components: input.quantityComponents, operation: EUnitOperation.Stock,
+      });
+      const first = converted.components[0];
+      return { ...input, quantity: Number(converted.baseQuantity), selectedUnitId: first?.selectedUnitId,
+        selectedUnitNameSnapshot: first?.selectedUnitNameSnapshot, selectedUnitSymbolSnapshot: first?.selectedUnitSymbolSnapshot,
+        enteredQuantity: first?.enteredQuantity, conversionFactorSnapshot: first?.conversionFactorSnapshot, baseUnitId: first?.baseUnitId };
+    }
+    if (!input.productUnitId) return input;
+    const converted = await this.quantityConversion.convert({
+      organizationId: input.organizationId, productId: input.productId,
+      productUnitId: input.productUnitId, quantity: input.quantity, operation: EUnitOperation.Stock,
+    });
+    return { ...input, ...converted, quantity: Number(converted.baseQuantity) };
+  }
+
+  private async normalize(input: IStockOperation, operation: EUnitOperation): Promise<IStockOperation> {
+    if (input.quantityComponents?.length) {
+      const converted = await this.quantityConversion.convertComponents({
+        organizationId: input.organizationId, productId: input.productId,
+        components: input.quantityComponents, operation,
+      });
+      return {
+        ...input,
+        quantity: Number(converted.baseQuantity),
+        baseQuantity: converted.baseQuantity,
+        baseUnitId: converted.components[0]?.baseUnitId,
+        quantityComponentsSnapshot: converted.components,
+      };
+    }
+    if (!input.productUnitId) return input;
+    const converted = await this.quantityConversion.convert({
+      organizationId: input.organizationId, productId: input.productId,
+      productUnitId: input.productUnitId, quantity: input.quantity, operation,
+    });
+    return { ...input, quantity: Number(converted.baseQuantity), ...converted };
   }
 }
